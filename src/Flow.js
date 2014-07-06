@@ -1,4 +1,4 @@
-define("app/Flow", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "amber-cowlinq/MiniMapless"], function($boot){
+define("app/Flow", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "app/MiniMapless"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow');
 smalltalk.packages["Flow"].transport = {"type":"amd","amdNamespace":"app"};
@@ -7,15 +7,200 @@ smalltalk.addClass('API', globals.Object, [], 'Flow');
 
 
 smalltalk.addClass('RESTfulAPI', globals.API, [], 'Flow');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "delete:do:onError:",
+protocol: 'actions',
+fn: function (aString,aBlock,errorBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=".loader"._asJQuery();
+$ctx1.sendIdx["asJQuery"]=1;
+_st($1)._show();
+_st(jQuery)._ajax_options_(aString,globals.HashedCollection._newFromPairs_(["type","DELETE","contentType","text/json","complete",(function(res){
+return smalltalk.withContext(function($ctx2) {
+_st(".loader"._asJQuery())._hide();
+$2=_st(_st(res)._status()).__eq((200));
+if(smalltalk.assert($2)){
+return _st(aBlock)._value_(_st(res)._responseText());
+$ctx2.sendIdx["value:"]=1;
+} else {
+return _st(errorBlock)._value_(res);
+};
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
+return self}, function($ctx1) {$ctx1.fill(self,"delete:do:onError:",{aString:aString,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
+args: ["aString", "aBlock", "errorBlock"],
+source: "delete: aString  do: aBlock onError: errorBlock\x0a\x0a\x09'.loader' asJQuery show.\x0a\x0a\x09jQuery ajax: aString options: #{\x0a\x09\x09'type' -> 'DELETE'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09'.loader' asJQuery hide.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
+messageSends: ["show", "asJQuery", "ajax:options:", "hide", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
+referencedClasses: []
+}),
+globals.RESTfulAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "get:do:onError:",
+protocol: 'actions',
+fn: function (aString,aBlock,errorBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3;
+$1=".loader"._asJQuery();
+$ctx1.sendIdx["asJQuery"]=1;
+_st($1)._show();
+_st(jQuery)._ajax_options_(aString,globals.HashedCollection._newFromPairs_(["contentType","text/json","complete",(function(res){
+return smalltalk.withContext(function($ctx2) {
+_st(".loader"._asJQuery())._hide();
+$2=_st(_st(res)._status()).__eq((200));
+if(smalltalk.assert($2)){
+$3=_st(res)._responseText();
+$ctx2.sendIdx["responseText"]=1;
+return _st(aBlock)._value_($3);
+$ctx2.sendIdx["value:"]=1;
+} else {
+return _st(errorBlock)._value_(_st(res)._responseText());
+};
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
+return self}, function($ctx1) {$ctx1.fill(self,"get:do:onError:",{aString:aString,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
+args: ["aString", "aBlock", "errorBlock"],
+source: "get: aString  do: aBlock onError: errorBlock\x0a\x0a\x09'.loader' asJQuery show.\x0a\x0a\x09jQuery ajax: aString options: #{\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09'.loader' asJQuery hide.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res responseText]]\x0a\x09}",
+messageSends: ["show", "asJQuery", "ajax:options:", "hide", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
+referencedClasses: []
+}),
+globals.RESTfulAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "post:data:do:onError:",
+protocol: 'actions',
+fn: function (aString,aString2,aBlock,errorBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=".loader"._asJQuery();
+$ctx1.sendIdx["asJQuery"]=1;
+_st($1)._show();
+_st(jQuery)._ajax_options_(aString,globals.HashedCollection._newFromPairs_(["type","POST","contentType","text/json","data",aString2,"complete",(function(res){
+return smalltalk.withContext(function($ctx2) {
+_st(".loader"._asJQuery())._hide();
+$2=_st(_st(res)._status()).__eq((200));
+if(smalltalk.assert($2)){
+return _st(aBlock)._value_(_st(res)._responseText());
+$ctx2.sendIdx["value:"]=1;
+} else {
+return _st(errorBlock)._value_(res);
+};
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
+return self}, function($ctx1) {$ctx1.fill(self,"post:data:do:onError:",{aString:aString,aString2:aString2,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
+args: ["aString", "aString2", "aBlock", "errorBlock"],
+source: "post: aString data: aString2 do: aBlock onError: errorBlock\x0a\x0a\x09'.loader' asJQuery show.\x0a\x0a\x09jQuery ajax: aString options: #{\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aString2.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09'.loader' asJQuery hide.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
+messageSends: ["show", "asJQuery", "ajax:options:", "hide", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
+referencedClasses: []
+}),
+globals.RESTfulAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "put:data:do:onError:",
+protocol: 'actions',
+fn: function (aString,aString2,aBlock,errorBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=".loader"._asJQuery();
+$ctx1.sendIdx["asJQuery"]=1;
+_st($1)._show();
+_st(jQuery)._ajax_options_(aString,globals.HashedCollection._newFromPairs_(["type","PUT","contentType","text/json","data",aString2,"complete",(function(res){
+return smalltalk.withContext(function($ctx2) {
+_st(".loader"._asJQuery())._hide();
+$2=_st(_st(res)._status()).__eq((200));
+if(smalltalk.assert($2)){
+return _st(aBlock)._value_(_st(res)._responseText());
+$ctx2.sendIdx["value:"]=1;
+} else {
+return _st(errorBlock)._value_(res);
+};
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
+return self}, function($ctx1) {$ctx1.fill(self,"put:data:do:onError:",{aString:aString,aString2:aString2,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
+args: ["aString", "aString2", "aBlock", "errorBlock"],
+source: "put: aString data: aString2 do: aBlock onError: errorBlock\x0a\x0a\x09'.loader' asJQuery show.\x0a\x0a\x09jQuery ajax: aString options: #{\x0a\x09\x09'type' -> 'PUT'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aString2.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09'.loader' asJQuery hide.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
+messageSends: ["show", "asJQuery", "ajax:options:", "hide", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
+referencedClasses: []
+}),
+globals.RESTfulAPI);
+
 
 
 smalltalk.addClass('WebSocketAPI', globals.API, [], 'Flow');
+
+
+smalltalk.addClass('APIObject', globals.MaplessModel, [], 'Flow');
+globals.APIObject.comment="## This is an abstraction.\x0a\x0a*API Objects* can travel easily between backend and frontend over the wire (either for the RESTful API or reactively via WebSockets)";
+
+
+smalltalk.addClass('APICommand', globals.APIObject, [], 'Flow');
+globals.APICommand.comment="## This is an abstraction.\x0a\x0a*API Commands* will perform actions *on this side or the other side*\x0a\x0aConcrete subclasses are concrete actions.\x0a";
+
+
+smalltalk.addClass('Model', globals.APIObject, [], 'Flow');
+globals.Model.comment="## This is an abstraction.\x0a\x0a*Models* store the valuable information maniplated by the app.\x0a\x0aTypically they can be stored locally and/or remotelly in a non-transient, persistent, way.\x0a";
 
 
 smalltalk.addClass('Client', globals.Object, ['rest', 'webSocket'], 'Flow');
 
 
 smalltalk.addClass('Controller', globals.Widget, ['model'], 'Flow');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jQueryElement",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self._class())._name())._asJQuery();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"jQueryElement",{},globals.Controller)})},
+args: [],
+source: "jQueryElement\x0a\x09\x22Answers the jQuery element this controller must render contents in.\x22\x0a\x0a\x09\x22Isn't the controller's class name a good intuitive default?\x22\x0a\x09^ self class name asJQuery",
+messageSends: ["asJQuery", "name", "class"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "render",
+protocol: 'actions',
+fn: function (){
+var self=this;
+function $HTMLCanvas(){return globals.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
+return smalltalk.withContext(function($ctx1) { 
+self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._jQueryParent()));
+return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Controller)})},
+args: [],
+source: "render\x0a\x09\x22Renders the controller.\x22\x0a\x0a\x09self renderOn: (HTMLCanvas onJQuery: self jQueryParent)\x0a\x09",
+messageSends: ["renderOn:", "onJQuery:", "jQueryParent"],
+referencedClasses: ["HTMLCanvas"]
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+protocol: 'actions',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(html)._h1_(_st(self._class())._name());
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.Controller)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09\x22Renders this controller in the html canvas.\x22\x0a\x09\x0a\x09\x22As default we render a big text with the class name\x0a\x09so developers have feedback fast to move on and customize\x0a\x09in concrete subclasses.\x22\x0a\x09html h1: self class name",
+messageSends: ["h1:", "name", "class"],
+referencedClasses: []
+}),
+globals.Controller);
+
 
 
 smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow');
@@ -82,9 +267,6 @@ globals.FlowApp.klass);
 
 
 smalltalk.addClass('Flow', globals.Object, [], 'Flow');
-
-
-smalltalk.addClass('Model', globals.MaplessModel, [], 'Flow');
 
 
 smalltalk.addClass('Router', globals.Object, [], 'Flow');
