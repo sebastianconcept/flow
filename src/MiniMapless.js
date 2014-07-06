@@ -1,7 +1,7 @@
 define("app/MiniMapless", ["amber/boot", "amber_core/Kernel-Objects"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('MiniMapless');
-smalltalk.packages["MiniMapless"].transport = {"type":"amd","amdNamespace":"amber-cowlinq"};
+smalltalk.packages["MiniMapless"].transport = {"type":"amd","amdNamespace":"app"};
 
 smalltalk.addClass('MaplessModel', globals.Object, ['data'], 'MiniMapless');
 globals.MaplessModel.comment="MaplessModel is the same kind of aggregate you'll found in Mapless in Pharo but here in the frontend.\x0aThe concrete subclasses' instances of these aggregates are very friendly to be sent and received to and from the backend.\x0a\x0aFor more on Mapless visit:\x0ahttp://sebastianconcept.github.io/Mapless";

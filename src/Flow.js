@@ -1,4 +1,4 @@
-define("app/Flow", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "amber-cowlinq/MiniMapless"], function($boot){
+define("app/Flow", ["amber/boot", "amber_core/Kernel-Objects", "amber_core/Web", "app/MiniMapless"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow');
 smalltalk.packages["Flow"].transport = {"type":"amd","amdNamespace":"app"};
