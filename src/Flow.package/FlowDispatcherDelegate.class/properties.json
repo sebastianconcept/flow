@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-Handlers",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"handlers" ],
+	"name" : "FlowDispatcherDelegate",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

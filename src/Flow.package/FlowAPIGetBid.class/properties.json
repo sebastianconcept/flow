@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-API",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "FlowAPIGetBid",
+	"pools" : [
+		 ],
+	"super" : "FlowAPIv10Command",
+	"type" : "normal" }

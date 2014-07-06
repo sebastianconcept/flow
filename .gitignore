@@ -2,6 +2,27 @@
 /bower_components
 /test_runner
 /build
+/art
+
+*-readonly
+pharo-vm/
+pharo
+pharo-ui
+
+# Project specific temporaries / requisites / transient #
+#########################################################
+vm/
+logs/
+
+# Smalltalk related binary files #
+##################################
+*.mcz
+*.changes
+*.image
+*.sources
+*.dmp
+package-cache/
+*~
 
 # Logs
 logs

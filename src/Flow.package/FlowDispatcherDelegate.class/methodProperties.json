@@ -1,0 +1,12 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"addHandler:" : "sebastiansastre 4/9/2012 11:36",
+		"api" : "sebastiansastre 4/10/2012 16:33",
+		"handleRequest:" : "sebastiansastre 7/2/2014 20:28",
+		"handlerFor:" : "sebastiansastre 7/2/2014 20:28",
+		"handlers" : "sebastiansastre 4/9/2012 11:32",
+		"initialize" : "sebastiansastre 7/6/2014 20:10",
+		"initializeHandlers" : "sebastiansastre 4/9/2012 11:36",
+		"removeHandler:" : "sebastiansastre 4/9/2012 11:36" } }

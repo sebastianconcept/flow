@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-Handlers",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "FlowStCodeHandler",
+	"pools" : [
+		 ],
+	"super" : "FlowCodeHandler",
+	"type" : "normal" }

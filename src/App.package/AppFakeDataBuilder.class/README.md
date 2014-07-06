@@ -1,0 +1,1 @@
+A CQFakeDataBuilder is a factory to create some db refill so we can do demos like a boss

@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-Handlers",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "FlowHandler",
+	"pools" : [
+		 ],
+	"super" : "FlowFilesHandler",
+	"type" : "normal" }

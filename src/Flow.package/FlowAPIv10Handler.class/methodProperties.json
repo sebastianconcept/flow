@@ -1,0 +1,22 @@
+{
+	"class" : {
+		"basePath" : "sebastiansastre 7/2/2014 14:49",
+		"validCommands" : "sebastiansastre 7/1/2014 22:27" },
+	"instance" : {
+		"addBid:" : "sebastiansastre 7/1/2014 22:10",
+		"addCow:" : "sebastiansastre 7/2/2014 22:01",
+		"addDeal:" : "sebastiansastre 7/1/2014 22:23",
+		"addUser:" : "sebastiansastre 7/1/2014 22:10",
+		"commandFromRequest:" : "sebastiansastre 7/2/2014 16:10",
+		"getBid:" : "sebastiansastre 7/1/2014 22:09",
+		"getCow:" : "sebastiansastre 7/6/2014 19:43",
+		"getDeal:" : "sebastiansastre 7/1/2014 22:22",
+		"getFarm:" : "sebastiansastre 7/1/2014 22:08",
+		"getUser:" : "sebastiansastre 7/1/2014 22:09",
+		"handle:with:" : "sebastiansastre 7/6/2014 19:35",
+		"isHandlerFor:" : "sebastiansastre 7/2/2014 16:02",
+		"isValid:" : "sebastiansastre 7/2/2014 16:04",
+		"notifyProspect:" : "sebastiansastre 7/1/2014 15:05",
+		"prospect:" : "sebastiansastre 7/1/2014 15:05",
+		"removeUser:" : "sebastiansastre 7/1/2014 21:57",
+		"updateCow:" : "sebastiansastre 7/6/2014 19:43" } }

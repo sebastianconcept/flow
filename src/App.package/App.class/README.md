@@ -1,0 +1,1 @@
+A Cowlinq is a convenience class we use to have a good api in workspaces
