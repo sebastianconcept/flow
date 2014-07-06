@@ -1,4 +1,4 @@
-define("app/Flow-Templates", ["amber/boot", "app/Flow"], function($boot){
+define("app/Flow-Templates", ["amber/boot", "app/Flow-Core"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-Templates');
 smalltalk.packages["Flow-Templates"].transport = {"type":"amd","amdNamespace":"app"};
