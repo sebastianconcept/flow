@@ -1,5 +1,5 @@
 Smalltalk createPackage: 'App'!
-FlowApp subclass: #App
+FlowAppController subclass: #AppController
 	instanceVariableNames: ''
 	package: 'App'!
 

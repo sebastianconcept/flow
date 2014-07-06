@@ -10,6 +10,9 @@
   </head>
 
   <body>
+
+    <div id="content"></div>
+
     <script type='text/javascript'>
       require.config({ paths: {
           'app': 'src' //mapping compiled .js files and smalltalk source files
@@ -25,10 +28,19 @@
           smalltalk.initialize({
             'transport.defaultAmdNamespace': "app"
           });
+          require('amber/helpers').globals.AppController._open()
       });
     </script>
-    <button onclick="require('amber/helpers').globals.Browser._open()">legacy IDE</button>
-    <button onclick="require('amber/helpers').popupHelios()">Helios IDE</button>
+
+    <img id="ide" 
+        src="static/img/tinylogo.png" 
+        onclick="require('amber/helpers').globals.Browser._open()"
+        style="position: fixed; bottom: 0; right: 0"></img>
+
+    <img id="ide" 
+        src="static/img/tinylogo.png" 
+        onclick="require('amber/helpers').popupHelios()"
+        style="position: fixed; bottom: 0; right: 30px"></img>
   </body>
 
 </html>

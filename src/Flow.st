@@ -82,6 +82,27 @@ Widget subclass: #Controller
 	instanceVariableNames: 'model'
 	package: 'Flow'!
 
+!Controller methodsFor: 'accessing'!
+
+jQueryElement
+
+	^ '#content' asJQuery
+! !
+
+!Controller methodsFor: 'actions'!
+
+render
+	
+	self jQueryElement empty.
+	
+	self renderOn: (HTMLCanvas onJQuery: self jQueryElement)
+!
+
+renderOn: html
+
+	html h1: self class name
+! !
+
 Controller subclass: #RouteableController
 	instanceVariableNames: ''
 	package: 'Flow'!
@@ -96,11 +117,47 @@ A typical web app might have:
 3. sign in
 4. many other app-specific controllers!
 
-RouteableController subclass: #FlowApp
+!RouteableController class methodsFor: 'accessing'!
+
+keyword
+	"Answers the name of the class in lowercase without 
+	the 'Controller' sufix so it can, for example, be used for friendly URI.
+	Subclasses are expected to follow the naming convention *Controller like
+	ThisNameController, ThatOtherNameController, AnyNameController, etc"
+
+	^ (self name reversed copyFrom: 'Controller' size + 1 to: self name size) reversed asLowercase
+! !
+
+!RouteableController class methodsFor: 'actions'!
+
+routeFor: anURI
+	"Answers the subclass that is a good fit to route anURI."
+	
+	^ self allSubclasses
+		detect:[ :each | each isValidFor: anURI ]
+		ifNone:[ NotFoundController ]
+! !
+
+!RouteableController class methodsFor: 'testing'!
+
+isAbstract
+	"Answers true if the receiver is abstract."
+	
+	^ self = RouteableController
+!
+
+isValidFor: anURI
+	"Answers true if this controller is the right route for anURI"
+	
+	"the default policy is reject"
+	^ false
+! !
+
+RouteableController subclass: #FlowAppController
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-!FlowApp methodsFor: 'initialization'!
+!FlowAppController methodsFor: 'initialization'!
 
 initialize
 
@@ -110,7 +167,7 @@ initialize
 	window at: 'app' put: self
 ! !
 
-!FlowApp methodsFor: 'reactions'!
+!FlowAppController methodsFor: 'reactions'!
 
 onOpen
 
@@ -123,12 +180,71 @@ onOpen
 	Router observeHash.
 ! !
 
-!FlowApp class methodsFor: 'actions'!
+!FlowAppController class methodsFor: 'actions'!
 
 open
 	"The foundation is ready, time to start this app!!"
 
 	^ self new onOpen
+! !
+
+!FlowAppController class methodsFor: 'testing'!
+
+isAbstract
+	"Answers true if the receiver is abstract."
+	
+	^ self = FlowAppController
+!
+
+isValidFor: anURI
+	"Answers true if this controller is the right route for anURI"
+	
+	^ self isAbstract not and:[
+	anURI isEmpty ]
+! !
+
+RouteableController subclass: #NotFoundController
+	instanceVariableNames: ''
+	package: 'Flow'!
+
+RouteableController subclass: #TemplateController
+	instanceVariableNames: ''
+	package: 'Flow'!
+!TemplateController commentStamp!
+## TemplateController is an abstraction
+The concrete subclasses of TemplateController follow the convention of loading html from the server.
+This convention uses the keyword of the controller as the name of the template to be found at views/!
+
+!TemplateController methodsFor: 'rendering'!
+
+renderOn: html
+
+	require 
+		value:(Array with: 'bower_components/text/text!!views/',self class keyword,'.html')
+		value:[	:template | 
+			self jQueryElement html: template]
+! !
+
+!TemplateController class methodsFor: 'testing'!
+
+isAbstract
+	"Answers true if the receiver is abstract."
+	
+	^ self = TemplateController
+! !
+
+TemplateController subclass: #HelloWorldController
+	instanceVariableNames: ''
+	package: 'Flow'!
+
+!HelloWorldController class methodsFor: 'testing'!
+
+isValidFor: anURI
+	"Answers true if this controller is the right route for anURI"
+	
+	^ self isAbstract not and:[
+	anURI notEmpty and:[
+	anURI = self keyword ] ]
 ! !
 
 Object subclass: #Flow
@@ -171,9 +287,9 @@ observeHash
 !Router class methodsFor: 'reactions'!
 
 onHashChanged
-
+	
 	self trigger: 'aboutToRoute'.
-
+	
 	(RouteableController routeFor: self route) new render.
 	
 	self trigger: 'afterRouting'
