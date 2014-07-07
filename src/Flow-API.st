@@ -11,13 +11,13 @@ API subclass: #RESTfulAPI
 
 delete: aString  do: aBlock onError: errorBlock
 
-	'.loader' asJQuery show.
+	self trigger: 'aboutToAJAX'.
 
 	jQuery ajax: aString options: #{
 		'type' -> 'DELETE'.
 		'contentType' -> 'text/json'.
 		'complete' -> [:res |
-			'.loader' asJQuery hide.
+			self trigger: 'afterAJAX'.
 			res status = 200
 				ifTrue: [aBlock value: res responseText]
 				ifFalse: [errorBlock value: res]]
@@ -26,12 +26,13 @@ delete: aString  do: aBlock onError: errorBlock
 
 get: aString  do: aBlock onError: errorBlock
 
-	'.loader' asJQuery show.
+	self trigger: 'aboutToAJAX'.
 
 	jQuery ajax: aString options: #{
+		'type' -> 'GET'.
 		'contentType' -> 'text/json'.
 		'complete' -> [:res |
-			'.loader' asJQuery hide.
+			self trigger: 'afterAJAX'.
 			res status = 200
 				ifTrue: [aBlock value: res responseText]
 				ifFalse: [errorBlock value: res responseText]]
@@ -40,14 +41,14 @@ get: aString  do: aBlock onError: errorBlock
 
 post: aString data: aString2 do: aBlock onError: errorBlock
 
-	'.loader' asJQuery show.
+	self trigger: 'aboutToAJAX'.
 
 	jQuery ajax: aString options: #{
 		'type' -> 'POST'.
 		'contentType' -> 'text/json'.
 		'data' -> aString2.
 		'complete' -> [:res |
-			'.loader' asJQuery hide.
+			self trigger: 'afterAJAX'.
 			res status = 200
 				ifTrue: [aBlock value: res responseText]
 				ifFalse: [errorBlock value: res]]
@@ -56,14 +57,14 @@ post: aString data: aString2 do: aBlock onError: errorBlock
 
 put: aString data: aString2 do: aBlock onError: errorBlock
 
-	'.loader' asJQuery show.
+	self trigger: 'aboutToAJAX'.
 
 	jQuery ajax: aString options: #{
 		'type' -> 'PUT'.
 		'contentType' -> 'text/json'.
 		'data' -> aString2.
 		'complete' -> [:res |
-			'.loader' asJQuery hide.
+			self trigger: 'afterAJAX'.
 			res status = 200
 				ifTrue: [aBlock value: res responseText]
 				ifFalse: [errorBlock value: res]]
