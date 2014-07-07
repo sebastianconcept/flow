@@ -1,25 +1,16 @@
 actions
 setupServer
 
-	"Handlers for Amber frontend code.
-	We're probably going to deprecate this in favor of amber's own node based server"
-
-	"Flow isProduction ifFalse:[ 
-		ZnServer default delegate	
-			addHandler: FlowJsCodeHandler new;
-			addHandler: FlowStCodeHandler new;
-			yourself]."
-
-	"Setting up the custom WebSocket handler for cowlinq"
+	"Setting up a dispatcher for Zinc so we can use our handlers"
 	(ZnServer managedServers detect:[:e|
 		e port = (ConfigurationFiles at: 'API' at: 'websocketOn')]) 
-			delegate: (FlowWebSocketDelegate new
-						addHandler: FlowWebSocketsAPI new;
+			delegate: (FWDelegate new
+						addHandler: FWWebSocketsAPIHandler new;
 						yourself).
 		
-	"Setting up the RESTful handler for the Cowlinq API"
+	"Setting up the RESTful handler for the flow-based app and static content"
 	ZnServer default delegate	
-		addHandler: FlowAPIv10Handler new;
-		addHandler: (FlowFilesHandler for: (FileLocator imageDirectory / 'service') resolve fullName base: 'service');
+		addHandler: FWRESTAPIv10Handler new;
+		addHandler: (FWFilesHandler for: (FileLocator imageDirectory / 'service') resolve fullName base: 'service');
 		yourself.
 	

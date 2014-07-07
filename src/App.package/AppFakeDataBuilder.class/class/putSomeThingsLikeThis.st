@@ -2,7 +2,7 @@ actions
 putSomeThingsLikeThis
 	"Sets part of the thigns to be like this."
 	
-	FlowAPIv10Command databaseDo:[ | all |
+	FWRESTAPIv10Command databaseDo:[ | all |
 		all := Thing findAll.
 		(1 to: (all size * 0.1) truncated) do:[ :i | | thing |
 			thing := all at: i.

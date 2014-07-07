@@ -3,7 +3,7 @@ reset
 
 	Flow reset.
 
-	FlowAPIv10Command reset.
+	FWRESTAPIv10Command reset.
 	self dropDatabase.
 		
 	mta := nil.

@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-Handlers",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"handlers" ],
+	"name" : "FWDelegate",
+	"pools" : [
+		 ],
+	"super" : "ZnWebSocketDelegate",
+	"type" : "normal" }

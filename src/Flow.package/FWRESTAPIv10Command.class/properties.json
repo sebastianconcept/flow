@@ -3,12 +3,12 @@
 	"classinstvars" : [
 		 ],
 	"classvars" : [
-		 ],
-	"commentStamp" : "sebastiansastre 7/6/2014 19:49",
+		"DatabaseName" ],
+	"commentStamp" : "sebastiansastre 7/1/2014 22:32",
 	"instvars" : [
 		 ],
-	"name" : "Thing",
+	"name" : "FWRESTAPIv10Command",
 	"pools" : [
 		 ],
-	"super" : "FWAPIModel",
+	"super" : "FWAPIObject",
 	"type" : "normal" }

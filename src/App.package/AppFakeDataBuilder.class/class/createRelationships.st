@@ -2,7 +2,7 @@ actions
 createRelationships
 	"Create some relationships between things."
 	
-	FlowAPIv10Command databaseDo:[ | all |
+	FWRESTAPIv10Command databaseDo:[ | all |
 		all := Thing findAll.
 		(1 to: (all size * 0.6) truncated) do:[ :i | | thing otherThing |
 			"We're guessing/assuming that having ~60% of the stock related one to each other is okay"

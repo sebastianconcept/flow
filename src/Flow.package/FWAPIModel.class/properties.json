@@ -4,11 +4,11 @@
 		 ],
 	"classvars" : [
 		 ],
-	"commentStamp" : "sebastiansastre 7/6/2014 19:49",
+	"commentStamp" : "sebastiansastre 7/1/2014 22:34",
 	"instvars" : [
 		 ],
-	"name" : "Thing",
+	"name" : "FWAPIModel",
 	"pools" : [
 		 ],
-	"super" : "FWAPIModel",
+	"super" : "FWAPIObject",
 	"type" : "normal" }

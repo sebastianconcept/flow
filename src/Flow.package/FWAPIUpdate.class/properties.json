@@ -4,11 +4,11 @@
 		 ],
 	"classvars" : [
 		 ],
-	"commentStamp" : "sebastiansastre 7/6/2014 19:49",
+	"commentStamp" : "",
 	"instvars" : [
 		 ],
-	"name" : "Thing",
+	"name" : "FWAPIUpdate",
 	"pools" : [
 		 ],
-	"super" : "FWAPIModel",
+	"super" : "FWRESTAPIv10Command",
 	"type" : "normal" }

@@ -1,5 +1,5 @@
 actions
 makeDispatcher
-	"Answers the dispatcher that has mapped the flow API."
+	"Answers the dispatcher that will route requests to the flow API."
 		
-	^ FlowWebSocketDelegate new 
+	^ FWDelegate new 

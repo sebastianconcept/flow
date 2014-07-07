@@ -1,7 +1,7 @@
 actions
 saveThings
 	
-	FlowAPIv10Command databaseDo:[
+	FWRESTAPIv10Command databaseDo:[
 		(1 to: 100) do:[ :i |
 			Thing new 
 				number: i;

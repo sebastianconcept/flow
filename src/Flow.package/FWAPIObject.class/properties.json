@@ -4,11 +4,11 @@
 		 ],
 	"classvars" : [
 		 ],
-	"commentStamp" : "sebastiansastre 7/6/2014 19:49",
+	"commentStamp" : "sebastiansastre 7/1/2014 22:33",
 	"instvars" : [
 		 ],
-	"name" : "Thing",
+	"name" : "FWAPIObject",
 	"pools" : [
 		 ],
-	"super" : "FWAPIModel",
+	"super" : "MaplessMongo",
 	"type" : "normal" }
