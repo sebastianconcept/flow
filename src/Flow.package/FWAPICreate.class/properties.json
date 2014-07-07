@@ -10,5 +10,5 @@
 	"name" : "FWAPICreate",
 	"pools" : [
 		 ],
-	"super" : "FWRESTAPIv10Command",
+	"super" : "FWRESTAPIv10CommandWithContent",
 	"type" : "normal" }

@@ -3,12 +3,12 @@
 	"classinstvars" : [
 		 ],
 	"classvars" : [
-		 ],
+		"DatabaseName" ],
 	"commentStamp" : "",
 	"instvars" : [
 		 ],
-	"name" : "FWAPIUpdate",
+	"name" : "FWRESTAPIv10CommandWithContent",
 	"pools" : [
 		 ],
-	"super" : "FWRESTAPIv10CommandWithContent",
+	"super" : "FWRESTAPIv10Command",
 	"type" : "normal" }

@@ -1,6 +1,6 @@
 testing
 isBasePathValidFor: aRequest
-	"Answers true if aRequest has a path that matched the base path of this version of the API"
+	"Answers true if aRequest has a path that matches the base path of this version of the API"
 	
 	| apiSegments requestSegments |
 

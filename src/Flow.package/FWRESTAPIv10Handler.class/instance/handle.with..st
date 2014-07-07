@@ -13,12 +13,12 @@ handle: aRequest with: aResponse
 
 	"...ok, looks good. Lets the API tell us what command will take care of it..."
 	command := FWRESTAPIv10Command fromRequest: aRequest.
-	
+
 	"...and do it..."
 	^ [ [ command valueOn: self ]
 		on: ConnectionTimedOut
 		do:[:x| ^ ZnResponse ok: (ZnStringEntity text: 'backend offline') ] ]
 			on: Error
 			do:[ :x| 
-				Flow isProduction ifFalse:[ self debug ].
+				Flow isProduction ifFalse:[ self halt ].
 				ZnResponse badRequest: aRequest ]
