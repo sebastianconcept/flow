@@ -1,5 +1,5 @@
 tests
-testUpdateCow
+testUpdate
 	
 	| anId registeredThing apiResponse  |
 	
