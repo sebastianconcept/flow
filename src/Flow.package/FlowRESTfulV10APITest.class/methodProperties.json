@@ -1,0 +1,15 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"apiUrl" : "sebastiansastre 7/6/2014 20:59",
+		"databaseName" : "sebastiansastre 7/6/2014 20:58",
+		"do:" : "sebastiansastre 7/6/2014 20:58",
+		"setUp" : "sebastiansastre 7/6/2014 20:58",
+		"tearDown" : "sebastiansastre 7/6/2014 20:58",
+		"testCreate" : "sebastiansastre 7/6/2014 20:57",
+		"testDelete" : "sebastiansastre 7/6/2014 21:00",
+		"testGetAll" : "sebastiansastre 7/6/2014 21:05",
+		"testGetOne" : "sebastiansastre 7/6/2014 21:05",
+		"testGetUnexisting" : "sebastiansastre 7/6/2014 21:02",
+		"testUpdateCow" : "sebastiansastre 7/6/2014 21:04" } }
