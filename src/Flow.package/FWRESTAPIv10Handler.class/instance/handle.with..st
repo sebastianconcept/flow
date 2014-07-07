@@ -20,5 +20,6 @@ handle: aRequest with: aResponse
 		do:[:x| ^ ZnResponse ok: (ZnStringEntity text: 'backend offline') ] ]
 			on: Error
 			do:[ :x| 
-				Flow isProduction ifFalse:[ self halt ].
-				ZnResponse badRequest: aRequest ]
+				Flow isProduction 
+					ifFalse: [ ZnResponse serverError: x printString ]
+					ifTrue: [ ZnResponse badRequest: aRequest ] ]

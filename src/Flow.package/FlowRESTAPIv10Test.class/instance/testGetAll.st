@@ -12,5 +12,5 @@ testGetAll
 
 	answeredOnes := MaplessMongo fromJSONString: apiResponse contents.
 
-	answeredOnes allSatisfy:[ :answeredOne |
+	answeredOnes do:[ :answeredOne |
 		self assert: (registeredOnes anySatisfy:[ :registeredOne | answeredOne = registeredOne ])]
