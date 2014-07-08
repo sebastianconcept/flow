@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-API",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "Stuff",
+	"pools" : [
+		 ],
+	"super" : "FWAPIModel",
+	"type" : "normal" }

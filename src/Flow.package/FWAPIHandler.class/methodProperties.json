@@ -1,0 +1,26 @@
+{
+	"class" : {
+		"basePath" : "sebastiansastre 4/9/2012 11:30" },
+	"instance" : {
+		"addApplication:" : "sebastiansastre 4/10/2012 16:32",
+		"applicationFrom:" : "sebastiansastre 4/10/2012 16:31",
+		"applications" : "sebastiansastre 4/10/2012 16:30",
+		"create:on:" : "sebastiansastre 4/10/2012 16:45",
+		"delete:" : "sebastiansastre 4/10/2012 11:47",
+		"handle:with:" : "sebastiansastre 4/11/2012 14:19",
+		"initializeApplications" : "sebastiansastre 4/10/2012 16:30",
+		"isAboutModel:" : "sebastiansastre 1/8/2013 13:39",
+		"isHandlerFor:" : "sebastiansastre 7/2/2014 15:59",
+		"isValid:" : "sebastiansastre 4/11/2012 14:18",
+		"modelClass" : "sebastiansastre 4/10/2012 11:47",
+		"modelClassFrom:" : "sebastiansastre 6/6/2013 16:41",
+		"modelClasses" : "sebastiansastre 11/10/2013 15:01",
+		"onBeforeCreate:on:" : "sebastiansastre 4/10/2012 16:46",
+		"onBeforeDelete:on:" : "sebastiansastre 4/10/2012 16:23",
+		"onBeforeRead:on:" : "sebastiansastre 4/10/2012 16:24",
+		"onBeforeUpdate:on:" : "sebastiansastre 4/10/2012 16:25",
+		"onBeforeUpdateFrom:on:" : "sebastiansastre 4/10/2012 16:26",
+		"read:" : "sebastiansastre 4/10/2012 11:47",
+		"readModel:" : "sebastiansastre 4/10/2012 11:48",
+		"reify:" : "sebastiansastre 11/4/2013 22:22",
+		"update:" : "sebastiansastre 4/10/2012 11:48" } }
