@@ -421,6 +421,54 @@ globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "fresh",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._freshDo_((function(){
+return nil;
+}));
+return self}, function($ctx1) {$ctx1.fill(self,"fresh",{},globals.Mapless)})},
+args: [],
+source: "fresh\x0a\x09\x22Re-read this mapless' state.\x22\x0a\x0a\x09self freshDo:[nil]",
+messageSends: ["freshDo:"],
+referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "freshDo:",
+protocol: 'actions',
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$2;
+$1=jQuery;
+$3=_st(_st(self._path()).__comma("?id=")).__comma(_st(self._id())._asString());
+$ctx1.sendIdx[","]=1;
+$2=globals.HashedCollection._newFromPairs_(["url",$3,"type","GET","cache",false,"success",(function(x){
+return smalltalk.withContext(function($ctx2) {
+return self._onAfterRefresh_done_(x,aBlock);
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}),"fail",(function(x){
+return smalltalk.withContext(function($ctx2) {
+return self._onRefeshFail_(x);
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}),"error",(function(x){
+return smalltalk.withContext(function($ctx2) {
+return self._onRefreshFail_(x);
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,3)})})]);
+_st($1)._ajax_($2);
+return self}, function($ctx1) {$ctx1.fill(self,"freshDo:",{aBlock:aBlock},globals.Mapless)})},
+args: ["aBlock"],
+source: "freshDo: aBlock\x0a\x09\x22Re-read this mapless' state.\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> (self path, '?id=',self id asString).\x0a\x09\x09'type' -> 'GET'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'success' -> [:x| self onAfterRefresh: x done: aBlock].\x0a\x09\x09'fail' -> [:x| self onRefeshFail: x].\x0a\x09\x09'error' -> [:x| self onRefreshFail: x]}\x09",
+messageSends: ["ajax:", ",", "path", "asString", "id", "onAfterRefresh:done:", "onRefeshFail:", "onRefreshFail:"],
+referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "get:from:",
 protocol: 'actions',
 fn: function (anAttribute,aPart){
@@ -608,6 +656,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"localDelete",{},globals.Mapless)
 args: [],
 source: "localDelete\x0a\x0a\x09self class localDelete: self ",
 messageSends: ["localDelete:", "class"],
+referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "localFresh",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._syncFromJSON_(_st(_st(window)._localStorage())._getItem_(self._id()));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"localFresh",{},globals.Mapless)})},
+args: [],
+source: "localFresh\x0a\x09\x22Answers the receiver loaded with a fresh version the contents regarding to the localStorage.\x22\x0a\x0a\x09^ self syncFromJSON: (window localStorage getItem: self id)",
+messageSends: ["syncFromJSON:", "getItem:", "localStorage", "id"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -819,54 +885,6 @@ globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "refresh",
-protocol: 'actions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self._refreshDo_((function(){
-return nil;
-}));
-return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.Mapless)})},
-args: [],
-source: "refresh\x0a\x09\x22Re-read this model's state.\x22\x0a\x0a\x09self refreshDo:[nil]",
-messageSends: ["refreshDo:"],
-referencedClasses: []
-}),
-globals.Mapless);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "refreshDo:",
-protocol: 'actions',
-fn: function (aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$2;
-$1=jQuery;
-$3=_st(_st(self._path()).__comma("?id=")).__comma(_st(self._id())._asString());
-$ctx1.sendIdx[","]=1;
-$2=globals.HashedCollection._newFromPairs_(["url",$3,"type","GET","cache",false,"success",(function(x){
-return smalltalk.withContext(function($ctx2) {
-return self._onAfterRefresh_done_(x,aBlock);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}),"fail",(function(x){
-return smalltalk.withContext(function($ctx2) {
-return self._onRefeshFail_(x);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}),"error",(function(x){
-return smalltalk.withContext(function($ctx2) {
-return self._onRefreshFail_(x);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,3)})})]);
-_st($1)._ajax_($2);
-return self}, function($ctx1) {$ctx1.fill(self,"refreshDo:",{aBlock:aBlock},globals.Mapless)})},
-args: ["aBlock"],
-source: "refreshDo: aBlock\x0a\x09\x22Re-read this model's state.\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> (self path, '?id=',self id asString).\x0a\x09\x09'type' -> 'GET'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'success' -> [:x| self onAfterRefresh: x done: aBlock].\x0a\x09\x09'fail' -> [:x| self onRefeshFail: x].\x0a\x09\x09'error' -> [:x| self onRefreshFail: x]}\x09",
-messageSends: ["ajax:", ",", "path", "asString", "id", "onAfterRefresh:done:", "onRefeshFail:", "onRefreshFail:"],
-referencedClasses: []
-}),
-globals.Mapless);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "remoteSaveDo:",
 protocol: 'actions',
 fn: function (aBlock){
@@ -976,17 +994,17 @@ globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "syncFrom:",
+selector: "syncFromJSON:",
 protocol: 'actions',
-fn: function (someJson){
+fn: function (someJSONString){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._syncWith_(_st(self._class())._reify_(someJson));
+$1=self._syncWith_(_st(self._class())._reify_(someJSONString));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"syncFrom:",{someJson:someJson},globals.Mapless)})},
-args: ["someJson"],
-source: "syncFrom: someJson\x0a\x0a\x09^ self syncWith: (self class reify: someJson)",
+}, function($ctx1) {$ctx1.fill(self,"syncFromJSON:",{someJSONString:someJSONString},globals.Mapless)})},
+args: ["someJSONString"],
+source: "syncFromJSON: someJSONString\x0a\x0a\x09^ self syncWith: (self class reify: someJSONString)",
 messageSends: ["syncWith:", "reify:", "class"],
 referencedClasses: []
 }),
@@ -1117,12 +1135,12 @@ fn: function (someJSON){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._new())._syncFrom_(someJSON);
+$1=_st(self._new())._syncFromJSON_(someJSON);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"fromJSON:",{someJSON:someJSON},globals.Mapless.klass)})},
 args: ["someJSON"],
-source: "fromJSON: someJSON\x0a\x09\x22Answers a new instance of this mapless\x0a\x09based on someJSON.\x22\x0a\x0a\x09^ self new syncFrom: someJSON",
-messageSends: ["syncFrom:", "new"],
+source: "fromJSON: someJSON\x0a\x09\x22Answers a new instance of this mapless\x0a\x09based on someJSON.\x22\x0a\x0a\x09^ self new syncFromJSON: someJSON",
+messageSends: ["syncFromJSON:", "new"],
 referencedClasses: []
 }),
 globals.Mapless.klass);
@@ -1292,12 +1310,11 @@ var reified;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 reified=self._fromJSON_(someJSON);
-_st(aBlock)._value_(reified);
-$1=reified;
+$1=_st(aBlock)._value_(reified);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"onAfterRead:done:",{someJSON:someJSON,aBlock:aBlock,reified:reified},globals.Mapless.klass)})},
 args: ["someJSON", "aBlock"],
-source: "onAfterRead: someJSON done: aBlock\x0a\x0a\x09| reified |\x0a\x09\x0a\x09reified := self fromJSON: someJSON.\x0a\x09aBlock value: reified.\x0a\x09^ reified",
+source: "onAfterRead: someJSON done: aBlock\x0a\x0a\x09| reified |\x0a\x09\x0a\x09reified := self fromJSON: someJSON.\x0a\x09^ aBlock value: reified.",
 messageSends: ["fromJSON:", "value:"],
 referencedClasses: []
 }),

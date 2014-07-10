@@ -5,7 +5,26 @@ TestCase subclass: #MaplessTest
 
 !MaplessTest methodsFor: 'tests'!
 
-testLocalCreateAndDelete
+testLocalFresh
+
+	| createdOne loadedOne |
+	
+	createdOne := Thing new.
+	
+	createdOne remember: 42.
+	createdOne localSave.
+	
+	self shouldnt: [
+			loadedOne := Mapless localFindId: createdOne id.
+			loadedOne remember: 'something'.
+			self assert: loadedOne remember = 'something'.
+			loadedOne localFresh.
+			self deny: loadedOne remember = 'something'.
+			self assert: loadedOne remember = 42.
+		] raise: Error
+!
+
+testLocalSaveAndDelete
 
 	| createdOne loadedOne |
 	
@@ -28,7 +47,7 @@ testLocalCreateAndDelete
 		] raise: Error
 !
 
-testLocalCreateAndFindOne
+testLocalSaveAndFindOne
 
 	| createdOne loadedOne |
 	
@@ -78,6 +97,70 @@ testLocalUpdate
 			self deny: loadedOne remember = 'something'.
 			self assert: loadedOne remember = 'else'.
 		] raise: Error
+!
+
+testRemoteCreate
+
+	| createdOne loadedOne |
+	
+	createdOne := Thing new.
+	
+	createdOne remember: 'something'.
+		
+	createdOne saveDo:[
+
+		self shouldnt: [
+			self assert: false.
+		] raise: Error
+	].
+!
+
+testRemoteDelete
+
+	| createdOne loadedOne |
+	
+	createdOne := Thing new.
+	
+	createdOne remember: 'something'.
+		
+	createdOne saveDo:[
+
+		self shouldnt: [
+			self assert: false.
+		] raise: Error
+	].
+!
+
+testRemoteRead
+
+	| createdOne loadedOne |
+	
+	createdOne := Thing new.
+	
+	createdOne remember: 'something'.
+		
+	createdOne saveDo:[
+
+		self shouldnt: [
+			self assert: false.
+		] raise: Error
+	].
+!
+
+testRemoteUpdate
+
+	| createdOne loadedOne |
+	
+	createdOne := Thing new.
+	
+	createdOne remember: 'something'.
+		
+	createdOne saveDo:[
+
+		self shouldnt: [
+			self assert: false.
+		] raise: Error
+	].
 ! !
 
 Mapless subclass: #Stuff

@@ -181,6 +181,24 @@ doesNotUnderstand: aMessage
 		ifFalse: [super doesNotUnderstand: aMessage]
 !
 
+fresh
+	"Re-read this mapless' state."
+
+	self freshDo:[nil]
+!
+
+freshDo: aBlock
+	"Re-read this mapless' state."
+
+	jQuery ajax: #{ 
+		'url' -> (self path, '?id=',self id asString).
+		'type' -> 'GET'.
+		'cache' -> false.
+		'success' -> [:x| self onAfterRefresh: x done: aBlock].
+		'fail' -> [:x| self onRefeshFail: x].
+		'error' -> [:x| self onRefreshFail: x]}
+!
+
 get: anAttribute from: aPart
 	
 	<return aPart[anAttribute]>
@@ -191,6 +209,12 @@ localDelete
 	self class localDelete: self
 !
 
+localFresh
+	"Answers the receiver loaded with a fresh version the contents regarding to the localStorage."
+
+	^ self syncFromJSON: (window localStorage getItem: self id)
+!
+
 localSave
 
 	self class localSave: self
@@ -198,24 +222,6 @@ localSave
 
 newJSObject
 	<return Object>
-!
-
-refresh
-	"Re-read this model's state."
-
-	self refreshDo:[nil]
-!
-
-refreshDo: aBlock
-	"Re-read this model's state."
-
-	jQuery ajax: #{ 
-		'url' -> (self path, '?id=',self id asString).
-		'type' -> 'GET'.
-		'cache' -> false.
-		'success' -> [:x| self onAfterRefresh: x done: aBlock].
-		'fail' -> [:x| self onRefeshFail: x].
-		'error' -> [:x| self onRefreshFail: x]}
 !
 
 remoteSaveDo: aBlock
@@ -240,9 +246,9 @@ saveDo: aBlock
 	self remoteSaveDo: aBlock
 !
 
-syncFrom: someJson
+syncFromJSON: someJSONString
 
-	^ self syncWith: (self class reify: someJson)
+	^ self syncWith: (self class reify: someJSONString)
 !
 
 syncWith: aReifiedJSON
@@ -394,7 +400,7 @@ fromJSON: someJSON
 	"Answers a new instance of this mapless
 	based on someJSON."
 
-	^ self new syncFrom: someJSON
+	^ self new syncFromJSON: someJSON
 !
 
 fromJSONString: someJSONStringOrNil
@@ -477,7 +483,6 @@ onAfterRead: someJSON done: aBlock
 	| reified |
 	
 	reified := self fromJSON: someJSON.
-	aBlock value: reified.
-	^ reified
+	^ aBlock value: reified.
 ! !
 
