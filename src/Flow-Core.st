@@ -128,7 +128,7 @@ RouteableController subclass: #NotFoundController
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
 
-MaplessModel subclass: #Model
+Mapless subclass: #Model
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
 

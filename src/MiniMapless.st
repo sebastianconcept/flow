@@ -1,15 +1,15 @@
 Smalltalk createPackage: 'MiniMapless'!
-Object subclass: #MaplessModel
+Object subclass: #Mapless
 	instanceVariableNames: 'data'
 	package: 'MiniMapless'!
-!MaplessModel commentStamp!
+!Mapless commentStamp!
 MaplessModel is the same kind of aggregate you'll found in Mapless in Pharo but here in the frontend.
 The concrete subclasses' instances of these aggregates are very friendly to be sent and received to and from the backend.
 
 For more on Mapless visit:
 http://sebastianconcept.github.io/Mapless!
 
-!MaplessModel methodsFor: 'accessing'!
+!Mapless methodsFor: 'accessing'!
 
 at: aKey
 
@@ -80,7 +80,7 @@ subModelAt: aSelector
 	modelClass ifNil:[^nil].
 	modelClass := Smalltalk current at: modelClass.
 
-	modelClass ifNil:[^ModelMetadataError signal: 'Cannot find ',aSelector asString,'''s class for this metadata'].
+	modelClass ifNil:[^self error: 'Cannot find ',aSelector asString,'''s class for this metadata'].
 	
 	^ modelClass fromReified: subModelData
 !
@@ -90,7 +90,7 @@ url
 	^ self path,'/',self id asString
 ! !
 
-!MaplessModel methodsFor: 'actions'!
+!Mapless methodsFor: 'actions'!
 
 asJSONString
 
@@ -249,16 +249,16 @@ syncWith: aReifiedJSON
 	"Sync the current values in this model 
 	with the ones coming in aReifiedJSON."
 
-	aReifiedJSON ifNil:[^ nil].
+	aReifiedJSON ifNil:[ ^ nil ].
 
 	((aReifiedJSON at: 'modelClass') isNil or:[
-	(aReifiedJSON at: 'modelClass') ~= self class name]) ifTrue:[
-		self error: 'this JSON does not fit here'].
+	(aReifiedJSON at: 'modelClass') ~= self class name ]) ifTrue:[
+		self error: 'This JSON does not fit here' ].
 
 	data := aReifiedJSON
 ! !
 
-!MaplessModel methodsFor: 'initialization'!
+!Mapless methodsFor: 'initialization'!
 
 initialize
 
@@ -280,7 +280,7 @@ initializeInstanceVersion
 	self v: 1
 ! !
 
-!MaplessModel methodsFor: 'reactions'!
+!Mapless methodsFor: 'reactions'!
 
 onAboutToJSON
 	"This model is about to be stringified in JSON.
@@ -346,7 +346,7 @@ onSaveFail: x
 	self error: 'Could not save ', self class name
 ! !
 
-!MaplessModel methodsFor: 'testing'!
+!Mapless methodsFor: 'testing'!
 
 = anObject
 
@@ -372,92 +372,78 @@ isUndefinedPart: aPart
 	<return aPart=='undefined'>
 ! !
 
-!MaplessModel class methodsFor: 'accessing'!
+!Mapless class methodsFor: 'actions'!
 
-atId: anId do: onDone
-	"Answers the instance of this model found at anId (or nil)
-	using th answer in the onDone callback"
- 
-	^ self read: anId do: onDone
-! !
+findId: anId
 
-!MaplessModel class methodsFor: 'actions'!
-
-create
-
-	^ self createDo: [nil]
+	self findId: anId do: [nil]
 !
 
-createDo: aBlock
+findId: anId do: aBlock
 
-	| newInstance |
-
-	newInstance := self basicNew initialize.
-
-	jQuery ajax: #{
-		'url'-> self path.
-		'type' -> 'POST'.
+	jQuery ajax: #{ 
+		'url' -> (self path, '?id=',anId).
+		'type'-> 'GET'.
 		'cache'-> false.
-		'data' -> newInstance asJSONString.
-		'success' -> [:x| newInstance onAfterCreate: x done: aBlock].
-		'fail' -> [:x| ModelCreateError signal: 'Could not create ', self name,':  ', x responseText].
-		'error' -> [:x| ModelCreateError signal: 'Could not create ', self name,':  ', x responseText]}.
-
-	^ newInstance
+		'success'-> [:x| self onAfterRead: x done: aBlock].
+		'fail' -> [:x| self error: 'Could not read ', self name,':  ', x responseText].
+		'error'-> [:x| self error: 'Could not read ', self name,':  ', x responseText]}
 !
 
-createdOnFrom: aReifiedJSON
+fromJSON: someJSON
+	"Answers a new instance of this mapless
+	based on someJSON."
 
-	^ Date fromString: aReifiedJSON
+	^ self new syncFrom: someJSON
 !
 
-fromJson: someJson
-	"Answers a new instance of this model and returns it
-	in the state dictated by someJson."
-
-	^ self new syncFrom: someJson
-!
-
-fromJsonString: someJsonString
-	"Answers a new instance of this model and returns it
-	in the state dictated by someJsonString."
+fromJSONString: someJSONStringOrNil
+	"Answers a new instance of this mapless and returns it
+	in the state dictated by someJSONStringOrNil.
+	Returns nil when thigns do not fit."
 
 	| json modelClass |
-	json := self reify: someJsonString.
-	modelClass := json at: 'modelClass' ifAbsent:[nil].
+	someJSONStringOrNil ifNil:[ ^nil ].
 	
-	^ modelClass isNil
-		ifTrue:[nil]
-		ifFalse:[(Smalltalk current at: modelClass) new syncFrom: someJsonString]
+	json := self reify: someJSONStringOrNil.
+	json ifNil:[ ^nil ].
+	
+	modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].
+	
+	modelClass := Smalltalk current globals at: modelClass.
+	
+	^ modelClass notNil
+		ifTrue:[ modelClass new syncWith: json ]
+		ifFalse:[ self error: 'The class "', modelClass,'" was not found' ]
 !
 
 fromReified: aReifiedJSON
-	"Answers a new instance of this model and returns it
+	"Answers a new instance of this mapless and returns it
 	in sync with aReifiedJSON."
 
 	^ self new syncWith: aReifiedJSON
 !
 
-localDelete: aMaplessModel
+localDelete: aMapless
 
-	window localStorage removeItem: aMaplessModel id
+	window localStorage removeItem: aMapless id
 !
 
-localLoadAt: anId
+localFindId: anId
 
-	^ self fromJsonString: (window localStorage getItem: anId)
+	^ self fromJSONString: (window localStorage getItem: anId)
 !
 
-localSave: aMaplessModel
+localSave: aMapless
 
 	window localStorage
-		setItem: aMaplessModel id
-		value: aMaplessModel asJSONString
+		setItem: aMapless id
+		value: aMapless asJSONString
 !
 
-manyFromJson: someJson
+manyFromJSON: someJSON
 
-	^ (JSON parse: someJson) collect:[:each|
+	^ (JSON parse: someJSON) collect:[ :each |
 		 self fromReified: each ]
 !
 
@@ -465,27 +451,10 @@ newUUID
 	^ self uuidGenerator value
 !
 
-read: anId
+reify: jsonString
+	"Returns a simple javascript object created using jsonString."
 
-	self read: anId do: [nil]
-!
-
-read: anId do: aBlock
-
-	jQuery ajax: #{ 
-		'url' -> (self path, '?id=',anId).
-		'type'-> 'GET'.
-		'cache'-> false.
-		'success'-> [:x| self onAfterRead: x done: aBlock].
-		'fail' -> [:x| ModelReadError signal: 'Could not read ', self name,':  ', x responseText].
-		'error'-> [:x| ModelReadError signal: 'Could not read ', self name,':  ', x responseText]}
-!
-
-reify: someJson
-	"Returns a simple javascript object with
-	the attributes meant for the matching instance variable content of this model."
-
-	^ JSON parse: someJson
+	^ JSON parse: jsonString
 !
 
 uuidGenerator
@@ -501,13 +470,13 @@ uuidGenerator
 }>
 ! !
 
-!MaplessModel class methodsFor: 'reactions'!
+!Mapless class methodsFor: 'reactions'!
 
-onAfterRead: someJson done: aBlock
+onAfterRead: someJSON done: aBlock
 
 	| reified |
 	
-	reified := self fromJson: someJson.
+	reified := self fromJSON: someJSON.
 	aBlock value: reified.
 	^ reified
 ! !
