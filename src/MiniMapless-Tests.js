@@ -294,16 +294,28 @@ var self=this;
 var createdOne,loadedOne;
 function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
 return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
 createdOne=_st($Thing())._new();
 _st(createdOne)._remember_("something");
 _st(createdOne)._createDo_((function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._assert_(res);
+_st(console)._log_(res);
+$2=_st(res)._status();
+$ctx2.sendIdx["status"]=1;
+$1=_st($2).__eq((201));
+$ctx2.sendIdx["="]=1;
+return self._assert_($1);
+$ctx2.sendIdx["assert:"]=1;
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
+$ctx1.sendIdx["createDo:"]=1;
+_st(createdOne)._createDo_((function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._assert_(_st(_st(res)._status()).__eq((409)));
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testRemoteCreate",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
 args: [],
-source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09self assert: res.\x0a\x09].\x0a\x0a\x0a\x09",
-messageSends: ["new", "remember:", "createDo:", "assert:"],
+source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09console log: res.\x0a\x09\x09self assert: res status = 201.\x0a\x09].\x0a\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09self assert: res status = 409.\x0a\x09].\x0a\x09",
+messageSends: ["new", "remember:", "createDo:", "log:", "assert:", "=", "status"],
 referencedClasses: ["Thing"]
 }),
 globals.MaplessTest);

@@ -127,39 +127,16 @@ selector: "createDo:",
 protocol: 'actions',
 fn: function (aBlock){
 var self=this;
-function $MaplessCreateError(){return globals.MaplessCreateError||(typeof MaplessCreateError=="undefined"?nil:MaplessCreateError)}
 return smalltalk.withContext(function($ctx1) { 
-var $4,$3,$2,$5,$1,$7,$6;
-_st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",self._path(),"type","POST","cache",false,"contentType","application/json; charset=utf-8","dataType","json","data",self._asJSONString(),"success",(function(x){
+_st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",self._path(),"type","POST","cache",false,"contentType","application/json; charset=utf-8","dataType","json","data",self._asJSONString(),"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._onAfterCreate_done_(x,aBlock);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}),"fai",(function(x){
-return smalltalk.withContext(function($ctx2) {
-$4=self._asString();
-$ctx2.sendIdx["asString"]=1;
-$3="Could not create ".__comma($4);
-$ctx2.sendIdx[","]=3;
-$2=_st($3).__comma(":  ");
-$ctx2.sendIdx[","]=2;
-$5=_st(x)._responseText();
-$ctx2.sendIdx["responseText"]=1;
-$1=_st($2).__comma($5);
-$ctx2.sendIdx[","]=1;
-return _st($MaplessCreateError())._signal_($1);
-$ctx2.sendIdx["signal:"]=1;
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}),"error",(function(x){
-return smalltalk.withContext(function($ctx2) {
-$7=_st("Could not create ".__comma(self._asString())).__comma(":  ");
-$ctx2.sendIdx[","]=5;
-$6=_st($7).__comma(_st(x)._responseText());
-$ctx2.sendIdx[","]=4;
-return _st($MaplessCreateError())._signal_($6);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,3)})})]));
+return self._onAfterCreate_done_(res,aBlock);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"createDo:",{aBlock:aBlock},globals.Mapless)})},
 args: ["aBlock"],
-source: "createDo: aBlock\x0a\x09\x22Creates this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{\x0a\x09\x09'url' -> self path.\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'contentType'-> 'application/json; charset=utf-8'.\x0a\x09\x09'dataType'-> 'json'.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'success' -> [:x| self onAfterCreate: x done: aBlock].\x0a\x09\x09'fai' -> [:x| MaplessCreateError signal: 'Could not create ', self asString,':  ', x responseText ].\x0a\x09\x09'error' -> [:x| MaplessCreateError signal: 'Could not create ', self asString,':  ', x responseText ]\x0a\x09}.",
-messageSends: ["ajax:", "path", "asJSONString", "onAfterCreate:done:", "signal:", ",", "asString", "responseText"],
-referencedClasses: ["MaplessCreateError"]
+source: "createDo: aBlock\x0a\x09\x22Creates this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{\x0a\x09\x09'url' -> self path.\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'contentType'-> 'application/json; charset=utf-8'.\x0a\x09\x09'dataType'-> 'json'.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| self onAfterCreate: res done: aBlock]\x0a\x09}.",
+messageSends: ["ajax:", "path", "asJSONString", "onAfterCreate:done:"],
+referencedClasses: []
 }),
 globals.Mapless);
 
@@ -774,14 +751,25 @@ selector: "onAfterCreate:done:",
 protocol: 'reactions',
 fn: function (aResponse,aBlock){
 var self=this;
+function $MaplessCreateError(){return globals.MaplessCreateError||(typeof MaplessCreateError=="undefined"?nil:MaplessCreateError)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$2;
 self._trigger_("afterCreated");
+_st(console)._log_(aResponse);
+$1=_st(_st(aResponse)._status()).__tild_eq((201));
+if(smalltalk.assert($1)){
+$3=_st("Could not create ".__comma(self._asString())).__comma(":  ");
+$ctx1.sendIdx[","]=2;
+$2=_st($3).__comma(_st(aResponse)._responseText());
+$ctx1.sendIdx[","]=1;
+_st($MaplessCreateError())._signal_($2);
+};
 _st(aBlock)._value_(aResponse);
 return self}, function($ctx1) {$ctx1.fill(self,"onAfterCreate:done:",{aResponse:aResponse,aBlock:aBlock},globals.Mapless)})},
 args: ["aResponse", "aBlock"],
-source: "onAfterCreate: aResponse done: aBlock\x0a\x0a\x09self trigger: 'afterCreated'.\x0a\x09\x0a\x09aBlock value: aResponse",
-messageSends: ["trigger:", "value:"],
-referencedClasses: []
+source: "onAfterCreate: aResponse done: aBlock\x0a\x0a\x09self trigger: 'afterCreated'.\x0a\x0a\x09console log: aResponse.\x0a\x09\x0a\x09aResponse status ~= 201 ifTrue:[\x0a\x09\x09MaplessCreateError signal: 'Could not create ', self asString,':  ', aResponse responseText ].\x0a\x0a\x09aBlock value: aResponse",
+messageSends: ["trigger:", "log:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText", "value:"],
+referencedClasses: ["MaplessCreateError"]
 }),
 globals.Mapless);
 

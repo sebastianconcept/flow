@@ -117,7 +117,12 @@ testRemoteCreate
 	createdOne remember: 'something'.
 		
 	createdOne createDo:[ :res |
-		self assert: res.
+		console log: res.
+		self assert: res status = 201.
+	].
+
+	createdOne createDo:[ :res |
+		self assert: res status = 409.
 	].
 !
 

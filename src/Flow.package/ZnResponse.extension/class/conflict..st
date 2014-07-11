@@ -1,7 +1,10 @@
 *flow
-conflict: entity
+conflict: url
+	| location |
+	location := url asString.
 	^ self new
-		statusLine: ZnStatusLine conflict;
+		statusLine: ZnStatusLine created;
 		headers: ZnHeaders defaultResponseHeaders;
-		entity: entity;
+		setLocation: location;
+		entity: (ZnEntity textCRLF: 'Created ' , location);
 		yourself

@@ -126,9 +126,7 @@ createDo: aBlock
 		'contentType'-> 'application/json; charset=utf-8'.
 		'dataType'-> 'json'.
 		'data' -> self asJSONString.
-		'success' -> [:x| self onAfterCreate: x done: aBlock].
-		'fai' -> [:x| MaplessCreateError signal: 'Could not create ', self asString,':  ', x responseText ].
-		'error' -> [:x| MaplessCreateError signal: 'Could not create ', self asString,':  ', x responseText ]
+		'complete' -> [:res| self onAfterCreate: res done: aBlock]
 	}.
 !
 
@@ -328,7 +326,12 @@ onAboutToJSON
 onAfterCreate: aResponse done: aBlock
 
 	self trigger: 'afterCreated'.
+
+	console log: aResponse.
 	
+	aResponse status ~= 201 ifTrue:[
+		MaplessCreateError signal: 'Could not create ', self asString,':  ', aResponse responseText ].
+
 	aBlock value: aResponse
 !
 
