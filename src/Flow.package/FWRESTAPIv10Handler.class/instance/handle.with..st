@@ -19,7 +19,7 @@ handle: aRequest with: aResponse
 		on: ConnectionTimedOut
 		do:[:x| ^ ZnResponse ok: (ZnStringEntity text: 'backend offline') ] ]
 			on: Error
-			do:[ :x| 
+			do:[ :x| self halt.
 				Flow isProduction 
 					ifFalse: [ ZnResponse serverError: x printString ]
 					ifTrue: [ ZnResponse badRequest: aRequest ] ]

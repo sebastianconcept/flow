@@ -6,7 +6,7 @@ testGetUnexisting
 	anId := UUID new asString36.
 
 	self do:[
-		self assert: (Thing findAt: anId) isNil].
+		self assert: (Thing findId: anId) isNil].
 			
 	apiResponse := ZnEasy get: self apiUrl,'/things/',anId.
 

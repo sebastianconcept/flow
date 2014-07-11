@@ -257,28 +257,55 @@ globals.MaplessTest);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testPath",
+protocol: 'tests',
+fn: function (){
+var self=this;
+function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$4,$3;
+$2=_st($Thing())._path();
+$ctx1.sendIdx["path"]=1;
+$1=_st($2).__eq("api/1.0/thing");
+$ctx1.sendIdx["="]=1;
+self._deny_($1);
+$4=_st($Thing())._path();
+$ctx1.sendIdx["path"]=2;
+$3=_st($4).__eq("api/1.0/things");
+$ctx1.sendIdx["="]=2;
+self._assert_($3);
+$ctx1.sendIdx["assert:"]=1;
+self._assert_(_st(_st($Stuff())._path()).__eq("api/1.0/stuff"));
+return self}, function($ctx1) {$ctx1.fill(self,"testPath",{},globals.MaplessTest)})},
+args: [],
+source: "testPath\x0a\x0a\x09self deny: Thing path = 'api/1.0/thing'.\x0a\x09self assert: Thing path = 'api/1.0/things'.\x0a\x0a\x09\x22ok, but what about irregulars?\x22\x0a\x09self assert: Stuff path = 'api/1.0/stuff'.\x0a\x09\x0a\x09",
+messageSends: ["deny:", "=", "path", "assert:"],
+referencedClasses: ["Thing", "Stuff"]
+}),
+globals.MaplessTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testRemoteCreate",
 protocol: 'tests',
 fn: function (){
 var self=this;
 var createdOne,loadedOne;
 function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
-function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
 createdOne=_st($Thing())._new();
 _st(createdOne)._remember_("something");
-_st(createdOne)._saveDo_((function(){
+_st(createdOne)._createDo_((function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._shouldnt_raise_((function(){
-return smalltalk.withContext(function($ctx3) {
+_st(res)._inspect();
 return self._assert_(false);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}),$Error());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testRemoteCreate",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
 args: [],
-source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x0a\x0a\x0a\x09",
-messageSends: ["new", "remember:", "saveDo:", "shouldnt:raise:", "assert:"],
-referencedClasses: ["Thing", "Error"]
+source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09res inspect.\x0a\x09\x09self assert: false.\x0a\x09].\x0a\x0a\x0a\x09",
+messageSends: ["new", "remember:", "createDo:", "inspect", "assert:"],
+referencedClasses: ["Thing"]
 }),
 globals.MaplessTest);
 
@@ -290,22 +317,14 @@ fn: function (){
 var self=this;
 var createdOne,loadedOne;
 function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
-function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
 createdOne=_st($Thing())._new();
 _st(createdOne)._remember_("something");
-_st(createdOne)._saveDo_((function(){
-return smalltalk.withContext(function($ctx2) {
-return self._shouldnt_raise_((function(){
-return smalltalk.withContext(function($ctx3) {
-return self._assert_(false);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}),$Error());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testRemoteDelete",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
 args: [],
-source: "testRemoteDelete\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x0a\x0a\x0a\x09",
-messageSends: ["new", "remember:", "saveDo:", "shouldnt:raise:", "assert:"],
-referencedClasses: ["Thing", "Error"]
+source: "testRemoteDelete\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09\x22createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x22\x0a\x0a\x0a\x09",
+messageSends: ["new", "remember:"],
+referencedClasses: ["Thing"]
 }),
 globals.MaplessTest);
 
@@ -317,22 +336,14 @@ fn: function (){
 var self=this;
 var createdOne,loadedOne;
 function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
-function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
 createdOne=_st($Thing())._new();
 _st(createdOne)._remember_("something");
-_st(createdOne)._saveDo_((function(){
-return smalltalk.withContext(function($ctx2) {
-return self._shouldnt_raise_((function(){
-return smalltalk.withContext(function($ctx3) {
-return self._assert_(false);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}),$Error());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testRemoteRead",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
 args: [],
-source: "testRemoteRead\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x0a\x0a\x0a\x09",
-messageSends: ["new", "remember:", "saveDo:", "shouldnt:raise:", "assert:"],
-referencedClasses: ["Thing", "Error"]
+source: "testRemoteRead\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09\x22createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x0a\x0a\x22\x0a\x09",
+messageSends: ["new", "remember:"],
+referencedClasses: ["Thing"]
 }),
 globals.MaplessTest);
 
@@ -344,28 +355,60 @@ fn: function (){
 var self=this;
 var createdOne,loadedOne;
 function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
-function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
 createdOne=_st($Thing())._new();
 _st(createdOne)._remember_("something");
-_st(createdOne)._saveDo_((function(){
-return smalltalk.withContext(function($ctx2) {
-return self._shouldnt_raise_((function(){
-return smalltalk.withContext(function($ctx3) {
-return self._assert_(false);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}),$Error());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testRemoteUpdate",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
 args: [],
-source: "testRemoteUpdate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x0a\x0a\x0a\x09",
-messageSends: ["new", "remember:", "saveDo:", "shouldnt:raise:", "assert:"],
-referencedClasses: ["Thing", "Error"]
+source: "testRemoteUpdate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09\x22createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x0a\x22\x0a\x0a\x09",
+messageSends: ["new", "remember:"],
+referencedClasses: ["Thing"]
+}),
+globals.MaplessTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testURI",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var thing;
+function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+thing=_st($Thing())._new();
+$2=_st(thing)._id();
+$ctx1.sendIdx["id"]=1;
+$1=_st($2)._notNil();
+self._assert_($1);
+$ctx1.sendIdx["assert:"]=1;
+self._assert_(_st(_st(thing)._uri()).__eq("api/1.0/things/".__comma(_st(thing)._id())));
+return self}, function($ctx1) {$ctx1.fill(self,"testURI",{thing:thing},globals.MaplessTest)})},
+args: [],
+source: "testURI\x0a\x09| thing |\x0a\x09\x0a\x09thing := Thing new.\x0a\x09\x0a\x09self assert: thing id notNil.\x0a\x09\x0a\x09self assert: thing uri = ('api/1.0/things/', thing id)",
+messageSends: ["new", "assert:", "notNil", "id", "=", "uri", ","],
+referencedClasses: ["Thing"]
 }),
 globals.MaplessTest);
 
 
 
 smalltalk.addClass('Stuff', globals.Mapless, [], 'MiniMapless-Tests');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "pluralName",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return "stuff";
+},
+args: [],
+source: "pluralName\x0a\x0a\x09^ 'stuff'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Stuff.klass);
 
 
 smalltalk.addClass('Thing', globals.Mapless, [], 'MiniMapless-Tests');

@@ -4,7 +4,7 @@ valueOn: aHandler
 		
 	^ self databaseDo: [ | objectSent foundOrNil |
 		objectSent := self apiObjectClass fromJSONString: self request contents.
-		foundOrNil := objectSent class findAt: objectSent id.
+		foundOrNil := objectSent class findId: objectSent id.
 
 		foundOrNil 
 			ifNil:[ ZnResponse serverError: 'No object found for updating at ', objectSent id ]

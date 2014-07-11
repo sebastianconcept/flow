@@ -25,15 +25,15 @@ at: aKey put: anObject
 
 createdOn 
 
-	| selector expects object|
+	| selector expectsInstanceOf object |
 
 	selector := #createdOn.
-	expects := Date.
+	expectsInstanceOf := Date.
 
 	object := self at: selector asString.
 	object ifNil:[^nil].
 
-	(object isKindOf: expects) ifTrue:[^object].
+	(object isKindOf: expectsInstanceOf) ifTrue:[^object].
 
 	^ self at: selector asString put: (self dateAndTimeAt: selector).
 !
@@ -44,7 +44,8 @@ createdOn: aDate
 !
 
 data
-
+	"Answers the raw content of this mapless.
+	Warning: NOT meant to be overriden by subclasses."
 	^ data
 !
 
@@ -69,20 +70,26 @@ path
 !
 
 subModelAt: aSelector
-	"Answers the reified submodel (instantiating if necessary)."
+	"Answers the reified submmapless (instantiating when necessary)."
 	
-	| subModelData modelClass |
+	| subMaplessData modelClass |
 
-	subModelData := data at: aSelector.
-	subModelData ifNil:[^nil].
+	subMaplessData := data at: aSelector.
+	subMaplessData ifNil:[^nil].
 	
-	modelClass := subModelData at: 'modelClass'.
+	modelClass := subMaplessData at: 'modelClass'.
 	modelClass ifNil:[^nil].
-	modelClass := Smalltalk current at: modelClass.
-
-	modelClass ifNil:[^self error: 'Cannot find ',aSelector asString,'''s class for this metadata'].
 	
-	^ modelClass fromReified: subModelData
+	modelClass := SmalltalkImage current globals at: modelClass ifAbsent:[ nil ].
+
+	modelClass ifNil:[ ^ MaplessReificationError signal: 'Cannot find ',aSelector asString,'''s class for this metadata'].
+	
+	^ modelClass fromReified: subMaplessData
+!
+
+uri 
+	"Answers the URI corresponding to this particular mapless"
+	^ self path,'/',self id
 !
 
 url
@@ -105,39 +112,44 @@ at: aKey ifAbsent: aBlock
 !
 
 create
-
+	"Creates this mapless using the remote API"
 	^ self createDo:[nil]
 !
 
 createDo: aBlock
+	"Creates this mapless using the remote API"
 
 	jQuery ajax: #{
 		'url' -> self path.
 		'type' -> 'POST'.
 		'cache' -> false.
+		'contentType'-> 'application/json; charset=utf-8'.
+		'dataType'-> 'json'.
 		'data' -> self asJSONString.
 		'success' -> [:x| self onAfterCreate: x done: aBlock].
-		'fai' -> [:x| ModelCreateError signal: 'Could not create ', self class name,':  ', x responseText].
-		'error' -> [:x| ModelCreateError signal: 'Could not create ', self class name,':  ', x responseText]}.
-
-	^ self
+		'fai' -> [:x| MaplessCreateError signal: 'Could not create ', self asString,':  ', x responseText ].
+		'error' -> [:x| MaplessCreateError signal: 'Could not create ', self asString,':  ', x responseText ]
+	}.
 !
 
 delete
+	"Delete this mapless using the remote API"
 
 	self deleteDo:[nil]
 !
 
 deleteDo: aBlock
+	"Delete this mapless using the remote API"
 
 	jQuery ajax: #{ 
-		'url' -> (self path, '?id=',self id asString).
+		'url' -> self uri.
 		'type' -> 'DELETE'.
 		'cache' -> false.
 		'data' -> self asJSONString.
 		'success' -> [:x| self onAfterDelete: x done: aBlock].
-		'fail' -> [:x| self onDeleteFail: x].
-		'error' -> [:x| self onDeleteFail: x]}
+		'fail' -> [:x| MaplessDeleteError signal: 'Could not delete ', self asString,':  ', x responseText ].
+		'error' -> [:x| MaplessCreateError signal: 'Could not delete ', self asString,':  ', x responseText ]
+	}
 !
 
 doesNotUnderstand: aMessage
@@ -188,19 +200,20 @@ fresh
 !
 
 freshDo: aBlock
-	"Re-read this mapless' state."
+	"Re-read this mapless' state from the remote API."
 
 	jQuery ajax: #{ 
-		'url' -> (self path, '?id=',self id asString).
+		'url' -> self uri.
 		'type' -> 'GET'.
 		'cache' -> false.
-		'success' -> [:x| self onAfterRefresh: x done: aBlock].
-		'fail' -> [:x| self onRefeshFail: x].
-		'error' -> [:x| self onRefreshFail: x]}
+		'success' -> [:x| self onAfterFresh: x done: aBlock].
+		'fail' -> [:x| MaplessReadError signal: 'Could not read ', self asString,':  ', x responseText ].
+		'error' -> [:x| MaplessReadError signal: 'Could not read ', self asString,':  ', x responseText ]
+	}
 !
 
 get: anAttribute from: aPart
-	
+	"Answers what aPart has at anAttribute."
 	<return aPart[anAttribute]>
 !
 
@@ -224,18 +237,6 @@ newJSObject
 	<return Object>
 !
 
-remoteSaveDo: aBlock
-
-	jQuery ajax: #{ 
-		'url' -> self path.
-		'type' -> 'PUT'.
-		'cache' -> false.
-		'data' -> self asJSONString.
-		'success' -> [:x| self onAfterSave: x done: aBlock].
-		'fail' -> [:x| self onSaveFail: x].
-		'error' -> [:x| self onSaveFail: x]}
-!
-
 save
 	^ self saveDo:[nil]
 !
@@ -243,10 +244,12 @@ save
 saveDo: aBlock
 
 	self localSave.
-	self remoteSaveDo: aBlock
+	self updateDo: aBlock
 !
 
 syncFromJSON: someJSONString
+	"Sync the current values in this model 
+	with the ones coming in someJSONString."
 
 	^ self syncWith: (self class reify: someJSONString)
 !
@@ -259,9 +262,23 @@ syncWith: aReifiedJSON
 
 	((aReifiedJSON at: 'modelClass') isNil or:[
 	(aReifiedJSON at: 'modelClass') ~= self class name ]) ifTrue:[
-		self error: 'This JSON does not fit here' ].
+		MaplessReificationError signal: 'This JSON does not fit in this ', self asString ].
 
 	data := aReifiedJSON
+!
+
+updateDo: aBlock
+	"Updates this mapless using the remote API"
+
+	jQuery ajax: #{ 
+		'url' -> self uri.
+		'type' -> 'PUT'.
+		'cache' -> false.
+		'data' -> self asJSONString.
+		'success' -> [:x| self onAfterUpdate: x done: aBlock].
+		'fail' -> [:x| MaplessUpdateError signal: 'Could not update ', self asString,':  ', x responseText ].
+		'error' -> [:x| MaplessUpdateError signal: 'Could not update ', self asString,':  ', x responseText ]
+	}
 ! !
 
 !Mapless methodsFor: 'initialization'!
@@ -289,8 +306,9 @@ initializeInstanceVersion
 !Mapless methodsFor: 'reactions'!
 
 onAboutToJSON
-	"This model is about to be stringified in JSON.
-	All inst var values that are expected to be model objects, need to be stringify friendly after this."
+	"This mapless is about to be stringified as JSON.
+	All inst var with mapless objects will be stringify-friendly after this."
+	
 	| obj keys |
 
 	obj := self newJSObject.
@@ -307,49 +325,32 @@ onAboutToJSON
 		data at: key put: value].
 !
 
-onAfterCreate: x done: aBlock
-
-	data := self class reify: x.
+onAfterCreate: aResponse done: aBlock
 
 	self trigger: 'afterCreated'.
 	
-	aBlock value: self
+	aBlock value: aResponse
 !
 
-onAfterDelete: x done: aBlock
+onAfterDelete: aResponse done: aBlock
 	
 	self trigger: 'afterDeleted'.
 
-	aBlock value: self
+	aBlock value: aResponse
 !
 
-onAfterRefresh: x done: aBlock
+onAfterFresh: aResponse done: aBlock
 
-	self syncWith: (self class reify: x).
 	self trigger: 'afterRefeshed'.
-	aBlock value: self
+
+	aBlock value: aResponse
 !
 
-onAfterSave: x done: aBlock
+onAfterUpdate: aResponse done: aBlock
 	
-	self trigger: 'afterSaved'.
+	self trigger: 'afterUpdated'.
 
-	aBlock value: self
-!
-
-onDeleteFail: x
-
-	self error: 'Could not delete ', self class name
-!
-
-onRefreshFail: x
-
-	self error: 'Could not refresh ', self class name
-!
-
-onSaveFail: x
-
-	self error: 'Could not save ', self class name
+	aBlock value: aResponse
 ! !
 
 !Mapless methodsFor: 'testing'!
@@ -361,21 +362,54 @@ onSaveFail: x
 !
 
 isKeyword: aSelector
-
+	"Answers true if aSelector is for a keyword kind of message"
 	^ aSelector asString includes: ':'
 !
 
 isObjectPart: aPart
+	"Answers true if aPart is a javascript object (as opposed to javascript 'other types')"
 	<return typeof part=='object'>
 !
 
 isUnary: aSelector
-
+	"Answers true if aSelector is for an unary kind of message."
 	^ (aSelector asString includes: ':') not
 !
 
 isUndefinedPart: aPart
+	"Answers true if aPart is javascript's undefined"
 	<return aPart=='undefined'>
+! !
+
+!Mapless class methodsFor: 'accessing'!
+
+basePath
+	"Answers the base URI for remote mapless"
+	
+	^ 'api/1.0'
+!
+
+path
+	"Answers the path for this kind of mapless"
+	
+	^ self basePath, '/',self pluralName
+!
+
+pluralName
+	"Answers the string expected in a nicely designed API.
+	Any subclass can override its own custom name.
+	The default plural name is the singular name 
+	in lower case plus an 's' so beware of irregular nouns."
+	
+	^ self singularName,'s'
+!
+
+singularName
+	"Answers the string expected in a nicely designed API.
+	Any subclass can override its own custom name.
+	The default name is the class name in lowercase."
+	
+	^ self name asLowercase
 ! !
 
 !Mapless class methodsFor: 'actions'!
@@ -416,7 +450,7 @@ fromJSONString: someJSONStringOrNil
 	
 	modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].
 	
-	modelClass := Smalltalk current globals at: modelClass.
+	modelClass := Smalltalk current globals at: modelClass ifAbsent:[  ].
 	
 	^ modelClass notNil
 		ifTrue:[ modelClass new syncWith: json ]
@@ -485,4 +519,28 @@ onAfterRead: someJSON done: aBlock
 	reified := self fromJSON: someJSON.
 	^ aBlock value: reified.
 ! !
+
+Error subclass: #MaplessError
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+MaplessError subclass: #MaplessCreateError
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+MaplessError subclass: #MaplessDeleteError
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+MaplessError subclass: #MaplessReadError
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+MaplessError subclass: #MaplessReificationError
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+MaplessError subclass: #MaplessUpdateError
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
 

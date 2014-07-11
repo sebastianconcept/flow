@@ -6,22 +6,22 @@ testStuff
 	anId := UUID new asString36.
 	stuff := Stuff new id: anId; something: 'this'; yourself.
 
-	self do:[ self assert: (Stuff findAt: stuff id) isNil ].
+	self do:[ self assert: (Stuff findId: stuff id) isNil ].
 	
 	"Create"
 	apiResponse := ZnEasy 
 						post: self apiUrl,'/stuff' 
 						data: (ZnStringEntity text: stuff asJSONString).
 
-	self do:[ self assert: (Stuff findAt: anId) notNil ].
+	self do:[ self assert: (Stuff findId: anId) notNil ].
 
 	"Retrieve one"
 	apiResponse := ZnEasy get: self apiUrl,'/stuff/', anId.
 	answeredOne := MaplessMongo fromJSONString: apiResponse contents.
 
 	self do:[ 
-		self assert: (Stuff findAt: answeredOne id) notNil.
-		self assert: ((Stuff findAt: answeredOne id) = answeredOne) ].
+		self assert: (Stuff findId: answeredOne id) notNil.
+		self assert: ((Stuff findId: answeredOne id) = answeredOne) ].
 
 	"Retrieve all"
 	apiResponse := ZnEasy get: self apiUrl,'/stuff'.
@@ -46,10 +46,10 @@ testStuff
 		stuff := Stuff new.
 		stuff hasThis: 'once'.
 		stuff save.
-		self deny: (Stuff findAt: stuff id) hasThis = 'here'.
+		self deny: (Stuff findId: stuff id) hasThis = 'here'.
 		stuff hasThis: 'here'.
 		stuff save.
-		self assert: (Stuff findAt: stuff id) hasThis = 'here'].
+		self assert: (Stuff findId: stuff id) hasThis = 'here'].
 	
 	stuff hasThis: 'there'.
 
@@ -57,7 +57,7 @@ testStuff
 						put: self apiUrl,'/stuff/'
 						data: (ZnStringEntity text: stuff asJSONString).
 
-	self do:[ self assert: ((Stuff findAt: stuff id) hasThis = 'there') ].
+	self do:[ self assert: ((Stuff findId: stuff id) hasThis = 'there') ].
 
 
 
@@ -65,10 +65,10 @@ testStuff
 	"Delete"			
 	self do:[ 		
 		stuff := Stuff new.
-		self deny: (Stuff findAt: stuff id) notNil.
+		self deny: (Stuff findId: stuff id) notNil.
 		stuff save.
-		self assert: (Stuff findAt: stuff id) notNil ].
+		self assert: (Stuff findId: stuff id) notNil ].
 	
 	apiResponse := ZnEasy delete: self apiUrl,'/stuff/', stuff id.
 
-	self do:[ self assert: (Stuff findAt: stuff id) isNil ].
+	self do:[ self assert: (Stuff findId: stuff id) isNil ].

@@ -99,6 +99,15 @@ testLocalUpdate
 		] raise: Error
 !
 
+testPath
+
+	self deny: Thing path = 'api/1.0/thing'.
+	self assert: Thing path = 'api/1.0/things'.
+
+	"ok, but what about irregulars?"
+	self assert: Stuff path = 'api/1.0/stuff'.
+!
+
 testRemoteCreate
 
 	| createdOne loadedOne |
@@ -107,11 +116,9 @@ testRemoteCreate
 	
 	createdOne remember: 'something'.
 		
-	createdOne saveDo:[
-
-		self shouldnt: [
-			self assert: false.
-		] raise: Error
+	createdOne createDo:[ :res |
+		res inspect.
+		self assert: false.
 	].
 !
 
@@ -123,12 +130,12 @@ testRemoteDelete
 	
 	createdOne remember: 'something'.
 		
-	createdOne saveDo:[
+	"createdOne saveDo:[
 
 		self shouldnt: [
 			self assert: false.
 		] raise: Error
-	].
+	]."
 !
 
 testRemoteRead
@@ -139,12 +146,14 @@ testRemoteRead
 	
 	createdOne remember: 'something'.
 		
-	createdOne saveDo:[
+	"createdOne saveDo:[
 
 		self shouldnt: [
 			self assert: false.
 		] raise: Error
 	].
+
+"
 !
 
 testRemoteUpdate
@@ -155,17 +164,35 @@ testRemoteUpdate
 	
 	createdOne remember: 'something'.
 		
-	createdOne saveDo:[
+	"createdOne saveDo:[
 
 		self shouldnt: [
 			self assert: false.
 		] raise: Error
 	].
+"
+!
+
+testURI
+	| thing |
+	
+	thing := Thing new.
+	
+	self assert: thing id notNil.
+	
+	self assert: thing uri = ('api/1.0/things/', thing id)
 ! !
 
 Mapless subclass: #Stuff
 	instanceVariableNames: ''
 	package: 'MiniMapless-Tests'!
+
+!Stuff class methodsFor: 'accessing'!
+
+pluralName
+
+	^ 'stuff'
+! !
 
 Mapless subclass: #Thing
 	instanceVariableNames: ''
