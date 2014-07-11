@@ -117,8 +117,7 @@ testRemoteCreate
 	createdOne remember: 'something'.
 		
 	createdOne createDo:[ :res |
-		res inspect.
-		self assert: false.
+		self assert: res.
 	].
 !
 

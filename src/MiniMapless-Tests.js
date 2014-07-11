@@ -298,13 +298,12 @@ createdOne=_st($Thing())._new();
 _st(createdOne)._remember_("something");
 _st(createdOne)._createDo_((function(res){
 return smalltalk.withContext(function($ctx2) {
-_st(res)._inspect();
-return self._assert_(false);
+return self._assert_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testRemoteCreate",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
 args: [],
-source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09res inspect.\x0a\x09\x09self assert: false.\x0a\x09].\x0a\x0a\x0a\x09",
-messageSends: ["new", "remember:", "createDo:", "inspect", "assert:"],
+source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09self assert: res.\x0a\x09].\x0a\x0a\x0a\x09",
+messageSends: ["new", "remember:", "createDo:", "assert:"],
 referencedClasses: ["Thing"]
 }),
 globals.MaplessTest);
