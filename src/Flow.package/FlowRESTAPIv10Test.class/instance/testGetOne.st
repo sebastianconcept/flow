@@ -24,3 +24,8 @@ testGetOne
 	self assert: answeredOne class = Thing.
 	self assert: answeredOne id = anId.
 	self assert: answeredOne location = 'north!'.
+
+	apiResponse := ZnEasy get: self apiUrl,'/things/', UUID new asString36.
+
+	self assert: apiResponse code = 404.
+	

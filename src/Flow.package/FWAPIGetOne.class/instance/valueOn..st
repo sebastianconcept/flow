@@ -4,5 +4,7 @@ valueOn: aHandler
 		
 	^ self databaseDo: [ | foundOrNil |
 		foundOrNil := self apiObjectClass findId: self request uri segments fourth.
-		ZnResponse ok: (ZnStringEntity text: foundOrNil asJSONString) ]
+		foundOrNil 
+			ifNil:[ self newNotFoundFor: self request uri segments fourth on: aHandler ]
+			ifNotNil:[ ZnResponse ok: (ZnStringEntity text: foundOrNil asJSONString) ] ]
 	 

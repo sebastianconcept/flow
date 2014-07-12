@@ -431,18 +431,17 @@ singularName
 
 findId: anId
 
-	self findId: anId do: [nil]
+	self findId: anId do: [ :res | self onAfterRead: res ]
 !
 
 findId: anId do: aBlock
 
 	jQuery ajax: #{ 
-		'url' -> (self path, '?id=',anId).
+		'url' -> (self path, '/',anId).
 		'type'-> 'GET'.
 		'cache'-> false.
-		'success'-> [:x| self onAfterRead: x done: aBlock].
-		'fail' -> [:x| self error: 'Could not read ', self name,':  ', x responseText].
-		'error'-> [:x| self error: 'Could not read ', self name,':  ', x responseText]}
+		'complete'-> [ :res | aBlock value: res ]
+	}
 !
 
 fromJSON: someJSON
@@ -527,12 +526,12 @@ uuidGenerator
 
 !Mapless class methodsFor: 'reactions'!
 
-onAfterRead: someJSON done: aBlock
+onAfterRead: aResponse
 
-	| reified |
-	
-	reified := self fromJSON: someJSON.
-	^ aBlock value: reified.
+	aResponse status ~= 200 ifTrue:[
+		MaplessReadError signal: 'Could not read ', self name,':  ', aResponse responseText].
+		
+	^ self fromJSON: aResponse responseText
 ! !
 
 Error subclass: #MaplessError

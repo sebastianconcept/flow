@@ -1090,13 +1090,14 @@ protocol: 'actions',
 fn: function (anId){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._findId_do_(anId,(function(){
-return nil;
-}));
+self._findId_do_(anId,(function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._onAfterRead_(res);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"findId:",{anId:anId},globals.Mapless.klass)})},
 args: ["anId"],
-source: "findId: anId\x0a\x0a\x09self findId: anId do: [nil]",
-messageSends: ["findId:do:"],
+source: "findId: anId\x0a\x0a\x09self findId: anId do: [ :res | self onAfterRead: res ]",
+messageSends: ["findId:do:", "onAfterRead:"],
 referencedClasses: []
 }),
 globals.Mapless.klass);
@@ -1108,42 +1109,19 @@ protocol: 'actions',
 fn: function (anId,aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$4,$3,$8,$7,$6,$9,$5,$11,$10,$2;
+var $1,$3,$2;
 $1=jQuery;
-$4=_st(self._path()).__comma("?id=");
-$ctx1.sendIdx[","]=2;
-$3=_st($4).__comma(anId);
+$3=_st(_st(self._path()).__comma("/")).__comma(anId);
 $ctx1.sendIdx[","]=1;
-$2=globals.HashedCollection._newFromPairs_(["url",$3,"type","GET","cache",false,"success",(function(x){
+$2=globals.HashedCollection._newFromPairs_(["url",$3,"type","GET","cache",false,"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._onAfterRead_done_(x,aBlock);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}),"fail",(function(x){
-return smalltalk.withContext(function($ctx2) {
-$8=self._name();
-$ctx2.sendIdx["name"]=1;
-$7="Could not read ".__comma($8);
-$ctx2.sendIdx[","]=5;
-$6=_st($7).__comma(":  ");
-$ctx2.sendIdx[","]=4;
-$9=_st(x)._responseText();
-$ctx2.sendIdx["responseText"]=1;
-$5=_st($6).__comma($9);
-$ctx2.sendIdx[","]=3;
-return self._error_($5);
-$ctx2.sendIdx["error:"]=1;
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}),"error",(function(x){
-return smalltalk.withContext(function($ctx2) {
-$11=_st("Could not read ".__comma(self._name())).__comma(":  ");
-$ctx2.sendIdx[","]=7;
-$10=_st($11).__comma(_st(x)._responseText());
-$ctx2.sendIdx[","]=6;
-return self._error_($10);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,3)})})]);
+return _st(aBlock)._value_(res);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]);
 _st($1)._ajax_($2);
 return self}, function($ctx1) {$ctx1.fill(self,"findId:do:",{anId:anId,aBlock:aBlock},globals.Mapless.klass)})},
 args: ["anId", "aBlock"],
-source: "findId: anId do: aBlock\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> (self path, '?id=',anId).\x0a\x09\x09'type'-> 'GET'.\x0a\x09\x09'cache'-> false.\x0a\x09\x09'success'-> [:x| self onAfterRead: x done: aBlock].\x0a\x09\x09'fail' -> [:x| self error: 'Could not read ', self name,':  ', x responseText].\x0a\x09\x09'error'-> [:x| self error: 'Could not read ', self name,':  ', x responseText]}",
-messageSends: ["ajax:", ",", "path", "onAfterRead:done:", "error:", "name", "responseText"],
+source: "findId: anId do: aBlock\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> (self path, '/',anId).\x0a\x09\x09'type'-> 'GET'.\x0a\x09\x09'cache'-> false.\x0a\x09\x09'complete'-> [ :res | aBlock value: res ]\x0a\x09}",
+messageSends: ["ajax:", ",", "path", "value:"],
 referencedClasses: []
 }),
 globals.Mapless.klass);
@@ -1325,21 +1303,30 @@ globals.Mapless.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onAfterRead:done:",
+selector: "onAfterRead:",
 protocol: 'reactions',
-fn: function (someJSON,aBlock){
+fn: function (aResponse){
 var self=this;
-var reified;
+function $MaplessReadError(){return globals.MaplessReadError||(typeof MaplessReadError=="undefined"?nil:MaplessReadError)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-reified=self._fromJSON_(someJSON);
-$1=_st(aBlock)._value_(reified);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"onAfterRead:done:",{someJSON:someJSON,aBlock:aBlock,reified:reified},globals.Mapless.klass)})},
-args: ["someJSON", "aBlock"],
-source: "onAfterRead: someJSON done: aBlock\x0a\x0a\x09| reified |\x0a\x09\x0a\x09reified := self fromJSON: someJSON.\x0a\x09^ aBlock value: reified.",
-messageSends: ["fromJSON:", "value:"],
-referencedClasses: []
+var $1,$3,$4,$2,$5;
+$1=_st(_st(aResponse)._status()).__tild_eq((200));
+if(smalltalk.assert($1)){
+$3=_st("Could not read ".__comma(self._name())).__comma(":  ");
+$ctx1.sendIdx[","]=2;
+$4=_st(aResponse)._responseText();
+$ctx1.sendIdx["responseText"]=1;
+$2=_st($3).__comma($4);
+$ctx1.sendIdx[","]=1;
+_st($MaplessReadError())._signal_($2);
+};
+$5=self._fromJSON_(_st(aResponse)._responseText());
+return $5;
+}, function($ctx1) {$ctx1.fill(self,"onAfterRead:",{aResponse:aResponse},globals.Mapless.klass)})},
+args: ["aResponse"],
+source: "onAfterRead: aResponse\x0a\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessReadError signal: 'Could not read ', self name,':  ', aResponse responseText].\x0a\x09\x09\x0a\x09^ self fromJSON: aResponse responseText",
+messageSends: ["ifTrue:", "~=", "status", "signal:", ",", "name", "responseText", "fromJSON:"],
+referencedClasses: ["MaplessReadError"]
 }),
 globals.Mapless.klass);
 
