@@ -5,4 +5,5 @@ acceptedMethods
 
 	^ #(
 	PUT
+	PATCH
 	)

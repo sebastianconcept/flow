@@ -7,10 +7,10 @@ testUpdate
 	registeredThing := Thing new id: anId; production: 'a bunch'; memes: 'very good ones'; yourself.
 
 	self do:[
-		self assert: (Thing findAt: registeredThing id) isNil.
+		self assert: (Thing findId: registeredThing id) isNil.
 		registeredThing save.
-		self assert: (Thing findAt: registeredThing id) notNil.
-		self assert: (Thing findAt: registeredThing id) production = 'a bunch'.
+		self assert: (Thing findId: registeredThing id) notNil.
+		self assert: (Thing findId: registeredThing id) production = 'a bunch'.
 		].
 
 	registeredThing production: 'quite a lot'.
@@ -20,7 +20,7 @@ testUpdate
 						data: (ZnStringEntity text: registeredThing asJSONString).
 	
 	self do: [	
-		self assert: (Thing findAt: registeredThing id) notNil.
-		self assert: (Thing findAt: registeredThing id) production = 'quite a lot'].
+		self assert: (Thing findId: registeredThing id) notNil.
+		self assert: (Thing findId: registeredThing id) production = 'quite a lot'].
 
 
