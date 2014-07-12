@@ -6,9 +6,9 @@ testGetUnexisting
 	anId := UUID new asString36.
 
 	self do:[
-		self assert: (Thing findAt: anId) isNil].
+		self assert: (Thing findId: anId) isNil].
 			
 	apiResponse := ZnEasy get: self apiUrl,'/things/',anId.
 
-	self assert: apiResponse contents = 'null'.
-	self assert: (MaplessMongo fromJSONString: apiResponse contents) isNil
+	self assert: apiResponse code = 404.
+	self assert: (('*',anId,'*') match: apiResponse contents).
