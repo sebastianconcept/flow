@@ -113,7 +113,7 @@ at: aKey ifAbsent: aBlock
 
 create
 	"Creates this mapless using the remote API"
-	^ self createDo:[nil]
+	^ self createDo:[ :res | self onAfterCreate: res ]
 !
 
 createDo: aBlock
@@ -126,14 +126,13 @@ createDo: aBlock
 		'contentType'-> 'application/json; charset=utf-8'.
 		'dataType'-> 'json'.
 		'data' -> self asJSONString.
-		'complete' -> [:res| self onAfterCreate: res done: aBlock]
+		'complete' -> [:res| aBlock value: res ]
 	}.
 !
 
 delete
 	"Delete this mapless using the remote API"
-
-	self deleteDo:[nil]
+	self deleteDo:[ :res | self onAfterDelete: res ]
 !
 
 deleteDo: aBlock
@@ -144,7 +143,7 @@ deleteDo: aBlock
 		'type' -> 'DELETE'.
 		'cache' -> false.
 		'data' -> self asJSONString.
-		'complete' -> [:res| self onAfterDelete: res done: aBlock]
+		'complete' -> [:res| aBlock value: res ]
 	}
 !
 
@@ -191,8 +190,7 @@ doesNotUnderstand: aMessage
 
 fresh
 	"Re-read this mapless' state."
-
-	self freshDo:[nil]
+	self freshDo:[ :res | self onAfterFresh: res ]
 !
 
 freshDo: aBlock
@@ -202,7 +200,7 @@ freshDo: aBlock
 		'url' -> self uri.
 		'type' -> 'GET'.
 		'cache' -> false.
-		'complete' -> [ :res | self onAfterFresh: res done: aBlock]
+		'complete' -> [ :res | aBlock value: res ]
 	}
 !
 
@@ -232,7 +230,8 @@ newJSObject
 !
 
 save
-	^ self saveDo:[nil]
+	"Saves this mapless (upserts it)"
+	^ self saveDo:[ :res | self onAfterSave: res ]
 !
 
 saveDo: aBlock
@@ -243,7 +242,7 @@ saveDo: aBlock
 		'type' -> 'PUT'.
 		'cache' -> false.
 		'data' -> self asJSONString.
-		'complete' -> [:res| self onAfterSave: res done: aBlock]
+		'complete' -> [:res| aBlock value: res ]
 	}
 !
 
@@ -267,6 +266,11 @@ syncWith: aReifiedJSON
 	data := aReifiedJSON
 !
 
+update
+	"Updates this mapless using the remote API"
+	self updateDo:[ :res | self onAfterUpdate: res ]
+!
+
 updateDo: aBlock
 	"Updates this mapless using the remote API"
 
@@ -275,7 +279,7 @@ updateDo: aBlock
 		'type' -> 'PUT'.
 		'cache' -> false.
 		'data' -> self asJSONString.
-		'complete' -> [:res| self onAfterUpdate: res done: aBlock]
+		'complete' -> [:res| aBlock value: res ]
 	}
 ! !
 
@@ -317,60 +321,51 @@ onAboutToJSON
 		value := data at: key.
 		value := self perform: key asSymbol.
 
-		(value isKindOf: MaplessModel) ifTrue:[
+		(value class ~= JSObjectProxy and:[
+		value isKindOf: Mapless]) ifTrue:[
 			value onAboutToJSON.
 			value := value data].
 		data at: key put: value].
 !
 
-onAfterCreate: aResponse done: aBlock
+onAfterCreate: aResponse 
 
 	self trigger: 'afterCreated'.
-	
+		
 	aResponse status ~= 201 ifTrue:[
 		MaplessCreateError signal: 'Could not create ', self asString,':  ', aResponse responseText ].
-
-	aBlock value: aResponse
 !
 
-onAfterDelete: aResponse done: aBlock
-	
+onAfterDelete: aResponse 
+
 	self trigger: 'afterDeleted'.
 	
 	aResponse status ~= 200 ifTrue:[
 		MaplessDeleteError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].
-
-	aBlock value: aResponse
 !
 
-onAfterFresh: aResponse done: aBlock
+onAfterFresh: aResponse 
 
 	self trigger: 'afterRefeshed'.
 	
 	aResponse status ~= 200 ifTrue:[
 		MaplessReadError signal: 'Could not read ', self asString,':  ', aResponse responseText ].
-
-	aBlock value: aResponse
 !
 
-onAfterSave: aResponse done: aBlock
-	
+onAfterSave: aResponse
+
 	self trigger: 'afterSaved'.
 
 	aResponse status ~= 200 ifTrue:[
 		MaplessSaveError signal: 'Could not save ', self asString,':  ', aResponse responseText ].
-
-	aBlock value: aResponse.
 !
 
-onAfterUpdate: aResponse done: aBlock
-	
-	self trigger: 'afterUpdated'.
+onAfterUpdate: aResponse 
 
+	self trigger: 'afterUpdated'.
+	
 	aResponse status ~= 200 ifTrue:[
 		MaplessUpdateError signal: 'Could not update ', self asString,':  ', aResponse responseText ].
-
-	aBlock value: aResponse
 ! !
 
 !Mapless methodsFor: 'testing'!

@@ -293,30 +293,41 @@ fn: function (){
 var self=this;
 var createdOne,loadedOne;
 function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+function $MaplessCreateError(){return globals.MaplessCreateError||(typeof MaplessCreateError=="undefined"?nil:MaplessCreateError)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1;
 createdOne=_st($Thing())._new();
 _st(createdOne)._remember_("something");
 _st(createdOne)._createDo_((function(res){
 return smalltalk.withContext(function($ctx2) {
-_st(console)._log_(res);
+self._shouldnt_raise_((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(createdOne)._onAfterCreated_(res);
+$ctx3.sendIdx["onAfterCreated:"]=1;
 $2=_st(res)._status();
-$ctx2.sendIdx["status"]=1;
+$ctx3.sendIdx["status"]=1;
 $1=_st($2).__eq((201));
-$ctx2.sendIdx["="]=1;
+$ctx3.sendIdx["="]=1;
 return self._assert_($1);
-$ctx2.sendIdx["assert:"]=1;
+$ctx3.sendIdx["assert:"]=1;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}),$MaplessCreateError());
+return _st(createdOne)._createDo_((function(resp){
+return smalltalk.withContext(function($ctx3) {
+return _st((function(){
+return smalltalk.withContext(function($ctx4) {
+return _st(createdOne)._onAfterCreated_(resp);
+}, function($ctx4) {$ctx4.fillBlock({},$ctx3,4)})}))._on_do_($MaplessCreateError(),(function(x){
+return smalltalk.withContext(function($ctx4) {
+return self._assert_(_st(_st(resp)._status()).__eq((409)));
+}, function($ctx4) {$ctx4.fillBlock({x:x},$ctx3,5)})}));
+}, function($ctx3) {$ctx3.fillBlock({resp:resp},$ctx2,3)})}));
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 $ctx1.sendIdx["createDo:"]=1;
-_st(createdOne)._createDo_((function(res){
-return smalltalk.withContext(function($ctx2) {
-return self._assert_(_st(_st(res)._status()).__eq((409)));
-}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testRemoteCreate",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
 args: [],
-source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09console log: res.\x0a\x09\x09self assert: res status = 201.\x0a\x09].\x0a\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09self assert: res status = 409.\x0a\x09].\x0a\x09",
-messageSends: ["new", "remember:", "createDo:", "log:", "assert:", "=", "status"],
-referencedClasses: ["Thing"]
+source: "testRemoteCreate\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09createdOne createDo:[ :res |\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09\x09createdOne onAfterCreated: res.\x0a\x09\x09\x09\x09self assert: res status = 201 ]\x0a\x09\x09\x09raise: MaplessCreateError. \x0a\x0a\x09\x09createdOne createDo:[ :resp |\x0a\x09\x09[ createdOne onAfterCreated: resp ]\x0a\x09\x09\x09on: MaplessCreateError\x0a\x09\x09\x09do:[ :x | self assert: resp status = 409 ] ]\x0a\x09].",
+messageSends: ["new", "remember:", "createDo:", "shouldnt:raise:", "onAfterCreated:", "assert:", "=", "status", "on:do:"],
+referencedClasses: ["Thing", "MaplessCreateError"]
 }),
 globals.MaplessTest);
 

@@ -117,12 +117,15 @@ testRemoteCreate
 	createdOne remember: 'something'.
 		
 	createdOne createDo:[ :res |
-		console log: res.
-		self assert: res status = 201.
-	].
+		self shouldnt: [
+				createdOne onAfterCreated: res.
+				self assert: res status = 201 ]
+			raise: MaplessCreateError. 
 
-	createdOne createDo:[ :res |
-		self assert: res status = 409.
+		createdOne createDo:[ :resp |
+		[ createdOne onAfterCreated: resp ]
+			on: MaplessCreateError
+			do:[ :x | self assert: resp status = 409 ] ]
 	].
 !
 

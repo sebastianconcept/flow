@@ -109,14 +109,15 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._createDo_((function(){
-return nil;
-}));
+$1=self._createDo_((function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._onAfterCreate_(res);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"create",{},globals.Mapless)})},
 args: [],
-source: "create\x0a\x09\x22Creates this mapless using the remote API\x22\x0a\x09^ self createDo:[nil]",
-messageSends: ["createDo:"],
+source: "create\x0a\x09\x22Creates this mapless using the remote API\x22\x0a\x09^ self createDo:[ :res | self onAfterCreate: res ]",
+messageSends: ["createDo:", "onAfterCreate:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -130,12 +131,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",self._path(),"type","POST","cache",false,"contentType","application/json; charset=utf-8","dataType","json","data",self._asJSONString(),"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._onAfterCreate_done_(res,aBlock);
+return _st(aBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"createDo:",{aBlock:aBlock},globals.Mapless)})},
 args: ["aBlock"],
-source: "createDo: aBlock\x0a\x09\x22Creates this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{\x0a\x09\x09'url' -> self path.\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'contentType'-> 'application/json; charset=utf-8'.\x0a\x09\x09'dataType'-> 'json'.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| self onAfterCreate: res done: aBlock]\x0a\x09}.",
-messageSends: ["ajax:", "path", "asJSONString", "onAfterCreate:done:"],
+source: "createDo: aBlock\x0a\x09\x22Creates this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{\x0a\x09\x09'url' -> self path.\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'contentType'-> 'application/json; charset=utf-8'.\x0a\x09\x09'dataType'-> 'json'.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| aBlock value: res ]\x0a\x09}.",
+messageSends: ["ajax:", "path", "asJSONString", "value:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -235,13 +236,14 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._deleteDo_((function(){
-return nil;
-}));
+self._deleteDo_((function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._onAfterDelete_(res);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"delete",{},globals.Mapless)})},
 args: [],
-source: "delete\x0a\x09\x22Delete this mapless using the remote API\x22\x0a\x0a\x09self deleteDo:[nil]",
-messageSends: ["deleteDo:"],
+source: "delete\x0a\x09\x22Delete this mapless using the remote API\x22\x0a\x09self deleteDo:[ :res | self onAfterDelete: res ]",
+messageSends: ["deleteDo:", "onAfterDelete:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -255,12 +257,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",self._uri(),"type","DELETE","cache",false,"data",self._asJSONString(),"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._onAfterDelete_done_(res,aBlock);
+return _st(aBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"deleteDo:",{aBlock:aBlock},globals.Mapless)})},
 args: ["aBlock"],
-source: "deleteDo: aBlock\x0a\x09\x22Delete this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'DELETE'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| self onAfterDelete: res done: aBlock]\x0a\x09}  ",
-messageSends: ["ajax:", "uri", "asJSONString", "onAfterDelete:done:"],
+source: "deleteDo: aBlock\x0a\x09\x22Delete this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'DELETE'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| aBlock value: res ]\x0a\x09}  ",
+messageSends: ["ajax:", "uri", "asJSONString", "value:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -388,13 +390,14 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._freshDo_((function(){
-return nil;
-}));
+self._freshDo_((function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._onAfterFresh_(res);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"fresh",{},globals.Mapless)})},
 args: [],
-source: "fresh\x0a\x09\x22Re-read this mapless' state.\x22\x0a\x0a\x09self freshDo:[nil]",
-messageSends: ["freshDo:"],
+source: "fresh\x0a\x09\x22Re-read this mapless' state.\x22\x0a\x09self freshDo:[ :res | self onAfterFresh: res ]",
+messageSends: ["freshDo:", "onAfterFresh:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -408,12 +411,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",self._uri(),"type","GET","cache",false,"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._onAfterFresh_done_(res,aBlock);
+return _st(aBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"freshDo:",{aBlock:aBlock},globals.Mapless)})},
 args: ["aBlock"],
-source: "freshDo: aBlock\x0a\x09\x22Re-read this mapless' state from the remote API.\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'GET'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'complete' -> [ :res | self onAfterFresh: res done: aBlock]\x0a\x09}\x09\x0a\x09",
-messageSends: ["ajax:", "uri", "onAfterFresh:done:"],
+source: "freshDo: aBlock\x0a\x09\x22Re-read this mapless' state from the remote API.\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'GET'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'complete' -> [ :res | aBlock value: res ]\x0a\x09}\x09\x0a\x09",
+messageSends: ["ajax:", "uri", "value:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -669,7 +672,7 @@ fn: function (){
 var self=this;
 var obj,keys;
 function $JSObjectProxy(){return globals.JSObjectProxy||(typeof JSObjectProxy=="undefined"?nil:JSObjectProxy)}
-function $MaplessModel(){return globals.MaplessModel||(typeof MaplessModel=="undefined"?nil:MaplessModel)}
+function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 obj=self._newJSObject();
@@ -682,7 +685,10 @@ value=_st(self["@data"])._at_(key);
 value;
 value=self._perform_(_st(key)._asSymbol());
 value;
-$1=_st(value)._isKindOf_($MaplessModel());
+$1=_st(_st(_st(value)._class()).__tild_eq($JSObjectProxy()))._and_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(value)._isKindOf_($Mapless());
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
 if(smalltalk.assert($1)){
 _st(value)._onAboutToJSON();
 value=_st(value)._data();
@@ -692,17 +698,17 @@ return _st(self["@data"])._at_put_(key,value);
 }, function($ctx2) {$ctx2.fillBlock({key:key,value:value},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"onAboutToJSON",{obj:obj,keys:keys},globals.Mapless)})},
 args: [],
-source: "onAboutToJSON\x0a\x09\x22This mapless is about to be stringified as JSON.\x0a\x09All inst var with mapless objects will be stringify-friendly after this.\x22\x0a\x09\x0a\x09| obj keys |\x0a\x0a\x09obj := self newJSObject.\x0a\x09obj := JSObjectProxy on: obj.\x0a\x09keys := obj keys: data. \x0a\x0a\x09keys do:[:key| |value|\x0a\x09\x09value := data at: key.\x0a\x09\x09value := self perform: key asSymbol.\x0a\x0a\x09\x09(value isKindOf: MaplessModel) ifTrue:[\x0a\x09\x09\x09value onAboutToJSON.\x0a\x09\x09\x09value := value data].\x0a\x09\x09data at: key put: value].",
-messageSends: ["newJSObject", "on:", "keys:", "do:", "at:", "perform:", "asSymbol", "ifTrue:", "isKindOf:", "onAboutToJSON", "data", "at:put:"],
-referencedClasses: ["JSObjectProxy", "MaplessModel"]
+source: "onAboutToJSON\x0a\x09\x22This mapless is about to be stringified as JSON.\x0a\x09All inst var with mapless objects will be stringify-friendly after this.\x22\x0a\x09\x0a\x09| obj keys |\x0a\x0a\x09obj := self newJSObject.\x0a\x09obj := JSObjectProxy on: obj.\x0a\x09keys := obj keys: data. \x0a\x0a\x09keys do:[:key| |value|\x0a\x09\x09value := data at: key.\x0a\x09\x09value := self perform: key asSymbol.\x0a\x0a\x09\x09(value class ~= JSObjectProxy and:[\x0a\x09\x09value isKindOf: Mapless]) ifTrue:[\x0a\x09\x09\x09value onAboutToJSON.\x0a\x09\x09\x09value := value data].\x0a\x09\x09data at: key put: value].",
+messageSends: ["newJSObject", "on:", "keys:", "do:", "at:", "perform:", "asSymbol", "ifTrue:", "and:", "~=", "class", "isKindOf:", "onAboutToJSON", "data", "at:put:"],
+referencedClasses: ["JSObjectProxy", "Mapless"]
 }),
 globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onAfterCreate:done:",
+selector: "onAfterCreate:",
 protocol: 'reactions',
-fn: function (aResponse,aBlock){
+fn: function (aResponse){
 var self=this;
 function $MaplessCreateError(){return globals.MaplessCreateError||(typeof MaplessCreateError=="undefined"?nil:MaplessCreateError)}
 return smalltalk.withContext(function($ctx1) { 
@@ -716,20 +722,19 @@ $2=_st($3).__comma(_st(aResponse)._responseText());
 $ctx1.sendIdx[","]=1;
 _st($MaplessCreateError())._signal_($2);
 };
-_st(aBlock)._value_(aResponse);
-return self}, function($ctx1) {$ctx1.fill(self,"onAfterCreate:done:",{aResponse:aResponse,aBlock:aBlock},globals.Mapless)})},
-args: ["aResponse", "aBlock"],
-source: "onAfterCreate: aResponse done: aBlock\x0a\x0a\x09self trigger: 'afterCreated'.\x0a\x09\x0a\x09aResponse status ~= 201 ifTrue:[\x0a\x09\x09MaplessCreateError signal: 'Could not create ', self asString,':  ', aResponse responseText ].\x0a\x0a\x09aBlock value: aResponse",
-messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText", "value:"],
+return self}, function($ctx1) {$ctx1.fill(self,"onAfterCreate:",{aResponse:aResponse},globals.Mapless)})},
+args: ["aResponse"],
+source: "onAfterCreate: aResponse \x0a\x0a\x09self trigger: 'afterCreated'.\x0a\x09\x09\x0a\x09aResponse status ~= 201 ifTrue:[\x0a\x09\x09MaplessCreateError signal: 'Could not create ', self asString,':  ', aResponse responseText ].\x0a\x09",
+messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText"],
 referencedClasses: ["MaplessCreateError"]
 }),
 globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onAfterDelete:done:",
+selector: "onAfterDelete:",
 protocol: 'reactions',
-fn: function (aResponse,aBlock){
+fn: function (aResponse){
 var self=this;
 function $MaplessDeleteError(){return globals.MaplessDeleteError||(typeof MaplessDeleteError=="undefined"?nil:MaplessDeleteError)}
 return smalltalk.withContext(function($ctx1) { 
@@ -743,20 +748,19 @@ $2=_st($3).__comma(_st(aResponse)._responseText());
 $ctx1.sendIdx[","]=1;
 _st($MaplessDeleteError())._signal_($2);
 };
-_st(aBlock)._value_(aResponse);
-return self}, function($ctx1) {$ctx1.fill(self,"onAfterDelete:done:",{aResponse:aResponse,aBlock:aBlock},globals.Mapless)})},
-args: ["aResponse", "aBlock"],
-source: "onAfterDelete: aResponse done: aBlock\x0a\x09\x0a\x09self trigger: 'afterDeleted'.\x0a\x09\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessDeleteError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].\x0a\x0a\x09aBlock value: aResponse",
-messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText", "value:"],
+return self}, function($ctx1) {$ctx1.fill(self,"onAfterDelete:",{aResponse:aResponse},globals.Mapless)})},
+args: ["aResponse"],
+source: "onAfterDelete: aResponse \x0a\x0a\x09self trigger: 'afterDeleted'.\x0a\x09\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessDeleteError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].\x0a\x09",
+messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText"],
 referencedClasses: ["MaplessDeleteError"]
 }),
 globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onAfterFresh:done:",
+selector: "onAfterFresh:",
 protocol: 'reactions',
-fn: function (aResponse,aBlock){
+fn: function (aResponse){
 var self=this;
 function $MaplessReadError(){return globals.MaplessReadError||(typeof MaplessReadError=="undefined"?nil:MaplessReadError)}
 return smalltalk.withContext(function($ctx1) { 
@@ -770,20 +774,19 @@ $2=_st($3).__comma(_st(aResponse)._responseText());
 $ctx1.sendIdx[","]=1;
 _st($MaplessReadError())._signal_($2);
 };
-_st(aBlock)._value_(aResponse);
-return self}, function($ctx1) {$ctx1.fill(self,"onAfterFresh:done:",{aResponse:aResponse,aBlock:aBlock},globals.Mapless)})},
-args: ["aResponse", "aBlock"],
-source: "onAfterFresh: aResponse done: aBlock\x0a\x0a\x09self trigger: 'afterRefeshed'.\x0a\x09\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessReadError signal: 'Could not read ', self asString,':  ', aResponse responseText ].\x0a\x0a\x09aBlock value: aResponse",
-messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText", "value:"],
+return self}, function($ctx1) {$ctx1.fill(self,"onAfterFresh:",{aResponse:aResponse},globals.Mapless)})},
+args: ["aResponse"],
+source: "onAfterFresh: aResponse \x0a\x0a\x09self trigger: 'afterRefeshed'.\x0a\x09\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessReadError signal: 'Could not read ', self asString,':  ', aResponse responseText ].\x0a\x09",
+messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText"],
 referencedClasses: ["MaplessReadError"]
 }),
 globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onAfterSave:done:",
+selector: "onAfterSave:",
 protocol: 'reactions',
-fn: function (aResponse,aBlock){
+fn: function (aResponse){
 var self=this;
 function $MaplessSaveError(){return globals.MaplessSaveError||(typeof MaplessSaveError=="undefined"?nil:MaplessSaveError)}
 return smalltalk.withContext(function($ctx1) { 
@@ -797,20 +800,19 @@ $2=_st($3).__comma(_st(aResponse)._responseText());
 $ctx1.sendIdx[","]=1;
 _st($MaplessSaveError())._signal_($2);
 };
-_st(aBlock)._value_(aResponse);
-return self}, function($ctx1) {$ctx1.fill(self,"onAfterSave:done:",{aResponse:aResponse,aBlock:aBlock},globals.Mapless)})},
-args: ["aResponse", "aBlock"],
-source: "onAfterSave: aResponse done: aBlock\x0a\x09\x0a\x09self trigger: 'afterSaved'.\x0a\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessSaveError signal: 'Could not save ', self asString,':  ', aResponse responseText ].\x0a\x0a\x09aBlock value: aResponse.\x0a\x09",
-messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText", "value:"],
+return self}, function($ctx1) {$ctx1.fill(self,"onAfterSave:",{aResponse:aResponse},globals.Mapless)})},
+args: ["aResponse"],
+source: "onAfterSave: aResponse\x0a\x0a\x09self trigger: 'afterSaved'.\x0a\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessSaveError signal: 'Could not save ', self asString,':  ', aResponse responseText ].",
+messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText"],
 referencedClasses: ["MaplessSaveError"]
 }),
 globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onAfterUpdate:done:",
+selector: "onAfterUpdate:",
 protocol: 'reactions',
-fn: function (aResponse,aBlock){
+fn: function (aResponse){
 var self=this;
 function $MaplessUpdateError(){return globals.MaplessUpdateError||(typeof MaplessUpdateError=="undefined"?nil:MaplessUpdateError)}
 return smalltalk.withContext(function($ctx1) { 
@@ -824,11 +826,10 @@ $2=_st($3).__comma(_st(aResponse)._responseText());
 $ctx1.sendIdx[","]=1;
 _st($MaplessUpdateError())._signal_($2);
 };
-_st(aBlock)._value_(aResponse);
-return self}, function($ctx1) {$ctx1.fill(self,"onAfterUpdate:done:",{aResponse:aResponse,aBlock:aBlock},globals.Mapless)})},
-args: ["aResponse", "aBlock"],
-source: "onAfterUpdate: aResponse done: aBlock\x0a\x09\x0a\x09self trigger: 'afterUpdated'.\x0a\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessUpdateError signal: 'Could not update ', self asString,':  ', aResponse responseText ].\x0a\x0a\x09aBlock value: aResponse",
-messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText", "value:"],
+return self}, function($ctx1) {$ctx1.fill(self,"onAfterUpdate:",{aResponse:aResponse},globals.Mapless)})},
+args: ["aResponse"],
+source: "onAfterUpdate: aResponse \x0a\x0a\x09self trigger: 'afterUpdated'.\x0a\x09\x0a\x09aResponse status ~= 200 ifTrue:[\x0a\x09\x09MaplessUpdateError signal: 'Could not update ', self asString,':  ', aResponse responseText ].",
+messageSends: ["trigger:", "ifTrue:", "~=", "status", "signal:", ",", "asString", "responseText"],
 referencedClasses: ["MaplessUpdateError"]
 }),
 globals.Mapless);
@@ -859,14 +860,15 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._saveDo_((function(){
-return nil;
-}));
+$1=self._saveDo_((function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._onAfterSave_(res);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"save",{},globals.Mapless)})},
 args: [],
-source: "save\x0a\x09^ self saveDo:[nil]",
-messageSends: ["saveDo:"],
+source: "save\x0a\x09\x22Saves this mapless (upserts it)\x22\x0a\x09^ self saveDo:[ :res | self onAfterSave: res ]",
+messageSends: ["saveDo:", "onAfterSave:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -880,12 +882,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",self._uri(),"type","PUT","cache",false,"data",self._asJSONString(),"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._onAfterSave_done_(res,aBlock);
+return _st(aBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"saveDo:",{aBlock:aBlock},globals.Mapless)})},
 args: ["aBlock"],
-source: "saveDo: aBlock\x0a\x09\x22Saves this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'PUT'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| self onAfterSave: res done: aBlock]\x0a\x09}",
-messageSends: ["ajax:", "uri", "asJSONString", "onAfterSave:done:"],
+source: "saveDo: aBlock\x0a\x09\x22Saves this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'PUT'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| aBlock value: res ]\x0a\x09}",
+messageSends: ["ajax:", "uri", "asJSONString", "value:"],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -991,6 +993,25 @@ globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "update",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._updateDo_((function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._onAfterUpdate_(res);
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"update",{},globals.Mapless)})},
+args: [],
+source: "update\x0a\x09\x22Updates this mapless using the remote API\x22\x0a\x09self updateDo:[ :res | self onAfterUpdate: res ]",
+messageSends: ["updateDo:", "onAfterUpdate:"],
+referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "updateDo:",
 protocol: 'actions',
 fn: function (aBlock){
@@ -998,12 +1019,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",self._uri(),"type","PUT","cache",false,"data",self._asJSONString(),"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
-return self._onAfterUpdate_done_(res,aBlock);
+return _st(aBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateDo:",{aBlock:aBlock},globals.Mapless)})},
 args: ["aBlock"],
-source: "updateDo: aBlock\x0a\x09\x22Updates this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'PUT'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| self onAfterUpdate: res done: aBlock]\x0a\x09}",
-messageSends: ["ajax:", "uri", "asJSONString", "onAfterUpdate:done:"],
+source: "updateDo: aBlock\x0a\x09\x22Updates this mapless using the remote API\x22\x0a\x0a\x09jQuery ajax: #{ \x0a\x09\x09'url' -> self uri.\x0a\x09\x09'type' -> 'PUT'.\x0a\x09\x09'cache' -> false.\x0a\x09\x09'data' -> self asJSONString.\x0a\x09\x09'complete' -> [:res| aBlock value: res ]\x0a\x09}",
+messageSends: ["ajax:", "uri", "asJSONString", "value:"],
 referencedClasses: []
 }),
 globals.Mapless);
