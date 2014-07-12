@@ -82,7 +82,7 @@ subModelAt: aSelector
 	
 	modelClass := SmalltalkImage current globals at: modelClass ifAbsent:[ nil ].
 
-	modelClass ifNil:[ ^ MaplessReificationError signal: 'Cannot find ',aSelector asString,'''s class for this metadata'].
+	modelClass ifNil:[ ^ MaplessError signal: 'Cannot find ',aSelector asString,'''s class for this metadata'].
 	
 	^ modelClass fromReified: subMaplessData
 !
@@ -119,6 +119,8 @@ create
 createDo: aBlock
 	"Creates this mapless using the remote API"
 
+	self trigger: 'aboutToCreate:' with: self.
+
 	jQuery ajax: #{
 		'url' -> self path.
 		'type' -> 'POST'.
@@ -126,7 +128,7 @@ createDo: aBlock
 		'contentType'-> 'application/json; charset=utf-8'.
 		'dataType'-> 'json'.
 		'data' -> self asJSONString.
-		'complete' -> [:res| aBlock value: res ]
+		'complete' -> [ :res | aBlock value: res ]
 	}.
 !
 
@@ -138,12 +140,14 @@ delete
 deleteDo: aBlock
 	"Delete this mapless using the remote API"
 
+	self trigger: 'aboutToDelete:' with: self.
+
 	jQuery ajax: #{ 
 		'url' -> self uri.
 		'type' -> 'DELETE'.
 		'cache' -> false.
 		'data' -> self asJSONString.
-		'complete' -> [:res| aBlock value: res ]
+		'complete' -> [ :res | aBlock value: res ]
 	}
 !
 
@@ -196,6 +200,8 @@ fresh
 freshDo: aBlock
 	"Re-read this mapless' state from the remote API."
 
+	self trigger: 'aboutToFresh:' with: self.
+
 	jQuery ajax: #{ 
 		'url' -> self uri.
 		'type' -> 'GET'.
@@ -237,12 +243,16 @@ save
 saveDo: aBlock
 	"Saves this mapless using the remote API"
 
+	self trigger: 'aboutToSave:' with: self.
+
 	jQuery ajax: #{ 
-		'url' -> self uri.
+		'url' -> self path.
 		'type' -> 'PUT'.
 		'cache' -> false.
+		'contentType'-> 'application/json; charset=utf-8'.
+		'dataType'-> 'json'.
 		'data' -> self asJSONString.
-		'complete' -> [:res| aBlock value: res ]
+		'complete' -> [ :res | aBlock value: res ]
 	}
 !
 
@@ -261,7 +271,7 @@ syncWith: aReifiedJSON
 
 	((aReifiedJSON at: 'modelClass') isNil or:[
 	(aReifiedJSON at: 'modelClass') ~= self class name ]) ifTrue:[
-		MaplessReificationError signal: 'This JSON does not fit in this ', self asString ].
+		MaplessError signal: 'This JSON does not fit in this ', self asString ].
 
 	data := aReifiedJSON
 !
@@ -274,12 +284,16 @@ update
 updateDo: aBlock
 	"Updates this mapless using the remote API"
 
+	self trigger: 'aboutToUpdate:' with: self.
+
 	jQuery ajax: #{ 
 		'url' -> self uri.
 		'type' -> 'PUT'.
 		'cache' -> false.
+		'contentType'-> 'application/json; charset=utf-8'.
+		'dataType'-> 'json'.
 		'data' -> self asJSONString.
-		'complete' -> [:res| aBlock value: res ]
+		'complete' -> [ :res | aBlock value: res ]
 	}
 ! !
 
@@ -333,7 +347,7 @@ onAfterCreate: aResponse
 	self trigger: 'afterCreated'.
 		
 	aResponse status ~= 201 ifTrue:[
-		MaplessCreateError signal: 'Could not create ', self asString,':  ', aResponse responseText ].
+		MaplessError signal: 'Could not create ', self asString,':  ', aResponse responseText ].
 !
 
 onAfterDelete: aResponse 
@@ -341,7 +355,7 @@ onAfterDelete: aResponse
 	self trigger: 'afterDeleted'.
 	
 	aResponse status ~= 200 ifTrue:[
-		MaplessDeleteError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].
+		MaplessError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].
 !
 
 onAfterFresh: aResponse 
@@ -349,7 +363,7 @@ onAfterFresh: aResponse
 	self trigger: 'afterRefeshed'.
 	
 	aResponse status ~= 200 ifTrue:[
-		MaplessReadError signal: 'Could not read ', self asString,':  ', aResponse responseText ].
+		MaplessError signal: 'Could not read ', self asString,':  ', aResponse responseText ].
 !
 
 onAfterSave: aResponse
@@ -357,7 +371,7 @@ onAfterSave: aResponse
 	self trigger: 'afterSaved'.
 
 	aResponse status ~= 200 ifTrue:[
-		MaplessSaveError signal: 'Could not save ', self asString,':  ', aResponse responseText ].
+		MaplessError signal: 'Could not save ', self asString,':  ', aResponse responseText ].
 !
 
 onAfterUpdate: aResponse 
@@ -365,7 +379,7 @@ onAfterUpdate: aResponse
 	self trigger: 'afterUpdated'.
 	
 	aResponse status ~= 200 ifTrue:[
-		MaplessUpdateError signal: 'Could not update ', self asString,':  ', aResponse responseText ].
+		MaplessError signal: 'Could not update ', self asString,':  ', aResponse responseText ].
 ! !
 
 !Mapless methodsFor: 'testing'!
@@ -428,6 +442,40 @@ singularName
 ! !
 
 !Mapless class methodsFor: 'actions'!
+
+find: aQueryString
+
+	self find: aQueryString do: [ :res | self onAfterReadSome: res ]
+!
+
+find: aQueryJSONString do: aBlock
+	"Finds some mapless using the remote API to resolve aQueryJSONString"
+
+	jQuery ajax: #{
+		'url' -> (self path,'/query').
+		'type' -> 'POST'.
+		'cache' -> false.
+		'contentType'-> 'application/json; charset=utf-8'.
+		'dataType'-> 'json'.
+		'data' -> aQueryJSONString.
+		'complete' -> [:res| aBlock value: res ]
+	}
+!
+
+findAll
+
+	self findAllDo: [ :res | self onAfterReadAll: res ]
+!
+
+findAllDo: aBlock
+
+	jQuery ajax: #{ 
+		'url' -> self path.
+		'type'-> 'GET'.
+		'cache'-> false.
+		'complete'-> [ :res | aBlock value: res ]
+	}
+!
 
 findId: anId
 
@@ -495,9 +543,9 @@ localSave: aMapless
 		value: aMapless asJSONString
 !
 
-manyFromJSON: someJSON
+manyFromJSON: someJSONString
 
-	^ (JSON parse: someJSON) collect:[ :each |
+	^ (JSON parse: someJSONString) collect:[ :each |
 		 self fromReified: each ]
 !
 
@@ -528,37 +576,31 @@ uuidGenerator
 
 onAfterRead: aResponse
 
+	self trigger: 'afterRead'.
+
 	aResponse status ~= 200 ifTrue:[
-		MaplessReadError signal: 'Could not read ', self name,':  ', aResponse responseText].
+		MaplessError signal: 'Could not read ', self name,':  ', aResponse responseText].
 		
 	^ self fromJSON: aResponse responseText
+!
+
+onAfterReadAll: aResponse
+
+	aResponse status ~= 200 ifTrue:[
+		MaplessError signal: 'Could not read all ', self name,':  ', aResponse responseText].
+		
+	^ self manyFromJSON: aResponse responseText
+!
+
+onAfterReadSome: aResponse
+
+	aResponse status ~= 200 ifTrue:[
+		MaplessError signal: 'Could not read all ', self name,':  ', aResponse responseText].
+		
+	^ self manyFromJSON: aResponse responseText
 ! !
 
 Error subclass: #MaplessError
-	instanceVariableNames: ''
-	package: 'MiniMapless'!
-
-MaplessError subclass: #MaplessCreateError
-	instanceVariableNames: ''
-	package: 'MiniMapless'!
-
-MaplessError subclass: #MaplessDeleteError
-	instanceVariableNames: ''
-	package: 'MiniMapless'!
-
-MaplessError subclass: #MaplessReadError
-	instanceVariableNames: ''
-	package: 'MiniMapless'!
-
-MaplessError subclass: #MaplessReificationError
-	instanceVariableNames: ''
-	package: 'MiniMapless'!
-
-MaplessError subclass: #MaplessSaveError
-	instanceVariableNames: ''
-	package: 'MiniMapless'!
-
-MaplessError subclass: #MaplessUpdateError
 	instanceVariableNames: ''
 	package: 'MiniMapless'!
 
