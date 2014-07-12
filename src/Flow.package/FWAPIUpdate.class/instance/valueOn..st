@@ -1,6 +1,7 @@
 actions
 valueOn: aHandler 
-	"Executes this command for aHandler and the request ."
+	"Executes this command for aHandler and the request .
+	This update is actually an upsert."
 		
 	^ self databaseDo: [ | objectSent foundOrNil |
 		objectSent := self apiObjectClass fromJSONString: self request contents.

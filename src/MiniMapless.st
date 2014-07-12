@@ -144,9 +144,7 @@ deleteDo: aBlock
 		'type' -> 'DELETE'.
 		'cache' -> false.
 		'data' -> self asJSONString.
-		'success' -> [:x| self onAfterDelete: x done: aBlock].
-		'fail' -> [:x| MaplessDeleteError signal: 'Could not delete ', self asString,':  ', x responseText ].
-		'error' -> [:x| MaplessCreateError signal: 'Could not delete ', self asString,':  ', x responseText ]
+		'complete' -> [:res| self onAfterDelete: res done: aBlock]
 	}
 !
 
@@ -204,9 +202,7 @@ freshDo: aBlock
 		'url' -> self uri.
 		'type' -> 'GET'.
 		'cache' -> false.
-		'success' -> [:x| self onAfterFresh: x done: aBlock].
-		'fail' -> [:x| MaplessReadError signal: 'Could not read ', self asString,':  ', x responseText ].
-		'error' -> [:x| MaplessReadError signal: 'Could not read ', self asString,':  ', x responseText ]
+		'complete' -> [ :res | self onAfterFresh: res done: aBlock]
 	}
 !
 
@@ -240,9 +236,15 @@ save
 !
 
 saveDo: aBlock
+	"Saves this mapless using the remote API"
 
-	self localSave.
-	self updateDo: aBlock
+	jQuery ajax: #{ 
+		'url' -> self uri.
+		'type' -> 'PUT'.
+		'cache' -> false.
+		'data' -> self asJSONString.
+		'complete' -> [:res| self onAfterSave: res done: aBlock]
+	}
 !
 
 syncFromJSON: someJSONString
@@ -273,9 +275,7 @@ updateDo: aBlock
 		'type' -> 'PUT'.
 		'cache' -> false.
 		'data' -> self asJSONString.
-		'success' -> [:x| self onAfterUpdate: x done: aBlock].
-		'fail' -> [:x| MaplessUpdateError signal: 'Could not update ', self asString,':  ', x responseText ].
-		'error' -> [:x| MaplessUpdateError signal: 'Could not update ', self asString,':  ', x responseText ]
+		'complete' -> [:res| self onAfterUpdate: res done: aBlock]
 	}
 ! !
 
@@ -326,8 +326,6 @@ onAboutToJSON
 onAfterCreate: aResponse done: aBlock
 
 	self trigger: 'afterCreated'.
-
-	console log: aResponse.
 	
 	aResponse status ~= 201 ifTrue:[
 		MaplessCreateError signal: 'Could not create ', self asString,':  ', aResponse responseText ].
@@ -338,6 +336,9 @@ onAfterCreate: aResponse done: aBlock
 onAfterDelete: aResponse done: aBlock
 	
 	self trigger: 'afterDeleted'.
+	
+	aResponse status ~= 200 ifTrue:[
+		MaplessDeleteError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].
 
 	aBlock value: aResponse
 !
@@ -345,13 +346,29 @@ onAfterDelete: aResponse done: aBlock
 onAfterFresh: aResponse done: aBlock
 
 	self trigger: 'afterRefeshed'.
+	
+	aResponse status ~= 200 ifTrue:[
+		MaplessReadError signal: 'Could not read ', self asString,':  ', aResponse responseText ].
 
 	aBlock value: aResponse
+!
+
+onAfterSave: aResponse done: aBlock
+	
+	self trigger: 'afterSaved'.
+
+	aResponse status ~= 200 ifTrue:[
+		MaplessSaveError signal: 'Could not save ', self asString,':  ', aResponse responseText ].
+
+	aBlock value: aResponse.
 !
 
 onAfterUpdate: aResponse done: aBlock
 	
 	self trigger: 'afterUpdated'.
+
+	aResponse status ~= 200 ifTrue:[
+		MaplessUpdateError signal: 'Could not update ', self asString,':  ', aResponse responseText ].
 
 	aBlock value: aResponse
 ! !
@@ -540,6 +557,10 @@ MaplessError subclass: #MaplessReadError
 	package: 'MiniMapless'!
 
 MaplessError subclass: #MaplessReificationError
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+MaplessError subclass: #MaplessSaveError
 	instanceVariableNames: ''
 	package: 'MiniMapless'!
 

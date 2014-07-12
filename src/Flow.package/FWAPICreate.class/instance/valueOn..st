@@ -7,7 +7,7 @@ valueOn: aHandler
 		foundOrNil := objectSent class findId: objectSent id.
 		foundOrNil 
 			ifNil: [ 
-				objectSent save.
+				objectSent insert.
 				ZnResponse created: aHandler basePath, objectSent id ]
 			ifNotNil:[ self newConflictResponseFor: objectSent ] ]
 	 

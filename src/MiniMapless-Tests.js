@@ -360,6 +360,25 @@ globals.MaplessTest);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testRemoteSave",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var createdOne,loadedOne;
+function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+return smalltalk.withContext(function($ctx1) { 
+createdOne=_st($Thing())._new();
+_st(createdOne)._remember_("something");
+return self}, function($ctx1) {$ctx1.fill(self,"testRemoteSave",{createdOne:createdOne,loadedOne:loadedOne},globals.MaplessTest)})},
+args: [],
+source: "testRemoteSave\x0a\x0a\x09| createdOne loadedOne |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x09\x0a\x09\x22createdOne saveDo:[\x0a\x0a\x09\x09self shouldnt: [\x0a\x09\x09\x09self assert: false.\x0a\x09\x09] raise: Error\x0a\x09].\x0a\x22\x0a\x0a\x09",
+messageSends: ["new", "remember:"],
+referencedClasses: ["Thing"]
+}),
+globals.MaplessTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testRemoteUpdate",
 protocol: 'tests',
 fn: function (){

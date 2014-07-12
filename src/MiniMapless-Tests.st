@@ -160,6 +160,23 @@ testRemoteRead
 "
 !
 
+testRemoteSave
+
+	| createdOne loadedOne |
+	
+	createdOne := Thing new.
+	
+	createdOne remember: 'something'.
+		
+	"createdOne saveDo:[
+
+		self shouldnt: [
+			self assert: false.
+		] raise: Error
+	].
+"
+!
+
 testRemoteUpdate
 
 	| createdOne loadedOne |
