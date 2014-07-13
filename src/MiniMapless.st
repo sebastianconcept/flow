@@ -119,7 +119,7 @@ create
 createDo: aBlock
 	"Creates this mapless using the remote API"
 
-	self trigger: 'aboutToCreate:' with: self.
+	self onAboutToCreate.
 
 	jQuery ajax: #{
 		'url' -> self path.
@@ -140,7 +140,7 @@ delete
 deleteDo: aBlock
 	"Delete this mapless using the remote API"
 
-	self trigger: 'aboutToDelete:' with: self.
+	self onAboutToDelete.
 
 	jQuery ajax: #{ 
 		'url' -> self uri.
@@ -200,7 +200,7 @@ fresh
 freshDo: aBlock
 	"Re-read this mapless' state from the remote API."
 
-	self trigger: 'aboutToFresh:' with: self.
+	self onAboutToFresh.
 
 	jQuery ajax: #{ 
 		'url' -> self uri.
@@ -235,6 +235,11 @@ newJSObject
 	<return Object>
 !
 
+onAboutToFresh
+
+	self trigger: 'aboutToFresh:' with: self
+!
+
 save
 	"Saves this mapless (upserts it)"
 	^ self saveDo:[ :res | self onAfterSave: res ]
@@ -243,8 +248,8 @@ save
 saveDo: aBlock
 	"Saves this mapless using the remote API"
 
-	self trigger: 'aboutToSave:' with: self.
-
+	self onAboutToSave.
+	
 	jQuery ajax: #{ 
 		'url' -> self path.
 		'type' -> 'PUT'.
@@ -284,7 +289,9 @@ update
 updateDo: aBlock
 	"Updates this mapless using the remote API"
 
-	self trigger: 'aboutToUpdate:' with: self.
+	self onAboutToUpdate.
+	
+	self localSave.
 
 	jQuery ajax: #{ 
 		'url' -> self uri.
@@ -321,6 +328,16 @@ initializeInstanceVersion
 
 !Mapless methodsFor: 'reactions'!
 
+onAboutToCreate
+
+	self trigger: 'aboutToCreate:' with: self
+!
+
+onAboutToDelete
+
+	self trigger: 'aboutToDelete:' with: self
+!
+
 onAboutToJSON
 	"This mapless is about to be stringified as JSON.
 	All inst var with mapless objects will be stringify-friendly after this."
@@ -342,44 +359,88 @@ onAboutToJSON
 		data at: key put: value].
 !
 
-onAfterCreate: aResponse 
+onAboutToSave
 
-	self trigger: 'afterCreated'.
+	self trigger: 'aboutToSave:' with: self
+!
+
+onAboutToUpdate
+
+	self trigger: 'aboutToUpdate:' with: self
+!
+
+onAfterCreate: aResponse 
+	"This mapless got created.
+	To keep things consistent, if the server was okay, then we locally save too but if
+	the API said it wasn't saved, then we make sure this mapless is not in local either
+	and raise the exception."
 		
 	aResponse status ~= 201 ifTrue:[
-		MaplessError signal: 'Could not create ', self asString,':  ', aResponse responseText ].
+		self localDelete.
+		^ MaplessError signal: 'Could not create ', self asString,':  ', aResponse responseText ].
+	
+	self localSave.
+	
+	self trigger: 'afterCreated'
 !
 
 onAfterDelete: aResponse 
+	"This mapless got deleted.
+	To keep things consistent, if the server was okay, then we locally remove it too but if
+	the API said it wasn't saved, then we make sure this mapless is not removed from local
+	and raise the exception."
 
-	self trigger: 'afterDeleted'.
-	
 	aResponse status ~= 200 ifTrue:[
-		MaplessError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].
+		^ MaplessError signal: 'Could not delete ', self asString,':  ', aResponse responseText ].
+	
+	self localDelete.
+	
+	self trigger: 'afterDeleted'.
 !
 
 onAfterFresh: aResponse 
+	"This mapless got re-freshed.
+	To keep things consistent, if the server was okay, then we sync this mapless state with the response, but
+	if the API said it coudn't read (any different than 200), then we restore this mapless state from local
+	and raise the exception"
 
-	self trigger: 'afterRefeshed'.
-	
 	aResponse status ~= 200 ifTrue:[
-		MaplessError signal: 'Could not read ', self asString,':  ', aResponse responseText ].
+		self localFresh.
+		^ MaplessError signal: 'Could not read ', self asString,':  ', aResponse responseText ].
+
+	self syncFromJSON: aResponse responseText.
+
+	self trigger: 'afterFresh'.
 !
 
 onAfterSave: aResponse
+	"This mapless got saved.
+	To keep things consistent, if the server was okay, then we locally save too but if
+	the API said it wasn't saved, then we restore this mapless state from local
+	and raise the exception."
+	
+	aResponse status ~= 200 ifTrue:[
+		self localFresh.
+		^ MaplessError signal: 'Could not save ', self asString,':  ', aResponse responseText ].
+		
+	self localSave.
 
 	self trigger: 'afterSaved'.
-
-	aResponse status ~= 200 ifTrue:[
-		MaplessError signal: 'Could not save ', self asString,':  ', aResponse responseText ].
 !
 
 onAfterUpdate: aResponse 
-
-	self trigger: 'afterUpdated'.
+	"This mapless got updated.
+	To keep things consistent, if the server was okay, then we locally save too but if
+	the API said it wasn't saved (any different than 200), then we restore this mapless state from local
+	and raise the exception"
 	
 	aResponse status ~= 200 ifTrue:[
-		MaplessError signal: 'Could not update ', self asString,':  ', aResponse responseText ].
+		self localFresh.
+		^ MaplessError signal: 'Could not update ', self asString,':  ', aResponse responseText ].
+
+	self localSave.
+
+	self trigger: 'afterUpdated'.
 ! !
 
 !Mapless methodsFor: 'testing'!
