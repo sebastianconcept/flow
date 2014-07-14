@@ -686,6 +686,9 @@ globals.WebSocketCommand);
 
 
 
+smalltalk.addClass('BadCommand', globals.WebSocketCommand, [], 'Flow-API');
+
+
 smalltalk.addClass('Echo', globals.WebSocketCommand, [], 'Flow-API');
 globals.Echo.comment="##WebSocketEcho\x0a\x0aIs a command that will send content to the server and the server will send back";
 

@@ -268,6 +268,10 @@ processOn: aClient
 	self subclassResponsibility
 ! !
 
+WebSocketCommand subclass: #BadCommand
+	instanceVariableNames: ''
+	package: 'Flow-API'!
+
 WebSocketCommand subclass: #Echo
 	instanceVariableNames: ''
 	package: 'Flow-API'!

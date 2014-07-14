@@ -4,7 +4,13 @@ process: aMessage on: socket
 	It's time to chew it."
 	
 	| command |
-	self halt.
-	command := FWAPIv10WebSocketCommand fromJSONString: aMessage.
-	"Transcript cr; show: command; flush."
-	command processOn: self from: socket.
+
+	[ command := FWAPIv10WebSocketCommand fromJSONString: aMessage ]
+		on: Error 
+		do:[ :x | 
+			command := BadCommand  new
+							problematic: aMessage;
+							exception: x asString;
+							yourself ].
+	
+	command processOn: self from: socket 

@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-API",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "BadCommand",
+	"pools" : [
+		 ],
+	"super" : "FWAPIv10WebSocketCommand",
+	"type" : "normal" }
