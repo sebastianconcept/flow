@@ -72,7 +72,7 @@ put: anURLString data: aDataString do: aBlock onError: errorBlock
 ! !
 
 API subclass: #WebSocketAPI
-	instanceVariableNames: 'socket uri onOpenBlock onErrorBlock'
+	instanceVariableNames: 'socket uri onOpenBlock onMessageBlock onErrorBlock'
 	package: 'Flow-API'!
 
 !WebSocketAPI methodsFor: 'accessing'!
@@ -85,6 +85,21 @@ onErrorBlock
 onErrorBlock: aBlock
 
 	onErrorBlock := aBlock
+!
+
+onMessage: anEvent
+
+	self trigger: 'messageReceived:' with: anEvent
+!
+
+onMessageBlock
+
+	^ onMessageBlock ifNil:[ onMessageBlock := [:anEvent | self onMessage: anEvent ] ]
+!
+
+onMessageBlock: aBlock
+
+	onMessageBlock := aBlock
 !
 
 onOpenBlock
@@ -143,7 +158,7 @@ initializeSocket
 	^ socket := (self makeSocketOn: self uri)
 					onopen: self onOpenBlock;
 					onclose: self onCloseBlock;
-					onmessage:[:anEvent | self onMessage: anEvent ];
+					onmessage: self onMessageBlock;
 					onerror: self onErrorBlock;
 					yourself
 !
@@ -159,6 +174,34 @@ Object subclass: #Client
 
 !Client methodsFor: 'accessing'!
 
+rest
+
+	^ rest ifNil:[ rest := RESTfulAPI new ]
+!
+
+webSocket
+
+	^ webSocket ifNil:[ self initializeWebSocket ]
+! !
+
+!Client methodsFor: 'actions'!
+
+connect
+
+	self webSocket connect
+! !
+
+!Client methodsFor: 'initialization'!
+
+initializeWebSocket 
+
+	^ webSocket := WebSocketAPI new
+					when: 'messageReceived:' do:[ :ev | self onMessage: ev ];
+					yourself
+! !
+
+!Client methodsFor: 'reactions'!
+
 onMessage: anEvent
 	"This client is receiving anEvent 
 	with a message comming from the server."
@@ -167,23 +210,6 @@ onMessage: anEvent
 	
 	command := WebSocketCommand for: anEvent data.
 	command react
-!
-
-rest
-
-	^ rest ifNil:[ rest := RESTfulAPI new ]
-!
-
-webSocket
-
-	^ webSocket ifNil:[ webSocket := WebSocketAPI new ]
-! !
-
-!Client methodsFor: 'actions'!
-
-connect
-
-	self webSocket connect
 ! !
 
 Mapless subclass: #WebSocketCommand

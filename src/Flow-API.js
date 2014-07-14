@@ -127,7 +127,7 @@ globals.RESTfulAPI);
 
 
 
-smalltalk.addClass('WebSocketAPI', globals.API, ['socket', 'uri', 'onOpenBlock', 'onErrorBlock'], 'Flow-API');
+smalltalk.addClass('WebSocketAPI', globals.API, ['socket', 'uri', 'onOpenBlock', 'onMessageBlock', 'onErrorBlock'], 'Flow-API');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "connect",
@@ -155,10 +155,7 @@ var $2,$3,$1;
 $2=self._makeSocketOn_(self._uri());
 _st($2)._onopen_(self._onOpenBlock());
 _st($2)._onclose_(self._onCloseBlock());
-_st($2)._onmessage_((function(anEvent){
-return smalltalk.withContext(function($ctx2) {
-return self._onMessage_(anEvent);
-}, function($ctx2) {$ctx2.fillBlock({anEvent:anEvent},$ctx1,1)})}));
+_st($2)._onmessage_(self._onMessageBlock());
 _st($2)._onerror_(self._onErrorBlock());
 $3=_st($2)._yourself();
 self["@socket"]=$3;
@@ -166,8 +163,8 @@ $1=self["@socket"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"initializeSocket",{},globals.WebSocketAPI)})},
 args: [],
-source: "initializeSocket\x0a\x09\x0a\x09^ socket := (self makeSocketOn: self uri)\x0a\x09\x09\x09\x09\x09onopen: self onOpenBlock;\x0a\x09\x09\x09\x09\x09onclose: self onCloseBlock;\x0a\x09\x09\x09\x09\x09onmessage:[:anEvent | self onMessage: anEvent ];\x0a\x09\x09\x09\x09\x09onerror: self onErrorBlock;\x0a\x09\x09\x09\x09\x09yourself\x09",
-messageSends: ["onopen:", "makeSocketOn:", "uri", "onOpenBlock", "onclose:", "onCloseBlock", "onmessage:", "onMessage:", "onerror:", "onErrorBlock", "yourself"],
+source: "initializeSocket\x0a\x09\x0a\x09^ socket := (self makeSocketOn: self uri)\x0a\x09\x09\x09\x09\x09onopen: self onOpenBlock;\x0a\x09\x09\x09\x09\x09onclose: self onCloseBlock;\x0a\x09\x09\x09\x09\x09onmessage: self onMessageBlock;\x0a\x09\x09\x09\x09\x09onerror: self onErrorBlock;\x0a\x09\x09\x09\x09\x09yourself\x09",
+messageSends: ["onopen:", "makeSocketOn:", "uri", "onOpenBlock", "onclose:", "onCloseBlock", "onmessage:", "onMessageBlock", "onerror:", "onErrorBlock", "yourself"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -245,6 +242,64 @@ self["@onErrorBlock"]=aBlock;
 return self},
 args: ["aBlock"],
 source: "onErrorBlock: aBlock\x0a\x0a\x09onErrorBlock := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onMessage:",
+protocol: 'accessing',
+fn: function (anEvent){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._trigger_with_("messageReceived:",anEvent);
+return self}, function($ctx1) {$ctx1.fill(self,"onMessage:",{anEvent:anEvent},globals.WebSocketAPI)})},
+args: ["anEvent"],
+source: "onMessage: anEvent\x0a\x0a\x09self trigger: 'messageReceived:' with: anEvent",
+messageSends: ["trigger:with:"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onMessageBlock",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@onMessageBlock"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@onMessageBlock"]=(function(anEvent){
+return smalltalk.withContext(function($ctx2) {
+return self._onMessage_(anEvent);
+}, function($ctx2) {$ctx2.fillBlock({anEvent:anEvent},$ctx1,2)})});
+$1=self["@onMessageBlock"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"onMessageBlock",{},globals.WebSocketAPI)})},
+args: [],
+source: "onMessageBlock\x0a\x0a\x09^ onMessageBlock ifNil:[ onMessageBlock := [:anEvent | self onMessage: anEvent ] ]",
+messageSends: ["ifNil:", "onMessage:"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onMessageBlock:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@onMessageBlock"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "onMessageBlock: aBlock\x0a\x0a\x09onMessageBlock := aBlock",
 messageSends: [],
 referencedClasses: []
 }),
@@ -417,8 +472,34 @@ globals.Client);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeWebSocket",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+function $WebSocketAPI(){return globals.WebSocketAPI||(typeof WebSocketAPI=="undefined"?nil:WebSocketAPI)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st($WebSocketAPI())._new();
+_st($2)._when_do_("messageReceived:",(function(ev){
+return smalltalk.withContext(function($ctx2) {
+return self._onMessage_(ev);
+}, function($ctx2) {$ctx2.fillBlock({ev:ev},$ctx1,1)})}));
+$3=_st($2)._yourself();
+self["@webSocket"]=$3;
+$1=self["@webSocket"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"initializeWebSocket",{},globals.Client)})},
+args: [],
+source: "initializeWebSocket \x0a\x0a\x09^ webSocket := WebSocketAPI new\x0a\x09\x09\x09\x09\x09when: 'messageReceived:' do:[ :ev | self onMessage: ev ];\x0a\x09\x09\x09\x09\x09yourself",
+messageSends: ["when:do:", "new", "onMessage:", "yourself"],
+referencedClasses: ["WebSocketAPI"]
+}),
+globals.Client);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "onMessage:",
-protocol: 'accessing',
+protocol: 'reactions',
 fn: function (anEvent){
 var self=this;
 var command;
@@ -465,22 +546,20 @@ selector: "webSocket",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $WebSocketAPI(){return globals.WebSocketAPI||(typeof WebSocketAPI=="undefined"?nil:WebSocketAPI)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1,$receiver;
 $2=self["@webSocket"];
 if(($receiver = $2) == null || $receiver.isNil){
-self["@webSocket"]=_st($WebSocketAPI())._new();
-$1=self["@webSocket"];
+$1=self._initializeWebSocket();
 } else {
 $1=$2;
 };
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"webSocket",{},globals.Client)})},
 args: [],
-source: "webSocket\x0a\x0a\x09^ webSocket ifNil:[ webSocket := WebSocketAPI new ]",
-messageSends: ["ifNil:", "new"],
-referencedClasses: ["WebSocketAPI"]
+source: "webSocket\x0a\x0a\x09^ webSocket ifNil:[ self initializeWebSocket ]",
+messageSends: ["ifNil:", "initializeWebSocket"],
+referencedClasses: []
 }),
 globals.Client);
 
