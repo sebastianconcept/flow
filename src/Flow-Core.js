@@ -177,15 +177,15 @@ fn: function (){
 var self=this;
 function $Router(){return globals.Router||(typeof Router=="undefined"?nil:Router)}
 return smalltalk.withContext(function($ctx1) { 
-self._render();
 _st("#loader"._asJQuery())._hide();
+self._render();
 _st(_st(window)._document())._title_(_st(self._class())._name());
 _st($Router())._observeHash();
 _st(self._session())._open();
 return self}, function($ctx1) {$ctx1.fill(self,"onOpen",{},globals.FlowAppController)})},
 args: [],
-source: "onOpen\x0a\x0a\x09self render.\x0a\x09\x0a\x09'#loader' asJQuery hide.\x0a\x09\x0a\x09window document title: self class name.\x0a\x09\x0a\x09Router observeHash.\x0a\x09\x0a\x09self session open",
-messageSends: ["render", "hide", "asJQuery", "title:", "document", "name", "class", "observeHash", "open", "session"],
+source: "onOpen\x0a\x09\x22All is loaded.\x22\x0a\x0a\x09'#loader' asJQuery hide.\x0a\x0a\x09self render.\x0a\x09\x0a\x09window document title: self class name.\x0a\x09\x0a\x09Router observeHash.\x0a\x09\x0a\x09self session open",
+messageSends: ["hide", "asJQuery", "render", "title:", "document", "name", "class", "observeHash", "open", "session"],
 referencedClasses: ["Router"]
 }),
 globals.FlowAppController);

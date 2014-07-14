@@ -98,10 +98,11 @@ initialize
 !FlowAppController methodsFor: 'reactions'!
 
 onOpen
+	"All is loaded."
+
+	'#loader' asJQuery hide.
 
 	self render.
-	
-	'#loader' asJQuery hide.
 	
 	window document title: self class name.
 	
