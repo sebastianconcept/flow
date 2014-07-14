@@ -18,9 +18,17 @@ trigger: anEventName with: anArgument
 	There you have it, it happened. 
 	Hey World, do something about this!!"
 	
+	^ self trigger: anEventName withAll: (Array with: anArgument)
+!
+
+trigger: anEventName withAll: someArguments
+	"Triggers anEventName in this object.
+	There you have it, it happened. 
+	Hey World, do something about this!!"
+	
 	^ (jQuery value: self) 
 			trigger: anEventName 
-			with: anArgument
+			withAll: someArguments
 !
 
 when: anEventName do: aReactionBlock

@@ -29,14 +29,33 @@ selector: "trigger:with:",
 protocol: '*Flow',
 fn: function (anEventName,anArgument){
 var self=this;
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(jQuery)._value_(self))._trigger_with_(anEventName,anArgument);
+$1=self._trigger_withAll_(anEventName,_st($Array())._with_(anArgument));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"trigger:with:",{anEventName:anEventName,anArgument:anArgument},globals.Object)})},
 args: ["anEventName", "anArgument"],
-source: "trigger: anEventName with: anArgument\x0a\x09\x22Triggers anEventName in this object.\x0a\x09There you have it, it happened. \x0a\x09Hey World, do something about this!\x22\x0a\x09\x0a\x09^ (jQuery value: self) \x0a\x09\x09\x09trigger: anEventName \x0a\x09\x09\x09with: anArgument",
-messageSends: ["trigger:with:", "value:"],
+source: "trigger: anEventName with: anArgument\x0a\x09\x22Triggers anEventName in this object.\x0a\x09There you have it, it happened. \x0a\x09Hey World, do something about this!\x22\x0a\x09\x0a\x09^ self trigger: anEventName withAll: (Array with: anArgument)",
+messageSends: ["trigger:withAll:", "with:"],
+referencedClasses: ["Array"]
+}),
+globals.Object);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "trigger:withAll:",
+protocol: '*Flow',
+fn: function (anEventName,someArguments){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(jQuery)._value_(self))._trigger_withAll_(anEventName,someArguments);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"trigger:withAll:",{anEventName:anEventName,someArguments:someArguments},globals.Object)})},
+args: ["anEventName", "someArguments"],
+source: "trigger: anEventName withAll: someArguments\x0a\x09\x22Triggers anEventName in this object.\x0a\x09There you have it, it happened. \x0a\x09Hey World, do something about this!\x22\x0a\x09\x0a\x09^ (jQuery value: self) \x0a\x09\x09\x09trigger: anEventName \x0a\x09\x09\x09withAll: someArguments",
+messageSends: ["trigger:withAll:", "value:"],
 referencedClasses: []
 }),
 globals.Object);

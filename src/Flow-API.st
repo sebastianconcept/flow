@@ -97,11 +97,6 @@ onErrorBlock: aBlock
 	onErrorBlock := aBlock
 !
 
-onMessage: anEvent
-
-	self trigger: 'messageReceived:' with: anEvent
-!
-
 onMessageBlock
 
 	^ onMessageBlock ifNil:[ onMessageBlock := [:anEvent | self onMessage: anEvent ] ]
@@ -151,7 +146,7 @@ disconnect
 		self reset]
 !
 
-makeSocketOn: anUri
+newWebSocketOn: anUri
 
 	<return new WebSocket(anUri)>
 !
@@ -162,15 +157,24 @@ reset
 !
 
 send: aString
-
+	"Sends aString to the other side of the wire."
+	
 	^ self socket send: aString
 !
 
 send: aString onError: aBlock
+	"Sends aString to the other side of the wire.
+	Evaluates aBlock if an exception happnes."
 
 	^ [ self socket send: aString ]
 		on: Error
 		do:[ :x | aBlock value: x ]
+!
+
+sendCommand: aCommand
+	"Sends aCommand to the other side of the wire."
+	
+	^ self send: aCommand asJSONString
 ! !
 
 !WebSocketAPI methodsFor: 'initialization'!
@@ -185,7 +189,7 @@ initialize
 
 initializeSocket
 	
-	^ socket := (self makeSocketOn: self uri)
+	^ socket := (self newWebSocketOn: self uri)
 					onopen: self onOpenBlock;
 					onclose: self onCloseBlock;
 					onmessage: self onMessageBlock;
@@ -197,6 +201,39 @@ initializeURI
 
 	^ uri := 'ws://',window location hostname,':21004/'
 ! !
+
+!WebSocketAPI methodsFor: 'reactions'!
+
+onMessage: anEvent
+	
+	self trigger: 'messageReceived:' with: anEvent
+! !
+
+!WebSocketAPI methodsFor: 'testing'!
+
+hasNotSocket
+	^ socket = nil
+!
+
+hasSocket
+	^ self hasNotSocket not
+!
+
+isConnected
+
+	^ self hasSocket and:[
+	socket readyState = 1 ]
+!
+
+isDisconnected
+
+	^ self hasSocket or:[
+	socket readyState ~= 1 ]
+! !
+
+Error subclass: #APIError
+	instanceVariableNames: ''
+	package: 'Flow-API'!
 
 Object subclass: #Client
 	instanceVariableNames: 'rest webSocket'
@@ -219,6 +256,14 @@ webSocket
 connect
 
 	self webSocket connect
+!
+
+newBadCommandOn: aWebSocketEvent  
+	"Answers a new instance of BadCommand based on aWebSocketEvent."
+
+	^ BadCommand new
+		problematic: aWebSocketEvent data;
+		yourself
 ! !
 
 !Client methodsFor: 'initialization'!
@@ -226,20 +271,20 @@ connect
 initializeWebSocket 
 
 	^ webSocket := WebSocketAPI new
-					when: 'messageReceived:' do:[ :ev | self onMessage: ev ];
+					when: 'messageReceived:' do:[ :ev :args | self onMessage: ev with: args ];
 					yourself
 ! !
 
 !Client methodsFor: 'reactions'!
 
-onMessage: anEvent
+onMessage: anEvent with: aWebSocketEvent
 	"This client is receiving anEvent 
 	with a message comming from the server."
 	
 	| command |
-	
-	command := WebSocketCommand for: anEvent data.
-	command react
+	command := WebSocketCommand for: aWebSocketEvent.
+	command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].
+	command reactOn: self
 ! !
 
 Mapless subclass: #WebSocketCommand
@@ -262,15 +307,37 @@ Note: they are Mapless only as convenience for traveling over the wire. You can 
 
 !WebSocketCommand methodsFor: 'actions'!
 
-processOn: aClient
-	"This command has arrived, time to process it."
+reactOn: aClient
+	"This command has arrived, time to react to it."
 	
 	self subclassResponsibility
+! !
+
+!WebSocketCommand class methodsFor: 'actions'!
+
+for: anEvent
+	"Answers a new instance of a command corresponding to
+	the message comming in anEvent or nil."
+
+	| parsed |
+
+	[ parsed := Mapless fromJSONString: anEvent data ]
+		on: Error
+		do:[ :x | parsed := nil ].
+	^ parsed
 ! !
 
 WebSocketCommand subclass: #BadCommand
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+
+!BadCommand methodsFor: 'actions'!
+
+reactOn: aClient
+	"This command has arrived, time to react to it."
+		
+	APIError signal: self asJSONString
+! !
 
 WebSocketCommand subclass: #Echo
 	instanceVariableNames: ''
@@ -279,6 +346,14 @@ WebSocketCommand subclass: #Echo
 ##WebSocketEcho
 
 Is a command that will send content to the server and the server will send back!
+
+!Echo methodsFor: 'actions'!
+
+reactOn: aClient
+	"This command has arrived, time to react to it."
+		
+	console log: self
+! !
 
 !Echo class methodsFor: 'actions'!
 
@@ -295,9 +370,9 @@ WebSocketCommand subclass: #Ping
 
 !Ping methodsFor: 'actions'!
 
-processOn: aClient
-	"This command has arrived, time to process it."
-	
+reactOn: aClient
+	"This command has arrived, time to react to it."
+		
 	self halt
 ! !
 
