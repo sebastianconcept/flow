@@ -260,3 +260,40 @@ They also carry any information necessary to achieve some reaction at their dest
 
 Note: they are Mapless only as convenience for traveling over the wire. You can if you like to but, originally, they are not meant to be persisted.!
 
+!WebSocketCommand methodsFor: 'actions'!
+
+processOn: aClient
+	"This command has arrived, time to process it."
+	
+	self subclassResponsibility
+! !
+
+WebSocketCommand subclass: #Echo
+	instanceVariableNames: ''
+	package: 'Flow-API'!
+!Echo commentStamp!
+##WebSocketEcho
+
+Is a command that will send content to the server and the server will send back!
+
+!Echo class methodsFor: 'actions'!
+
+for: aString
+
+	^ self new
+		content: aString;
+		yourself
+! !
+
+WebSocketCommand subclass: #Ping
+	instanceVariableNames: ''
+	package: 'Flow-API'!
+
+!Ping methodsFor: 'actions'!
+
+processOn: aClient
+	"This command has arrived, time to process it."
+	
+	self halt
+! !
+

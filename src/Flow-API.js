@@ -668,5 +668,65 @@ globals.Client);
 
 smalltalk.addClass('WebSocketCommand', globals.Mapless, [], 'Flow-API');
 globals.WebSocketCommand.comment="A WebSocketCommand is an abstraction.\x0a\x0aSubclasses are concrete objects that easily travel \x0a\x0a1. from the frontend to the backend and/or \x0a\x0a2. come from the backend to the frontend.\x0a\x0aThey have the concrete knowledge of how to react or who to delegate behaviour.\x0a\x0aThey also carry any information necessary to achieve some reaction at their destination.\x0a\x0aNote: they are Mapless only as convenience for traveling over the wire. You can if you like to but, originally, they are not meant to be persisted.";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "processOn:",
+protocol: 'actions',
+fn: function (aClient){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"processOn:",{aClient:aClient},globals.WebSocketCommand)})},
+args: ["aClient"],
+source: "processOn: aClient\x0a\x09\x22This command has arrived, time to process it.\x22\x0a\x09\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+globals.WebSocketCommand);
+
+
+
+smalltalk.addClass('Echo', globals.WebSocketCommand, [], 'Flow-API');
+globals.Echo.comment="##WebSocketEcho\x0a\x0aIs a command that will send content to the server and the server will send back";
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "for:",
+protocol: 'actions',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=self._new();
+_st($2)._content_(aString);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:",{aString:aString},globals.Echo.klass)})},
+args: ["aString"],
+source: "for: aString\x0a\x0a\x09^ self new\x0a\x09\x09content: aString;\x0a\x09\x09yourself",
+messageSends: ["content:", "new", "yourself"],
+referencedClasses: []
+}),
+globals.Echo.klass);
+
+
+smalltalk.addClass('Ping', globals.WebSocketCommand, [], 'Flow-API');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "processOn:",
+protocol: 'actions',
+fn: function (aClient){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._halt();
+return self}, function($ctx1) {$ctx1.fill(self,"processOn:",{aClient:aClient},globals.Ping)})},
+args: ["aClient"],
+source: "processOn: aClient\x0a\x09\x22This command has arrived, time to process it.\x22\x0a\x09\x0a\x09self halt",
+messageSends: ["halt"],
+referencedClasses: []
+}),
+globals.Ping);
+
 
 });
