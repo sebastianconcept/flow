@@ -180,13 +180,13 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-self["@uri"]=_st("ws://".__comma(_st(_st(window)._location())._hostname())).__comma(":21004/socket");
+self["@uri"]=_st("ws://".__comma(_st(_st(window)._location())._hostname())).__comma(":21004/");
 $ctx1.sendIdx[","]=1;
 $1=self["@uri"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"initializeURI",{},globals.WebSocketAPI)})},
 args: [],
-source: "initializeURI\x0a\x0a\x09^ uri := 'ws://',window location hostname,':21004/socket'",
+source: "initializeURI\x0a\x0a\x09^ uri := 'ws://',window location hostname,':21004/'",
 messageSends: [",", "hostname", "location"],
 referencedClasses: []
 }),

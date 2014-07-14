@@ -150,7 +150,7 @@ initializeSocket
 
 initializeURI
 
-	^ uri := 'ws://',window location hostname,':21004/socket'
+	^ uri := 'ws://',window location hostname,':21004/'
 ! !
 
 Object subclass: #Client
