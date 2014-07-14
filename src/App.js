@@ -4,5 +4,6 @@ smalltalk.addPackage('App');
 smalltalk.packages["App"].transport = {"type":"amd","amdNamespace":"app"};
 
 smalltalk.addClass('AppController', globals.FlowAppController, [], 'App');
+globals.AppController.comment="##AppController\x0a\x0aThe AppController is the main/root controller of your flow-based application.";
 
 });

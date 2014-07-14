@@ -75,8 +75,15 @@ isValidFor: anURI
 ! !
 
 RouteableController subclass: #FlowAppController
-	instanceVariableNames: ''
+	instanceVariableNames: 'session'
 	package: 'Flow-Core'!
+
+!FlowAppController methodsFor: 'accessing'!
+
+session
+
+	^ session ifNil:[ session := Session new ]
+! !
 
 !FlowAppController methodsFor: 'initialization'!
 
@@ -99,6 +106,8 @@ onOpen
 	window document title: self class name.
 	
 	Router observeHash.
+	
+	self session open
 ! !
 
 !FlowAppController class methodsFor: 'actions'!
@@ -129,6 +138,10 @@ RouteableController subclass: #NotFoundController
 	package: 'Flow-Core'!
 
 Mapless subclass: #Model
+	instanceVariableNames: ''
+	package: 'Flow-Core'!
+
+Model subclass: #User
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
 
@@ -174,6 +187,26 @@ onHashChanged
 ! !
 
 Object subclass: #Session
-	instanceVariableNames: 'user client'
+	instanceVariableNames: 'id user social api'
 	package: 'Flow-Core'!
+
+!Session methodsFor: 'accessing'!
+
+api
+
+	^ api ifNil:[ api := Client new ]
+!
+
+asJSONString
+
+	^ HasedCollection new
+		at: 'id' put: self id;
+		at: 'userId' put: self user id;
+		asJSONString
+!
+
+open
+
+	self api connect
+! !
 
