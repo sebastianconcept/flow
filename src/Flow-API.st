@@ -72,10 +72,20 @@ put: anURLString data: aDataString do: aBlock onError: errorBlock
 ! !
 
 API subclass: #WebSocketAPI
-	instanceVariableNames: 'socket uri onOpenBlock onMessageBlock onErrorBlock'
+	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock'
 	package: 'Flow-API'!
 
 !WebSocketAPI methodsFor: 'accessing'!
+
+onCloseBlock
+
+	^ onCloseBlock ifNil:[ onCloseBlock := [ self reset ] ]
+!
+
+onCloseBlock: aBlock
+
+	onCloseBlock := aBlock
+!
 
 onErrorBlock
 
@@ -131,12 +141,24 @@ uri: aString
 
 connect
 
-	self initializeSocket
+	self initializeSocket.
+!
+
+disconnect
+
+	socket ifNotNil:[
+		socket close.
+		self reset]
 !
 
 makeSocketOn: anUri
 
 	<return new WebSocket(anUri)>
+!
+
+reset
+		
+	socket := nil
 !
 
 send: aString
@@ -152,6 +174,14 @@ send: aString onError: aBlock
 ! !
 
 !WebSocketAPI methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	window onbeforeunload:[
+		self reset ]
+!
 
 initializeSocket
 	

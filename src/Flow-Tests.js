@@ -19,17 +19,17 @@ $4=_st(window)._app();
 $ctx2.sendIdx["app"]=1;
 $3=_st($4)._session();
 $ctx2.sendIdx["session"]=1;
-$2=_st($3)._client();
-$ctx2.sendIdx["client"]=1;
+$2=_st($3)._api();
+$ctx2.sendIdx["api"]=1;
 $1=_st($2)._webSocket();
 $ctx2.sendIdx["webSocket"]=1;
 return _st($1)._connect();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}),$Error());
-self._assert_(_st(_st(_st(_st(_st(_st(window)._app())._session())._client())._webSocket())._socket())._notNil());
+self._assert_(_st(_st(_st(_st(_st(_st(window)._app())._session())._api())._webSocket())._socket())._notNil());
 return self}, function($ctx1) {$ctx1.fill(self,"testConnect",{},globals.FlowTest)})},
 args: [],
-source: "testConnect\x0a\x0a\x09self shouldnt:[\x0a\x09\x09window app session client webSocket connect ] raise: Error.\x0a\x09\x0a\x09self assert: window app session client webSocket socket notNil",
-messageSends: ["shouldnt:raise:", "connect", "webSocket", "client", "session", "app", "assert:", "notNil", "socket"],
+source: "testConnect\x0a\x0a\x09self shouldnt:[\x0a\x09\x09window app session api webSocket connect ] raise: Error.\x0a\x09\x0a\x09self assert: window app session api webSocket socket notNil",
+messageSends: ["shouldnt:raise:", "connect", "webSocket", "api", "session", "app", "assert:", "notNil", "socket"],
 referencedClasses: ["Error"]
 }),
 globals.FlowTest);

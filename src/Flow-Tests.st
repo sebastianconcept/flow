@@ -8,8 +8,8 @@ TestCase subclass: #FlowTest
 testConnect
 
 	self shouldnt:[
-		window app session client webSocket connect ] raise: Error.
+		window app session api webSocket connect ] raise: Error.
 	
-	self assert: window app session client webSocket socket notNil
+	self assert: window app session api webSocket socket notNil
 ! !
 

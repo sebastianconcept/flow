@@ -127,7 +127,7 @@ globals.RESTfulAPI);
 
 
 
-smalltalk.addClass('WebSocketAPI', globals.API, ['socket', 'uri', 'onOpenBlock', 'onMessageBlock', 'onErrorBlock'], 'Flow-API');
+smalltalk.addClass('WebSocketAPI', globals.API, ['socket', 'uri', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock'], 'Flow-API');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "connect",
@@ -138,8 +138,52 @@ return smalltalk.withContext(function($ctx1) {
 self._initializeSocket();
 return self}, function($ctx1) {$ctx1.fill(self,"connect",{},globals.WebSocketAPI)})},
 args: [],
-source: "connect\x0a\x0a\x09self initializeSocket",
+source: "connect\x0a\x0a\x09self initializeSocket.\x0a\x09",
 messageSends: ["initializeSocket"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "disconnect",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$receiver;
+$1=self["@socket"];
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
+_st(self["@socket"])._close();
+self._reset();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"disconnect",{},globals.WebSocketAPI)})},
+args: [],
+source: "disconnect\x0a\x0a\x09socket ifNotNil:[\x0a\x09\x09socket close.\x0a\x09\x09self reset]",
+messageSends: ["ifNotNil:", "close", "reset"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.WebSocketAPI.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+_st(window)._onbeforeunload_((function(){
+return smalltalk.withContext(function($ctx2) {
+return self._reset();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.WebSocketAPI)})},
+args: [],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09window onbeforeunload:[\x0a\x09\x09self reset ]",
+messageSends: ["initialize", "onbeforeunload:", "reset"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -200,6 +244,48 @@ return new WebSocket(anUri);
 return self}, function($ctx1) {$ctx1.fill(self,"makeSocketOn:",{anUri:anUri},globals.WebSocketAPI)})},
 args: ["anUri"],
 source: "makeSocketOn: anUri\x0a\x0a\x09<return new WebSocket(anUri)>\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onCloseBlock",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@onCloseBlock"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@onCloseBlock"]=(function(){
+return smalltalk.withContext(function($ctx2) {
+return self._reset();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})});
+$1=self["@onCloseBlock"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"onCloseBlock",{},globals.WebSocketAPI)})},
+args: [],
+source: "onCloseBlock\x0a\x0a\x09^ onCloseBlock ifNil:[ onCloseBlock := [ self reset ] ]",
+messageSends: ["ifNil:", "reset"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onCloseBlock:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@onCloseBlock"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "onCloseBlock: aBlock\x0a\x0a\x09onCloseBlock := aBlock",
 messageSends: [],
 referencedClasses: []
 }),
@@ -342,6 +428,21 @@ self["@onOpenBlock"]=aBlock;
 return self},
 args: ["aBlock"],
 source: "onOpenBlock: aBlock\x0a\x0a\x09onOpenBlock := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "reset",
+protocol: 'actions',
+fn: function (){
+var self=this;
+self["@socket"]=nil;
+return self},
+args: [],
+source: "reset\x0a\x09\x09\x0a\x09socket := nil",
 messageSends: [],
 referencedClasses: []
 }),
