@@ -661,6 +661,43 @@ onAfterReadSome: aResponse
 	^ self manyFromJSON: aResponse responseText
 ! !
 
+Mapless subclass: #MaplessModel
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+!MaplessModel methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+
+	self initializeInstanceVersion.
+	self id: self class newUUID.
+! !
+
+!MaplessModel methodsFor: 'reactions'!
+
+onAboutToDelete
+
+	super onAboutToDelete.
+	
+	self deletedOn: Date now
+!
+
+onAboutToSave
+
+	super onAboutToSave.
+	
+	self modifiedOn: Date now
+!
+
+onAboutToUpdate
+
+	super onAboutToUpdate.
+	
+	self modifiedOn: Date now
+! !
+
 Error subclass: #MaplessError
 	instanceVariableNames: ''
 	package: 'MiniMapless'!

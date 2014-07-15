@@ -1664,6 +1664,85 @@ referencedClasses: []
 globals.Mapless.klass);
 
 
+smalltalk.addClass('MaplessModel', globals.Mapless, [], 'MiniMapless');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.MaplessModel.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+self._initializeInstanceVersion();
+self._id_(_st(self._class())._newUUID());
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.MaplessModel)})},
+args: [],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x0a\x09self initializeInstanceVersion.\x0a\x09self id: self class newUUID.",
+messageSends: ["initialize", "initializeInstanceVersion", "id:", "newUUID", "class"],
+referencedClasses: []
+}),
+globals.MaplessModel);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAboutToDelete",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+function $Date(){return globals.Date||(typeof Date=="undefined"?nil:Date)}
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.MaplessModel.superclass.fn.prototype._onAboutToDelete.apply(_st(self), []));
+$ctx1.supercall = false;
+self._deletedOn_(_st($Date())._now());
+return self}, function($ctx1) {$ctx1.fill(self,"onAboutToDelete",{},globals.MaplessModel)})},
+args: [],
+source: "onAboutToDelete\x0a\x0a\x09super onAboutToDelete.\x0a\x09\x0a\x09self deletedOn: Date now",
+messageSends: ["onAboutToDelete", "deletedOn:", "now"],
+referencedClasses: ["Date"]
+}),
+globals.MaplessModel);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAboutToSave",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+function $Date(){return globals.Date||(typeof Date=="undefined"?nil:Date)}
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.MaplessModel.superclass.fn.prototype._onAboutToSave.apply(_st(self), []));
+$ctx1.supercall = false;
+self._modifiedOn_(_st($Date())._now());
+return self}, function($ctx1) {$ctx1.fill(self,"onAboutToSave",{},globals.MaplessModel)})},
+args: [],
+source: "onAboutToSave\x0a\x0a\x09super onAboutToSave.\x0a\x09\x0a\x09self modifiedOn: Date now\x09",
+messageSends: ["onAboutToSave", "modifiedOn:", "now"],
+referencedClasses: ["Date"]
+}),
+globals.MaplessModel);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAboutToUpdate",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+function $Date(){return globals.Date||(typeof Date=="undefined"?nil:Date)}
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.MaplessModel.superclass.fn.prototype._onAboutToUpdate.apply(_st(self), []));
+$ctx1.supercall = false;
+self._modifiedOn_(_st($Date())._now());
+return self}, function($ctx1) {$ctx1.fill(self,"onAboutToUpdate",{},globals.MaplessModel)})},
+args: [],
+source: "onAboutToUpdate\x0a\x0a\x09super onAboutToUpdate.\x0a\x09\x0a\x09self modifiedOn: Date now\x09",
+messageSends: ["onAboutToUpdate", "modifiedOn:", "now"],
+referencedClasses: ["Date"]
+}),
+globals.MaplessModel);
+
+
+
 smalltalk.addClass('MaplessError', globals.Error, [], 'MiniMapless');
 
 });
