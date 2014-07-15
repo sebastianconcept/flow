@@ -72,10 +72,16 @@ put: anURLString data: aDataString do: aBlock onError: errorBlock
 ! !
 
 API subclass: #WebSocketAPI
-	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock'
+	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter toAnswer'
 	package: 'Flow-API'!
 
 !WebSocketAPI methodsFor: 'accessing'!
+
+counter
+	"Answers the counter used in the ids the commands (instead of less compact UUIDs)"
+
+	^ counter ifNil:[ counter := 1 ]
+!
 
 onCloseBlock
 
@@ -122,6 +128,14 @@ socket
 	^ socket ifNil:[ self initializeSocket ]
 !
 
+toAnswer
+	"Answers the dictionary of commands pending for an answer.
+	The convention is to use the ids provided by the counte as keys
+	and the callbacks on the values."
+	
+	^ toAnswer ifNil:[ toAnswer := Dictionary new ]
+!
+
 uri
 
 	^ uri ifNil:[ self initializeURI ]
@@ -133,6 +147,20 @@ uri: aString
 ! !
 
 !WebSocketAPI methodsFor: 'actions'!
+
+answerOn: aWebSocketCommand
+	"Evluates the callback waiting for aWebSocketCommand using it
+	and removes it from the dictionary because 
+	is not pending for it anymore."
+	
+	(self toAnswer 
+		at: aWebSocketCommand id
+		ifAbsent:[ ^ nil ]) value: aWebSocketCommand.
+
+	self toAnswer 
+		removeKey: aWebSocketCommand id
+		ifAbsent:[ ]
+!
 
 connect
 	"Makes a connection.
@@ -160,6 +188,12 @@ newWebSocketOn: anUri
 	<return new WebSocket(anUri)>
 !
 
+nextId
+	"Increments the counter and answers the value."
+	
+	^ counter := self counter + 1
+!
+
 reset
 		
 	socket := nil
@@ -177,17 +211,42 @@ send: aString onError: aBlock
 	"Sends aString to the other side of the wire.
 	Evaluates aBlock if an exception happnes."
 
-	^ [ self socket send: aString ]
+	[ self socket send: aString ]
 		on: Error
 		do:[ :x | aBlock value: x ]
 !
 
 sendCommand: aCommand
-	"Sends aCommand to the other side of the wire."
+	"Sends aCommand to the other side of the wire.
+	Will throw an APIError if an exception happens"
+	
+	^ self 
+		sendCommand: aCommand
+		onError:[ :x | APIError signal: x asString ]
+!
+
+sendCommand: aCommand do: aBlock
+	"Sends aCommand to the other side of the wire.
+	Evaluates aBlock when the answer arrives."
+	
+	^ self 
+		sendCommand: aCommand 
+		do: aBlock
+		onError: [ :x | APIError signal: x asString ]
+!
+
+sendCommand: aCommand do: anAnswerBlock onError: aBlock
+	"Sends aCommand to the other side of the wire.
+	Registers anAnswerBlock to be evaluated later when the answer arrives.
+	Evaluates aBlock if there is an exception while doing it."
+	
+	self nextId.
+	aCommand id: self counter.
+	self toAnswer at: self counter put: anAnswerBlock.
 	
 	^ self 
 		send: aCommand asJSONString
-		onError:[ :x | APIError signal: x asString ]
+		onError: aBlock
 !
 
 sendCommand: aCommand onError: aBlock
@@ -195,7 +254,8 @@ sendCommand: aCommand onError: aBlock
 	Evaluates aBlock if there is an exception while doing it."
 	
 	^ self 
-		send: aCommand asJSONString
+		sendCommand: aCommand 
+		do: [ "ignoring answer" ] 
 		onError: aBlock
 ! !
 
@@ -299,7 +359,7 @@ initializeWebSocket
 
 !Client methodsFor: 'reactions'!
 
-onMessage: anEvent with: aWebSocketEvent
+onMessage: anEvent with: aWebSocketEvent 
 	"This client is receiving anEvent 
 	with a message comming from the server."
 	
@@ -329,8 +389,14 @@ Note: they are Mapless only as convenience for traveling over the wire. You can 
 
 !WebSocketCommand methodsFor: 'actions'!
 
+answerOn:  aClient
+	"Answers the API callback waiting for this command's answer."
+	
+	aClient webSocket answerOn: self
+!
+
 reactOn: aClient
-	"This command has arrived, time to react to it."
+	"This command generated somewhere has arrived to this end, time to react to it."
 	
 	self subclassResponsibility
 ! !
@@ -356,8 +422,10 @@ WebSocketCommand subclass: #BadCommand
 !BadCommand methodsFor: 'actions'!
 
 reactOn: aClient
-	"This command has arrived, time to react to it."
-		
+	"This command generated somewhere has arrived to this end, time to react to it."
+
+	self answerOn: aClient.
+
 	APIError signal: self asJSONString
 ! !
 
@@ -372,9 +440,9 @@ Is a command that will send content to the server and the server will send back!
 !Echo methodsFor: 'actions'!
 
 reactOn: aClient
-	"This command has arrived, time to react to it."
-		
-	console log: self
+	"This command generated somewhere has arrived to this end, time to react to it."
+				
+	self answerOn: aClient.
 ! !
 
 !Echo class methodsFor: 'actions'!
@@ -393,8 +461,8 @@ WebSocketCommand subclass: #Ping
 !Ping methodsFor: 'actions'!
 
 reactOn: aClient
-	"This command has arrived, time to react to it."
-		
-	self halt
+	"This command generated somewhere has arrived to this end, time to react to it."
+				
+	self answerOn: aClient.
 ! !
 

@@ -127,7 +127,37 @@ globals.RESTfulAPI);
 
 
 
-smalltalk.addClass('WebSocketAPI', globals.API, ['socket', 'uri', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock'], 'Flow-API');
+smalltalk.addClass('WebSocketAPI', globals.API, ['socket', 'uri', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock', 'counter', 'toAnswer'], 'Flow-API');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "answerOn:",
+protocol: 'actions',
+fn: function (aWebSocketCommand){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+var $early={};
+try {
+$2=self._toAnswer();
+$ctx1.sendIdx["toAnswer"]=1;
+$3=_st(aWebSocketCommand)._id();
+$ctx1.sendIdx["id"]=1;
+$1=_st($2)._at_ifAbsent_($3,(function(){
+throw $early=[nil];
+}));
+_st($1)._value_(aWebSocketCommand);
+_st(self._toAnswer())._removeKey_ifAbsent_(_st(aWebSocketCommand)._id(),(function(){
+}));
+return self}
+catch(e) {if(e===$early)return e[0]; throw e}
+}, function($ctx1) {$ctx1.fill(self,"answerOn:",{aWebSocketCommand:aWebSocketCommand},globals.WebSocketAPI)})},
+args: ["aWebSocketCommand"],
+source: "answerOn: aWebSocketCommand\x0a\x09\x22Evluates the callback waiting for aWebSocketCommand using it\x0a\x09and removes it from the dictionary because \x0a\x09is not pending for it anymore.\x22\x0a\x09\x0a\x09(self toAnswer \x0a\x09\x09at: aWebSocketCommand id\x0a\x09\x09ifAbsent:[ ^ nil ]) value: aWebSocketCommand.\x0a\x0a\x09self toAnswer \x0a\x09\x09removeKey: aWebSocketCommand id\x0a\x09\x09ifAbsent:[ ]\x09\x09",
+messageSends: ["value:", "at:ifAbsent:", "toAnswer", "id", "removeKey:ifAbsent:"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "connect",
@@ -146,6 +176,30 @@ return self}, function($ctx1) {$ctx1.fill(self,"connect",{},globals.WebSocketAPI
 args: [],
 source: "connect\x0a\x09\x22Makes a connection.\x0a\x09Remarks:\x0a\x091. if connected already, it will do nothing\x0a\x092. it will disconnect if there is an unconnected socket.\x22\x0a\x0a\x09self isConnected ifTrue:[ ^self ].\x0a\x0a\x09self disconnect.\x0a\x09self initializeSocket.\x0a\x09",
 messageSends: ["ifTrue:", "isConnected", "disconnect", "initializeSocket"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "counter",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@counter"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@counter"]=(1);
+$1=self["@counter"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"counter",{},globals.WebSocketAPI)})},
+args: [],
+source: "counter\x0a\x09\x22Answers the counter used in the ids the commands (instead of less compact UUIDs)\x22\x0a\x0a\x09^ counter ifNil:[ counter := 1 ]",
+messageSends: ["ifNil:"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -327,6 +381,25 @@ return self}, function($ctx1) {$ctx1.fill(self,"newWebSocketOn:",{anUri:anUri},g
 args: ["anUri"],
 source: "newWebSocketOn: anUri\x0a\x0a\x09<return new WebSocket(anUri)>\x0a\x09",
 messageSends: [],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextId",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@counter"]=_st(self._counter()).__plus((1));
+$1=self["@counter"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"nextId",{},globals.WebSocketAPI)})},
+args: [],
+source: "nextId\x0a\x09\x22Increments the counter and answers the value.\x22\x0a\x09\x0a\x09^ counter := self counter + 1",
+messageSends: ["+", "counter"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -560,18 +633,16 @@ fn: function (aString,aBlock){
 var self=this;
 function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st((function(){
+_st((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self._socket())._send_(aString);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}))._on_do_($Error(),(function(x){
 return smalltalk.withContext(function($ctx2) {
 return _st(aBlock)._value_(x);
 }, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"send:onError:",{aString:aString,aBlock:aBlock},globals.WebSocketAPI)})},
+return self}, function($ctx1) {$ctx1.fill(self,"send:onError:",{aString:aString,aBlock:aBlock},globals.WebSocketAPI)})},
 args: ["aString", "aBlock"],
-source: "send: aString onError: aBlock\x0a\x09\x22Sends aString to the other side of the wire.\x0a\x09Evaluates aBlock if an exception happnes.\x22\x0a\x0a\x09^ [ self socket send: aString ]\x0a\x09\x09on: Error\x0a\x09\x09do:[ :x | aBlock value: x ]",
+source: "send: aString onError: aBlock\x0a\x09\x22Sends aString to the other side of the wire.\x0a\x09Evaluates aBlock if an exception happnes.\x22\x0a\x0a\x09[ self socket send: aString ]\x0a\x09\x09on: Error\x0a\x09\x09do:[ :x | aBlock value: x ]\x0a\x09",
 messageSends: ["on:do:", "send:", "socket", "value:"],
 referencedClasses: ["Error"]
 }),
@@ -586,16 +657,61 @@ var self=this;
 function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._send_onError_(_st(aCommand)._asJSONString(),(function(x){
+$1=self._sendCommand_onError_(aCommand,(function(x){
 return smalltalk.withContext(function($ctx2) {
 return _st($APIError())._signal_(_st(x)._asString());
 }, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"sendCommand:",{aCommand:aCommand},globals.WebSocketAPI)})},
 args: ["aCommand"],
-source: "sendCommand: aCommand\x0a\x09\x22Sends aCommand to the other side of the wire.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09send: aCommand asJSONString\x0a\x09\x09onError:[ :x | APIError signal: x asString ]",
-messageSends: ["send:onError:", "asJSONString", "signal:", "asString"],
+source: "sendCommand: aCommand\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Will throw an APIError if an exception happens\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09sendCommand: aCommand\x0a\x09\x09onError:[ :x | APIError signal: x asString ]",
+messageSends: ["sendCommand:onError:", "signal:", "asString"],
 referencedClasses: ["APIError"]
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sendCommand:do:",
+protocol: 'actions',
+fn: function (aCommand,aBlock){
+var self=this;
+function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._sendCommand_do_onError_(aCommand,aBlock,(function(x){
+return smalltalk.withContext(function($ctx2) {
+return _st($APIError())._signal_(_st(x)._asString());
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sendCommand:do:",{aCommand:aCommand,aBlock:aBlock},globals.WebSocketAPI)})},
+args: ["aCommand", "aBlock"],
+source: "sendCommand: aCommand do: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09sendCommand: aCommand \x0a\x09\x09do: aBlock\x0a\x09\x09onError: [ :x | APIError signal: x asString ]",
+messageSends: ["sendCommand:do:onError:", "signal:", "asString"],
+referencedClasses: ["APIError"]
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sendCommand:do:onError:",
+protocol: 'actions',
+fn: function (aCommand,anAnswerBlock,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+self._nextId();
+$1=self._counter();
+$ctx1.sendIdx["counter"]=1;
+_st(aCommand)._id_($1);
+_st(self._toAnswer())._at_put_(self._counter(),anAnswerBlock);
+$2=self._send_onError_(_st(aCommand)._asJSONString(),aBlock);
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"sendCommand:do:onError:",{aCommand:aCommand,anAnswerBlock:anAnswerBlock,aBlock:aBlock},globals.WebSocketAPI)})},
+args: ["aCommand", "anAnswerBlock", "aBlock"],
+source: "sendCommand: aCommand do: anAnswerBlock onError: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Registers anAnswerBlock to be evaluated later when the answer arrives.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09self nextId.\x0a\x09aCommand id: self counter.\x0a\x09self toAnswer at: self counter put: anAnswerBlock.\x0a\x09\x0a\x09^ self \x0a\x09\x09send: aCommand asJSONString\x0a\x09\x09onError: aBlock",
+messageSends: ["nextId", "id:", "counter", "at:put:", "toAnswer", "send:onError:", "asJSONString"],
+referencedClasses: []
 }),
 globals.WebSocketAPI);
 
@@ -607,12 +723,13 @@ fn: function (aCommand,aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._send_onError_(_st(aCommand)._asJSONString(),aBlock);
+$1=self._sendCommand_do_onError_(aCommand,(function(){
+}),aBlock);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"sendCommand:onError:",{aCommand:aCommand,aBlock:aBlock},globals.WebSocketAPI)})},
 args: ["aCommand", "aBlock"],
-source: "sendCommand: aCommand onError: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09send: aCommand asJSONString\x0a\x09\x09onError: aBlock",
-messageSends: ["send:onError:", "asJSONString"],
+source: "sendCommand: aCommand onError: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09sendCommand: aCommand \x0a\x09\x09do: [ \x22ignoring answer\x22 ] \x0a\x09\x09onError: aBlock",
+messageSends: ["sendCommand:do:onError:"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -637,6 +754,31 @@ args: [],
 source: "socket\x0a\x0a\x09^ socket ifNil:[ self initializeSocket ]",
 messageSends: ["ifNil:", "initializeSocket"],
 referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toAnswer",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@toAnswer"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@toAnswer"]=_st($Dictionary())._new();
+$1=self["@toAnswer"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"toAnswer",{},globals.WebSocketAPI)})},
+args: [],
+source: "toAnswer\x0a\x09\x22Answers the dictionary of commands pending for an answer.\x0a\x09The convention is to use the ids provided by the counte as keys\x0a\x09and the callbacks on the values.\x22\x0a\x09\x0a\x09^ toAnswer ifNil:[ toAnswer := Dictionary new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: ["Dictionary"]
 }),
 globals.WebSocketAPI);
 
@@ -769,7 +911,7 @@ $1;
 _st(command)._reactOn_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"onMessage:with:",{anEvent:anEvent,aWebSocketEvent:aWebSocketEvent,command:command},globals.Client)})},
 args: ["anEvent", "aWebSocketEvent"],
-source: "onMessage: anEvent with: aWebSocketEvent\x0a\x09\x22This client is receiving anEvent \x0a\x09with a message comming from the server.\x22\x0a\x09\x0a\x09| command |\x0a\x09command := WebSocketCommand for: aWebSocketEvent.\x0a\x09command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].\x0a\x09command reactOn: self",
+source: "onMessage: anEvent with: aWebSocketEvent \x0a\x09\x22This client is receiving anEvent \x0a\x09with a message comming from the server.\x22\x0a\x09\x0a\x09| command |\x0a\x09command := WebSocketCommand for: aWebSocketEvent.\x0a\x09command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].\x0a\x09command reactOn: self ",
 messageSends: ["for:", "ifNil:", "newBadCommandOn:", "reactOn:"],
 referencedClasses: ["WebSocketCommand"]
 }),
@@ -829,6 +971,22 @@ smalltalk.addClass('WebSocketCommand', globals.Mapless, [], 'Flow-API');
 globals.WebSocketCommand.comment="A WebSocketCommand is an abstraction.\x0a\x0aSubclasses are concrete objects that easily travel \x0a\x0a1. from the frontend to the backend and/or \x0a\x0a2. come from the backend to the frontend.\x0a\x0aThey have the concrete knowledge of how to react or who to delegate behaviour.\x0a\x0aThey also carry any information necessary to achieve some reaction at their destination.\x0a\x0aNote: they are Mapless only as convenience for traveling over the wire. You can if you like to but, originally, they are not meant to be persisted.";
 smalltalk.addMethod(
 smalltalk.method({
+selector: "answerOn:",
+protocol: 'actions',
+fn: function (aClient){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(aClient)._webSocket())._answerOn_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"answerOn:",{aClient:aClient},globals.WebSocketCommand)})},
+args: ["aClient"],
+source: "answerOn:  aClient\x0a\x09\x22Answers the API callback waiting for this command's answer.\x22\x0a\x09\x0a\x09aClient webSocket answerOn: self",
+messageSends: ["answerOn:", "webSocket"],
+referencedClasses: []
+}),
+globals.WebSocketCommand);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "reactOn:",
 protocol: 'actions',
 fn: function (aClient){
@@ -837,7 +995,7 @@ return smalltalk.withContext(function($ctx1) {
 self._subclassResponsibility();
 return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.WebSocketCommand)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command has arrived, time to react to it.\x22\x0a\x09\x0a\x09self subclassResponsibility",
+source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
@@ -883,11 +1041,12 @@ fn: function (aClient){
 var self=this;
 function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
 return smalltalk.withContext(function($ctx1) { 
+self._answerOn_(aClient);
 _st($APIError())._signal_(self._asJSONString());
 return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.BadCommand)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command has arrived, time to react to it.\x22\x0a\x09\x09\x0a\x09APIError signal: self asJSONString",
-messageSends: ["signal:", "asJSONString"],
+source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x0a\x09self answerOn: aClient.\x0a\x0a\x09APIError signal: self asJSONString",
+messageSends: ["answerOn:", "signal:", "asJSONString"],
 referencedClasses: ["APIError"]
 }),
 globals.BadCommand);
@@ -903,11 +1062,11 @@ protocol: 'actions',
 fn: function (aClient){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_(self);
+self._answerOn_(aClient);
 return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.Echo)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command has arrived, time to react to it.\x22\x0a\x09\x09\x0a\x09console log: self ",
-messageSends: ["log:"],
+source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09",
+messageSends: ["answerOn:"],
 referencedClasses: []
 }),
 globals.Echo);
@@ -943,11 +1102,11 @@ protocol: 'actions',
 fn: function (aClient){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._halt();
+self._answerOn_(aClient);
 return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.Ping)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command has arrived, time to react to it.\x22\x0a\x09\x09\x0a\x09self halt",
-messageSends: ["halt"],
+source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09",
+messageSends: ["answerOn:"],
 referencedClasses: []
 }),
 globals.Ping);
