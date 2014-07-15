@@ -536,15 +536,19 @@ selector: "send:",
 protocol: 'actions',
 fn: function (aString){
 var self=this;
+function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._socket())._send_(aString);
+$1=_st(self._socket())._send_onError_(aString,(function(x){
+return smalltalk.withContext(function($ctx2) {
+return _st($APIError())._signal_(_st(x)._asString());
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"send:",{aString:aString},globals.WebSocketAPI)})},
 args: ["aString"],
-source: "send: aString\x0a\x09\x22Sends aString to the other side of the wire.\x22\x0a\x09\x0a\x09^ self socket send: aString",
-messageSends: ["send:", "socket"],
-referencedClasses: []
+source: "send: aString\x0a\x09\x22Sends aString to the other side of the wire.\x22\x0a\x09\x0a\x09^ self socket \x0a\x09\x09send: aString\x0a\x09\x09onError:[ :x | APIError signal: x asString ]",
+messageSends: ["send:onError:", "socket", "signal:", "asString"],
+referencedClasses: ["APIError"]
 }),
 globals.WebSocketAPI);
 
@@ -579,14 +583,36 @@ selector: "sendCommand:",
 protocol: 'actions',
 fn: function (aCommand){
 var self=this;
+function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._send_(_st(aCommand)._asJSONString());
+$1=self._send_onError_(_st(aCommand)._asJSONString(),(function(x){
+return smalltalk.withContext(function($ctx2) {
+return _st($APIError())._signal_(_st(x)._asString());
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"sendCommand:",{aCommand:aCommand},globals.WebSocketAPI)})},
 args: ["aCommand"],
-source: "sendCommand: aCommand\x0a\x09\x22Sends aCommand to the other side of the wire.\x22\x0a\x09\x0a\x09^ self send: aCommand asJSONString",
-messageSends: ["send:", "asJSONString"],
+source: "sendCommand: aCommand\x0a\x09\x22Sends aCommand to the other side of the wire.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09send: aCommand asJSONString\x0a\x09\x09onError:[ :x | APIError signal: x asString ]",
+messageSends: ["send:onError:", "asJSONString", "signal:", "asString"],
+referencedClasses: ["APIError"]
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sendCommand:onError:",
+protocol: 'actions',
+fn: function (aCommand,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._send_onError_(_st(aCommand)._asJSONString(),aBlock);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sendCommand:onError:",{aCommand:aCommand,aBlock:aBlock},globals.WebSocketAPI)})},
+args: ["aCommand", "aBlock"],
+source: "sendCommand: aCommand onError: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09send: aCommand asJSONString\x0a\x09\x09onError: aBlock",
+messageSends: ["send:onError:", "asJSONString"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);

@@ -168,7 +168,9 @@ reset
 send: aString
 	"Sends aString to the other side of the wire."
 	
-	^ self socket send: aString
+	^ self socket 
+		send: aString
+		onError:[ :x | APIError signal: x asString ]
 !
 
 send: aString onError: aBlock
@@ -183,7 +185,18 @@ send: aString onError: aBlock
 sendCommand: aCommand
 	"Sends aCommand to the other side of the wire."
 	
-	^ self send: aCommand asJSONString
+	^ self 
+		send: aCommand asJSONString
+		onError:[ :x | APIError signal: x asString ]
+!
+
+sendCommand: aCommand onError: aBlock
+	"Sends aCommand to the other side of the wire.
+	Evaluates aBlock if there is an exception while doing it."
+	
+	^ self 
+		send: aCommand asJSONString
+		onError: aBlock
 ! !
 
 !WebSocketAPI methodsFor: 'initialization'!
