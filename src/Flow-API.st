@@ -318,10 +318,18 @@ Error subclass: #APIError
 	package: 'Flow-API'!
 
 Object subclass: #Client
-	instanceVariableNames: 'rest webSocket'
+	instanceVariableNames: 'rest webSocket published'
 	package: 'Flow-API'!
 
 !Client methodsFor: 'accessing'!
+
+published
+	"Answers the dictionary holding the published objects 
+	in 'this smalltalk' environment.
+	Keys can be the instance's hash, a Mapless UUID, etc.
+	Values are the instances receiving messages from remote."
+	^ published ifNil:[ published := Dictionary new ]
+!
 
 rest
 
@@ -346,6 +354,16 @@ newBadCommandOn: aWebSocketEvent
 	^ BadCommand new
 		problematic: aWebSocketEvent data;
 		yourself
+!
+
+publish: anObject 
+	"Holds anObject among those exposed to receive remote messages."
+	^ self publish: anObject at: anObject id
+!
+
+publish: anObject at: anId
+	"Holds anObject among those exposed to receive remote messages."
+	^ self published at: anId put: anObject
 ! !
 
 !Client methodsFor: 'initialization'!
@@ -464,5 +482,23 @@ reactOn: aClient
 	"This command generated somewhere has arrived to this end, time to react to it."
 				
 	self answerOn: aClient.
+! !
+
+WebSocketCommand subclass: #RemoteMessageSend
+	instanceVariableNames: ''
+	package: 'Flow-API'!
+
+!RemoteMessageSend class methodsFor: 'actions'!
+
+to: aReceiverId send: aSelector withAll: someArguments
+	"Answers a new instance of a RemoteMessageSend so it's
+	ready to be sent to the remote object reachable with aReceiverId
+	with the message aSelector with someArguments."
+	
+	^ self new
+		receiverId: aReceiverId;
+		selector: aSelector;
+		arguments: someArguments;
+		yourself
 ! !
 

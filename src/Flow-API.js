@@ -825,7 +825,7 @@ globals.WebSocketAPI);
 smalltalk.addClass('APIError', globals.Error, [], 'Flow-API');
 
 
-smalltalk.addClass('Client', globals.Object, ['rest', 'webSocket'], 'Flow-API');
+smalltalk.addClass('Client', globals.Object, ['rest', 'webSocket', 'published'], 'Flow-API');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "connect",
@@ -914,6 +914,67 @@ args: ["anEvent", "aWebSocketEvent"],
 source: "onMessage: anEvent with: aWebSocketEvent \x0a\x09\x22This client is receiving anEvent \x0a\x09with a message comming from the server.\x22\x0a\x09\x0a\x09| command |\x0a\x09command := WebSocketCommand for: aWebSocketEvent.\x0a\x09command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].\x0a\x09command reactOn: self ",
 messageSends: ["for:", "ifNil:", "newBadCommandOn:", "reactOn:"],
 referencedClasses: ["WebSocketCommand"]
+}),
+globals.Client);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "publish:",
+protocol: 'actions',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._publish_at_(anObject,_st(anObject)._id());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"publish:",{anObject:anObject},globals.Client)})},
+args: ["anObject"],
+source: "publish: anObject \x0a\x09\x22Holds anObject among those exposed to receive remote messages.\x22\x0a\x09^ self publish: anObject at: anObject id",
+messageSends: ["publish:at:", "id"],
+referencedClasses: []
+}),
+globals.Client);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "publish:at:",
+protocol: 'actions',
+fn: function (anObject,anId){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._published())._at_put_(anId,anObject);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"publish:at:",{anObject:anObject,anId:anId},globals.Client)})},
+args: ["anObject", "anId"],
+source: "publish: anObject at: anId\x0a\x09\x22Holds anObject among those exposed to receive remote messages.\x22\x0a\x09^ self published at: anId put: anObject",
+messageSends: ["at:put:", "published"],
+referencedClasses: []
+}),
+globals.Client);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "published",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@published"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@published"]=_st($Dictionary())._new();
+$1=self["@published"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"published",{},globals.Client)})},
+args: [],
+source: "published\x0a\x09\x22Answers the dictionary holding the published objects \x0a\x09in 'this smalltalk' environment.\x0a\x09Keys can be the instance's hash, a Mapless UUID, etc.\x0a\x09Values are the instances receiving messages from remote.\x22\x0a\x09^ published ifNil:[ published := Dictionary new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: ["Dictionary"]
 }),
 globals.Client);
 
@@ -1111,5 +1172,31 @@ referencedClasses: []
 }),
 globals.Ping);
 
+
+
+smalltalk.addClass('RemoteMessageSend', globals.WebSocketCommand, [], 'Flow-API');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "to:send:withAll:",
+protocol: 'actions',
+fn: function (aReceiverId,aSelector,someArguments){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=self._new();
+_st($2)._receiverId_(aReceiverId);
+_st($2)._selector_(aSelector);
+_st($2)._arguments_(someArguments);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"to:send:withAll:",{aReceiverId:aReceiverId,aSelector:aSelector,someArguments:someArguments},globals.RemoteMessageSend.klass)})},
+args: ["aReceiverId", "aSelector", "someArguments"],
+source: "to: aReceiverId send: aSelector withAll: someArguments\x0a\x09\x22Answers a new instance of a RemoteMessageSend so it's\x0a\x09ready to be sent to the remote object reachable with aReceiverId\x0a\x09with the message aSelector with someArguments.\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09receiverId: aReceiverId;\x0a\x09\x09selector: aSelector;\x0a\x09\x09arguments: someArguments;\x0a\x09\x09yourself",
+messageSends: ["receiverId:", "new", "selector:", "arguments:", "yourself"],
+referencedClasses: []
+}),
+globals.RemoteMessageSend.klass);
 
 });

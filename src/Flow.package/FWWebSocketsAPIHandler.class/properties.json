@@ -7,7 +7,8 @@
 	"commentStamp" : "sebastiansastre 7/7/2014 09:46",
 	"instvars" : [
 		"clients",
-		"protection" ],
+		"protection",
+		"published" ],
 	"name" : "FWWebSocketsAPIHandler",
 	"pools" : [
 		 ],
