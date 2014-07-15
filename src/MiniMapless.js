@@ -1350,7 +1350,7 @@ modelClass=_st(json)._at_ifAbsent_("modelClass",(function(){
 throw $early=[nil];
 }));
 $ctx1.sendIdx["at:ifAbsent:"]=1;
-modelClass=_st(_st(_st($Smalltalk())._current())._globals())._at_ifAbsent_(modelClass,(function(){
+modelClass=_st(_st($Smalltalk())._globals())._at_ifAbsent_(modelClass,(function(){
 }));
 $3=_st(modelClass)._notNil();
 if(smalltalk.assert($3)){
@@ -1365,8 +1365,8 @@ return $2;
 catch(e) {if(e===$early)return e[0]; throw e}
 }, function($ctx1) {$ctx1.fill(self,"fromJSONString:",{someJSONStringOrNil:someJSONStringOrNil,json:json,modelClass:modelClass},globals.Mapless.klass)})},
 args: ["someJSONStringOrNil"],
-source: "fromJSONString: someJSONStringOrNil\x0a\x09\x22Answers a new instance of this mapless and returns it\x0a\x09in the state dictated by someJSONStringOrNil.\x0a\x09Returns nil when thigns do not fit.\x22\x0a\x0a\x09| json modelClass |\x0a\x09someJSONStringOrNil ifNil:[ ^nil ].\x0a\x09\x0a\x09json := self reify: someJSONStringOrNil.\x0a\x09json ifNil:[ ^nil ].\x0a\x09\x0a\x09modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].\x0a\x09\x0a\x09modelClass := Smalltalk current globals at: modelClass ifAbsent:[  ].\x0a\x09\x0a\x09^ modelClass notNil\x0a\x09\x09ifTrue:[ modelClass new syncWith: json ]\x0a\x09\x09ifFalse:[ self error: 'The class \x22', modelClass,'\x22 was not found' ]\x0a\x09",
-messageSends: ["ifNil:", "reify:", "at:ifAbsent:", "globals", "current", "ifTrue:ifFalse:", "notNil", "syncWith:", "new", "error:", ","],
+source: "fromJSONString: someJSONStringOrNil\x0a\x09\x22Answers a new instance of this mapless and returns it\x0a\x09in the state dictated by someJSONStringOrNil.\x0a\x09Returns nil when thigns do not fit.\x22\x0a\x0a\x09| json modelClass |\x0a\x09someJSONStringOrNil ifNil:[ ^nil ].\x0a\x09\x0a\x09json := self reify: someJSONStringOrNil.\x0a\x09json ifNil:[ ^nil ].\x0a\x09\x0a\x09modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].\x0a\x09\x0a\x09modelClass := Smalltalk globals at: modelClass ifAbsent:[  ].\x0a\x09\x0a\x09^ modelClass notNil\x0a\x09\x09ifTrue:[ modelClass new syncWith: json ]\x0a\x09\x09ifFalse:[ self error: 'The class \x22', modelClass,'\x22 was not found' ]\x0a\x09",
+messageSends: ["ifNil:", "reify:", "at:ifAbsent:", "globals", "ifTrue:ifFalse:", "notNil", "syncWith:", "new", "error:", ","],
 referencedClasses: ["Smalltalk"]
 }),
 globals.Mapless.klass);
@@ -1713,11 +1713,11 @@ function $Date(){return globals.Date||(typeof Date=="undefined"?nil:Date)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.MaplessModel.superclass.fn.prototype._onAboutToSave.apply(_st(self), []));
 $ctx1.supercall = false;
-self._modifiedOn_(_st($Date())._now());
+self._updatedOn_(_st($Date())._now());
 return self}, function($ctx1) {$ctx1.fill(self,"onAboutToSave",{},globals.MaplessModel)})},
 args: [],
-source: "onAboutToSave\x0a\x0a\x09super onAboutToSave.\x0a\x09\x0a\x09self modifiedOn: Date now\x09",
-messageSends: ["onAboutToSave", "modifiedOn:", "now"],
+source: "onAboutToSave\x0a\x0a\x09super onAboutToSave.\x0a\x09\x0a\x09self updatedOn: Date now\x09",
+messageSends: ["onAboutToSave", "updatedOn:", "now"],
 referencedClasses: ["Date"]
 }),
 globals.MaplessModel);
@@ -1732,11 +1732,11 @@ function $Date(){return globals.Date||(typeof Date=="undefined"?nil:Date)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.MaplessModel.superclass.fn.prototype._onAboutToUpdate.apply(_st(self), []));
 $ctx1.supercall = false;
-self._modifiedOn_(_st($Date())._now());
+self._updatedOn_(_st($Date())._now());
 return self}, function($ctx1) {$ctx1.fill(self,"onAboutToUpdate",{},globals.MaplessModel)})},
 args: [],
-source: "onAboutToUpdate\x0a\x0a\x09super onAboutToUpdate.\x0a\x09\x0a\x09self modifiedOn: Date now\x09",
-messageSends: ["onAboutToUpdate", "modifiedOn:", "now"],
+source: "onAboutToUpdate\x0a\x0a\x09super onAboutToUpdate.\x0a\x09\x0a\x09self updatedOn: Date now\x09",
+messageSends: ["onAboutToUpdate", "updatedOn:", "now"],
 referencedClasses: ["Date"]
 }),
 globals.MaplessModel);

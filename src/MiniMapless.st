@@ -573,7 +573,7 @@ fromJSONString: someJSONStringOrNil
 	
 	modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].
 	
-	modelClass := Smalltalk current globals at: modelClass ifAbsent:[  ].
+	modelClass := Smalltalk globals at: modelClass ifAbsent:[  ].
 	
 	^ modelClass notNil
 		ifTrue:[ modelClass new syncWith: json ]
@@ -688,14 +688,14 @@ onAboutToSave
 
 	super onAboutToSave.
 	
-	self modifiedOn: Date now
+	self updatedOn: Date now
 !
 
 onAboutToUpdate
 
 	super onAboutToUpdate.
 	
-	self modifiedOn: Date now
+	self updatedOn: Date now
 ! !
 
 Error subclass: #MaplessError

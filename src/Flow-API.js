@@ -539,15 +539,15 @@ var self=this;
 function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._socket())._send_onError_(aString,(function(x){
+$1=self._send_onError_(aString,(function(x){
 return smalltalk.withContext(function($ctx2) {
 return _st($APIError())._signal_(_st(x)._asString());
 }, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"send:",{aString:aString},globals.WebSocketAPI)})},
 args: ["aString"],
-source: "send: aString\x0a\x09\x22Sends aString to the other side of the wire.\x22\x0a\x09\x0a\x09^ self socket \x0a\x09\x09send: aString\x0a\x09\x09onError:[ :x | APIError signal: x asString ]",
-messageSends: ["send:onError:", "socket", "signal:", "asString"],
+source: "send: aString\x0a\x09\x22Sends aString to the other side of the wire.\x22\x0a\x09\x0a\x09^ self  \x0a\x09\x09send: aString\x0a\x09\x09onError:[ :x | APIError signal: x asString ]",
+messageSends: ["send:onError:", "signal:", "asString"],
 referencedClasses: ["APIError"]
 }),
 globals.WebSocketAPI);

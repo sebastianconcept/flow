@@ -168,7 +168,7 @@ reset
 send: aString
 	"Sends aString to the other side of the wire."
 	
-	^ self socket 
+	^ self  
 		send: aString
 		onError:[ :x | APIError signal: x asString ]
 !
