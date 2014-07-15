@@ -243,7 +243,7 @@ sendCommand: aCommand do: anAnswerBlock onError: aBlock
 	self nextId.
 	aCommand id: self counter.
 	self toAnswer at: self counter put: anAnswerBlock.
-	
+	aCommand inspect.
 	^ self 
 		send: aCommand asJSONString
 		onError: aBlock
@@ -364,6 +364,71 @@ publish: anObject
 publish: anObject at: anId
 	"Holds anObject among those exposed to receive remote messages."
 	^ self published at: anId put: anObject
+!
+
+send: aSelector to: aRemoteObjectId
+	"Sends the message to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: Array new
+		to: aRemoteObjectId 
+		do: [ :ans | "ignoring it..." ]
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector to: aRemoteObjectId do: anAnswerBlock
+	"Sends the message to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: Array new
+		to: aRemoteObjectId 
+		do: anAnswerBlock 
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector with: anArgument to: aRemoteObjectId
+	"Sends the message to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: (Array with: anArgument)
+		to: aRemoteObjectId 
+		do: [ :ans | "ignoring it..." ]
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector with: anArgument to: aRemoteObjectId do: anAnswerBlock
+	"Sends the message with an argument to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: (Array with: anArgument) 
+		to: aRemoteObjectId 
+		do: anAnswerBlock 
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock
+	"Sends the message with arguments to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: someArguments 
+		to: aRemoteObjectId 
+		do: anAnswerBlock 
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock onError: anErrorBlock
+	"Sends the message with arguments to the remote object and
+	evaluates anAnswerBlock when the answer arrives."
+	
+	self webSocket 
+		sendCommand: (RemoteMessageSend to: aRemoteObjectId send: aSelector withAll: someArguments)
+		do: anAnswerBlock
+		onError: anErrorBlock
 ! !
 
 !Client methodsFor: 'initialization'!
@@ -498,7 +563,7 @@ to: aReceiverId send: aSelector withAll: someArguments
 	^ self new
 		receiverId: aReceiverId;
 		selector: aSelector;
-		arguments: someArguments;
+		arguments: someArguments asArray;
 		yourself
 ! !
 
