@@ -1,4 +1,4 @@
-define("app/Flow-API", ["amber/boot", "amber_core/Kernel-Objects", "app/MiniMapless", "amber_core/Kernel-Exceptions"], function($boot){
+define("app/Flow-API", ["amber/boot", "amber_core/Kernel-Objects", "amber_core/Kernel-Exceptions", "app/MiniMapless"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-API');
 smalltalk.packages["Flow-API"].transport = {"type":"amd","amdNamespace":"app"};
@@ -135,11 +135,17 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._isConnected();
+if(smalltalk.assert($1)){
+return self;
+};
+self._disconnect();
 self._initializeSocket();
 return self}, function($ctx1) {$ctx1.fill(self,"connect",{},globals.WebSocketAPI)})},
 args: [],
-source: "connect\x0a\x0a\x09self initializeSocket.\x0a\x09",
-messageSends: ["initializeSocket"],
+source: "connect\x0a\x09\x22Makes a connection.\x0a\x09Remarks:\x0a\x091. if connected already, it will do nothing\x0a\x092. it will disconnect if there is an unconnected socket.\x22\x0a\x0a\x09self isConnected ifTrue:[ ^self ].\x0a\x0a\x09self disconnect.\x0a\x09self initializeSocket.\x0a\x09",
+messageSends: ["ifTrue:", "isConnected", "disconnect", "initializeSocket"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -151,18 +157,16 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$receiver;
-$1=self["@socket"];
-if(($receiver = $1) == null || $receiver.isNil){
-$1;
-} else {
+var $1;
+$1=self._hasSocket();
+if(smalltalk.assert($1)){
 _st(self["@socket"])._close();
 self._reset();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"disconnect",{},globals.WebSocketAPI)})},
 args: [],
-source: "disconnect\x0a\x0a\x09socket ifNotNil:[\x0a\x09\x09socket close.\x0a\x09\x09self reset]",
-messageSends: ["ifNotNil:", "close", "reset"],
+source: "disconnect\x0a\x09\x22Disconnects the web socket.\x0a\x09No fail if there is none\x22\x0a\x09\x0a\x09self hasSocket ifTrue:[\x0a\x09\x09socket close.\x0a\x09\x09self reset]",
+messageSends: ["ifTrue:", "hasSocket", "close", "reset"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);

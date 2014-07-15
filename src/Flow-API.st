@@ -135,13 +135,22 @@ uri: aString
 !WebSocketAPI methodsFor: 'actions'!
 
 connect
+	"Makes a connection.
+	Remarks:
+	1. if connected already, it will do nothing
+	2. it will disconnect if there is an unconnected socket."
 
+	self isConnected ifTrue:[ ^self ].
+
+	self disconnect.
 	self initializeSocket.
 !
 
 disconnect
-
-	socket ifNotNil:[
+	"Disconnects the web socket.
+	No fail if there is none"
+	
+	self hasSocket ifTrue:[
 		socket close.
 		self reset]
 !
