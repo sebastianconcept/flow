@@ -5,7 +5,7 @@ process: aMessage on: aClient
 	
 	| command |
 	
-	[ command := FWAPIv10WebSocketCommand fromJSONString: aMessage ]
+	[ command := FWWebSocketAPIv10Command fromJSONString: aMessage ]
 		on: Error 
 		do:[ :x | 
 			command := BadCommand  new

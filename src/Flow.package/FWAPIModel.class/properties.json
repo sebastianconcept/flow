@@ -10,5 +10,5 @@
 	"name" : "FWAPIModel",
 	"pools" : [
 		 ],
-	"super" : "FWAPIObject",
+	"super" : "MaplessMongoModel",
 	"type" : "normal" }

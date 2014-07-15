@@ -1,0 +1,1 @@
+A FWAPIDelete is a command carrying a given id to delete (destroy) a particular mapless

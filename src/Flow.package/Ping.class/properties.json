@@ -4,11 +4,11 @@
 		 ],
 	"classvars" : [
 		 ],
-	"commentStamp" : "",
+	"commentStamp" : "sebastiansastre 7/15/2014 11:19",
 	"instvars" : [
 		 ],
 	"name" : "Ping",
 	"pools" : [
 		 ],
-	"super" : "FWAPIv10WebSocketCommand",
+	"super" : "FWWebSocketAPIv10Command",
 	"type" : "normal" }

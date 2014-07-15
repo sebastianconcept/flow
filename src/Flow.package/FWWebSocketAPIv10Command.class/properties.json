@@ -4,11 +4,11 @@
 		 ],
 	"classvars" : [
 		 ],
-	"commentStamp" : "",
+	"commentStamp" : "sebastiansastre 7/15/2014 11:15",
 	"instvars" : [
 		 ],
-	"name" : "FWAPIv10WebSocketCommand",
+	"name" : "FWWebSocketAPIv10Command",
 	"pools" : [
 		 ],
-	"super" : "FWRESTAPIv10Command",
+	"super" : "FWAPIObject",
 	"type" : "normal" }
