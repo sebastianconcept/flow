@@ -312,8 +312,6 @@ initialize
 
 	data := HashedCollection new.
 	self modelClass: self class name.
-	self initializeInstanceVersion.
-	self id: self class newUUID.
 !
 
 initializeCreatedOn

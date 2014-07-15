@@ -482,20 +482,14 @@ fn: function (){
 var self=this;
 function $HashedCollection(){return globals.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
 ($ctx1.supercall = true, globals.Mapless.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self["@data"]=_st($HashedCollection())._new();
-$2=self._class();
-$ctx1.sendIdx["class"]=1;
-$1=_st($2)._name();
-self._modelClass_($1);
-self._initializeInstanceVersion();
-self._id_(_st(self._class())._newUUID());
+self._modelClass_(_st(self._class())._name());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Mapless)})},
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x0a\x09data := HashedCollection new.\x0a\x09self modelClass: self class name.\x0a\x09self initializeInstanceVersion.\x0a\x09self id: self class newUUID.",
-messageSends: ["initialize", "new", "modelClass:", "name", "class", "initializeInstanceVersion", "id:", "newUUID"],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x0a\x09data := HashedCollection new.\x0a\x09self modelClass: self class name.",
+messageSends: ["initialize", "new", "modelClass:", "name", "class"],
 referencedClasses: ["HashedCollection"]
 }),
 globals.Mapless);
