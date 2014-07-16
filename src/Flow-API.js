@@ -1315,12 +1315,12 @@ return smalltalk.withContext(function($ctx2) {
 return self._isException();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 if(smalltalk.assert($1)){
-_st(console)._warn_(self._answer());
+_st(console)._error_(self._answer());
 };
 return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.RemoteMessageSend)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[ console warn: self answer ]",
-messageSends: ["answerOn:", "ifTrue:", "and:", "notNil", "isException", "warn:", "answer"],
+source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[ console error: self answer ]",
+messageSends: ["answerOn:", "ifTrue:", "and:", "notNil", "isException", "error:", "answer"],
 referencedClasses: []
 }),
 globals.RemoteMessageSend);

@@ -562,7 +562,7 @@ reactOn: aClient
 	self answerOn: aClient.
 	
 	(self isException notNil and:[
-	self isException ]) ifTrue:[ console warn: self answer ]
+	self isException ]) ifTrue:[ console error: self answer ]
 ! !
 
 !RemoteMessageSend class methodsFor: 'actions'!

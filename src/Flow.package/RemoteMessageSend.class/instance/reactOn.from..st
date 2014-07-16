@@ -6,7 +6,9 @@ reactOn: aHandler from: aClient
 	[ receiver := aHandler published
 		at: self receiverId
 		ifAbsent:[ self error: 'There is no "',self receiverId asString,'" published here' ].
-	answer := receiver perform: self selector withArguments: self arguments.
+	answer := receiver 
+				perform: self selector asSymbol 
+				withArguments: self arguments.
 	(answer respondsTo: #jsonWriteOn:) ifFalse:[
 		"We'll start with a poor's man remote interaction."
 		answer := answer asString ].
