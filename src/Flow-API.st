@@ -288,7 +288,7 @@ initializeURI
 !WebSocketAPI methodsFor: 'reactions'!
 
 onMessage: anEvent
-	
+
 	self trigger: 'messageReceived:' with: anEvent
 ! !
 
@@ -449,6 +449,7 @@ onMessage: anEvent with: aWebSocketEvent
 	
 	| command |
 	command := WebSocketCommand for: aWebSocketEvent.
+
 	command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].
 	command reactOn: self
 ! !

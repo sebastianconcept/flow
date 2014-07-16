@@ -498,7 +498,7 @@ return smalltalk.withContext(function($ctx1) {
 self._trigger_with_("messageReceived:",anEvent);
 return self}, function($ctx1) {$ctx1.fill(self,"onMessage:",{anEvent:anEvent},globals.WebSocketAPI)})},
 args: ["anEvent"],
-source: "onMessage: anEvent\x0a\x09\x0a\x09self trigger: 'messageReceived:' with: anEvent",
+source: "onMessage: anEvent\x0a\x0a\x09self trigger: 'messageReceived:' with: anEvent",
 messageSends: ["trigger:with:"],
 referencedClasses: []
 }),
@@ -911,7 +911,7 @@ $1;
 _st(command)._reactOn_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"onMessage:with:",{anEvent:anEvent,aWebSocketEvent:aWebSocketEvent,command:command},globals.Client)})},
 args: ["anEvent", "aWebSocketEvent"],
-source: "onMessage: anEvent with: aWebSocketEvent \x0a\x09\x22This client is receiving anEvent \x0a\x09with a message comming from the server.\x22\x0a\x09\x0a\x09| command |\x0a\x09command := WebSocketCommand for: aWebSocketEvent.\x0a\x09command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].\x0a\x09command reactOn: self ",
+source: "onMessage: anEvent with: aWebSocketEvent \x0a\x09\x22This client is receiving anEvent \x0a\x09with a message comming from the server.\x22\x0a\x09\x0a\x09| command |\x0a\x09command := WebSocketCommand for: aWebSocketEvent.\x0a\x0a\x09command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].\x0a\x09command reactOn: self ",
 messageSends: ["for:", "ifNil:", "newBadCommandOn:", "reactOn:"],
 referencedClasses: ["WebSocketCommand"]
 }),

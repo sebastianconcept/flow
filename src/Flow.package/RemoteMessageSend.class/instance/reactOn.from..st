@@ -13,7 +13,7 @@ reactOn: aHandler from: aClient
 		"We'll start with a poor's man remote interaction."
 		answer := answer asString ].
 	aHandler 
-		send: self
+		send: (self answer: answer; yourself)
 		to: aClient  ]
 			on: Error 
 			do:[ :x | 
