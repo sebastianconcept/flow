@@ -157,15 +157,17 @@ selector: "initialize",
 protocol: 'initialization',
 fn: function (){
 var self=this;
+function $Session(){return globals.Session||(typeof Session=="undefined"?nil:Session)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.FlowAppController.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
+self["@session"]=_st($Session())._new();
 _st(window)._at_put_("app",self);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.FlowAppController)})},
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09\x22Handy reference\x22\x0a\x09window at: 'app' put: self",
-messageSends: ["initialize", "at:put:"],
-referencedClasses: []
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09session := Session new.\x0a\x09\x0a\x09\x22Handy reference\x22\x0a\x09window at: 'app' put: self",
+messageSends: ["initialize", "new", "at:put:"],
+referencedClasses: ["Session"]
 }),
 globals.FlowAppController);
 
@@ -196,22 +198,14 @@ selector: "session",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Session(){return globals.Session||(typeof Session=="undefined"?nil:Session)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@session"];
-if(($receiver = $2) == null || $receiver.isNil){
-self["@session"]=_st($Session())._new();
+var $1;
 $1=self["@session"];
-} else {
-$1=$2;
-};
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"session",{},globals.FlowAppController)})},
+},
 args: [],
-source: "session\x0a\x0a\x09^ session ifNil:[ session := Session new ]",
-messageSends: ["ifNil:", "new"],
-referencedClasses: ["Session"]
+source: "session\x0a\x0a\x09^ session ",
+messageSends: [],
+referencedClasses: []
 }),
 globals.FlowAppController);
 
@@ -421,13 +415,15 @@ globals.Session);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "open",
-protocol: 'accessing',
+protocol: 'actions',
 fn: function (){
 var self=this;
-return self},
+return smalltalk.withContext(function($ctx1) { 
+_st(self._api())._connect();
+return self}, function($ctx1) {$ctx1.fill(self,"open",{},globals.Session)})},
 args: [],
-source: "open\x0a\x0a\x09\x22self api connect\x22",
-messageSends: [],
+source: "open\x0a\x0a\x09self api connect",
+messageSends: ["connect", "api"],
 referencedClasses: []
 }),
 globals.Session);

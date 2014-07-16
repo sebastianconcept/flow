@@ -82,7 +82,7 @@ RouteableController subclass: #FlowAppController
 
 session
 
-	^ session ifNil:[ session := Session new ]
+	^ session
 ! !
 
 !FlowAppController methodsFor: 'initialization'!
@@ -90,6 +90,8 @@ session
 initialize
 
 	super initialize.
+	
+	session := Session new.
 	
 	"Handy reference"
 	window at: 'app' put: self
@@ -204,10 +206,12 @@ asJSONString
 		at: 'id' put: self id;
 		at: 'userId' put: self user id;
 		asJSONString
-!
+! !
+
+!Session methodsFor: 'actions'!
 
 open
 
-	"self api connect"
+	self api connect
 ! !
 

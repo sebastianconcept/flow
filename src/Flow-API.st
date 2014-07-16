@@ -169,7 +169,7 @@ connect
 	2. it will disconnect if there is an unconnected socket."
 
 	self isConnected ifTrue:[ ^self ].
-
+	
 	self disconnect.
 	self initializeSocket.
 !
@@ -232,7 +232,8 @@ sendCommand: aCommand do: aBlock
 	^ self 
 		sendCommand: aCommand 
 		do: aBlock
-		onError: [ :x | APIError signal: x asString ]
+		onError: [ :x | 
+			APIError signal: x asString ]
 !
 
 sendCommand: aCommand do: anAnswerBlock onError: aBlock
@@ -243,7 +244,7 @@ sendCommand: aCommand do: anAnswerBlock onError: aBlock
 	self nextId.
 	aCommand id: self counter.
 	self toAnswer at: self counter put: anAnswerBlock.
-	aCommand inspect.
+
 	^ self 
 		send: aCommand asJSONString
 		onError: aBlock
@@ -552,6 +553,17 @@ reactOn: aClient
 WebSocketCommand subclass: #RemoteMessageSend
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+
+!RemoteMessageSend methodsFor: 'actions'!
+
+reactOn: aClient
+	"This command generated somewhere has arrived to this end, time to react to it."
+				
+	self answerOn: aClient.
+	
+	(self isException notNil and:[
+	self isException ]) ifTrue:[ console warn: self answer ]
+! !
 
 !RemoteMessageSend class methodsFor: 'actions'!
 

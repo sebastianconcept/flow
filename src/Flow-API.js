@@ -174,7 +174,7 @@ self._disconnect();
 self._initializeSocket();
 return self}, function($ctx1) {$ctx1.fill(self,"connect",{},globals.WebSocketAPI)})},
 args: [],
-source: "connect\x0a\x09\x22Makes a connection.\x0a\x09Remarks:\x0a\x091. if connected already, it will do nothing\x0a\x092. it will disconnect if there is an unconnected socket.\x22\x0a\x0a\x09self isConnected ifTrue:[ ^self ].\x0a\x0a\x09self disconnect.\x0a\x09self initializeSocket.\x0a\x09",
+source: "connect\x0a\x09\x22Makes a connection.\x0a\x09Remarks:\x0a\x091. if connected already, it will do nothing\x0a\x092. it will disconnect if there is an unconnected socket.\x22\x0a\x0a\x09self isConnected ifTrue:[ ^self ].\x0a\x09\x0a\x09self disconnect.\x0a\x09self initializeSocket.\x0a\x09",
 messageSends: ["ifTrue:", "isConnected", "disconnect", "initializeSocket"],
 referencedClasses: []
 }),
@@ -686,7 +686,7 @@ return _st($APIError())._signal_(_st(x)._asString());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"sendCommand:do:",{aCommand:aCommand,aBlock:aBlock},globals.WebSocketAPI)})},
 args: ["aCommand", "aBlock"],
-source: "sendCommand: aCommand do: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09sendCommand: aCommand \x0a\x09\x09do: aBlock\x0a\x09\x09onError: [ :x | APIError signal: x asString ]",
+source: "sendCommand: aCommand do: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09sendCommand: aCommand \x0a\x09\x09do: aBlock\x0a\x09\x09onError: [ :x | \x0a\x09\x09\x09APIError signal: x asString ]",
 messageSends: ["sendCommand:do:onError:", "signal:", "asString"],
 referencedClasses: ["APIError"]
 }),
@@ -705,13 +705,12 @@ $1=self._counter();
 $ctx1.sendIdx["counter"]=1;
 _st(aCommand)._id_($1);
 _st(self._toAnswer())._at_put_(self._counter(),anAnswerBlock);
-_st(aCommand)._inspect();
 $2=self._send_onError_(_st(aCommand)._asJSONString(),aBlock);
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"sendCommand:do:onError:",{aCommand:aCommand,anAnswerBlock:anAnswerBlock,aBlock:aBlock},globals.WebSocketAPI)})},
 args: ["aCommand", "anAnswerBlock", "aBlock"],
-source: "sendCommand: aCommand do: anAnswerBlock onError: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Registers anAnswerBlock to be evaluated later when the answer arrives.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09self nextId.\x0a\x09aCommand id: self counter.\x0a\x09self toAnswer at: self counter put: anAnswerBlock.\x0a\x09aCommand inspect.\x0a\x09^ self \x0a\x09\x09send: aCommand asJSONString\x0a\x09\x09onError: aBlock",
-messageSends: ["nextId", "id:", "counter", "at:put:", "toAnswer", "inspect", "send:onError:", "asJSONString"],
+source: "sendCommand: aCommand do: anAnswerBlock onError: aBlock\x0a\x09\x22Sends aCommand to the other side of the wire.\x0a\x09Registers anAnswerBlock to be evaluated later when the answer arrives.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09self nextId.\x0a\x09aCommand id: self counter.\x0a\x09self toAnswer at: self counter put: anAnswerBlock.\x0a\x0a\x09^ self \x0a\x09\x09send: aCommand asJSONString\x0a\x09\x09onError: aBlock",
+messageSends: ["nextId", "id:", "counter", "at:put:", "toAnswer", "send:onError:", "asJSONString"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -1299,6 +1298,33 @@ globals.Ping);
 
 
 smalltalk.addClass('RemoteMessageSend', globals.WebSocketCommand, [], 'Flow-API');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "reactOn:",
+protocol: 'actions',
+fn: function (aClient){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $3,$2,$1;
+self._answerOn_(aClient);
+$3=self._isException();
+$ctx1.sendIdx["isException"]=1;
+$2=_st($3)._notNil();
+$1=_st($2)._and_((function(){
+return smalltalk.withContext(function($ctx2) {
+return self._isException();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+if(smalltalk.assert($1)){
+_st(console)._warn_(self._answer());
+};
+return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.RemoteMessageSend)})},
+args: ["aClient"],
+source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[ console warn: self answer ]",
+messageSends: ["answerOn:", "ifTrue:", "and:", "notNil", "isException", "warn:", "answer"],
+referencedClasses: []
+}),
+globals.RemoteMessageSend);
+
 
 smalltalk.addMethod(
 smalltalk.method({
