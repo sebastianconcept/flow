@@ -908,11 +908,11 @@ command;
 } else {
 $1;
 };
-_st(command)._reactOn_(self);
+_st(command)._receivedOn_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"onMessage:with:",{anEvent:anEvent,aWebSocketEvent:aWebSocketEvent,command:command},globals.Client)})},
 args: ["anEvent", "aWebSocketEvent"],
-source: "onMessage: anEvent with: aWebSocketEvent \x0a\x09\x22This client is receiving anEvent \x0a\x09with a message comming from the server.\x22\x0a\x09\x0a\x09| command |\x0a\x09command := WebSocketCommand for: aWebSocketEvent.\x0a\x0a\x09command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].\x0a\x09command reactOn: self ",
-messageSends: ["for:", "ifNil:", "newBadCommandOn:", "reactOn:"],
+source: "onMessage: anEvent with: aWebSocketEvent \x0a\x09\x22This client is receiving anEvent \x0a\x09with a message comming from the server.\x22\x0a\x09\x0a\x09| command |\x0a\x09command := WebSocketCommand for: aWebSocketEvent.\x0a\x0a\x09command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].\x0a\x09command receivedOn: self ",
+messageSends: ["for:", "ifNil:", "newBadCommandOn:", "receivedOn:"],
 referencedClasses: ["WebSocketCommand"]
 }),
 globals.Client);
@@ -1171,16 +1171,16 @@ globals.WebSocketCommand);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "reactOn:",
+selector: "receivedOn:",
 protocol: 'actions',
 fn: function (aClient){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.WebSocketCommand)})},
+self._answerOn_(aClient);
+return self}, function($ctx1) {$ctx1.fill(self,"receivedOn:",{aClient:aClient},globals.WebSocketCommand)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x0a\x09self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "receivedOn: aClient\x0a\x09\x22This command generated somewhere was received in this end, time to react to it.\x22\x0a\x09\x0a\x09self answerOn: aClient",
+messageSends: ["answerOn:"],
 referencedClasses: []
 }),
 globals.WebSocketCommand);
@@ -1219,17 +1219,18 @@ globals.WebSocketCommand.klass);
 smalltalk.addClass('BadCommand', globals.WebSocketCommand, [], 'Flow-API');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "reactOn:",
+selector: "receivedOn:",
 protocol: 'actions',
 fn: function (aClient){
 var self=this;
 function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
 return smalltalk.withContext(function($ctx1) { 
-self._answerOn_(aClient);
+($ctx1.supercall = true, globals.BadCommand.superclass.fn.prototype._answerOn_.apply(_st(self), [aClient]));
+$ctx1.supercall = false;
 _st($APIError())._signal_(self._asJSONString());
-return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.BadCommand)})},
+return self}, function($ctx1) {$ctx1.fill(self,"receivedOn:",{aClient:aClient},globals.BadCommand)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x0a\x09self answerOn: aClient.\x0a\x0a\x09APIError signal: self asJSONString",
+source: "receivedOn: aClient\x0a\x09\x22This command generated somewhere was received in this end, time to react to it.\x22\x0a\x0a\x09super answerOn: aClient.\x0a\x0a\x09APIError signal: self asJSONString",
 messageSends: ["answerOn:", "signal:", "asJSONString"],
 referencedClasses: ["APIError"]
 }),
@@ -1239,22 +1240,6 @@ globals.BadCommand);
 
 smalltalk.addClass('Echo', globals.WebSocketCommand, [], 'Flow-API');
 globals.Echo.comment="##WebSocketEcho\x0a\x0aIs a command that will send content to the server and the server will send back";
-smalltalk.addMethod(
-smalltalk.method({
-selector: "reactOn:",
-protocol: 'actions',
-fn: function (aClient){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self._answerOn_(aClient);
-return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.Echo)})},
-args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09",
-messageSends: ["answerOn:"],
-referencedClasses: []
-}),
-globals.Echo);
-
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1279,28 +1264,12 @@ globals.Echo.klass);
 
 
 smalltalk.addClass('Ping', globals.WebSocketCommand, [], 'Flow-API');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "reactOn:",
-protocol: 'actions',
-fn: function (aClient){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self._answerOn_(aClient);
-return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.Ping)})},
-args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09",
-messageSends: ["answerOn:"],
-referencedClasses: []
-}),
-globals.Ping);
-
 
 
 smalltalk.addClass('RemoteMessageSend', globals.WebSocketCommand, [], 'Flow-API');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "reactOn:",
+selector: "receivedOn:",
 protocol: 'actions',
 fn: function (aClient){
 var self=this;
@@ -1317,9 +1286,9 @@ return self._isException();
 if(smalltalk.assert($1)){
 _st(console)._error_(self._answer());
 };
-return self}, function($ctx1) {$ctx1.fill(self,"reactOn:",{aClient:aClient},globals.RemoteMessageSend)})},
+return self}, function($ctx1) {$ctx1.fill(self,"receivedOn:",{aClient:aClient},globals.RemoteMessageSend)})},
 args: ["aClient"],
-source: "reactOn: aClient\x0a\x09\x22This command generated somewhere has arrived to this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[ console error: self answer ]",
+source: "receivedOn: aClient\x0a\x09\x22This command generated somewhere was received in this end, time to react to it.\x22\x0a\x09\x09\x09\x09\x0a\x09self answerOn: aClient.\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[ console error: self answer ]",
 messageSends: ["answerOn:", "ifTrue:", "and:", "notNil", "isException", "error:", "answer"],
 referencedClasses: []
 }),

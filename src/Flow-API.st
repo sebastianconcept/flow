@@ -451,7 +451,7 @@ onMessage: anEvent with: aWebSocketEvent
 	command := WebSocketCommand for: aWebSocketEvent.
 
 	command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].
-	command reactOn: self
+	command receivedOn: self
 ! !
 
 Mapless subclass: #WebSocketCommand
@@ -480,10 +480,10 @@ answerOn:  aClient
 	aClient webSocket answerOn: self
 !
 
-reactOn: aClient
-	"This command generated somewhere has arrived to this end, time to react to it."
+receivedOn: aClient
+	"This command generated somewhere was received in this end, time to react to it."
 	
-	self subclassResponsibility
+	self answerOn: aClient
 ! !
 
 !WebSocketCommand class methodsFor: 'actions'!
@@ -506,10 +506,10 @@ WebSocketCommand subclass: #BadCommand
 
 !BadCommand methodsFor: 'actions'!
 
-reactOn: aClient
-	"This command generated somewhere has arrived to this end, time to react to it."
+receivedOn: aClient
+	"This command generated somewhere was received in this end, time to react to it."
 
-	self answerOn: aClient.
+	super answerOn: aClient.
 
 	APIError signal: self asJSONString
 ! !
@@ -521,14 +521,6 @@ WebSocketCommand subclass: #Echo
 ##WebSocketEcho
 
 Is a command that will send content to the server and the server will send back!
-
-!Echo methodsFor: 'actions'!
-
-reactOn: aClient
-	"This command generated somewhere has arrived to this end, time to react to it."
-				
-	self answerOn: aClient.
-! !
 
 !Echo class methodsFor: 'actions'!
 
@@ -543,22 +535,14 @@ WebSocketCommand subclass: #Ping
 	instanceVariableNames: ''
 	package: 'Flow-API'!
 
-!Ping methodsFor: 'actions'!
-
-reactOn: aClient
-	"This command generated somewhere has arrived to this end, time to react to it."
-				
-	self answerOn: aClient.
-! !
-
 WebSocketCommand subclass: #RemoteMessageSend
 	instanceVariableNames: ''
 	package: 'Flow-API'!
 
 !RemoteMessageSend methodsFor: 'actions'!
 
-reactOn: aClient
-	"This command generated somewhere has arrived to this end, time to react to it."
+receivedOn: aClient
+	"This command generated somewhere was received in this end, time to react to it."
 				
 	self answerOn: aClient.
 	
