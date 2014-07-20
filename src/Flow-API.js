@@ -4,9 +4,11 @@ smalltalk.addPackage('Flow-API');
 smalltalk.packages["Flow-API"].transport = {"type":"amd","amdNamespace":"app"};
 
 smalltalk.addClass('API', globals.Object, [], 'Flow-API');
+globals.API.comment="## API is an abstraction\x0a\x0aSee concrete subclasses of API for backend interaction\x0a";
 
 
 smalltalk.addClass('RESTfulAPI', globals.API, [], 'Flow-API');
+globals.RESTfulAPI.comment="## RESTfulAPI\x0a\x0aThis API follows the typical REST on http style";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "delete:do:onError:",
@@ -128,6 +130,7 @@ globals.RESTfulAPI);
 
 
 smalltalk.addClass('WebSocketAPI', globals.API, ['socket', 'uri', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock', 'counter', 'toAnswer'], 'Flow-API');
+globals.WebSocketAPI.comment="## WebSocketAPI\x0a\x0aThis API is WebSockets based (so is full-duplex)";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "answerOn:",
@@ -823,9 +826,11 @@ globals.WebSocketAPI);
 
 
 smalltalk.addClass('APIError', globals.Error, [], 'Flow-API');
+globals.APIError.comment="## APIError\x0a\x0aThis exception is used when flow finds issues while communicating with the backend";
 
 
 smalltalk.addClass('Client', globals.Object, ['rest', 'webSocket', 'published'], 'Flow-API');
+globals.Client.comment="## Client\x0a\x0aProvides access to the REST and WebSocket API with the backend side. \x0a\x0aA Client also has knows which objects are being published for the backend to use them remotely.";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "connect",
@@ -1185,6 +1190,22 @@ referencedClasses: []
 }),
 globals.WebSocketCommand);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sentOn:",
+protocol: 'actions',
+fn: function (aClient){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._halt();
+return self}, function($ctx1) {$ctx1.fill(self,"sentOn:",{aClient:aClient},globals.WebSocketCommand)})},
+args: ["aClient"],
+source: "sentOn: aClient\x0a\x09\x22This command generated here was sent to the other end, \x0a\x09may be is time keep an eye on it.\x22\x0a\x09\x0a\x09self halt",
+messageSends: ["halt"],
+referencedClasses: []
+}),
+globals.WebSocketCommand);
+
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1217,6 +1238,7 @@ globals.WebSocketCommand.klass);
 
 
 smalltalk.addClass('BadCommand', globals.WebSocketCommand, [], 'Flow-API');
+globals.BadCommand.comment="## BadCommand \x0a\x0aThis command useful when there is trouble during the reception/processing of a remote command.\x0a\x0aMeant more for production than for development.";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "receivedOn:",
@@ -1239,7 +1261,7 @@ globals.BadCommand);
 
 
 smalltalk.addClass('Echo', globals.WebSocketCommand, [], 'Flow-API');
-globals.Echo.comment="##WebSocketEcho\x0a\x0aIs a command that will send content to the server and the server will send back";
+globals.Echo.comment="##Echo\x0a\x0aIs a command that will send content to the server and the server will send back (in @echoes)";
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1264,9 +1286,11 @@ globals.Echo.klass);
 
 
 smalltalk.addClass('Ping', globals.WebSocketCommand, [], 'Flow-API');
+globals.Ping.comment="##Ping\x0a\x0aIs a command that, when all goes smooth, will receive a Date set by the server @pongOn";
 
 
 smalltalk.addClass('RemoteMessageSend', globals.WebSocketCommand, [], 'Flow-API');
+globals.RemoteMessageSend.comment="## RemoteMessageSend\x0a\x0aIs a command to send a message to a remote object published in the backend.\x0a\x0aOr..\x0a\x0aThe command received from the backend to send a message to an object published here in the frontend.\x0a\x0aRemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "receivedOn:",

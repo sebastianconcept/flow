@@ -2,10 +2,18 @@ Smalltalk createPackage: 'Flow-API'!
 Object subclass: #API
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+!API commentStamp!
+## API is an abstraction
+
+See concrete subclasses of API for backend interaction!
 
 API subclass: #RESTfulAPI
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+!RESTfulAPI commentStamp!
+## RESTfulAPI
+
+This API follows the typical REST on http style!
 
 !RESTfulAPI methodsFor: 'actions'!
 
@@ -74,6 +82,10 @@ put: anURLString data: aDataString do: aBlock onError: errorBlock
 API subclass: #WebSocketAPI
 	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter toAnswer'
 	package: 'Flow-API'!
+!WebSocketAPI commentStamp!
+## WebSocketAPI
+
+This API is WebSockets based (so is full-duplex)!
 
 !WebSocketAPI methodsFor: 'accessing'!
 
@@ -317,10 +329,20 @@ isDisconnected
 Error subclass: #APIError
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+!APIError commentStamp!
+## APIError
+
+This exception is used when flow finds issues while communicating with the backend!
 
 Object subclass: #Client
 	instanceVariableNames: 'rest webSocket published'
 	package: 'Flow-API'!
+!Client commentStamp!
+## Client
+
+Provides access to the REST and WebSocket API with the backend side. 
+
+A Client also has knows which objects are being published for the backend to use them remotely.!
 
 !Client methodsFor: 'accessing'!
 
@@ -484,6 +506,13 @@ receivedOn: aClient
 	"This command generated somewhere was received in this end, time to react to it."
 	
 	self answerOn: aClient
+!
+
+sentOn: aClient
+	"This command generated here was sent to the other end, 
+	may be is time keep an eye on it."
+	
+	self halt
 ! !
 
 !WebSocketCommand class methodsFor: 'actions'!
@@ -503,6 +532,12 @@ for: anEvent
 WebSocketCommand subclass: #BadCommand
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+!BadCommand commentStamp!
+## BadCommand 
+
+This command useful when there is trouble during the reception/processing of a remote command.
+
+Meant more for production than for development.!
 
 !BadCommand methodsFor: 'actions'!
 
@@ -518,9 +553,9 @@ WebSocketCommand subclass: #Echo
 	instanceVariableNames: ''
 	package: 'Flow-API'!
 !Echo commentStamp!
-##WebSocketEcho
+##Echo
 
-Is a command that will send content to the server and the server will send back!
+Is a command that will send content to the server and the server will send back (in @echoes)!
 
 !Echo class methodsFor: 'actions'!
 
@@ -534,10 +569,24 @@ for: aString
 WebSocketCommand subclass: #Ping
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+!Ping commentStamp!
+##Ping
+
+Is a command that, when all goes smooth, will receive a Date set by the server @pongOn!
 
 WebSocketCommand subclass: #RemoteMessageSend
 	instanceVariableNames: ''
 	package: 'Flow-API'!
+!RemoteMessageSend commentStamp!
+## RemoteMessageSend
+
+Is a command to send a message to a remote object published in the backend.
+
+Or..
+
+The command received from the backend to send a message to an object published here in the frontend.
+
+RemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.!
 
 !RemoteMessageSend methodsFor: 'actions'!
 
