@@ -2,4 +2,11 @@
 	"class" : {
 		"isAbstract" : "sebastiansastre 7/15/2014 11:12" },
 	"instance" : {
-		"reactOn:from:" : "sebastiansastre 7/14/2014 10:20" } }
+		"executeFor:on:" : "sebastiansastre 7/21/2014 21:58",
+		"hasAnswer" : "sebastiansastre 7/21/2014 21:59",
+		"localAnswerFor:on:" : "sebastiansastre 7/21/2014 21:41",
+		"onAnsweredBy:on:" : "sebastiansastre 7/21/2014 21:40",
+		"onCommandFrom:on:" : "sebastiansastre 7/21/2014 21:43",
+		"processFor:on:" : "sebastiansastre 7/21/2014 21:58",
+		"receivedFrom:on:" : "sebastiansastre 7/21/2014 21:24",
+		"remoteAnswerFor:on:" : "sebastiansastre 7/21/2014 21:56" } }

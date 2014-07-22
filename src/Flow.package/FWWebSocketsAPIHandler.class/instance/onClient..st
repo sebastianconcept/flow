@@ -6,7 +6,7 @@ onClient: aWebSocket
 	
 	[ self register: aWebSocket.
 	aWebSocket runWith: [:message|
-		self process: message on: aWebSocket ]]
+		self onMessage: message from: aWebSocket ]]
 			on: ConnectionClosed 
 			do: [
 				self unregister: aWebSocket].

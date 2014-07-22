@@ -19,5 +19,7 @@ onOpen
 	"do this
 	and
 	that"
+	
+	self session api publish: Transcript
 ! !
 

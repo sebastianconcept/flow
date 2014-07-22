@@ -3,7 +3,24 @@ Object subclass: #Flow
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+!MessageNotUnderstood methodsFor: '*Flow'!
+
+printOn: aStream
+
+	super printOn: aStream.
+	
+	aStream nextPutAll: '(',self receiver asString, '>>',self message selector asString,')'
+! !
+
 !Object methodsFor: '*Flow'!
+
+asRemote
+	"Answers this object in a way that is appropriate 
+	for a remote end to do something with it"
+	
+	#todo. "return a proxy so it gets actually useful"
+	^ self asString
+!
 
 trigger: anEventName 
 	"Triggers anEventName in this object.

@@ -1,6 +1,6 @@
-actions
-process: aMessage on: aClient
-	"Some client has sent aMessage.
+reactions
+onMessage: aMessage from: aClient
+	"aClient has sent aMessage.
 	It's time to chew it."
 	
 	| command |
@@ -15,4 +15,4 @@ process: aMessage on: aClient
 	
 	command ifNotNil:[
 		"We are currently ignoring commands that we don't understand"
-		command reactOn: self from: aClient ]
+		command receivedFrom: aClient on: self ]

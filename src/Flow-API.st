@@ -1,13 +1,174 @@
 Smalltalk createPackage: 'Flow-API'!
-Object subclass: #API
+Object subclass: #APIClient
+	instanceVariableNames: 'rest webSocket published'
+	package: 'Flow-API'!
+!APIClient commentStamp!
+## APIClient
+
+This is a client to the backend API
+
+Provides access to the expected REST and WebSocket API at the backend side. 
+
+This client also has knows which objects are being published locally so they can be used remotely!
+
+!APIClient methodsFor: 'accessing'!
+
+published
+	"Answers the dictionary holding the published objects 
+	in 'this smalltalk' environment.
+	Keys can be the instance's hash, a Mapless UUID, etc.
+	Values are the instances receiving messages from remote."
+	^ published ifNil:[ published := Dictionary new ]
+!
+
+rest
+
+	^ rest ifNil:[ rest := RESTfulAPI new ]
+!
+
+webSocket
+
+	^ webSocket ifNil:[ self initializeWebSocket ]
+! !
+
+!APIClient methodsFor: 'actions'!
+
+connect
+
+	self webSocket connect
+!
+
+localAnswerOn: aWebSocketCommand
+
+	self webSocket localAnswerOn: aWebSocketCommand
+!
+
+newBadCommandOn: aWebSocketEvent  
+	"Answers a new instance of BadCommand based on aWebSocketEvent."
+
+	^ BadCommand new
+		problematic: aWebSocketEvent data;
+		yourself
+!
+
+publish: anObject 
+	"Holds anObject among those exposed to receive remote messages."
+	^ self publish: anObject at: anObject id
+!
+
+publish: anObject at: anId
+	"Holds anObject among those exposed to receive remote messages."
+	^ self published at: anId put: anObject
+!
+
+remoteAnswerOn: aWebSocketCommand
+
+	self webSocket remoteAnswerOn: aWebSocketCommand
+!
+
+send: aSelector to: aRemoteObjectId
+	"Sends the message to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: Array new
+		to: aRemoteObjectId 
+		do: [ :ans | "ignoring it..." ]
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector to: aRemoteObjectId do: anAnswerBlock
+	"Sends the message to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: Array new
+		to: aRemoteObjectId 
+		do: anAnswerBlock 
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector with: anArgument to: aRemoteObjectId
+	"Sends the message to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: (Array with: anArgument)
+		to: aRemoteObjectId 
+		do: [ :ans | "ignoring it..." ]
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector with: anArgument to: aRemoteObjectId do: anAnswerBlock
+	"Sends the message with an argument to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: (Array with: anArgument) 
+		to: aRemoteObjectId 
+		do: anAnswerBlock 
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock
+	"Sends the message with arguments to the remote object and
+	evaluates aBlock when the answer arrives."
+	
+	self send: aSelector 
+		withAll: someArguments 
+		to: aRemoteObjectId 
+		do: anAnswerBlock 
+		onError: [ :x | APIError signal: x asString ]
+!
+
+send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock onError: anErrorBlock
+	"Sends the message with arguments to the remote object and
+	evaluates anAnswerBlock when the answer arrives."
+	
+	self webSocket 
+		sendCommand: (RemoteMessageSend to: aRemoteObjectId send: aSelector withAll: someArguments)
+		do: anAnswerBlock
+		onError: anErrorBlock
+! !
+
+!APIClient methodsFor: 'initialization'!
+
+initializeWebSocket 
+
+	^ webSocket := WebSocketAPI new
+					when: 'messageReceived:' do:[ :ev :args | self onMessage: ev with: args ];
+					yourself
+! !
+
+!APIClient methodsFor: 'reactions'!
+
+onMessage: anEvent with: aWebSocketEvent 
+	"This client is receiving anEvent 
+	with a message comming from the server."
+	
+	| command |
+	command := WebSocketCommand for: aWebSocketEvent.
+	command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].
+	command receivedOn: self
+! !
+
+Error subclass: #APIError
 	instanceVariableNames: ''
 	package: 'Flow-API'!
-!API commentStamp!
-## API is an abstraction
+!APIError commentStamp!
+## APIError
 
-See concrete subclasses of API for backend interaction!
+This exception is used when flow finds issues while communicating with the backend!
 
-API subclass: #RESTfulAPI
+Object subclass: #APIStrategy
+	instanceVariableNames: ''
+	package: 'Flow-API'!
+!APIStrategy commentStamp!
+## APIStrategy is an abstraction
+
+See concrete subclasses of API for concrete backend interaction!
+
+APIStrategy subclass: #RESTfulAPI
 	instanceVariableNames: ''
 	package: 'Flow-API'!
 !RESTfulAPI commentStamp!
@@ -79,8 +240,8 @@ put: anURLString data: aDataString do: aBlock onError: errorBlock
 	}
 ! !
 
-API subclass: #WebSocketAPI
-	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter toAnswer'
+APIStrategy subclass: #WebSocketAPI
+	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter localAnswers'
 	package: 'Flow-API'!
 !WebSocketAPI commentStamp!
 ## WebSocketAPI
@@ -93,6 +254,14 @@ counter
 	"Answers the counter used in the ids the commands (instead of less compact UUIDs)"
 
 	^ counter ifNil:[ counter := 1 ]
+!
+
+localAnswers
+	"Returns the dictionary of callbacks that are waiting for its commands' answer.
+	The convention is to use the ids provided by the counter in the keys
+	and the callbacks in the values."
+	
+	^ localAnswers ifNil:[ localAnswers := Dictionary new ]
 !
 
 onCloseBlock
@@ -140,14 +309,6 @@ socket
 	^ socket ifNil:[ self initializeSocket ]
 !
 
-toAnswer
-	"Answers the dictionary of commands pending for an answer.
-	The convention is to use the ids provided by the counte as keys
-	and the callbacks on the values."
-	
-	^ toAnswer ifNil:[ toAnswer := Dictionary new ]
-!
-
 uri
 
 	^ uri ifNil:[ self initializeURI ]
@@ -159,20 +320,6 @@ uri: aString
 ! !
 
 !WebSocketAPI methodsFor: 'actions'!
-
-answerOn: aWebSocketCommand
-	"Evluates the callback waiting for aWebSocketCommand using it
-	and removes it from the dictionary because 
-	is not pending for it anymore."
-	
-	(self toAnswer 
-		at: aWebSocketCommand id
-		ifAbsent:[ ^ nil ]) value: aWebSocketCommand.
-
-	self toAnswer 
-		removeKey: aWebSocketCommand id
-		ifAbsent:[ ]
-!
 
 connect
 	"Makes a connection.
@@ -195,6 +342,20 @@ disconnect
 		self reset]
 !
 
+localAnswerOn: aWebSocketCommand
+	"Executes the callback waiting for this command's answer.
+	It's done by evaluating the callback waiting for aWebSocketCommand.
+	It also removes it from the dictionary because is not pending for it anymore."
+	
+	(self localAnswers 
+		at: aWebSocketCommand fId
+		ifAbsent:[ ^ nil ]) value: aWebSocketCommand.
+
+	self localAnswers 
+		removeKey: aWebSocketCommand fId
+		ifAbsent:[ ]
+!
+
 newWebSocketOn: anUri
 
 	<return new WebSocket(anUri)>
@@ -204,6 +365,18 @@ nextId
 	"Increments the counter and answers the value."
 	
 	^ counter := self counter + 1
+!
+
+remoteAnswerOn: aWebSocketCommand
+	"Sends aWebSocketCommand to the other end."
+	
+	self sendCommand: aWebSocketCommand
+!
+
+remoteAnswerOn: aWebSocketCommand onError: aBlock
+	"Sends aWebSocketCommand to the other end."
+	
+	self sendCommand: aWebSocketCommand onError: aBlock
 !
 
 reset
@@ -228,12 +401,12 @@ send: aString onError: aBlock
 		do:[ :x | aBlock value: x ]
 !
 
-sendCommand: aCommand
-	"Sends aCommand to the other side of the wire.
+sendCommand: aWebSocketCommand
+	"Sends aWebSocketCommand to the other side of the wire.
 	Will throw an APIError if an exception happens"
 	
 	^ self 
-		sendCommand: aCommand
+		sendCommand: aWebSocketCommand
 		onError:[ :x | APIError signal: x asString ]
 !
 
@@ -248,17 +421,19 @@ sendCommand: aCommand do: aBlock
 			APIError signal: x asString ]
 !
 
-sendCommand: aCommand do: anAnswerBlock onError: aBlock
-	"Sends aCommand to the other side of the wire.
+sendCommand: aWebSocketCommand do: anAnswerBlock onError: aBlock
+	"Sends aWebSocketCommand to the other side of the wire.
 	Registers anAnswerBlock to be evaluated later when the answer arrives.
 	Evaluates aBlock if there is an exception while doing it."
 	
 	self nextId.
-	aCommand id: self counter.
-	self toAnswer at: self counter put: anAnswerBlock.
+	"Marks the commandwith a frontend's id."
+	aWebSocketCommand fId: self counter.
+	
+	self localAnswers at: self counter put: anAnswerBlock.
 
 	^ self 
-		send: aCommand asJSONString
+		send: aWebSocketCommand asJSONString
 		onError: aBlock
 !
 
@@ -326,161 +501,11 @@ isDisconnected
 	socket readyState ~= 1 ]
 ! !
 
-Error subclass: #APIError
-	instanceVariableNames: ''
-	package: 'Flow-API'!
-!APIError commentStamp!
-## APIError
-
-This exception is used when flow finds issues while communicating with the backend!
-
-Object subclass: #Client
-	instanceVariableNames: 'rest webSocket published'
-	package: 'Flow-API'!
-!Client commentStamp!
-## Client
-
-Provides access to the REST and WebSocket API with the backend side. 
-
-A Client also has knows which objects are being published for the backend to use them remotely.!
-
-!Client methodsFor: 'accessing'!
-
-published
-	"Answers the dictionary holding the published objects 
-	in 'this smalltalk' environment.
-	Keys can be the instance's hash, a Mapless UUID, etc.
-	Values are the instances receiving messages from remote."
-	^ published ifNil:[ published := Dictionary new ]
-!
-
-rest
-
-	^ rest ifNil:[ rest := RESTfulAPI new ]
-!
-
-webSocket
-
-	^ webSocket ifNil:[ self initializeWebSocket ]
-! !
-
-!Client methodsFor: 'actions'!
-
-connect
-
-	self webSocket connect
-!
-
-newBadCommandOn: aWebSocketEvent  
-	"Answers a new instance of BadCommand based on aWebSocketEvent."
-
-	^ BadCommand new
-		problematic: aWebSocketEvent data;
-		yourself
-!
-
-publish: anObject 
-	"Holds anObject among those exposed to receive remote messages."
-	^ self publish: anObject at: anObject id
-!
-
-publish: anObject at: anId
-	"Holds anObject among those exposed to receive remote messages."
-	^ self published at: anId put: anObject
-!
-
-send: aSelector to: aRemoteObjectId
-	"Sends the message to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: Array new
-		to: aRemoteObjectId 
-		do: [ :ans | "ignoring it..." ]
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector to: aRemoteObjectId do: anAnswerBlock
-	"Sends the message to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: Array new
-		to: aRemoteObjectId 
-		do: anAnswerBlock 
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector with: anArgument to: aRemoteObjectId
-	"Sends the message to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: (Array with: anArgument)
-		to: aRemoteObjectId 
-		do: [ :ans | "ignoring it..." ]
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector with: anArgument to: aRemoteObjectId do: anAnswerBlock
-	"Sends the message with an argument to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: (Array with: anArgument) 
-		to: aRemoteObjectId 
-		do: anAnswerBlock 
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock
-	"Sends the message with arguments to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: someArguments 
-		to: aRemoteObjectId 
-		do: anAnswerBlock 
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock onError: anErrorBlock
-	"Sends the message with arguments to the remote object and
-	evaluates anAnswerBlock when the answer arrives."
-	
-	self webSocket 
-		sendCommand: (RemoteMessageSend to: aRemoteObjectId send: aSelector withAll: someArguments)
-		do: anAnswerBlock
-		onError: anErrorBlock
-! !
-
-!Client methodsFor: 'initialization'!
-
-initializeWebSocket 
-
-	^ webSocket := WebSocketAPI new
-					when: 'messageReceived:' do:[ :ev :args | self onMessage: ev with: args ];
-					yourself
-! !
-
-!Client methodsFor: 'reactions'!
-
-onMessage: anEvent with: aWebSocketEvent 
-	"This client is receiving anEvent 
-	with a message comming from the server."
-	
-	| command |
-	command := WebSocketCommand for: aWebSocketEvent.
-
-	command ifNil:[ command := self newBadCommandOn: aWebSocketEvent ].
-	command receivedOn: self
-! !
-
 Mapless subclass: #WebSocketCommand
 	instanceVariableNames: ''
 	package: 'Flow-API'!
 !WebSocketCommand commentStamp!
-A WebSocketCommand is an abstraction.
+## A WebSocketCommand is an abstraction.
 
 Subclasses are concrete objects that easily travel 
 
@@ -492,27 +517,81 @@ They have the concrete knowledge of how to react or who to delegate behaviour.
 
 They also carry any information necessary to achieve some reaction at their destination.
 
+It's a convention that commands without @answer are yet to be executed, and all executed commands have an answer set (they're an exception if they need to)
+
 Note: they are Mapless only as convenience for traveling over the wire. You can if you like to but, originally, they are not meant to be persisted.!
 
 !WebSocketCommand methodsFor: 'actions'!
 
-answerOn:  aClient
-	"Answers the API callback waiting for this command's answer."
+executeOn: anAPIClient
+	"Executes this command comming from anAPIClient
+	and performs the remote answer."
 	
-	aClient webSocket answerOn: self
+	[ self
+		processOn: anAPIClient;
+		remoteAnswerOn: anAPIClient ]
+			on: Error 
+			do:[ :x |
+				self
+					isException: true;
+					answer: x asString;
+					remoteAnswerOn: anAPIClient ]
 !
 
-receivedOn: aClient
-	"This command generated somewhere was received in this end, time to react to it."
+localAnswerOn:  anAPIClient
+	"Tells the API to perform whatever is pending
+	in the local answer of this command"
 	
-	self answerOn: aClient
+	anAPIClient localAnswerOn: self
 !
 
-sentOn: aClient
-	"This command generated here was sent to the other end, 
-	may be is time keep an eye on it."
+processOn: anAPIClient
+	"Executes this command comming from anAPIClient
+	loading the answer in it."
 	
-	self halt
+	self subclassResponsibility
+!
+
+receivedOn: anAPIClient
+	"This command has been received by anAPIClient.
+	Time to react depending in this being an answer or not..."
+	
+	self hasAnswer 
+		ifTrue:[ 
+			"Is backend's answer of a previous command"
+			self onAnsweredBy: anAPIClient ]
+		ifFalse:[ 
+			"Is the backend taking initiative"
+			self onCommandFrom: anAPIClient ]
+!
+
+remoteAnswerOn:  anAPIClient
+	"Tells the API to respond to the backend 
+	with this command (assumes it's loading the answer already)"
+	
+	anAPIClient remoteAnswerOn: self
+! !
+
+!WebSocketCommand methodsFor: 'reactions'!
+
+onAnsweredBy: anAPIClient
+	"This command arrived with an answer"
+
+	self localAnswerOn: anAPIClient
+!
+
+onCommandFrom: anAPIClient
+	"This command arrived from anAPIClient, time to execute and answer it"
+	
+	self executeOn: anAPIClient
+! !
+
+!WebSocketCommand methodsFor: 'testing'!
+
+hasAnswer
+	"Answers true if this command has any answer.
+	Note: having an answer means it's a response to some command previously sent"
+	^ self answer notNil
 ! !
 
 !WebSocketCommand class methodsFor: 'actions'!
@@ -538,16 +617,6 @@ WebSocketCommand subclass: #BadCommand
 This command useful when there is trouble during the reception/processing of a remote command.
 
 Meant more for production than for development.!
-
-!BadCommand methodsFor: 'actions'!
-
-receivedOn: aClient
-	"This command generated somewhere was received in this end, time to react to it."
-
-	super answerOn: aClient.
-
-	APIError signal: self asJSONString
-! !
 
 WebSocketCommand subclass: #Echo
 	instanceVariableNames: ''
@@ -590,13 +659,21 @@ RemoteMessageSends have @answer set before responding to the sender side and if 
 
 !RemoteMessageSend methodsFor: 'actions'!
 
-receivedOn: aClient
-	"This command generated somewhere was received in this end, time to react to it."
-				
-	self answerOn: aClient.
+getReceiverOn: anAPIClient
+	"Returns the published at anAPIClient corresponding to the receiver of this message send."
+
+	^ anAPIClient published 
+		at:	self receiver
+		ifAbsent:[ nil ]
+!
+
+processOn: anAPIClient
+	"Executes this command comming from anAPIClient
+	loading the answer in it."
 	
-	(self isException notNil and:[
-	self isException ]) ifTrue:[ console error: self answer ]
+	self answer: ((self getReceiverOn: anAPIClient)
+					perform: self selector
+					withArguments: self arguments) asRemote
 ! !
 
 !RemoteMessageSend class methodsFor: 'actions'!

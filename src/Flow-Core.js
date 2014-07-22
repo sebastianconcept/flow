@@ -366,12 +366,12 @@ selector: "api",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Client(){return globals.Client||(typeof Client=="undefined"?nil:Client)}
+function $APIClient(){return globals.APIClient||(typeof APIClient=="undefined"?nil:APIClient)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1,$receiver;
 $2=self["@api"];
 if(($receiver = $2) == null || $receiver.isNil){
-self["@api"]=_st($Client())._new();
+self["@api"]=_st($APIClient())._new();
 $1=self["@api"];
 } else {
 $1=$2;
@@ -379,9 +379,9 @@ $1=$2;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"api",{},globals.Session)})},
 args: [],
-source: "api\x0a\x0a\x09^ api ifNil:[ api := Client new ]",
+source: "api\x0a\x0a\x09^ api ifNil:[ api := APIClient new ]",
 messageSends: ["ifNil:", "new"],
-referencedClasses: ["Client"]
+referencedClasses: ["APIClient"]
 }),
 globals.Session);
 

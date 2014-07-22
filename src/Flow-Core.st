@@ -197,7 +197,7 @@ Object subclass: #Session
 
 api
 
-	^ api ifNil:[ api := Client new ]
+	^ api ifNil:[ api := APIClient new ]
 !
 
 asJSONString

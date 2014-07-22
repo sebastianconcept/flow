@@ -1,9 +1,56 @@
-define("app/Flow", ["amber/boot", "amber_core/Kernel-Objects"], function($boot){
+define("app/Flow", ["amber/boot", "amber_core/Kernel-Objects", "amber_core/Kernel-Exceptions"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow');
 smalltalk.packages["Flow"].transport = {"type":"amd","amdNamespace":"app"};
 
 smalltalk.addClass('Flow', globals.Object, [], 'Flow');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "printOn:",
+protocol: '*Flow',
+fn: function (aStream){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $5,$4,$3,$2,$1;
+($ctx1.supercall = true, globals.MessageNotUnderstood.superclass.fn.prototype._printOn_.apply(_st(self), [aStream]));
+$ctx1.supercall = false;
+$5=_st(self._receiver())._asString();
+$ctx1.sendIdx["asString"]=1;
+$4="(".__comma($5);
+$3=_st($4).__comma(">>");
+$ctx1.sendIdx[","]=3;
+$2=_st($3).__comma(_st(_st(self._message())._selector())._asString());
+$ctx1.sendIdx[","]=2;
+$1=_st($2).__comma(")");
+$ctx1.sendIdx[","]=1;
+_st(aStream)._nextPutAll_($1);
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},globals.MessageNotUnderstood)})},
+args: ["aStream"],
+source: "printOn: aStream\x0a\x0a\x09super printOn: aStream.\x0a\x09\x0a\x09aStream nextPutAll: '(',self receiver asString, '>>',self message selector asString,')'",
+messageSends: ["printOn:", "nextPutAll:", ",", "asString", "receiver", "selector", "message"],
+referencedClasses: []
+}),
+globals.MessageNotUnderstood);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "asRemote",
+protocol: '*Flow',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+"todo";
+$1=self._asString();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"asRemote",{},globals.Object)})},
+args: [],
+source: "asRemote\x0a\x09\x22Answers this object in a way that is appropriate \x0a\x09for a remote end to do something with it\x22\x0a\x09\x0a\x09#todo. \x22return a proxy so it gets actually useful\x22\x0a\x09^ self asString",
+messageSends: ["asString"],
+referencedClasses: []
+}),
+globals.Object);
 
 smalltalk.addMethod(
 smalltalk.method({

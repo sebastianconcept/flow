@@ -2,7 +2,7 @@ actions
 reactOn: aHandler from: aClient
 	"This command has arrived to aHandler from aClient, time to react to it."
 	| receiver answer |
-	
+	self halt.
 	[ receiver := aHandler published
 		at: self receiverId
 		ifAbsent:[ self error: 'There is no "',self receiverId asString,'" published here' ].
