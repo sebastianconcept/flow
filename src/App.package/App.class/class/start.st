@@ -9,3 +9,5 @@ start
 	
 	self startWebsocket.
 	self setupServer.
+
+	self publishObjects

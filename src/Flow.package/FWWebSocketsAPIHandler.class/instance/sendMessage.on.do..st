@@ -10,3 +10,4 @@ sendMessage: aMessageSend on: aClient do: aBlock
 							yourself)
 		to: aClient
 		do: aBlock
+		onError: [ :x | x resignalAs: (FWAPIError signal: x asString) ]

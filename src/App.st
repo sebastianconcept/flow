@@ -20,6 +20,6 @@ onOpen
 	and
 	that"
 	
-	self session api publish: Transcript
+	self session api publish: Transcript current at: 'Transcript'.
 ! !
 

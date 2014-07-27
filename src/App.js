@@ -15,11 +15,11 @@ function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.AppController.superclass.fn.prototype._onOpen.apply(_st(self), []));
 $ctx1.supercall = false;
-_st(_st(self._session())._api())._publish_($Transcript());
+_st(_st(self._session())._api())._publish_at_(_st($Transcript())._current(),"Transcript");
 return self}, function($ctx1) {$ctx1.fill(self,"onOpen",{},globals.AppController)})},
 args: [],
-source: "onOpen\x0a\x09\x22All is loaded, ready to rock!\x22\x0a\x09\x0a\x09super onOpen.\x0a\x09\x0a\x09\x22Time for the app to do its own particular thigns...\x22\x0a\x09\x0a\x09\x22do this\x0a\x09and\x0a\x09that\x22\x0a\x09\x0a\x09self session api publish: Transcript",
-messageSends: ["onOpen", "publish:", "api", "session"],
+source: "onOpen\x0a\x09\x22All is loaded, ready to rock!\x22\x0a\x09\x0a\x09super onOpen.\x0a\x09\x0a\x09\x22Time for the app to do its own particular thigns...\x22\x0a\x09\x0a\x09\x22do this\x0a\x09and\x0a\x09that\x22\x0a\x09\x0a\x09self session api publish: Transcript current at: 'Transcript'.",
+messageSends: ["onOpen", "publish:at:", "api", "session", "current"],
 referencedClasses: ["Transcript"]
 }),
 globals.AppController);

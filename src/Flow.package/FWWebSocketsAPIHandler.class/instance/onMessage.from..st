@@ -8,10 +8,9 @@ onMessage: aMessage from: aClient
 	[ command := FWWebSocketAPIv10Command fromJSONString: aMessage ]
 		on: Error 
 		do:[ :x | 
-			command := BadCommand  new
-							problematic: aMessage;
-							exception: x asString;
-							yourself ].
+			^ aClient sendMessage: ((BadCommand caused: x)
+										whenReceiving: aMessage;
+										yourself) asJSONString ].
 	
 	command ifNotNil:[
 		"We are currently ignoring commands that we don't understand"

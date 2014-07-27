@@ -3,6 +3,25 @@ Object subclass: #Flow
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+!Error methodsFor: '*Flow'!
+
+printOn: aStream
+
+	| content |
+	
+	super printOn: aStream.
+
+	(messageText notNil and:[
+	messageText notEmpty ]) ifTrue:[
+		content := messageText ].
+	
+	self isSmalltalkError ifFalse:[ content := self jsStack ].
+	
+	content isNil ifTrue:[ ^ self ].
+	
+	aStream nextPutAll: '(',content printString,')'
+! !
+
 !MessageNotUnderstood methodsFor: '*Flow'!
 
 printOn: aStream
@@ -56,5 +75,15 @@ when: anEventName do: aReactionBlock
 	^ (jQuery value: self) 
 		on: anEventName 
 		do: aReactionBlock
+! !
+
+!ProtoObject methodsFor: '*Flow'!
+
+isNil
+	^ false
+!
+
+notNil
+	^ self isNil not
 ! !
 

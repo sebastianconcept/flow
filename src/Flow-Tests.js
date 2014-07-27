@@ -1,4 +1,4 @@
-define("app/Flow-Tests", ["amber/boot", "amber_core/SUnit"], function($boot){
+define("app/Flow-Tests", ["amber/boot", "amber_core/SUnit", "app/Flow-API"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-Tests');
 smalltalk.packages["Flow-Tests"].transport = {"type":"amd","amdNamespace":"app"};
@@ -21,8 +21,8 @@ $3=_st($4)._session();
 $ctx2.sendIdx["session"]=1;
 $2=_st($3)._api();
 $ctx2.sendIdx["api"]=1;
-$1=_st($2)._webSocket();
-$ctx2.sendIdx["webSocket"]=1;
+$1=_st($2)._ws();
+$ctx2.sendIdx["ws"]=1;
 return _st($1)._connect();
 $ctx2.sendIdx["connect"]=1;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}),$Error());
@@ -35,8 +35,8 @@ $8=_st($9)._session();
 $ctx2.sendIdx["session"]=2;
 $7=_st($8)._api();
 $ctx2.sendIdx["api"]=2;
-$6=_st($7)._webSocket();
-$ctx2.sendIdx["webSocket"]=2;
+$6=_st($7)._ws();
+$ctx2.sendIdx["ws"]=2;
 $5=_st($6)._hasSocket();
 self._assert_($5);
 $ctx2.sendIdx["assert:"]=1;
@@ -46,8 +46,8 @@ $13=_st($14)._session();
 $ctx2.sendIdx["session"]=3;
 $12=_st($13)._api();
 $ctx2.sendIdx["api"]=3;
-$11=_st($12)._webSocket();
-$ctx2.sendIdx["webSocket"]=3;
+$11=_st($12)._ws();
+$ctx2.sendIdx["ws"]=3;
 $10=_st($11)._isConnected();
 $ctx2.sendIdx["isConnected"]=1;
 self._assert_($10);
@@ -60,8 +60,8 @@ $17=_st($18)._session();
 $ctx3.sendIdx["session"]=4;
 $16=_st($17)._api();
 $ctx3.sendIdx["api"]=4;
-$15=_st($16)._webSocket();
-$ctx3.sendIdx["webSocket"]=4;
+$15=_st($16)._ws();
+$ctx3.sendIdx["ws"]=4;
 return _st($15)._connect();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,3)})}),$Error());
 $24=_st(window)._app();
@@ -70,8 +70,8 @@ $23=_st($24)._session();
 $ctx2.sendIdx["session"]=5;
 $22=_st($23)._api();
 $ctx2.sendIdx["api"]=5;
-$21=_st($22)._webSocket();
-$ctx2.sendIdx["webSocket"]=5;
+$21=_st($22)._ws();
+$ctx2.sendIdx["ws"]=5;
 $20=_st($21)._socket();
 $ctx2.sendIdx["socket"]=1;
 $29=_st(window)._app();
@@ -80,18 +80,18 @@ $28=_st($29)._session();
 $ctx2.sendIdx["session"]=6;
 $27=_st($28)._api();
 $ctx2.sendIdx["api"]=6;
-$26=_st($27)._webSocket();
-$ctx2.sendIdx["webSocket"]=6;
+$26=_st($27)._ws();
+$ctx2.sendIdx["ws"]=6;
 $25=_st($26)._socket();
 $19=_st($20).__eq_eq($25);
 self._assert_($19);
 $ctx2.sendIdx["assert:"]=3;
-return self._assert_(_st(_st(_st(_st(_st(window)._app())._session())._api())._webSocket())._isConnected());
+return self._assert_(_st(_st(_st(_st(_st(window)._app())._session())._api())._ws())._isConnected());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}))._valueWithTimeout_((1000));
 return self}, function($ctx1) {$ctx1.fill(self,"testConnect",{},globals.FlowTest)})},
 args: [],
-source: "testConnect\x0a\x0a\x09self shouldnt:[\x0a\x09\x09window app session api webSocket connect ] raise: Error.\x0a\x09\x0a\x09[\x22The >>valueWithTimeout: is there because connecting a ws takes time\x22 \x0a\x09self assert: window app session api webSocket hasSocket.\x0a\x09self assert: window app session api webSocket isConnected.\x0a\x0a\x09self shouldnt:[\x0a\x09\x09window app session api webSocket connect ] raise: Error.\x0a\x0a\x09self assert: window app session api webSocket socket == window app session api webSocket socket.\x0a\x09self assert: window app session api webSocket isConnected ] valueWithTimeout: 1000\x0a\x09",
-messageSends: ["shouldnt:raise:", "connect", "webSocket", "api", "session", "app", "valueWithTimeout:", "assert:", "hasSocket", "isConnected", "==", "socket"],
+source: "testConnect\x0a\x0a\x09self shouldnt:[\x0a\x09\x09window app session api ws connect ] raise: Error.\x0a\x09\x0a\x09[\x22The >>valueWithTimeout: is there because connecting a ws takes time\x22 \x0a\x09self assert: window app session api ws hasSocket.\x0a\x09self assert: window app session api ws isConnected.\x0a\x0a\x09self shouldnt:[\x0a\x09\x09window app session api ws connect ] raise: Error.\x0a\x0a\x09self assert: window app session api ws socket == window app session api ws socket.\x0a\x09self assert: window app session api ws isConnected ] valueWithTimeout: 1000\x0a\x09",
+messageSends: ["shouldnt:raise:", "connect", "ws", "api", "session", "app", "valueWithTimeout:", "assert:", "hasSocket", "isConnected", "==", "socket"],
 referencedClasses: ["Error"]
 }),
 globals.FlowTest);
@@ -105,15 +105,15 @@ var self=this;
 var echo;
 function $Echo(){return globals.Echo||(typeof Echo=="undefined"?nil:Echo)}
 return smalltalk.withContext(function($ctx1) { 
-var $5,$4,$3,$2,$1,$10,$9,$8,$7,$6,$11,$13,$12;
+var $5,$4,$3,$2,$1,$10,$9,$8,$7,$6,$11,$13,$12,$15,$14,$18,$17,$16;
 $5=_st(window)._app();
 $ctx1.sendIdx["app"]=1;
 $4=_st($5)._session();
 $ctx1.sendIdx["session"]=1;
 $3=_st($4)._api();
 $ctx1.sendIdx["api"]=1;
-$2=_st($3)._webSocket();
-$ctx1.sendIdx["webSocket"]=1;
+$2=_st($3)._ws();
+$ctx1.sendIdx["ws"]=1;
 $1=_st($2)._hasSocket();
 self._assert_($1);
 $ctx1.sendIdx["assert:"]=1;
@@ -123,8 +123,8 @@ $9=_st($10)._session();
 $ctx1.sendIdx["session"]=2;
 $8=_st($9)._api();
 $ctx1.sendIdx["api"]=2;
-$7=_st($8)._webSocket();
-$ctx1.sendIdx["webSocket"]=2;
+$7=_st($8)._ws();
+$ctx1.sendIdx["ws"]=2;
 $6=_st($7)._isConnected();
 self._assert_($6);
 $ctx1.sendIdx["assert:"]=2;
@@ -133,20 +133,206 @@ $11=_st(_st(echo)._content()).__eq("Do you follow?");
 $ctx1.sendIdx["="]=1;
 self._assert_($11);
 $ctx1.sendIdx["assert:"]=3;
-$13=_st(echo)._echoes();
-$ctx1.sendIdx["echoes"]=1;
+$13=_st(echo)._answer();
+$ctx1.sendIdx["answer"]=1;
 $12=_st($13)._isNil();
 self._assert_($12);
 $ctx1.sendIdx["assert:"]=4;
-_st(_st(_st(_st(_st(window)._app())._session())._api())._webSocket())._sendCommand_do_(echo,(function(ans){
+_st(_st(_st(_st(_st(window)._app())._session())._api())._ws())._sendCommand_do_(echo,(function(ans){
 return smalltalk.withContext(function($ctx2) {
-return self._assert_(_st(_st(ans)._echoes()).__eq("Do you follow?"));
+$15=_st(ans)._answer();
+$ctx2.sendIdx["answer"]=2;
+$14=_st($15)._notNil();
+$ctx2.sendIdx["notNil"]=1;
+self._assert_($14);
+$ctx2.sendIdx["assert:"]=5;
+$18=_st(ans)._answer();
+$ctx2.sendIdx["answer"]=3;
+$17=_st($18)._echoes();
+$ctx2.sendIdx["echoes"]=1;
+$16=_st($17)._notNil();
+self._assert_($16);
+$ctx2.sendIdx["assert:"]=6;
+return self._assert_(_st(_st(_st(ans)._answer())._echoes()).__eq("Do you follow?"));
 }, function($ctx2) {$ctx2.fillBlock({ans:ans},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testEcho",{echo:echo},globals.FlowTest)})},
 args: [],
-source: "testEcho\x0a\x0a\x09| echo |\x0a\x0a\x09self assert: window app session api webSocket hasSocket.\x0a\x09self assert: window app session api webSocket isConnected.\x0a\x0a\x09echo := Echo for: 'Do you follow?'.\x0a\x09\x0a\x09self assert: echo content = 'Do you follow?'.\x0a\x09self assert: echo echoes isNil.\x0a\x09\x0a\x09window app session api webSocket \x0a\x09\x09sendCommand: echo\x0a\x09\x09do:[ :ans | self assert: ans echoes = 'Do you follow?' ] ",
-messageSends: ["assert:", "hasSocket", "webSocket", "api", "session", "app", "isConnected", "for:", "=", "content", "isNil", "echoes", "sendCommand:do:"],
+source: "testEcho\x0a\x0a\x09| echo |\x0a\x0a\x09self assert: window app session api ws hasSocket.\x0a\x09self assert: window app session api ws isConnected.\x0a\x0a\x09echo := Echo for: 'Do you follow?'.\x0a\x09\x0a\x09self assert: echo content = 'Do you follow?'.\x0a\x09self assert: echo answer isNil.\x0a\x09\x0a\x09window app session api ws \x0a\x09\x09sendCommand: echo\x0a\x09\x09do:[ :ans | \x0a\x09\x09\x09self assert: ans answer notNil.\x0a\x09\x09\x09self assert: ans answer echoes notNil.\x0a\x09\x09\x09self assert: ans answer echoes = 'Do you follow?' ] \x09\x09\x09",
+messageSends: ["assert:", "hasSocket", "ws", "api", "session", "app", "isConnected", "for:", "=", "content", "isNil", "answer", "sendCommand:do:", "notNil", "echoes"],
 referencedClasses: ["Echo"]
+}),
+globals.FlowTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testErrorHandlingAfterResponded",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var faulty;
+function $WillFailAfterResponded(){return globals.WillFailAfterResponded||(typeof WillFailAfterResponded=="undefined"?nil:WillFailAfterResponded)}
+return smalltalk.withContext(function($ctx1) { 
+var $5,$4,$3,$2,$1,$10,$9,$8,$7,$6,$12,$11,$14,$13;
+$5=_st(window)._app();
+$ctx1.sendIdx["app"]=1;
+$4=_st($5)._session();
+$ctx1.sendIdx["session"]=1;
+$3=_st($4)._api();
+$ctx1.sendIdx["api"]=1;
+$2=_st($3)._ws();
+$ctx1.sendIdx["ws"]=1;
+$1=_st($2)._hasSocket();
+self._assert_($1);
+$ctx1.sendIdx["assert:"]=1;
+$10=_st(window)._app();
+$ctx1.sendIdx["app"]=2;
+$9=_st($10)._session();
+$ctx1.sendIdx["session"]=2;
+$8=_st($9)._api();
+$ctx1.sendIdx["api"]=2;
+$7=_st($8)._ws();
+$ctx1.sendIdx["ws"]=2;
+$6=_st($7)._isConnected();
+self._assert_($6);
+$ctx1.sendIdx["assert:"]=2;
+faulty=_st($WillFailAfterResponded())._new();
+$12=_st(faulty)._answer();
+$ctx1.sendIdx["answer"]=1;
+$11=_st($12)._isNil();
+self._assert_($11);
+$ctx1.sendIdx["assert:"]=3;
+_st(_st(_st(_st(_st(window)._app())._session())._api())._ws())._sendCommand_do_onError_(faulty,(function(ans){
+return smalltalk.withContext(function($ctx2) {
+$14=_st(ans)._answer();
+$ctx2.sendIdx["answer"]=2;
+$13=_st($14)._notNil();
+self._assert_($13);
+$ctx2.sendIdx["assert:"]=4;
+return self._assert_(_st(ans)._answer());
+$ctx2.sendIdx["assert:"]=5;
+}, function($ctx2) {$ctx2.fillBlock({ans:ans},$ctx1,1)})}),(function(x){
+return smalltalk.withContext(function($ctx2) {
+return self._assert_(_st(_st(x)._messageText()).__eq("Failing just after the answer"));
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"testErrorHandlingAfterResponded",{faulty:faulty},globals.FlowTest)})},
+args: [],
+source: "testErrorHandlingAfterResponded\x0a\x0a\x09| faulty |\x0a\x0a\x09self assert: window app session api ws hasSocket.\x0a\x09self assert: window app session api ws isConnected.\x0a\x0a\x09faulty := WillFailAfterResponded new.\x0a\x09\x0a\x09self assert: faulty answer isNil.\x0a\x09\x0a\x09window app session api ws \x0a\x09\x09sendCommand: faulty\x0a\x09\x09do:[ :ans | \x0a\x09\x09\x09self assert: ans answer notNil.\x0a\x09\x09\x09self assert: ans answer ]\x0a\x09\x09onError:[ :x | \x0a\x09\x09\x09self assert: (x messageText = 'Failing just after the answer') ]\x0a\x09",
+messageSends: ["assert:", "hasSocket", "ws", "api", "session", "app", "isConnected", "new", "isNil", "answer", "sendCommand:do:onError:", "notNil", "=", "messageText"],
+referencedClasses: ["WillFailAfterResponded"]
+}),
+globals.FlowTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testErrorHandlingAfterSent",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var faulty;
+function $WillFailAfterSent(){return globals.WillFailAfterSent||(typeof WillFailAfterSent=="undefined"?nil:WillFailAfterSent)}
+return smalltalk.withContext(function($ctx1) { 
+var $5,$4,$3,$2,$1,$10,$9,$8,$7,$6,$12,$11,$14,$13;
+$5=_st(window)._app();
+$ctx1.sendIdx["app"]=1;
+$4=_st($5)._session();
+$ctx1.sendIdx["session"]=1;
+$3=_st($4)._api();
+$ctx1.sendIdx["api"]=1;
+$2=_st($3)._ws();
+$ctx1.sendIdx["ws"]=1;
+$1=_st($2)._hasSocket();
+self._assert_($1);
+$ctx1.sendIdx["assert:"]=1;
+$10=_st(window)._app();
+$ctx1.sendIdx["app"]=2;
+$9=_st($10)._session();
+$ctx1.sendIdx["session"]=2;
+$8=_st($9)._api();
+$ctx1.sendIdx["api"]=2;
+$7=_st($8)._ws();
+$ctx1.sendIdx["ws"]=2;
+$6=_st($7)._isConnected();
+self._assert_($6);
+$ctx1.sendIdx["assert:"]=2;
+faulty=_st($WillFailAfterSent())._new();
+$12=_st(faulty)._answer();
+$ctx1.sendIdx["answer"]=1;
+$11=_st($12)._isNil();
+self._assert_($11);
+$ctx1.sendIdx["assert:"]=3;
+_st(_st(_st(_st(_st(window)._app())._session())._api())._ws())._sendCommand_do_onError_(faulty,(function(ans){
+return smalltalk.withContext(function($ctx2) {
+$14=_st(ans)._answer();
+$ctx2.sendIdx["answer"]=2;
+$13=_st($14)._notNil();
+self._assert_($13);
+$ctx2.sendIdx["assert:"]=4;
+return self._assert_(_st(ans)._answer());
+$ctx2.sendIdx["assert:"]=5;
+}, function($ctx2) {$ctx2.fillBlock({ans:ans},$ctx1,1)})}),(function(x){
+return smalltalk.withContext(function($ctx2) {
+return self._assert_(_st(_st(x)._messageText()).__eq("Failing just after sent"));
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"testErrorHandlingAfterSent",{faulty:faulty},globals.FlowTest)})},
+args: [],
+source: "testErrorHandlingAfterSent\x0a\x0a\x09| faulty |\x0a\x0a\x09self assert: window app session api ws hasSocket.\x0a\x09self assert: window app session api ws isConnected.\x0a\x0a\x09faulty := WillFailAfterSent new.\x0a\x09\x0a\x09self assert: faulty answer isNil.\x0a\x09\x0a\x09window app session api ws \x0a\x09\x09sendCommand: faulty\x0a\x09\x09do:[ :ans | \x0a\x09\x09\x09self assert: ans answer notNil.\x0a\x09\x09\x09self assert: ans answer ]\x0a\x09\x09onError:[ :x | self assert: (x messageText = 'Failing just after sent') ]\x0a\x09\x09",
+messageSends: ["assert:", "hasSocket", "ws", "api", "session", "app", "isConnected", "new", "isNil", "answer", "sendCommand:do:onError:", "notNil", "=", "messageText"],
+referencedClasses: ["WillFailAfterSent"]
+}),
+globals.FlowTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testErrorHandlingBeforeSend",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var faulty;
+function $WillFailBeforeSend(){return globals.WillFailBeforeSend||(typeof WillFailBeforeSend=="undefined"?nil:WillFailBeforeSend)}
+return smalltalk.withContext(function($ctx1) { 
+var $5,$4,$3,$2,$1,$10,$9,$8,$7,$6,$12,$11;
+$5=_st(window)._app();
+$ctx1.sendIdx["app"]=1;
+$4=_st($5)._session();
+$ctx1.sendIdx["session"]=1;
+$3=_st($4)._api();
+$ctx1.sendIdx["api"]=1;
+$2=_st($3)._ws();
+$ctx1.sendIdx["ws"]=1;
+$1=_st($2)._hasSocket();
+self._assert_($1);
+$ctx1.sendIdx["assert:"]=1;
+$10=_st(window)._app();
+$ctx1.sendIdx["app"]=2;
+$9=_st($10)._session();
+$ctx1.sendIdx["session"]=2;
+$8=_st($9)._api();
+$ctx1.sendIdx["api"]=2;
+$7=_st($8)._ws();
+$ctx1.sendIdx["ws"]=2;
+$6=_st($7)._isConnected();
+self._assert_($6);
+$ctx1.sendIdx["assert:"]=2;
+faulty=_st($WillFailBeforeSend())._new();
+$12=_st(faulty)._answer();
+$ctx1.sendIdx["answer"]=1;
+$11=_st($12)._isNil();
+$ctx1.sendIdx["isNil"]=1;
+self._assert_($11);
+$ctx1.sendIdx["assert:"]=3;
+_st(_st(_st(_st(_st(window)._app())._session())._api())._ws())._sendCommand_do_onError_(faulty,(function(ans){
+return smalltalk.withContext(function($ctx2) {
+return self._assert_(_st(_st(ans)._answer())._isNil());
+$ctx2.sendIdx["assert:"]=4;
+}, function($ctx2) {$ctx2.fillBlock({ans:ans},$ctx1,1)})}),(function(x){
+return smalltalk.withContext(function($ctx2) {
+return self._assert_(_st(_st(x)._messageText()).__eq("Failing just before sending"));
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"testErrorHandlingBeforeSend",{faulty:faulty},globals.FlowTest)})},
+args: [],
+source: "testErrorHandlingBeforeSend\x0a\x0a\x09| faulty |\x0a\x0a\x09self assert: window app session api ws hasSocket.\x0a\x09self assert: window app session api ws isConnected.\x0a\x0a\x09faulty := WillFailBeforeSend new.\x0a\x09\x0a\x09self assert: faulty answer isNil.\x0a\x09\x0a\x09\x0a\x09window app session api ws \x0a\x09\x09sendCommand: faulty\x0a\x09\x09do:[ :ans | \x0a\x09\x09\x09self assert: ans answer isNil ]\x0a\x09\x09onError:[ :x | self assert: (x messageText = 'Failing just before sending') ]\x0a\x09",
+messageSends: ["assert:", "hasSocket", "ws", "api", "session", "app", "isConnected", "new", "isNil", "answer", "sendCommand:do:onError:", "=", "messageText"],
+referencedClasses: ["WillFailBeforeSend"]
 }),
 globals.FlowTest);
 
@@ -159,15 +345,15 @@ var self=this;
 var ping;
 function $Ping(){return globals.Ping||(typeof Ping=="undefined"?nil:Ping)}
 return smalltalk.withContext(function($ctx1) { 
-var $5,$4,$3,$2,$1,$10,$9,$8,$7,$6,$12,$11;
+var $5,$4,$3,$2,$1,$10,$9,$8,$7,$6,$12,$11,$14,$13;
 $5=_st(window)._app();
 $ctx1.sendIdx["app"]=1;
 $4=_st($5)._session();
 $ctx1.sendIdx["session"]=1;
 $3=_st($4)._api();
 $ctx1.sendIdx["api"]=1;
-$2=_st($3)._webSocket();
-$ctx1.sendIdx["webSocket"]=1;
+$2=_st($3)._ws();
+$ctx1.sendIdx["ws"]=1;
 $1=_st($2)._hasSocket();
 self._assert_($1);
 $ctx1.sendIdx["assert:"]=1;
@@ -177,28 +363,94 @@ $9=_st($10)._session();
 $ctx1.sendIdx["session"]=2;
 $8=_st($9)._api();
 $ctx1.sendIdx["api"]=2;
-$7=_st($8)._webSocket();
-$ctx1.sendIdx["webSocket"]=2;
+$7=_st($8)._ws();
+$ctx1.sendIdx["ws"]=2;
 $6=_st($7)._isConnected();
 self._assert_($6);
 $ctx1.sendIdx["assert:"]=2;
 ping=_st($Ping())._new();
-$12=_st(ping)._pongOn();
-$ctx1.sendIdx["pongOn"]=1;
+$12=_st(ping)._answer();
+$ctx1.sendIdx["answer"]=1;
 $11=_st($12)._isNil();
 self._assert_($11);
 $ctx1.sendIdx["assert:"]=3;
-_st(_st(_st(_st(_st(window)._app())._session())._api())._webSocket())._sendCommand_do_(ping,(function(ans){
+_st(_st(_st(_st(_st(window)._app())._session())._api())._ws())._sendCommand_do_(ping,(function(ans){
 return smalltalk.withContext(function($ctx2) {
-return self._assert_(_st(_st(ans)._pongOn())._notNil());
+$14=_st(ans)._answer();
+$ctx2.sendIdx["answer"]=2;
+$13=_st($14)._notNil();
+$ctx2.sendIdx["notNil"]=1;
+self._assert_($13);
+$ctx2.sendIdx["assert:"]=4;
+return self._assert_(_st(_st(_st(ans)._answer())._pongOn())._notNil());
 }, function($ctx2) {$ctx2.fillBlock({ans:ans},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"testPing",{ping:ping},globals.FlowTest)})},
 args: [],
-source: "testPing\x0a\x0a\x09| ping |\x0a\x0a\x09self assert: window app session api webSocket hasSocket.\x0a\x09self assert: window app session api webSocket isConnected.\x0a\x0a\x09ping := Ping new.\x0a\x09\x0a\x09self assert: ping pongOn isNil.\x0a\x09\x0a\x09window app session api webSocket \x0a\x09\x09sendCommand: ping\x0a\x09\x09do:[ :ans | self assert: ans pongOn notNil ] ",
-messageSends: ["assert:", "hasSocket", "webSocket", "api", "session", "app", "isConnected", "new", "isNil", "pongOn", "sendCommand:do:", "notNil"],
+source: "testPing\x0a\x0a\x09| ping |\x0a\x0a\x09self assert: window app session api ws hasSocket.\x0a\x09self assert: window app session api ws isConnected.\x0a\x0a\x09ping := Ping new.\x0a\x09\x0a\x09self assert: ping answer isNil.\x0a\x09\x0a\x09window app session api ws \x0a\x09\x09sendCommand: ping\x0a\x09\x09do:[ :ans | \x0a\x09\x09\x09self assert: ans answer notNil.\x0a\x09\x09\x09self assert: ans answer pongOn notNil ] \x09\x09\x09\x0a\x09\x09",
+messageSends: ["assert:", "hasSocket", "ws", "api", "session", "app", "isConnected", "new", "isNil", "answer", "sendCommand:do:", "notNil", "pongOn"],
 referencedClasses: ["Ping"]
 }),
 globals.FlowTest);
 
+
+
+smalltalk.addClass('WillFailAfterResponded', globals.WebSocketCommand, [], 'Flow-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAboutToAnswer",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._error_("Failing just after the answer");
+return self}, function($ctx1) {$ctx1.fill(self,"onAboutToAnswer",{},globals.WillFailAfterResponded)})},
+args: [],
+source: "onAboutToAnswer\x0a\x09\x22This command is about to execute its answer callback.\x22\x0a\x09\x09\x0a\x09self error: 'Failing just after the answer'",
+messageSends: ["error:"],
+referencedClasses: []
+}),
+globals.WillFailAfterResponded);
+
+
+
+smalltalk.addClass('WillFailAfterSent', globals.WebSocketCommand, [], 'Flow-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAfterSent",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._error_("Failing just after sent");
+return self}, function($ctx1) {$ctx1.fill(self,"onAfterSent",{},globals.WillFailAfterSent)})},
+args: [],
+source: "onAfterSent\x0a\x09\x22This command was just sent to the remote end.\x22\x0a\x09\x0a\x09self error: 'Failing just after sent'",
+messageSends: ["error:"],
+referencedClasses: []
+}),
+globals.WillFailAfterSent);
+
+
+
+smalltalk.addClass('WillFailBeforeSend', globals.WebSocketCommand, [], 'Flow-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAboutToSend",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._error_("Failing just before sending");
+return self}, function($ctx1) {$ctx1.fill(self,"onAboutToSend",{},globals.WillFailBeforeSend)})},
+args: [],
+source: "onAboutToSend\x0a\x09\x22This command is about to be sent to the remote end.\x22\x0a\x09\x0a\x09self error: 'Failing just before sending'",
+messageSends: ["error:"],
+referencedClasses: []
+}),
+globals.WillFailBeforeSend);
+
+
+
+smalltalk.addClass('WillFailRemotely', globals.WebSocketCommand, [], 'Flow-Tests');
 
 });

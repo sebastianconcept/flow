@@ -10,3 +10,4 @@ sendSelector: aSymbol arguments: someArguments to: anObjectID on: aClient do: aB
 							arguments: someArguments asArray) 
 		on: aClient 
 		do: aBlock
+		onError: [ :x | x resignalAs: (FWAPIError signal: x asString) ]

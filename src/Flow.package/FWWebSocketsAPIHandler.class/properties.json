@@ -10,6 +10,7 @@
 		"protection",
 		"published",
 		"localAnswers",
+		"localErrors",
 		"counter" ],
 	"name" : "FWWebSocketsAPIHandler",
 	"pools" : [

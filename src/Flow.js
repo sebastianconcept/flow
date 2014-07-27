@@ -11,6 +11,45 @@ selector: "printOn:",
 protocol: '*Flow',
 fn: function (aStream){
 var self=this;
+var content;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
+($ctx1.supercall = true, globals.Error.superclass.fn.prototype._printOn_.apply(_st(self), [aStream]));
+$ctx1.supercall = false;
+$1=_st(_st(self["@messageText"])._notNil())._and_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self["@messageText"])._notEmpty();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+if(smalltalk.assert($1)){
+content=self["@messageText"];
+content;
+};
+$2=self._isSmalltalkError();
+if(! smalltalk.assert($2)){
+content=self._jsStack();
+content;
+};
+$3=_st(content)._isNil();
+if(smalltalk.assert($3)){
+return self;
+};
+$4=_st("(".__comma(_st(content)._printString())).__comma(")");
+$ctx1.sendIdx[","]=1;
+_st(aStream)._nextPutAll_($4);
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream,content:content},globals.Error)})},
+args: ["aStream"],
+source: "printOn: aStream\x0a\x0a\x09| content |\x0a\x09\x0a\x09super printOn: aStream.\x0a\x0a\x09(messageText notNil and:[\x0a\x09messageText notEmpty ]) ifTrue:[\x0a\x09\x09content := messageText ].\x0a\x09\x0a\x09self isSmalltalkError ifFalse:[ content := self jsStack ].\x0a\x09\x0a\x09content isNil ifTrue:[ ^ self ].\x0a\x09\x0a\x09aStream nextPutAll: '(',content printString,')'",
+messageSends: ["printOn:", "ifTrue:", "and:", "notNil", "notEmpty", "ifFalse:", "isSmalltalkError", "jsStack", "isNil", "nextPutAll:", ",", "printString"],
+referencedClasses: []
+}),
+globals.Error);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "printOn:",
+protocol: '*Flow',
+fn: function (aStream){
+var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $5,$4,$3,$2,$1;
 ($ctx1.supercall = true, globals.MessageNotUnderstood.superclass.fn.prototype._printOn_.apply(_st(self), [aStream]));
@@ -124,5 +163,38 @@ messageSends: ["on:do:", "value:"],
 referencedClasses: []
 }),
 globals.Object);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isNil",
+protocol: '*Flow',
+fn: function (){
+var self=this;
+return false;
+},
+args: [],
+source: "isNil\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ProtoObject);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "notNil",
+protocol: '*Flow',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._isNil())._not();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"notNil",{},globals.ProtoObject)})},
+args: [],
+source: "notNil\x0a\x09^ self isNil not",
+messageSends: ["not", "isNil"],
+referencedClasses: []
+}),
+globals.ProtoObject);
 
 });

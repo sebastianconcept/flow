@@ -5,7 +5,8 @@ onClient: aWebSocket
 	self purgeClients.
 	
 	[ self register: aWebSocket.
-	aWebSocket runWith: [:message|
+	aWebSocket runWith: [ :message |
+		"Transcript cr; show: message."
 		self onMessage: message from: aWebSocket ]]
 			on: ConnectionClosed 
 			do: [

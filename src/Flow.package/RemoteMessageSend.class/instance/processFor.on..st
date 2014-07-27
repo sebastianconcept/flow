@@ -1,6 +1,8 @@
 actions
-reactOn: aHandler from: aClient
-	"This command has arrived to aHandler from aClient, time to react to it."
+processFor: aClient on: aHandler
+	"Executes this command comming from aClient on aHandler
+	loading the answer in it."
+
 	| receiver answer |
 	self halt.
 	[ receiver := aHandler published

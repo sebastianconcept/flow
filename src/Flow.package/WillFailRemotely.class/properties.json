@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "WillFailRemotely",
+	"pools" : [
+		 ],
+	"super" : "FWWebSocketAPIv10Command",
+	"type" : "normal" }
