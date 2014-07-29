@@ -4,7 +4,7 @@ processFor: aClient on: aHandler
 	loading the answer in it."
 
 	| receiver answer |
-	self halt.
+
 	[ receiver := aHandler published
 		at: self receiverId
 		ifAbsent:[ self error: 'There is no "',self receiverId asString,'" published here' ].
@@ -15,10 +15,10 @@ processFor: aClient on: aHandler
 		"We'll start with a poor's man remote interaction."
 		answer := answer asString ].
 	aHandler 
-		send: (self answer: answer; yourself)
+		sendCommand: (self answer: answer; yourself)
 		to: aClient  ]
 			on: Error 
 			do:[ :x | 
 				aHandler 
-					send: (self answer: x asString; isException: true; yourself)
+					sendCommand: (self answer: x asString; isException: true; yourself)
 					to: aClient  ]

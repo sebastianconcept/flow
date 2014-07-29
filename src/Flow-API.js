@@ -1420,6 +1420,82 @@ globals.WebSocketAPI);
 
 
 
+smalltalk.addClass('RemoteObject', globals.ProtoObject, ['future'], 'Flow-API');
+globals.RemoteObject.comment="## RemoteObject\x0a\x0aIs a Proxy to an instance in the other side of the wire\x0a\x0aInstances of RemoteObject route messages and answers to the instance at the destination";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "doesNotUnderstand:",
+protocol: 'actions',
+fn: function (aMessage){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self._class())._client())._sendMessage_on_(aMessage,self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"doesNotUnderstand:",{aMessage:aMessage},globals.RemoteObject)})},
+args: ["aMessage"],
+source: "doesNotUnderstand: aMessage\x0a\x09\x22Route aMessage to the client so it gets sent to the receiver in the other end.\x0a\x09It assumes that all reactions (like done, onError, etc) are properly pre-set\x22\x0a\x09\x0a\x09^ self class client sendMessage: aMessage on: self",
+messageSends: ["sendMessage:on:", "client", "class"],
+referencedClasses: []
+}),
+globals.RemoteObject);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "done:",
+protocol: 'actions',
+fn: function (aBlock){
+var self=this;
+return self},
+args: ["aBlock"],
+source: "done: aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.RemoteObject);
+
+
+globals.RemoteObject.klass.iVarNames = ['client'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "client",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@client"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@client"]=_st(_st(app)._session())._api();
+$1=self["@client"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"client",{},globals.RemoteObject.klass)})},
+args: [],
+source: "client\x0a\x09\x22Answers the client that RemoteObject instances should use for \x0a\x09accessing the destination instances in the other end.\x22\x0a\x0a\x09^ client ifNil:[ client := app session api ]",
+messageSends: ["ifNil:", "api", "session"],
+referencedClasses: []
+}),
+globals.RemoteObject.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "client:",
+protocol: 'accessing',
+fn: function (aClient){
+var self=this;
+self["@client"]=aClient;
+return self},
+args: ["aClient"],
+source: "client: aClient\x0a\x0a\x09client := aClient",
+messageSends: [],
+referencedClasses: []
+}),
+globals.RemoteObject.klass);
+
+
 smalltalk.addClass('WebSocketCommand', globals.Mapless, [], 'Flow-API');
 globals.WebSocketCommand.comment="## A WebSocketCommand is an abstraction.\x0a\x0aSubclasses are concrete objects that easily travel \x0a\x0a1. from the frontend to the backend and/or \x0a\x0a2. come from the backend to the frontend.\x0a\x0aThey have the concrete knowledge of how to react or who to delegate behaviour.\x0a\x0aThey also carry any information necessary to achieve some reaction at their destination.\x0a\x0aIt's a convention that commands without @answer are yet to be executed, and all executed commands have an answer set (they're an exception if they need to)\x0a\x0aNote: they are Mapless only as convenience for traveling over the wire. You can if you like to but, originally, they are not meant to be persisted.";
 smalltalk.addMethod(
@@ -1502,14 +1578,14 @@ return smalltalk.withContext(function($ctx2) {
 return self._isException();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 if(smalltalk.assert($1)){
-$4=_st(_st(anAPIClient)._remoteExceptionFor_(self))._value_(_st($APIRemoteException())._for_(self));
+$4=_st(_st(anAPIClient)._localErrorFor_(self))._value_(_st($APIRemoteException())._for_(self));
 return $4;
 };
 _st(anAPIClient)._answerLocallyFor_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"localAnswerOn:",{anAPIClient:anAPIClient},globals.WebSocketCommand)})},
 args: ["anAPIClient"],
-source: "localAnswerOn:  anAPIClient\x0a\x09\x22Tells the API to perform whatever is pending\x0a\x09in the local answer of this command\x22\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[\x0a\x09\x09^ (anAPIClient remoteExceptionFor: self) value: (APIRemoteException for: self) ].\x0a\x09\x0a\x09anAPIClient answerLocallyFor: self",
-messageSends: ["ifTrue:", "and:", "notNil", "isException", "value:", "remoteExceptionFor:", "for:", "answerLocallyFor:"],
+source: "localAnswerOn:  anAPIClient\x0a\x09\x22Tells the API to perform whatever is pending\x0a\x09in the local answer of this command\x22\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[\x0a\x09\x09^ (anAPIClient localErrorFor: self) value: (APIRemoteException for: self) ].\x0a\x09\x0a\x09anAPIClient answerLocallyFor: self",
+messageSends: ["ifTrue:", "and:", "notNil", "isException", "value:", "localErrorFor:", "for:", "answerLocallyFor:"],
 referencedClasses: ["APIRemoteException"]
 }),
 globals.WebSocketCommand);
@@ -1584,6 +1660,36 @@ return self}, function($ctx1) {$ctx1.fill(self,"onCommandFrom:",{anAPIClient:anA
 args: ["anAPIClient"],
 source: "onCommandFrom: anAPIClient\x0a\x09\x22This command arrived from anAPIClient, time to execute and answer it\x22\x0a\x09\x0a\x09self executeOn: anAPIClient",
 messageSends: ["executeOn:"],
+referencedClasses: []
+}),
+globals.WebSocketCommand);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "printOn:",
+protocol: 'actions',
+fn: function (aStream){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $3,$2,$1,$4;
+($ctx1.supercall = true, globals.WebSocketCommand.superclass.fn.prototype._printOn_.apply(_st(self), [aStream]));
+$ctx1.supercall = false;
+$3=self._isException();
+$ctx1.sendIdx["isException"]=1;
+$2=_st($3)._notNil();
+$1=_st($2)._and_((function(){
+return smalltalk.withContext(function($ctx2) {
+return self._isException();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+if(smalltalk.assert($1)){
+$4=_st("(".__comma(_st(self._answer())._printString())).__comma(")");
+$ctx1.sendIdx[","]=1;
+_st(aStream)._nextPutAll_($4);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},globals.WebSocketCommand)})},
+args: ["aStream"],
+source: "printOn: aStream\x0a\x0a\x09super printOn: aStream.\x0a\x09\x0a\x09(self isException notNil and:[\x0a\x09self isException ]) ifTrue:[\x0a\x09\x09aStream nextPutAll: '(',self answer printString,')' ]",
+messageSends: ["printOn:", "ifTrue:", "and:", "notNil", "isException", "nextPutAll:", ",", "printString", "answer"],
 referencedClasses: []
 }),
 globals.WebSocketCommand);
@@ -1757,6 +1863,49 @@ return $1;
 args: ["anAPIClient"],
 source: "getReceiverOn: anAPIClient\x0a\x09\x22Returns the published at anAPIClient corresponding to the receiver of this message send.\x22\x0a\x09\x0a\x09^ anAPIClient published \x0a\x09\x09at:\x09self receiverId\x0a\x09\x09ifAbsent:[ nil ]",
 messageSends: ["at:ifAbsent:", "published", "receiverId"],
+referencedClasses: []
+}),
+globals.RemoteMessageSend);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "printOn:",
+protocol: 'actions',
+fn: function (aStream){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$7,$6,$5,$9,$8,$4,$3,$10;
+($ctx1.supercall = true, globals.RemoteMessageSend.superclass.fn.prototype._printOn_.apply(_st(self), [aStream]));
+$ctx1.supercall = false;
+$2=self._answer();
+$ctx1.sendIdx["answer"]=1;
+$1=_st($2)._notNil();
+if(smalltalk.assert($1)){
+$7=_st(self._answer())._asString();
+$ctx1.sendIdx["asString"]=1;
+$6="(".__comma($7);
+$ctx1.sendIdx[","]=4;
+$5=_st($6).__comma(" #");
+$ctx1.sendIdx[","]=3;
+$9=self._selector();
+$ctx1.sendIdx["selector"]=1;
+$8=_st($9)._asString();
+$ctx1.sendIdx["asString"]=2;
+$4=_st($5).__comma($8);
+$ctx1.sendIdx[","]=2;
+$3=_st($4).__comma(")");
+$ctx1.sendIdx[","]=1;
+_st(aStream)._nextPutAll_($3);
+$ctx1.sendIdx["nextPutAll:"]=1;
+} else {
+$10=_st("(#".__comma(_st(self._selector())._asString())).__comma(")");
+$ctx1.sendIdx[","]=5;
+_st(aStream)._nextPutAll_($10);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},globals.RemoteMessageSend)})},
+args: ["aStream"],
+source: "printOn: aStream\x0a\x0a\x09super printOn: aStream.\x0a\x09\x0a\x09self answer notNil\x0a\x09\x09ifTrue:[ aStream nextPutAll: '(',self answer asString,' #',self selector asString,')' ]\x0a\x09\x09ifFalse:[ aStream nextPutAll: '(#',self selector asString,')' ]\x0a\x09",
+messageSends: ["printOn:", "ifTrue:ifFalse:", "notNil", "answer", "nextPutAll:", ",", "asString", "selector"],
 referencedClasses: []
 }),
 globals.RemoteMessageSend);

@@ -601,6 +601,44 @@ isDisconnected
 	socket readyState ~= 1 ]
 ! !
 
+ProtoObject subclass: #RemoteObject
+	instanceVariableNames: 'future'
+	package: 'Flow-API'!
+!RemoteObject commentStamp!
+## RemoteObject
+
+Is a Proxy to an instance in the other side of the wire
+
+Instances of RemoteObject route messages and answers to the instance at the destination!
+
+!RemoteObject methodsFor: 'actions'!
+
+doesNotUnderstand: aMessage
+	"Route aMessage to the client so it gets sent to the receiver in the other end.
+	It assumes that all reactions (like done, onError, etc) are properly pre-set"
+	
+	^ self class client sendMessage: aMessage on: self
+!
+
+done: aBlock
+! !
+
+RemoteObject class instanceVariableNames: 'client'!
+
+!RemoteObject class methodsFor: 'accessing'!
+
+client
+	"Answers the client that RemoteObject instances should use for 
+	accessing the destination instances in the other end."
+
+	^ client ifNil:[ client := app session api ]
+!
+
+client: aClient
+
+	client := aClient
+! !
+
 Mapless subclass: #WebSocketCommand
 	instanceVariableNames: ''
 	package: 'Flow-API'!
@@ -643,9 +681,18 @@ localAnswerOn:  anAPIClient
 	
 	(self isException notNil and:[
 	self isException ]) ifTrue:[
-		^ (anAPIClient remoteExceptionFor: self) value: (APIRemoteException for: self) ].
+		^ (anAPIClient localErrorFor: self) value: (APIRemoteException for: self) ].
 	
 	anAPIClient answerLocallyFor: self
+!
+
+printOn: aStream
+
+	super printOn: aStream.
+	
+	(self isException notNil and:[
+	self isException ]) ifTrue:[
+		aStream nextPutAll: '(',self answer printString,')' ]
 !
 
 processOn: anAPIClient
@@ -810,6 +857,15 @@ getReceiverOn: anAPIClient
 	^ anAPIClient published 
 		at:	self receiverId
 		ifAbsent:[ nil ]
+!
+
+printOn: aStream
+
+	super printOn: aStream.
+	
+	self answer notNil
+		ifTrue:[ aStream nextPutAll: '(',self answer asString,' #',self selector asString,')' ]
+		ifFalse:[ aStream nextPutAll: '(#',self selector asString,')' ]
 !
 
 processOn: anAPIClient

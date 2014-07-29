@@ -93,6 +93,24 @@ globals.Object);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "promise:",
+protocol: '*Flow',
+fn: function (onDoneBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(jQuery)._value_(self))._promise())._done_(onDoneBlock);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"promise:",{onDoneBlock:onDoneBlock},globals.Object)})},
+args: ["onDoneBlock"],
+source: "promise: onDoneBlock\x0a\x09\x0a\x09^ (jQuery value: self) promise done: onDoneBlock",
+messageSends: ["done:", "promise", "value:"],
+referencedClasses: []
+}),
+globals.Object);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "trigger:",
 protocol: '*Flow',
 fn: function (anEventName){

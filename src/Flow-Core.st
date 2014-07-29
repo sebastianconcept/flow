@@ -212,6 +212,6 @@ asJSONString
 
 open
 
-	self api connect
+	"self api connect"
 ! !
 

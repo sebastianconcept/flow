@@ -41,6 +41,11 @@ asRemote
 	^ self asString
 !
 
+promise: onDoneBlock
+	
+	^ (jQuery value: self) promise done: onDoneBlock
+!
+
 trigger: anEventName 
 	"Triggers anEventName in this object.
 	There you have it, it happened. 
