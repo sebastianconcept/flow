@@ -788,7 +788,7 @@ globals.MaplessTest);
 
 
 
-smalltalk.addClass('Stuff', globals.Mapless, [], 'MiniMapless-Tests');
+smalltalk.addClass('Stuff', globals.MaplessModel, [], 'MiniMapless-Tests');
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -806,6 +806,6 @@ referencedClasses: []
 globals.Stuff.klass);
 
 
-smalltalk.addClass('Thing', globals.Mapless, [], 'MiniMapless-Tests');
+smalltalk.addClass('Thing', globals.MaplessModel, [], 'MiniMapless-Tests');
 
 });

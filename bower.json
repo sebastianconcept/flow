@@ -27,7 +27,6 @@
   "private": false,
   "dependencies": {
     "amber": "~0.12.4",
-    "text": "requirejs/text#~2.0.12",
-    "es6-promise": "~1.0.0"
+    "text": "requirejs/text#~2.0.12"
   }
 }

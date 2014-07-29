@@ -318,7 +318,7 @@ testURI
 	self assert: thing uri = ('api/1.0/things/', thing id)
 ! !
 
-Mapless subclass: #Stuff
+MaplessModel subclass: #Stuff
 	instanceVariableNames: ''
 	package: 'MiniMapless-Tests'!
 
@@ -329,7 +329,7 @@ pluralName
 	^ 'stuff'
 ! !
 
-Mapless subclass: #Thing
+MaplessModel subclass: #Thing
 	instanceVariableNames: ''
 	package: 'MiniMapless-Tests'!
 
