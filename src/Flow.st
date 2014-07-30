@@ -3,6 +3,14 @@ Object subclass: #Flow
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+!CharacterArray methodsFor: '*Flow'!
+
+asRemote
+	"Answers a new Remote instance based in the id represented in this string"
+	
+	^ Remote for: self
+! !
+
 !Error methodsFor: '*Flow'!
 
 printOn: aStream

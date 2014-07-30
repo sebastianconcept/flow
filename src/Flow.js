@@ -1,9 +1,28 @@
-define("app/Flow", ["amber/boot", "amber_core/Kernel-Objects", "amber_core/Kernel-Exceptions"], function($boot){
+define("app/Flow", ["amber/boot", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Exceptions"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow');
 smalltalk.packages["Flow"].transport = {"type":"amd","amdNamespace":"app"};
 
 smalltalk.addClass('Flow', globals.Object, [], 'Flow');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "asRemote",
+protocol: '*Flow',
+fn: function (){
+var self=this;
+function $Remote(){return globals.Remote||(typeof Remote=="undefined"?nil:Remote)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($Remote())._for_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"asRemote",{},globals.CharacterArray)})},
+args: [],
+source: "asRemote\x0a\x09\x22Answers a new Remote instance based in the id represented in this string\x22\x0a\x09\x0a\x09^ Remote for: self",
+messageSends: ["for:"],
+referencedClasses: ["Remote"]
+}),
+globals.CharacterArray);
 
 smalltalk.addMethod(
 smalltalk.method({

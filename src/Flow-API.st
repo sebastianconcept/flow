@@ -520,6 +520,15 @@ sendCommand: aCommand onError: aBlock
 		sendCommand: aCommand 
 		do: [ "ignoring answer" ] 
 		onError: aBlock
+!
+
+sendMessage: aMessage on: aRemoteObject
+	"Sends aMessage to aRemoteObject."
+
+	self 
+		sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)
+		do: aRemoteObject future done
+		onError: aRemoteObject future failFilter
 ! !
 
 !WebSocketAPI methodsFor: 'initialization'!
@@ -601,17 +610,49 @@ isDisconnected
 	socket readyState ~= 1 ]
 ! !
 
-ProtoObject subclass: #RemoteObject
-	instanceVariableNames: 'future'
+ProtoObject subclass: #Remote
+	instanceVariableNames: 'id future'
 	package: 'Flow-API'!
-!RemoteObject commentStamp!
+!Remote commentStamp!
 ## RemoteObject
 
 Is a Proxy to an instance in the other side of the wire
 
 Instances of RemoteObject route messages and answers to the instance at the destination!
 
-!RemoteObject methodsFor: 'actions'!
+!Remote methodsFor: 'accessing'!
+
+done: aBlock
+
+	self future done: aBlock
+!
+
+future
+
+	^ future ifNil:[ future := jQuery Deferred ]
+!
+
+id
+
+	^ id
+!
+
+initializeOn: aString
+
+	id := aString
+!
+
+pipe: aBlock
+
+	self future pipe: aBlock
+!
+
+then: aBlock
+
+	self future then: aBlock
+! !
+
+!Remote methodsFor: 'actions'!
 
 doesNotUnderstand: aMessage
 	"Route aMessage to the client so it gets sent to the receiver in the other end.
@@ -620,12 +661,16 @@ doesNotUnderstand: aMessage
 	^ self class client sendMessage: aMessage on: self
 !
 
-done: aBlock
+printOn: aStream
+
+	super printOn: aStream.
+	
+	aStream nextPutAll: '(',id asString,')'
 ! !
 
-RemoteObject class instanceVariableNames: 'client'!
+Remote class instanceVariableNames: 'client'!
 
-!RemoteObject class methodsFor: 'accessing'!
+!Remote class methodsFor: 'accessing'!
 
 client
 	"Answers the client that RemoteObject instances should use for 
@@ -637,6 +682,16 @@ client
 client: aClient
 
 	client := aClient
+! !
+
+!Remote class methodsFor: 'actions'!
+
+for: aString
+	"Answer a new RemoteObject instance based on the id aString"
+	
+	^ self new
+		initializeOn: aString;
+		yourself
 ! !
 
 Mapless subclass: #WebSocketCommand
