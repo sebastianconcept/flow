@@ -1365,16 +1365,20 @@ fn: function (aMessage,aRemoteObject){
 var self=this;
 function $RemoteMessageSend(){return globals.RemoteMessageSend||(typeof RemoteMessageSend=="undefined"?nil:RemoteMessageSend)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$2;
-$1=_st($RemoteMessageSend())._to_send_withAll_(_st(aRemoteObject)._id(),_st(aMessage)._selector(),_st(aMessage)._arguments());
-$3=_st(aRemoteObject)._future();
-$ctx1.sendIdx["future"]=1;
-$2=_st($3)._done();
-self._sendCommand_do_onError_($1,$2,_st(_st(aRemoteObject)._future())._failFilter());
+var $1;
+self._sendCommand_do_onError_(_st($RemoteMessageSend())._to_send_withAll_(_st(aRemoteObject)._id(),_st(aMessage)._selector(),_st(aMessage)._arguments()),(function(ans){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(aRemoteObject)._future();
+$ctx2.sendIdx["future"]=1;
+return _st($1)._resolve_(ans);
+}, function($ctx2) {$ctx2.fillBlock({ans:ans},$ctx1,1)})}),(function(x){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(aRemoteObject)._future())._at_("fail"))._value_(x);
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"sendMessage:on:",{aMessage:aMessage,aRemoteObject:aRemoteObject},globals.WebSocketAPI)})},
 args: ["aMessage", "aRemoteObject"],
-source: "sendMessage: aMessage on: aRemoteObject\x0a\x09\x22Sends aMessage to aRemoteObject.\x22\x0a\x0a\x09self \x0a\x09\x09sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)\x0a\x09\x09do: aRemoteObject future done\x0a\x09\x09onError: aRemoteObject future failFilter",
-messageSends: ["sendCommand:do:onError:", "to:send:withAll:", "id", "selector", "arguments", "done", "future", "failFilter"],
+source: "sendMessage: aMessage on: aRemoteObject\x0a\x09\x22Sends aMessage to aRemoteObject.\x22\x0a\x0a\x09self \x0a\x09\x09sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)\x0a\x09\x09do: [ :ans | aRemoteObject future resolve: ans ]\x0a\x09\x09onError: [ :x | (aRemoteObject future at: 'fail') value: x ]",
+messageSends: ["sendCommand:do:onError:", "to:send:withAll:", "id", "selector", "arguments", "resolve:", "future", "value:", "at:"],
 referencedClasses: ["RemoteMessageSend"]
 }),
 globals.WebSocketAPI);
@@ -1451,29 +1455,19 @@ protocol: 'actions',
 fn: function (aMessage){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self._class())._client())._sendMessage_on_(aMessage,self);
-return $1;
+var $1,$2,$receiver;
+$1=self["@future"];
+if(($receiver = $1) == null || $receiver.isNil){
+self._initializeFuture();
+} else {
+$1;
+};
+$2=_st(_st(self._class())._client())._sendMessage_on_(aMessage,self);
+return $2;
 }, function($ctx1) {$ctx1.fill(self,"doesNotUnderstand:",{aMessage:aMessage},globals.Remote)})},
 args: ["aMessage"],
-source: "doesNotUnderstand: aMessage\x0a\x09\x22Route aMessage to the client so it gets sent to the receiver in the other end.\x0a\x09It assumes that all reactions (like done, onError, etc) are properly pre-set\x22\x0a\x09\x0a\x09^ self class client sendMessage: aMessage on: self",
-messageSends: ["sendMessage:on:", "client", "class"],
-referencedClasses: []
-}),
-globals.Remote);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "done:",
-protocol: 'accessing',
-fn: function (aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self._future())._done_(aBlock);
-return self}, function($ctx1) {$ctx1.fill(self,"done:",{aBlock:aBlock},globals.Remote)})},
-args: ["aBlock"],
-source: "done: aBlock\x0a\x0a\x09self future done: aBlock",
-messageSends: ["done:", "future"],
+source: "doesNotUnderstand: aMessage\x0a\x09\x22Route aMessage to the client so it gets sent to the receiver in the other end.\x0a\x09It assumes that all reactions (like done, onError, etc) are properly pre-set\x22\x0a\x09\x0a\x09future ifNil:[ self initializeFuture ].\x0a\x09\x0a\x09^ self class client sendMessage: aMessage on: self",
+messageSends: ["ifNil:", "initializeFuture", "sendMessage:on:", "client", "class"],
 referencedClasses: []
 }),
 globals.Remote);
@@ -1496,7 +1490,7 @@ $1=$2;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"future",{},globals.Remote)})},
 args: [],
-source: "future\x0a\x0a\x09^ future ifNil:[ future := jQuery Deferred ]",
+source: "future\x0a\x09\x22Answers the jQuery future\x0a\x09http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ future ifNil:[ future := jQuery Deferred ]",
 messageSends: ["ifNil:", "Deferred"],
 referencedClasses: []
 }),
@@ -1521,6 +1515,29 @@ globals.Remote);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeFuture",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@future"]=_st(jQuery)._Deferred();
+_st(self["@future"])._fail_((function(x){
+return smalltalk.withContext(function($ctx2) {
+return _st(x)._signal();
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
+$1=self["@future"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"initializeFuture",{},globals.Remote)})},
+args: [],
+source: "initializeFuture\x0a\x09\x0a\x09future := jQuery Deferred.\x0a\x09\x0a\x09future fail: [ :x | x signal ].\x0a\x09\x0a\x09^ future",
+messageSends: ["Deferred", "fail:", "signal"],
+referencedClasses: []
+}),
+globals.Remote);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeOn:",
 protocol: 'accessing',
 fn: function (aString){
@@ -1536,17 +1553,28 @@ globals.Remote);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "pipe:",
-protocol: 'accessing',
-fn: function (aBlock){
+selector: "inspectOn:",
+protocol: 'actions',
+fn: function (anInspector){
 var self=this;
+var variables;
+function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self._future())._pipe_(aBlock);
-return self}, function($ctx1) {$ctx1.fill(self,"pipe:",{aBlock:aBlock},globals.Remote)})},
-args: ["aBlock"],
-source: "pipe: aBlock\x0a\x0a\x09self future pipe: aBlock",
-messageSends: ["pipe:", "future"],
-referencedClasses: []
+var $1;
+variables=_st($Dictionary())._new();
+_st(variables)._at_put_("#self",self);
+$ctx1.sendIdx["at:put:"]=1;
+_st(_st(self._class())._allInstanceVariableNames())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(variables)._at_put_(each,self._instVarAt_(each));
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}));
+_st(anInspector)._setLabel_(self._printString());
+$1=_st(anInspector)._setVariables_(variables);
+return self}, function($ctx1) {$ctx1.fill(self,"inspectOn:",{anInspector:anInspector,variables:variables},globals.Remote)})},
+args: ["anInspector"],
+source: "inspectOn: anInspector\x0a\x09| variables |\x0a\x09variables := Dictionary new.\x0a\x09variables at: '#self' put: self.\x0a\x09self class allInstanceVariableNames do: [ :each |\x0a\x09\x09variables at: each put: (self instVarAt: each) ].\x0a\x09anInspector\x0a\x09\x09setLabel: self printString;\x0a\x09\x09setVariables: variables",
+messageSends: ["new", "at:put:", "do:", "allInstanceVariableNames", "class", "instVarAt:", "setLabel:", "printString", "setVariables:"],
+referencedClasses: ["Dictionary"]
 }),
 globals.Remote);
 
@@ -1571,22 +1599,6 @@ referencedClasses: []
 }),
 globals.Remote);
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "then:",
-protocol: 'accessing',
-fn: function (aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self._future())._then_(aBlock);
-return self}, function($ctx1) {$ctx1.fill(self,"then:",{aBlock:aBlock},globals.Remote)})},
-args: ["aBlock"],
-source: "then: aBlock\x0a\x0a\x09self future then: aBlock",
-messageSends: ["then:", "future"],
-referencedClasses: []
-}),
-globals.Remote);
-
 
 globals.Remote.klass.iVarNames = ['client'];
 smalltalk.addMethod(
@@ -1599,7 +1611,7 @@ return smalltalk.withContext(function($ctx1) {
 var $2,$1,$receiver;
 $2=self["@client"];
 if(($receiver = $2) == null || $receiver.isNil){
-self["@client"]=_st(_st(app)._session())._api();
+self["@client"]=_st(_st(_st(app)._session())._api())._ws();
 $1=self["@client"];
 } else {
 $1=$2;
@@ -1607,8 +1619,8 @@ $1=$2;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"client",{},globals.Remote.klass)})},
 args: [],
-source: "client\x0a\x09\x22Answers the client that RemoteObject instances should use for \x0a\x09accessing the destination instances in the other end.\x22\x0a\x0a\x09^ client ifNil:[ client := app session api ]",
-messageSends: ["ifNil:", "api", "session"],
+source: "client\x0a\x09\x22Answers the client that RemoteObject instances should use for \x0a\x09accessing the destination instances in the other end.\x22\x0a\x0a\x09^ client ifNil:[ client := app session api ws ]",
+messageSends: ["ifNil:", "ws", "api", "session"],
 referencedClasses: []
 }),
 globals.Remote.klass);

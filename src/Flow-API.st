@@ -527,8 +527,8 @@ sendMessage: aMessage on: aRemoteObject
 
 	self 
 		sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)
-		do: aRemoteObject future done
-		onError: aRemoteObject future failFilter
+		do: [ :ans | aRemoteObject future resolve: ans ]
+		onError: [ :x | (aRemoteObject future at: 'fail') value: x ]
 ! !
 
 !WebSocketAPI methodsFor: 'initialization'!
@@ -622,13 +622,10 @@ Instances of RemoteObject route messages and answers to the instance at the dest
 
 !Remote methodsFor: 'accessing'!
 
-done: aBlock
-
-	self future done: aBlock
-!
-
 future
-
+	"Answers the jQuery future
+	http://api.jquery.com/category/deferred-object/"
+	
 	^ future ifNil:[ future := jQuery Deferred ]
 !
 
@@ -640,16 +637,6 @@ id
 initializeOn: aString
 
 	id := aString
-!
-
-pipe: aBlock
-
-	self future pipe: aBlock
-!
-
-then: aBlock
-
-	self future then: aBlock
 ! !
 
 !Remote methodsFor: 'actions'!
@@ -658,7 +645,20 @@ doesNotUnderstand: aMessage
 	"Route aMessage to the client so it gets sent to the receiver in the other end.
 	It assumes that all reactions (like done, onError, etc) are properly pre-set"
 	
+	future ifNil:[ self initializeFuture ].
+	
 	^ self class client sendMessage: aMessage on: self
+!
+
+inspectOn: anInspector
+	| variables |
+	variables := Dictionary new.
+	variables at: '#self' put: self.
+	self class allInstanceVariableNames do: [ :each |
+		variables at: each put: (self instVarAt: each) ].
+	anInspector
+		setLabel: self printString;
+		setVariables: variables
 !
 
 printOn: aStream
@@ -666,6 +666,17 @@ printOn: aStream
 	super printOn: aStream.
 	
 	aStream nextPutAll: '(',id asString,')'
+! !
+
+!Remote methodsFor: 'initialization'!
+
+initializeFuture
+	
+	future := jQuery Deferred.
+	
+	future fail: [ :x | x signal ].
+	
+	^ future
 ! !
 
 Remote class instanceVariableNames: 'client'!
@@ -676,7 +687,7 @@ client
 	"Answers the client that RemoteObject instances should use for 
 	accessing the destination instances in the other end."
 
-	^ client ifNil:[ client := app session api ]
+	^ client ifNil:[ client := app session api ws ]
 !
 
 client: aClient
