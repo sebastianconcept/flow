@@ -10,7 +10,8 @@
 		"reason",
 		"value",
 		"onFulfilled",
-		"onRejected" ],
+		"onRejected",
+		"karma" ],
 	"name" : "Promise",
 	"pools" : [
 		 ],

@@ -1,2 +1,6 @@
 actions
-then: aResolvedBlock
+then:  fulfilledBlock
+
+	self 
+		then: fulfilledBlock 
+		ifRejected: [ :r | "ignored" ]

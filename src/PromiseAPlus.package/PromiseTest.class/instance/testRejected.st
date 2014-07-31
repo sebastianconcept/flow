@@ -8,6 +8,7 @@ testRejected
 	| p |
 
 	p := Promise new.
+	p then:[:v| "ignore"].
 	
 	self assert: p isPending.
 	p reject: 1984.
