@@ -6,4 +6,4 @@ stop
 	self stopTimer.
 	
 	self stopVNC.
-	5 timesRepeat:[Smalltalk garbageCollect].
+	5 timesRepeat:[ Smalltalk garbageCollect ].

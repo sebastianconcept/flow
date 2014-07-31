@@ -1,7 +1,7 @@
 actions
 stopTimer
 
-	timer ifNotNil:[ |t|
+	timer ifNotNil:[ | t |
 		t := timer.
 		timer := nil.
-		t terminate]
+		t terminate ]

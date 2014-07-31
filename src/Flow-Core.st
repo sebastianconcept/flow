@@ -82,19 +82,15 @@ RouteableController subclass: #FlowAppController
 
 session
 
-	^ session
+	^ session ifNil:[ session := Session new ]
 ! !
 
-!FlowAppController methodsFor: 'initialization'!
+!FlowAppController methodsFor: 'actions'!
 
-initialize
-
-	super initialize.
+hideLoader
+	"Hides the loader bar/spinner"
 	
-	session := Session new.
-	
-	"Handy reference"
-	window at: 'app' put: self
+	'#loader' asJQuery hide.
 ! !
 
 !FlowAppController methodsFor: 'reactions'!
@@ -102,7 +98,7 @@ initialize
 onOpen
 	"All is loaded."
 
-	'#loader' asJQuery hide.
+	self hideLoader.
 
 	self render.
 	
@@ -110,7 +106,10 @@ onOpen
 	
 	Router observeHash.
 	
-	self session open
+	self session open.
+	
+	"Handy reference"
+	window at: 'app' put: self
 ! !
 
 !FlowAppController class methodsFor: 'actions'!

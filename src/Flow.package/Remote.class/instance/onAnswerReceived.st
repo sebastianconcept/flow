@@ -1,4 +1,0 @@
-reactions
-onAnswerReceived
-
-	semaphore signal

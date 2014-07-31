@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'Flow-API'!
 Object subclass: #APIClient
-	instanceVariableNames: 'rest ws published'
+	instanceVariableNames: 'rest ws'
 	package: 'Flow-API'!
 !APIClient commentStamp!
 ## APIClient
@@ -12,14 +12,6 @@ Provides access to the expected REST and WebSocket API at the backend side.
 This client also has knows which objects are being published locally so they can be used remotely!
 
 !APIClient methodsFor: 'accessing'!
-
-published
-	"Answers the dictionary holding the published objects 
-	in 'this smalltalk' environment.
-	Keys can be the instance's hash, a Mapless UUID, etc.
-	Values are the instances receiving messages from remote."
-	^ published ifNil:[ published := Dictionary new ]
-!
 
 rest
 
@@ -41,16 +33,6 @@ answerLocallyFor: aWebSocketCommand
 connect
 
 	self ws connect
-!
-
-publish: anObject 
-	"Holds anObject among those exposed to receive remote messages."
-	^ self publish: anObject at: anObject id
-!
-
-publish: anObject at: anId
-	"Holds anObject among those exposed to receive remote messages."
-	^ self published at: anId put: anObject
 !
 
 remoteAnswerFor: aWebSocketCommand
@@ -278,7 +260,7 @@ put: anURLString data: aDataString do: aBlock onError: errorBlock
 ! !
 
 APIStrategy subclass: #WebSocketAPI
-	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter localAnswers localErrors'
+	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter localAnswers localErrors published'
 	package: 'Flow-API'!
 !WebSocketAPI commentStamp!
 ## WebSocketAPI
@@ -371,6 +353,14 @@ onOpenBlock: aBlock
 	onOpenBlock := aBlock
 !
 
+published
+	"Answers the dictionary holding the published objects 
+	in 'this smalltalk' environment.
+	Keys can be the instance's hash, a Mapless UUID, etc.
+	Values are the instances receiving messages from remote."
+	^ published ifNil:[ published := Dictionary new ]
+!
+
 socket
 
 	^ socket ifNil:[ self initializeSocket ]
@@ -455,6 +445,16 @@ nextId
 	"Increments the counter and answers the value."
 	
 	^ counter := self counter + 1
+!
+
+publish: anObject 
+	"Holds anObject among those exposed to receive remote messages."
+	^ self publish: anObject at: anObject id
+!
+
+publish: anObject at: anId
+	"Holds anObject among those exposed to receive remote messages."
+	^ self published at: anId put: anObject
 !
 
 remoteAnswerFor: aWebSocketCommand

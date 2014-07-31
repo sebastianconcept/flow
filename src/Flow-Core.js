@@ -153,21 +153,17 @@ globals.RouteableController.klass);
 smalltalk.addClass('FlowAppController', globals.RouteableController, ['session'], 'Flow-Core');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initialize",
-protocol: 'initialization',
+selector: "hideLoader",
+protocol: 'actions',
 fn: function (){
 var self=this;
-function $Session(){return globals.Session||(typeof Session=="undefined"?nil:Session)}
 return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.FlowAppController.superclass.fn.prototype._initialize.apply(_st(self), []));
-$ctx1.supercall = false;
-self["@session"]=_st($Session())._new();
-_st(window)._at_put_("app",self);
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.FlowAppController)})},
+_st("#loader"._asJQuery())._hide();
+return self}, function($ctx1) {$ctx1.fill(self,"hideLoader",{},globals.FlowAppController)})},
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09session := Session new.\x0a\x09\x0a\x09\x22Handy reference\x22\x0a\x09window at: 'app' put: self",
-messageSends: ["initialize", "new", "at:put:"],
-referencedClasses: ["Session"]
+source: "hideLoader\x0a\x09\x22Hides the loader bar/spinner\x22\x0a\x09\x0a\x09'#loader' asJQuery hide.",
+messageSends: ["hide", "asJQuery"],
+referencedClasses: []
 }),
 globals.FlowAppController);
 
@@ -179,15 +175,16 @@ fn: function (){
 var self=this;
 function $Router(){return globals.Router||(typeof Router=="undefined"?nil:Router)}
 return smalltalk.withContext(function($ctx1) { 
-_st("#loader"._asJQuery())._hide();
+self._hideLoader();
 self._render();
 _st(_st(window)._document())._title_(_st(self._class())._name());
 _st($Router())._observeHash();
 _st(self._session())._open();
+_st(window)._at_put_("app",self);
 return self}, function($ctx1) {$ctx1.fill(self,"onOpen",{},globals.FlowAppController)})},
 args: [],
-source: "onOpen\x0a\x09\x22All is loaded.\x22\x0a\x0a\x09'#loader' asJQuery hide.\x0a\x0a\x09self render.\x0a\x09\x0a\x09window document title: self class name.\x0a\x09\x0a\x09Router observeHash.\x0a\x09\x0a\x09self session open",
-messageSends: ["hide", "asJQuery", "render", "title:", "document", "name", "class", "observeHash", "open", "session"],
+source: "onOpen\x0a\x09\x22All is loaded.\x22\x0a\x0a\x09self hideLoader.\x0a\x0a\x09self render.\x0a\x09\x0a\x09window document title: self class name.\x0a\x09\x0a\x09Router observeHash.\x0a\x09\x0a\x09self session open.\x0a\x09\x0a\x09\x22Handy reference\x22\x0a\x09window at: 'app' put: self\x09",
+messageSends: ["hideLoader", "render", "title:", "document", "name", "class", "observeHash", "open", "session", "at:put:"],
 referencedClasses: ["Router"]
 }),
 globals.FlowAppController);
@@ -198,14 +195,22 @@ selector: "session",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-var $1;
+function $Session(){return globals.Session||(typeof Session=="undefined"?nil:Session)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@session"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@session"]=_st($Session())._new();
 $1=self["@session"];
+} else {
+$1=$2;
+};
 return $1;
-},
+}, function($ctx1) {$ctx1.fill(self,"session",{},globals.FlowAppController)})},
 args: [],
-source: "session\x0a\x0a\x09^ session ",
-messageSends: [],
-referencedClasses: []
+source: "session\x0a\x0a\x09^ session ifNil:[ session := Session new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: ["Session"]
 }),
 globals.FlowAppController);
 

@@ -2,8 +2,8 @@ actions
 setupServer
 
 	"Setting up a dispatcher for Zinc so we can use our handlers"
-	(ZnServer managedServers detect:[:e|
-		e port = (ConfigurationFiles at: 'API' at: 'websocketOn')]) 
+	(ZnServer managedServers detect:[ :e |
+		e port = (ConfigurationFiles at: 'API' at: 'websocketOn') ]) 
 			delegate: (FWDelegate new
 						addHandler: FWWebSocketsAPIHandler new;
 						yourself).

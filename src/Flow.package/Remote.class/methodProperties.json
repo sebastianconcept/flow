@@ -3,9 +3,10 @@
 		"for:on:" : "sebastiansastre 7/30/2014 16:11" },
 	"instance" : {
 		"client" : "sebastiansastre 7/30/2014 16:12",
-		"doesNotUnderstand:" : "sebastiansastre 7/30/2014 21:27",
+		"doesNotUnderstand:" : "sebastiansastre 7/31/2014 16:37",
 		"id" : "sebastiansastre 7/30/2014 16:12",
-		"initializeFor:on:" : "sebastiansastre 7/30/2014 20:42",
-		"onAnswerReceived" : "sebastiansastre 7/30/2014 20:43",
-		"onMessageSent" : "sebastiansastre 7/30/2014 20:43",
-		"printOn:" : "sebastiansastre 7/30/2014 16:12" } }
+		"initializeFor:on:" : "sebastiansastre 7/31/2014 15:23",
+		"printOn:" : "sebastiansastre 7/30/2014 16:12",
+		"promise" : "sebastiansastre 7/31/2014 16:32",
+		"then:" : "sebastiansastre 7/31/2014 16:25",
+		"then:ifRejected:" : "sebastiansastre 7/31/2014 16:28" } }

@@ -3,7 +3,7 @@ var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-API');
 smalltalk.packages["Flow-API"].transport = {"type":"amd","amdNamespace":"app"};
 
-smalltalk.addClass('APIClient', globals.Object, ['rest', 'ws', 'published'], 'Flow-API');
+smalltalk.addClass('APIClient', globals.Object, ['rest', 'ws'], 'Flow-API');
 globals.APIClient.comment="## APIClient\x0a\x0aThis is a client to the backend API\x0a\x0aProvides access to the expected REST and WebSocket API at the backend side. \x0a\x0aThis client also has knows which objects are being published locally so they can be used remotely";
 smalltalk.addMethod(
 smalltalk.method({
@@ -74,67 +74,6 @@ args: ["aCommand"],
 source: "onCommand: aCommand\x0a\x09\x22There is aCommand being received here.\x0a\x09It could be from a remote initiative or \x0a\x09a response of something sent from this end.\x22\x0a\x09\x0a\x09\x22no-op\x22",
 messageSends: [],
 referencedClasses: []
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "publish:",
-protocol: 'actions',
-fn: function (anObject){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self._publish_at_(anObject,_st(anObject)._id());
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"publish:",{anObject:anObject},globals.APIClient)})},
-args: ["anObject"],
-source: "publish: anObject \x0a\x09\x22Holds anObject among those exposed to receive remote messages.\x22\x0a\x09^ self publish: anObject at: anObject id",
-messageSends: ["publish:at:", "id"],
-referencedClasses: []
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "publish:at:",
-protocol: 'actions',
-fn: function (anObject,anId){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self._published())._at_put_(anId,anObject);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"publish:at:",{anObject:anObject,anId:anId},globals.APIClient)})},
-args: ["anObject", "anId"],
-source: "publish: anObject at: anId\x0a\x09\x22Holds anObject among those exposed to receive remote messages.\x22\x0a\x09^ self published at: anId put: anObject",
-messageSends: ["at:put:", "published"],
-referencedClasses: []
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "published",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@published"];
-if(($receiver = $2) == null || $receiver.isNil){
-self["@published"]=_st($Dictionary())._new();
-$1=self["@published"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"published",{},globals.APIClient)})},
-args: [],
-source: "published\x0a\x09\x22Answers the dictionary holding the published objects \x0a\x09in 'this smalltalk' environment.\x0a\x09Keys can be the instance's hash, a Mapless UUID, etc.\x0a\x09Values are the instances receiving messages from remote.\x22\x0a\x09^ published ifNil:[ published := Dictionary new ]",
-messageSends: ["ifNil:", "new"],
-referencedClasses: ["Dictionary"]
 }),
 globals.APIClient);
 
@@ -567,7 +506,7 @@ globals.RESTfulAPI);
 
 
 
-smalltalk.addClass('WebSocketAPI', globals.APIStrategy, ['socket', 'uri', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock', 'counter', 'localAnswers', 'localErrors'], 'Flow-API');
+smalltalk.addClass('WebSocketAPI', globals.APIStrategy, ['socket', 'uri', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock', 'counter', 'localAnswers', 'localErrors', 'published'], 'Flow-API');
 globals.WebSocketAPI.comment="## WebSocketAPI\x0a\x0aThis API is WebSockets based (so is full-duplex)";
 smalltalk.addMethod(
 smalltalk.method({
@@ -1210,6 +1149,67 @@ args: ["aBlock"],
 source: "onOpenBlock: aBlock\x0a\x0a\x09onOpenBlock := aBlock",
 messageSends: [],
 referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "publish:",
+protocol: 'actions',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._publish_at_(anObject,_st(anObject)._id());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"publish:",{anObject:anObject},globals.WebSocketAPI)})},
+args: ["anObject"],
+source: "publish: anObject \x0a\x09\x22Holds anObject among those exposed to receive remote messages.\x22\x0a\x09^ self publish: anObject at: anObject id",
+messageSends: ["publish:at:", "id"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "publish:at:",
+protocol: 'actions',
+fn: function (anObject,anId){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._published())._at_put_(anId,anObject);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"publish:at:",{anObject:anObject,anId:anId},globals.WebSocketAPI)})},
+args: ["anObject", "anId"],
+source: "publish: anObject at: anId\x0a\x09\x22Holds anObject among those exposed to receive remote messages.\x22\x0a\x09^ self published at: anId put: anObject",
+messageSends: ["at:put:", "published"],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "published",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@published"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@published"]=_st($Dictionary())._new();
+$1=self["@published"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"published",{},globals.WebSocketAPI)})},
+args: [],
+source: "published\x0a\x09\x22Answers the dictionary holding the published objects \x0a\x09in 'this smalltalk' environment.\x0a\x09Keys can be the instance's hash, a Mapless UUID, etc.\x0a\x09Values are the instances receiving messages from remote.\x22\x0a\x09^ published ifNil:[ published := Dictionary new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: ["Dictionary"]
 }),
 globals.WebSocketAPI);
 

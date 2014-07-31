@@ -19,8 +19,8 @@ onOpen
 	"do this
 	and
 	that"
-	
-	self session api 
+
+	self session api ws
 		publish: Transcript current at: 'Transcript';
 		publish: console at: 'console';
 		yourself

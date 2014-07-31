@@ -6,4 +6,5 @@ publishObjects
 		publish: Transcript at: 'Transcript';
 		publish: [ :sent | sent ] at: 'echo';
 		publish: [ :ping | #pong ] at: 'ping';
+		publish: VTermOutputDriver stdout yellow at: 'term';
 		yourself

@@ -1,4 +1,0 @@
-reactions
-onMessageSent
-
-	semaphore wait
