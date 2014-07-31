@@ -1375,9 +1375,10 @@ return _st($1)._resolve_(ans);
 return smalltalk.withContext(function($ctx2) {
 return _st(_st(_st(aRemoteObject)._future())._at_("fail"))._value_(x);
 }, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"sendMessage:on:",{aMessage:aMessage,aRemoteObject:aRemoteObject},globals.WebSocketAPI)})},
+return aRemoteObject;
+}, function($ctx1) {$ctx1.fill(self,"sendMessage:on:",{aMessage:aMessage,aRemoteObject:aRemoteObject},globals.WebSocketAPI)})},
 args: ["aMessage", "aRemoteObject"],
-source: "sendMessage: aMessage on: aRemoteObject\x0a\x09\x22Sends aMessage to aRemoteObject.\x22\x0a\x0a\x09self \x0a\x09\x09sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)\x0a\x09\x09do: [ :ans | aRemoteObject future resolve: ans ]\x0a\x09\x09onError: [ :x | (aRemoteObject future at: 'fail') value: x ]",
+source: "sendMessage: aMessage on: aRemoteObject\x0a\x09\x22Sends aMessage to aRemoteObject.\x22\x0a\x0a\x09self \x0a\x09\x09sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)\x0a\x09\x09do: [ :ans | aRemoteObject future resolve: ans ]\x0a\x09\x09onError: [ :x | (aRemoteObject future at: 'fail') value: x ].\x0a\x09\x09\x0a\x09^ aRemoteObject",
 messageSends: ["sendCommand:do:onError:", "to:send:withAll:", "id", "selector", "arguments", "resolve:", "future", "value:", "at:"],
 referencedClasses: ["RemoteMessageSend"]
 }),

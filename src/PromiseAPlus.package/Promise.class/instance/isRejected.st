@@ -1,0 +1,4 @@
+testing
+isRejected
+
+	^ state = #rejected

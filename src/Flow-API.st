@@ -528,7 +528,9 @@ sendMessage: aMessage on: aRemoteObject
 	self 
 		sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)
 		do: [ :ans | aRemoteObject future resolve: ans ]
-		onError: [ :x | (aRemoteObject future at: 'fail') value: x ]
+		onError: [ :x | (aRemoteObject future at: 'fail') value: x ].
+		
+	^ aRemoteObject
 ! !
 
 !WebSocketAPI methodsFor: 'initialization'!

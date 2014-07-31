@@ -1,0 +1,9 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"testFulfilled" : "sebastiansastre 7/30/2014 22:31",
+		"testOnFulfilled" : "sebastiansastre 7/30/2014 22:45",
+		"testOnRejected" : "sebastiansastre 7/30/2014 22:45",
+		"testPending" : "sebastiansastre 7/30/2014 22:26",
+		"testRejected" : "sebastiansastre 7/30/2014 22:31" } }

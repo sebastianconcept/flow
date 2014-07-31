@@ -1,0 +1,16 @@
+{
+	"category" : "Flow-API",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"id",
+		"client",
+		"semaphore" ],
+	"name" : "Remote",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

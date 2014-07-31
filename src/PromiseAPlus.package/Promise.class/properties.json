@@ -1,0 +1,18 @@
+{
+	"category" : "PromiseAPlus",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "sebastiansastre 7/30/2014 22:08",
+	"instvars" : [
+		"state",
+		"reason",
+		"value",
+		"onFulfilled",
+		"onRejected" ],
+	"name" : "Promise",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }
