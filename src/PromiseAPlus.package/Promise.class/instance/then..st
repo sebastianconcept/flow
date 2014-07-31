@@ -3,4 +3,4 @@ then:  fulfilledBlock
 
 	self 
 		then: fulfilledBlock 
-		ifRejected: [ :r | "ignored" ]
+		ifRejected: [ :r | r "just answer the value" ]

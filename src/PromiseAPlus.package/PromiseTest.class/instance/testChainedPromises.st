@@ -1,5 +1,5 @@
 tests
-testThenPromiseWithKarma
+testChainedPromises
 
 	"promises affect their accumulated karma."
 
@@ -10,16 +10,13 @@ testThenPromiseWithKarma
 	self assert: p isPending.
 	returned := p 
 				then: [ :v | a := v + 13 ];
-				then: [ :v | b := v + 12 ];
-				then: [ :v | c := v + 11 ];
+				then: [ :v | b := v +  18 ];
+				then: [ :v | c := v + 1942 ];
 				yourself.
 	self assert: returned class = Promise.
 	self assert: p hasDuty.
 	self assert: p hasKarma.	
-	p resolve: 31.
-	self assert: p value = 31.
-	self assert: p karma karma value = 31.
-	self assert: c = 42.
-	self assert: b = 43.
-	self assert: a = 44.
-		
+	p resolve: 11.
+	self assert: a = 24.
+	self assert: b = 42.
+	self assert: c = 1984.
