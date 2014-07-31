@@ -423,10 +423,12 @@ selector: "open",
 protocol: 'actions',
 fn: function (){
 var self=this;
-return self},
+return smalltalk.withContext(function($ctx1) { 
+_st(self._api())._connect();
+return self}, function($ctx1) {$ctx1.fill(self,"open",{},globals.Session)})},
 args: [],
-source: "open\x0a\x0a\x09\x22self api connect\x22",
-messageSends: [],
+source: "open\x0a\x0a\x09self api connect",
+messageSends: ["connect", "api"],
 referencedClasses: []
 }),
 globals.Session);
