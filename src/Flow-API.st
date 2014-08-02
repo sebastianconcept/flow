@@ -469,6 +469,23 @@ remoteAnswerFor: aWebSocketCommand onError: aBlock
 	self sendCommand: aWebSocketCommand onError: aBlock
 !
 
+remoteReferenceFor: anObject
+	"Answers a remote reference for anObject in this API or
+	a copy if the object is simple enough to travel as copy.
+	If reference, it'll keep it among those published."
+
+	| ref |	
+
+	self nextId.
+	
+	ref := anObject asRemoteReference.
+	ref isRemoteReference ifTrue:[
+		ref id: self counter		
+		self publish: anObject at: ref id].
+		
+	^ ref
+!
+
 reset
 		
 	socket := nil
@@ -612,6 +629,25 @@ isDisconnected
 	socket readyState ~= 1 ]
 ! !
 
+Mapless subclass: #RR
+	instanceVariableNames: ''
+	package: 'Flow-API'!
+!RR commentStamp!
+##RR alias of RemoteReference 
+
+Instances of RemoteReference are used when you cannot send as copy an object that is the answer of some remote command.
+
+The remote end will be able to use aRemoteReference asRemote and send a message remotely to it.
+
+The reason for the short name is merely bandwith optimization!
+
+!RR methodsFor: 'testing'!
+
+isRemoteReference
+
+	^ true
+! !
+
 ProtoObject subclass: #Remote
 	instanceVariableNames: 'id future'
 	package: 'Flow-API'!
@@ -679,6 +715,14 @@ initializeFuture
 	future fail: [ :x | x signal ].
 	
 	^ future
+! !
+
+!Remote methodsFor: 'testing'!
+
+isRemote
+	"Answers true if this object is remote"
+
+	^ true
 ! !
 
 Remote class instanceVariableNames: 'client'!
@@ -940,9 +984,13 @@ processOn: anAPIClient
 	"Executes this command comming from anAPIClient
 	loading the answer in it."
 	
-	self answer: ((self getReceiverOn: anAPIClient)
+	| ans |
+	
+	ans := (self getReceiverOn: anAPIClient)
 					perform: self selector
-					withArguments: self arguments) asRemote
+					withArguments: self arguments.
+	
+	self answer: (anAPIClient remoteReferenceFor: ans)
 ! !
 
 !RemoteMessageSend class methodsFor: 'actions'!

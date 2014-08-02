@@ -7,7 +7,7 @@ sendRemoteMessage: aMessage on: aRemote
 		arguments: aMessage arguments
 		to: aRemote id
 		on: aRemote client
-		do: [ :ans | aRemote promise resolve: ans answer ];
+		do: [ :ans | aRemote promise resolve: ans answer ]
 		onError: [ :x | aRemote promise reject: x ].
 
 	^ aRemote

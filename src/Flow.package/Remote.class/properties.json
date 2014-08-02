@@ -12,5 +12,5 @@
 	"name" : "Remote",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "ProtoObject",
 	"type" : "normal" }

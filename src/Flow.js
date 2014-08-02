@@ -7,6 +7,21 @@ smalltalk.addClass('Flow', globals.Object, [], 'Flow');
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "asRemoteReferenceFor:",
+protocol: '*Flow',
+fn: function (anObject){
+var self=this;
+return anObject;
+},
+args: ["anObject"],
+source: "asRemoteReferenceFor: anObject\x0a\x09\x22Answers anObject (copy) or an appropiate reference (can't be copied) for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x0a\x09^ anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Boolean.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "asRemote",
 protocol: '*Flow',
 fn: function (){
@@ -23,6 +38,36 @@ messageSends: ["for:"],
 referencedClasses: ["Remote"]
 }),
 globals.CharacterArray);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "asRemoteReferenceFor:",
+protocol: '*Flow',
+fn: function (anObject){
+var self=this;
+return anObject;
+},
+args: ["anObject"],
+source: "asRemoteReferenceFor: anObject\x0a\x09\x22Answers anObject (copy) or an appropiate reference (can't be copied) for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x0a\x09^ anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.CharacterArray.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "asRemoteReferenceFor:",
+protocol: '*Flow',
+fn: function (anObject){
+var self=this;
+return anObject;
+},
+args: ["anObject"],
+source: "asRemoteReferenceFor: anObject\x0a\x09\x22Answers anObject (copy) or an appropiate reference (can't be copied) for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x0a\x09^ anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Date.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -93,6 +138,21 @@ globals.MessageNotUnderstood);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "asRemoteReferenceFor:",
+protocol: '*Flow',
+fn: function (anObject){
+var self=this;
+return anObject;
+},
+args: ["anObject"],
+source: "asRemoteReferenceFor: anObject\x0a\x09\x22Answers anObject (copy) or an appropiate reference (can't be copied) for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x0a\x09^ anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Number.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "asRemote",
 protocol: '*Flow',
 fn: function (){
@@ -106,6 +166,39 @@ return $1;
 args: [],
 source: "asRemote\x0a\x09\x22Answers this object in a way that is appropriate \x0a\x09for a remote end to do something with it\x22\x0a\x09\x0a\x09#todo. \x22return a proxy so it gets actually useful\x22\x0a\x09^ self asString",
 messageSends: ["asString"],
+referencedClasses: []
+}),
+globals.Object);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "asRemoteReference",
+protocol: '*Flow',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._class())._asRemoteReferenceFor_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"asRemoteReference",{},globals.Object)})},
+args: [],
+source: "asRemoteReference\x0a\x09\x22Answers the object appropiate for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x09\x0a\x09^ self class asRemoteReferenceFor: self",
+messageSends: ["asRemoteReferenceFor:", "class"],
+referencedClasses: []
+}),
+globals.Object);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRemote",
+protocol: '*Flow',
+fn: function (){
+var self=this;
+return false;
+},
+args: [],
+source: "isRemote\x0a\x09\x22Answers true if this object is remote\x22\x0a\x09\x0a\x09^ false",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Object);
@@ -203,6 +296,25 @@ globals.Object);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "asRemoteReferenceFor:",
+protocol: '*Flow',
+fn: function (anObject){
+var self=this;
+function $RR(){return globals.RR||(typeof RR=="undefined"?nil:RR)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($RR())._new();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"asRemoteReferenceFor:",{anObject:anObject},globals.Object.klass)})},
+args: ["anObject"],
+source: "asRemoteReferenceFor: anObject\x0a\x09\x22Answers anObject (copy) or an appropiate reference (can't be copied) for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x0a\x09\x22Subclasses differ you can check on them.\x0a\x09The default is not be copied, so...\x22\x0a\x0a\x09^ RR new",
+messageSends: ["new"],
+referencedClasses: ["RR"]
+}),
+globals.Object.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isNil",
 protocol: '*Flow',
 fn: function (){
@@ -211,6 +323,21 @@ return false;
 },
 args: [],
 source: "isNil\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ProtoObject);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRemoteReference",
+protocol: '*Flow',
+fn: function (){
+var self=this;
+return false;
+},
+args: [],
+source: "isRemoteReference\x0a\x0a\x09^ false",
 messageSends: [],
 referencedClasses: []
 }),
@@ -233,5 +360,20 @@ messageSends: ["not", "isNil"],
 referencedClasses: []
 }),
 globals.ProtoObject);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "asRemoteReferenceFor:",
+protocol: '*Flow',
+fn: function (anObject){
+var self=this;
+return anObject;
+},
+args: ["anObject"],
+source: "asRemoteReferenceFor: anObject\x0a\x09\x22Answers anObject (copy) or an appropiate reference (can't be copied) for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x0a\x09^ anObject",
+messageSends: [],
+referencedClasses: []
+}),
+globals.UndefinedObject.klass);
 
 });

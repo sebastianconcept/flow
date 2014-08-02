@@ -394,6 +394,103 @@ globals.FlowTest);
 
 
 
+smalltalk.addClass('RemoteReferenceTest', globals.TestCase, [], 'Flow-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testBoolean",
+protocol: 'tests',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$3,$5,$4;
+$2=true._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=1;
+$1=_st($2)._isRemoteReference();
+$ctx1.sendIdx["isRemoteReference"]=1;
+self._deny_($1);
+$ctx1.sendIdx["deny:"]=1;
+$3=true._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=2;
+self._assert_($3);
+$ctx1.sendIdx["assert:"]=1;
+$5=false._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=3;
+$4=_st($5)._isRemoteReference();
+self._deny_($4);
+self._assert_(_st(false._asRemoteReference())._isBoolean());
+return self}, function($ctx1) {$ctx1.fill(self,"testBoolean",{},globals.RemoteReferenceTest)})},
+args: [],
+source: "testBoolean\x0a\x0a\x09self deny: true asRemoteReference isRemoteReference.\x0a\x09self assert: true asRemoteReference.\x0a\x0a\x09self deny: false asRemoteReference isRemoteReference.\x0a\x09self assert: false asRemoteReference isBoolean.",
+messageSends: ["deny:", "isRemoteReference", "asRemoteReference", "assert:", "isBoolean"],
+referencedClasses: []
+}),
+globals.RemoteReferenceTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testFloat",
+protocol: 'tests',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=(4.2)._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=1;
+$1=_st($2)._isRemoteReference();
+self._deny_($1);
+self._assert_(_st((4.2)._asRemoteReference()).__eq((4.2)));
+return self}, function($ctx1) {$ctx1.fill(self,"testFloat",{},globals.RemoteReferenceTest)})},
+args: [],
+source: "testFloat\x0a\x0a\x09self deny: 4.2 asRemoteReference isRemoteReference.\x0a\x09self assert: 4.2 asRemoteReference = 4.2\x0a\x09",
+messageSends: ["deny:", "isRemoteReference", "asRemoteReference", "assert:", "="],
+referencedClasses: []
+}),
+globals.RemoteReferenceTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testInteger",
+protocol: 'tests',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=(42)._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=1;
+$1=_st($2)._isRemoteReference();
+self._deny_($1);
+self._assert_(_st((42)._asRemoteReference()).__eq((42)));
+return self}, function($ctx1) {$ctx1.fill(self,"testInteger",{},globals.RemoteReferenceTest)})},
+args: [],
+source: "testInteger\x0a\x0a\x09self deny: 42 asRemoteReference isRemoteReference.\x0a\x09self assert: 42 asRemoteReference = 42",
+messageSends: ["deny:", "isRemoteReference", "asRemoteReference", "assert:", "="],
+referencedClasses: []
+}),
+globals.RemoteReferenceTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testUndefinedObject",
+protocol: 'tests',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=nil._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=1;
+$1=_st($2)._isRemoteReference();
+self._deny_($1);
+self._assert_(_st(nil._asRemoteReference()).__eq(nil));
+return self}, function($ctx1) {$ctx1.fill(self,"testUndefinedObject",{},globals.RemoteReferenceTest)})},
+args: [],
+source: "testUndefinedObject \x0a\x0a\x09self deny: nil asRemoteReference isRemoteReference.\x0a\x09self assert: nil asRemoteReference = nil",
+messageSends: ["deny:", "isRemoteReference", "asRemoteReference", "assert:", "="],
+referencedClasses: []
+}),
+globals.RemoteReferenceTest);
+
+
+
 smalltalk.addClass('WillFailAfterResponded', globals.WebSocketCommand, [], 'Flow-Tests');
 smalltalk.addMethod(
 smalltalk.method({

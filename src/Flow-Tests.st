@@ -117,6 +117,39 @@ testPing
 			self assert: ans answer pongOn notNil ]
 ! !
 
+TestCase subclass: #RemoteReferenceTest
+	instanceVariableNames: ''
+	package: 'Flow-Tests'!
+
+!RemoteReferenceTest methodsFor: 'tests'!
+
+testBoolean
+
+	self deny: true asRemoteReference isRemoteReference.
+	self assert: true asRemoteReference.
+
+	self deny: false asRemoteReference isRemoteReference.
+	self assert: false asRemoteReference isBoolean.
+!
+
+testFloat
+
+	self deny: 4.2 asRemoteReference isRemoteReference.
+	self assert: 4.2 asRemoteReference = 4.2
+!
+
+testInteger
+
+	self deny: 42 asRemoteReference isRemoteReference.
+	self assert: 42 asRemoteReference = 42
+!
+
+testUndefinedObject 
+
+	self deny: nil asRemoteReference isRemoteReference.
+	self assert: nil asRemoteReference = nil
+! !
+
 WebSocketCommand subclass: #WillFailAfterResponded
 	instanceVariableNames: ''
 	package: 'Flow-Tests'!
