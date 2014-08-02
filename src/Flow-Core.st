@@ -8,6 +8,11 @@ Widget subclass: #Controller
 jQueryElement
 
 	^ '#content' asJQuery
+!
+
+model
+	
+	^ model
 ! !
 
 !Controller methodsFor: 'actions'!

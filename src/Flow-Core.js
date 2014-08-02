@@ -24,6 +24,23 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "model",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@model"];
+return $1;
+},
+args: [],
+source: "model\x0a\x09\x0a\x09^ model",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "render",
 protocol: 'actions',
 fn: function (){

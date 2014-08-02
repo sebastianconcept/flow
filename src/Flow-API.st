@@ -543,7 +543,7 @@ sendMessage: aMessage on: aRemoteObject
 	"Sends aMessage to aRemoteObject."
 
 	self 
-		sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)
+		sendCommand: (RMS to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)
 		do: [ :ans | aRemoteObject future resolve: ans ]
 		onError: [ :x | (aRemoteObject future at: 'fail') value: x ].
 		
@@ -602,7 +602,7 @@ onMessage: anEvent
 
 	| command |
 
-	"Transcript cr; show: aWebSocketEvent data."
+	Transcript cr; show: anEvent data.
 	command := WebSocketCommand for: anEvent.
 	command ifNil:[ command := self newBadCommandOn: anEvent ].
 
@@ -947,11 +947,11 @@ processOn: anAPIClient
 	self answer: #{ #pongOn -> Date now }
 ! !
 
-WebSocketCommand subclass: #RemoteMessageSend
+WebSocketCommand subclass: #RMS
 	instanceVariableNames: ''
 	package: 'Flow-API'!
-!RemoteMessageSend commentStamp!
-## RemoteMessageSend
+!RMS commentStamp!
+##RMS alias RemoteMessageSend
 
 Is a command to send a message to a remote object published in the backend.
 
@@ -959,9 +959,11 @@ Or..
 
 The command received from the backend to send a message to an object published here in the frontend.
 
-RemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.!
+RemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.
 
-!RemoteMessageSend methodsFor: 'actions'!
+The reason for the short name is merely bandwith optimization!
+
+!RMS methodsFor: 'actions'!
 
 getReceiverOn: anAPIClient
 	"Returns the published at anAPIClient corresponding to the receiver of this message send."
@@ -994,7 +996,7 @@ processOn: anAPIClient
 	"self answer: (anAPIClient remoteReferenceFor: ans)"
 ! !
 
-!RemoteMessageSend class methodsFor: 'actions'!
+!RMS class methodsFor: 'actions'!
 
 to: aReceiverId send: aSelector withAll: someArguments
 	"Answers a new instance of a RemoteMessageSend so it's

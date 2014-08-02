@@ -1047,24 +1047,27 @@ protocol: 'reactions',
 fn: function (anEvent){
 var self=this;
 var command;
+function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $WebSocketCommand(){return globals.WebSocketCommand||(typeof WebSocketCommand=="undefined"?nil:WebSocketCommand)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$receiver;
+var $1,$2,$receiver;
+_st($Transcript())._cr();
+$1=_st($Transcript())._show_(_st(anEvent)._data());
 command=_st($WebSocketCommand())._for_(anEvent);
-$1=command;
-if(($receiver = $1) == null || $receiver.isNil){
+$2=command;
+if(($receiver = $2) == null || $receiver.isNil){
 command=self._newBadCommandOn_(anEvent);
 command;
 } else {
-$1;
+$2;
 };
 self._trigger_with_("commandReceived:",command);
 _st(command)._receivedOn_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"onMessage:",{anEvent:anEvent,command:command},globals.WebSocketAPI)})},
 args: ["anEvent"],
-source: "onMessage: anEvent\x0a\x0a\x09| command |\x0a\x0a\x09\x22Transcript cr; show: aWebSocketEvent data.\x22\x0a\x09command := WebSocketCommand for: anEvent.\x0a\x09command ifNil:[ command := self newBadCommandOn: anEvent ].\x0a\x0a\x09self trigger: 'commandReceived:' with: command.\x0a\x09command receivedOn: self \x0a\x09",
-messageSends: ["for:", "ifNil:", "newBadCommandOn:", "trigger:with:", "receivedOn:"],
-referencedClasses: ["WebSocketCommand"]
+source: "onMessage: anEvent\x0a\x0a\x09| command |\x0a\x0a\x09Transcript cr; show: anEvent data.\x0a\x09command := WebSocketCommand for: anEvent.\x0a\x09command ifNil:[ command := self newBadCommandOn: anEvent ].\x0a\x0a\x09self trigger: 'commandReceived:' with: command.\x0a\x09command receivedOn: self \x0a\x09",
+messageSends: ["cr", "show:", "data", "for:", "ifNil:", "newBadCommandOn:", "trigger:with:", "receivedOn:"],
+referencedClasses: ["Transcript", "WebSocketCommand"]
 }),
 globals.WebSocketAPI);
 
@@ -1389,10 +1392,10 @@ selector: "sendMessage:on:",
 protocol: 'actions',
 fn: function (aMessage,aRemoteObject){
 var self=this;
-function $RemoteMessageSend(){return globals.RemoteMessageSend||(typeof RemoteMessageSend=="undefined"?nil:RemoteMessageSend)}
+function $RMS(){return globals.RMS||(typeof RMS=="undefined"?nil:RMS)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-self._sendCommand_do_onError_(_st($RemoteMessageSend())._to_send_withAll_(_st(aRemoteObject)._id(),_st(aMessage)._selector(),_st(aMessage)._arguments()),(function(ans){
+self._sendCommand_do_onError_(_st($RMS())._to_send_withAll_(_st(aRemoteObject)._id(),_st(aMessage)._selector(),_st(aMessage)._arguments()),(function(ans){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(aRemoteObject)._future();
 $ctx2.sendIdx["future"]=1;
@@ -1404,9 +1407,9 @@ return _st(_st(_st(aRemoteObject)._future())._at_("fail"))._value_(x);
 return aRemoteObject;
 }, function($ctx1) {$ctx1.fill(self,"sendMessage:on:",{aMessage:aMessage,aRemoteObject:aRemoteObject},globals.WebSocketAPI)})},
 args: ["aMessage", "aRemoteObject"],
-source: "sendMessage: aMessage on: aRemoteObject\x0a\x09\x22Sends aMessage to aRemoteObject.\x22\x0a\x0a\x09self \x0a\x09\x09sendCommand: (RemoteMessageSend to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)\x0a\x09\x09do: [ :ans | aRemoteObject future resolve: ans ]\x0a\x09\x09onError: [ :x | (aRemoteObject future at: 'fail') value: x ].\x0a\x09\x09\x0a\x09^ aRemoteObject",
+source: "sendMessage: aMessage on: aRemoteObject\x0a\x09\x22Sends aMessage to aRemoteObject.\x22\x0a\x0a\x09self \x0a\x09\x09sendCommand: (RMS to: aRemoteObject id send: aMessage selector withAll: aMessage arguments)\x0a\x09\x09do: [ :ans | aRemoteObject future resolve: ans ]\x0a\x09\x09onError: [ :x | (aRemoteObject future at: 'fail') value: x ].\x0a\x09\x09\x0a\x09^ aRemoteObject",
 messageSends: ["sendCommand:do:onError:", "to:send:withAll:", "id", "selector", "arguments", "resolve:", "future", "value:", "at:"],
-referencedClasses: ["RemoteMessageSend"]
+referencedClasses: ["RMS"]
 }),
 globals.WebSocketAPI);
 
@@ -2072,8 +2075,8 @@ globals.Ping);
 
 
 
-smalltalk.addClass('RemoteMessageSend', globals.WebSocketCommand, [], 'Flow-API');
-globals.RemoteMessageSend.comment="## RemoteMessageSend\x0a\x0aIs a command to send a message to a remote object published in the backend.\x0a\x0aOr..\x0a\x0aThe command received from the backend to send a message to an object published here in the frontend.\x0a\x0aRemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.";
+smalltalk.addClass('RMS', globals.WebSocketCommand, [], 'Flow-API');
+globals.RMS.comment="##RMS alias RemoteMessageSend\x0a\x0aIs a command to send a message to a remote object published in the backend.\x0a\x0aOr..\x0a\x0aThe command received from the backend to send a message to an object published here in the frontend.\x0a\x0aRemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.\x0a\x0aThe reason for the short name is merely bandwith optimization";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "getReceiverOn:",
@@ -2086,13 +2089,13 @@ $1=_st(_st(anAPIClient)._published())._at_ifAbsent_(self._receiverId(),(function
 return nil;
 }));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"getReceiverOn:",{anAPIClient:anAPIClient},globals.RemoteMessageSend)})},
+}, function($ctx1) {$ctx1.fill(self,"getReceiverOn:",{anAPIClient:anAPIClient},globals.RMS)})},
 args: ["anAPIClient"],
 source: "getReceiverOn: anAPIClient\x0a\x09\x22Returns the published at anAPIClient corresponding to the receiver of this message send.\x22\x0a\x09\x0a\x09^ anAPIClient published \x0a\x09\x09at:\x09self receiverId\x0a\x09\x09ifAbsent:[ nil ]",
 messageSends: ["at:ifAbsent:", "published", "receiverId"],
 referencedClasses: []
 }),
-globals.RemoteMessageSend);
+globals.RMS);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -2102,7 +2105,7 @@ fn: function (aStream){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1,$7,$6,$5,$9,$8,$4,$3,$10;
-($ctx1.supercall = true, globals.RemoteMessageSend.superclass.fn.prototype._printOn_.apply(_st(self), [aStream]));
+($ctx1.supercall = true, globals.RMS.superclass.fn.prototype._printOn_.apply(_st(self), [aStream]));
 $ctx1.supercall = false;
 $2=self._answer();
 $ctx1.sendIdx["answer"]=1;
@@ -2129,13 +2132,13 @@ $10=_st("(#".__comma(_st(self._selector())._asString())).__comma(")");
 $ctx1.sendIdx[","]=5;
 _st(aStream)._nextPutAll_($10);
 };
-return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},globals.RemoteMessageSend)})},
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},globals.RMS)})},
 args: ["aStream"],
 source: "printOn: aStream\x0a\x0a\x09super printOn: aStream.\x0a\x09\x0a\x09self answer notNil\x0a\x09\x09ifTrue:[ aStream nextPutAll: '(',self answer asString,' #',self selector asString,')' ]\x0a\x09\x09ifFalse:[ aStream nextPutAll: '(#',self selector asString,')' ]\x0a\x09",
 messageSends: ["printOn:", "ifTrue:ifFalse:", "notNil", "answer", "nextPutAll:", ",", "asString", "selector"],
 referencedClasses: []
 }),
-globals.RemoteMessageSend);
+globals.RMS);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -2148,13 +2151,13 @@ return smalltalk.withContext(function($ctx1) {
 ans=_st(self._getReceiverOn_(anAPIClient))._perform_withArguments_(self._selector(),self._arguments());
 _st(_st(anAPIClient)._remoteReferenceFor_(ans))._inspect();
 self._answer_((42));
-return self}, function($ctx1) {$ctx1.fill(self,"processOn:",{anAPIClient:anAPIClient,ans:ans},globals.RemoteMessageSend)})},
+return self}, function($ctx1) {$ctx1.fill(self,"processOn:",{anAPIClient:anAPIClient,ans:ans},globals.RMS)})},
 args: ["anAPIClient"],
 source: "processOn: anAPIClient\x0a\x09\x22Executes this command comming from anAPIClient\x0a\x09loading the answer in it.\x22\x0a\x09\x0a\x09| ans |\x0a\x09\x0a\x09ans := (self getReceiverOn: anAPIClient)\x0a\x09\x09\x09\x09\x09perform: self selector\x0a\x09\x09\x09\x09\x09withArguments: self arguments.\x0a\x09(anAPIClient remoteReferenceFor: ans) inspect.\x0a\x09self answer: 42.\x0a\x09\x22self answer: (anAPIClient remoteReferenceFor: ans)\x22",
 messageSends: ["perform:withArguments:", "getReceiverOn:", "selector", "arguments", "inspect", "remoteReferenceFor:", "answer:"],
 referencedClasses: []
 }),
-globals.RemoteMessageSend);
+globals.RMS);
 
 
 smalltalk.addMethod(
@@ -2172,12 +2175,12 @@ _st($2)._arguments_(_st(someArguments)._asArray());
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"to:send:withAll:",{aReceiverId:aReceiverId,aSelector:aSelector,someArguments:someArguments},globals.RemoteMessageSend.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"to:send:withAll:",{aReceiverId:aReceiverId,aSelector:aSelector,someArguments:someArguments},globals.RMS.klass)})},
 args: ["aReceiverId", "aSelector", "someArguments"],
 source: "to: aReceiverId send: aSelector withAll: someArguments\x0a\x09\x22Answers a new instance of a RemoteMessageSend so it's\x0a\x09ready to be sent to the remote object reachable with aReceiverId\x0a\x09with the message aSelector with someArguments.\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09receiverId: aReceiverId;\x0a\x09\x09selector: aSelector;\x0a\x09\x09arguments: someArguments asArray;\x0a\x09\x09yourself",
 messageSends: ["receiverId:", "new", "selector:", "arguments:", "asArray", "yourself"],
 referencedClasses: []
 }),
-globals.RemoteMessageSend.klass);
+globals.RMS.klass);
 
 });

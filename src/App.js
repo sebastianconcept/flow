@@ -44,5 +44,20 @@ referencedClasses: ["Transcript"]
 }),
 globals.AppController);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "tellMe",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return "again how cool this is";
+},
+args: [],
+source: "tellMe\x0a\x0a\x09^ 'again how cool this is'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.AppController);
+
 
 });

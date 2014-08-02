@@ -28,5 +28,10 @@ onOpen
 		publish: [ :ping | #pong ] at: 'ping';		
 		publish: [ :a :b | a + b ] at: 'sum';	
 		yourself
+!
+
+tellMe
+
+	^ 'again how cool this is'
 ! !
 
