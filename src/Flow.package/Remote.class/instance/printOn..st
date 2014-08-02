@@ -8,4 +8,4 @@ printOn: aStream
 	aStream
 		nextPutAll: (title first isVowel ifTrue: ['an '] ifFalse: ['a ']);
 		nextPutAll: title;
-		nextPutAll: '(',id asString,')'
+		nextPutAll: '(',id printString,')'

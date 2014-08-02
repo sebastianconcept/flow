@@ -428,6 +428,38 @@ globals.RemoteReferenceTest);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testClass",
+protocol: 'tests',
+fn: function (){
+var self=this;
+function $Class(){return globals.Class||(typeof Class=="undefined"?nil:Class)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$5,$4,$3;
+$2=_st($Class())._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=1;
+$1=_st($2)._isRemoteReference();
+$ctx1.sendIdx["isRemoteReference"]=1;
+self._assert_($1);
+$ctx1.sendIdx["assert:"]=1;
+$5=[]._class();
+$ctx1.sendIdx["class"]=1;
+$4=_st($5)._asRemoteReference();
+$ctx1.sendIdx["asRemoteReference"]=2;
+$3=_st($4)._isRemoteReference();
+$ctx1.sendIdx["isRemoteReference"]=2;
+self._assert_($3);
+$ctx1.sendIdx["assert:"]=2;
+self._assert_(_st(_st((42)._class())._asRemoteReference())._isRemoteReference());
+return self}, function($ctx1) {$ctx1.fill(self,"testClass",{},globals.RemoteReferenceTest)})},
+args: [],
+source: "testClass\x0a\x0a\x09self assert: Class asRemoteReference isRemoteReference.\x0a\x09self assert: #() class asRemoteReference isRemoteReference.\x0a\x09self assert: 42 class asRemoteReference isRemoteReference.",
+messageSends: ["assert:", "isRemoteReference", "asRemoteReference", "class"],
+referencedClasses: ["Class"]
+}),
+globals.RemoteReferenceTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testFloat",
 protocol: 'tests',
 fn: function (){
@@ -465,6 +497,23 @@ args: [],
 source: "testInteger\x0a\x0a\x09self deny: 42 asRemoteReference isRemoteReference.\x0a\x09self assert: 42 asRemoteReference = 42",
 messageSends: ["deny:", "isRemoteReference", "asRemoteReference", "assert:", "="],
 referencedClasses: []
+}),
+globals.RemoteReferenceTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testMetaclass",
+protocol: 'tests',
+fn: function (){
+var self=this;
+function $Metaclass(){return globals.Metaclass||(typeof Metaclass=="undefined"?nil:Metaclass)}
+return smalltalk.withContext(function($ctx1) { 
+self._assert_(_st(_st($Metaclass())._asRemoteReference())._isRemoteReference());
+return self}, function($ctx1) {$ctx1.fill(self,"testMetaclass",{},globals.RemoteReferenceTest)})},
+args: [],
+source: "testMetaclass \x0a\x0a\x09self assert: Metaclass asRemoteReference isRemoteReference",
+messageSends: ["assert:", "isRemoteReference", "asRemoteReference"],
+referencedClasses: ["Metaclass"]
 }),
 globals.RemoteReferenceTest);
 

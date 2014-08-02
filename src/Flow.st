@@ -66,6 +66,18 @@ printOn: aStream
 	aStream nextPutAll: '(',self receiver asString, '>>',self message selector asString,')'
 ! !
 
+!Metaclass methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	"Subclasses differ you can check on them.
+	The default is not be copied, so..."
+
+	^ RR new
+! !
+
 !Number class methodsFor: '*Flow'!
 
 asRemoteReferenceFor: anObject

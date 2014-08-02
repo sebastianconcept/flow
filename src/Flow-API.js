@@ -1258,14 +1258,15 @@ self._nextId();
 ref=_st(anObject)._asRemoteReference();
 $1=_st(ref)._isRemoteReference();
 if(smalltalk.assert($1)){
-_st(ref)._id_publish_at_(_st(self._counter())._self(),anObject,_st(ref)._id());
+_st(ref)._id_(self._counter());
+self._publish_at_(anObject,_st(ref)._id());
 };
 $2=ref;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"remoteReferenceFor:",{anObject:anObject,ref:ref},globals.WebSocketAPI)})},
 args: ["anObject"],
-source: "remoteReferenceFor: anObject\x0a\x09\x22Answers a remote reference for anObject in this API or\x0a\x09a copy if the object is simple enough to travel as copy.\x0a\x09If reference, it'll keep it among those published.\x22\x0a\x0a\x09| ref |\x09\x0a\x0a\x09self nextId.\x0a\x09\x0a\x09ref := anObject asRemoteReference.\x0a\x09ref isRemoteReference ifTrue:[\x0a\x09\x09ref id: self counter\x09\x09\x0a\x09\x09self publish: anObject at: ref id].\x0a\x09\x09\x0a\x09^ ref",
-messageSends: ["nextId", "asRemoteReference", "ifTrue:", "isRemoteReference", "id:publish:at:", "self", "counter", "id"],
+source: "remoteReferenceFor: anObject\x0a\x09\x22Answers a remote reference for anObject in this API or\x0a\x09a copy if the object is simple enough to travel as copy.\x0a\x09If reference, it'll keep it among those published.\x22\x0a\x0a\x09| ref |\x09\x0a\x0a\x09self nextId.\x0a\x09\x0a\x09ref := anObject asRemoteReference.\x0a\x09ref isRemoteReference ifTrue:[\x0a\x09\x09ref id: self counter.\x09\x09\x0a\x09\x09self publish: anObject at: ref id].\x0a\x09\x09\x0a\x09^ ref",
+messageSends: ["nextId", "asRemoteReference", "ifTrue:", "isRemoteReference", "id:", "counter", "publish:at:", "id"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -1745,7 +1746,7 @@ return $1;
 self._remoteAnswerOn_(anAPIClient);
 return self}, function($ctx1) {$ctx1.fill(self,"executeOn:",{anAPIClient:anAPIClient},globals.WebSocketCommand)})},
 args: ["anAPIClient"],
-source: "executeOn: anAPIClient\x0a\x09\x22Executes this command comming from anAPIClient\x0a\x09and performs the remote answer.\x22\x0a\x09\x0a\x09[ self processOn: anAPIClient ]\x0a\x09\x09on: Error \x0a\x09\x09do:[ :x |\x0a\x09\x09\x09\x09self\x0a\x09\x09\x09\x09\x09isException: true;\x0a\x09\x09\x09\x09\x09answer: x asString ].\x0a\x09\x09\x09\x09\x09\x0a\x09self remoteAnswerOn: anAPIClient\x0a\x09",
+source: "executeOn: anAPIClient\x0a\x09\x22Executes this command comming from anAPIClient\x0a\x09and performs the remote answer.\x22\x0a\x09\x0a\x09[ self processOn: anAPIClient ]\x0a\x09\x09on: Error \x0a\x09\x09do:[ :x | \x0a\x09\x09\x09\x09self\x0a\x09\x09\x09\x09\x09isException: true;\x0a\x09\x09\x09\x09\x09answer: x asString ].\x0a\x09\x09\x09\x09\x09\x0a\x09self remoteAnswerOn: anAPIClient\x0a\x09",
 messageSends: ["on:do:", "processOn:", "isException:", "answer:", "asString", "remoteAnswerOn:"],
 referencedClasses: ["Error"]
 }),
@@ -2145,11 +2146,12 @@ var self=this;
 var ans;
 return smalltalk.withContext(function($ctx1) { 
 ans=_st(self._getReceiverOn_(anAPIClient))._perform_withArguments_(self._selector(),self._arguments());
-self._answer_(_st(anAPIClient)._remoteReferenceFor_(ans));
+_st(_st(anAPIClient)._remoteReferenceFor_(ans))._inspect();
+self._answer_((42));
 return self}, function($ctx1) {$ctx1.fill(self,"processOn:",{anAPIClient:anAPIClient,ans:ans},globals.RemoteMessageSend)})},
 args: ["anAPIClient"],
-source: "processOn: anAPIClient\x0a\x09\x22Executes this command comming from anAPIClient\x0a\x09loading the answer in it.\x22\x0a\x09\x0a\x09| ans |\x0a\x09\x0a\x09ans := (self getReceiverOn: anAPIClient)\x0a\x09\x09\x09\x09\x09perform: self selector\x0a\x09\x09\x09\x09\x09withArguments: self arguments.\x0a\x09\x0a\x09self answer: (anAPIClient remoteReferenceFor: ans)",
-messageSends: ["perform:withArguments:", "getReceiverOn:", "selector", "arguments", "answer:", "remoteReferenceFor:"],
+source: "processOn: anAPIClient\x0a\x09\x22Executes this command comming from anAPIClient\x0a\x09loading the answer in it.\x22\x0a\x09\x0a\x09| ans |\x0a\x09\x0a\x09ans := (self getReceiverOn: anAPIClient)\x0a\x09\x09\x09\x09\x09perform: self selector\x0a\x09\x09\x09\x09\x09withArguments: self arguments.\x0a\x09(anAPIClient remoteReferenceFor: ans) inspect.\x0a\x09self answer: 42.\x0a\x09\x22self answer: (anAPIClient remoteReferenceFor: ans)\x22",
+messageSends: ["perform:withArguments:", "getReceiverOn:", "selector", "arguments", "inspect", "remoteReferenceFor:", "answer:"],
 referencedClasses: []
 }),
 globals.RemoteMessageSend);

@@ -21,8 +21,12 @@ onOpen
 	that"
 
 	self session api ws
+		publish: app at: 'app';
 		publish: Transcript current at: 'Transcript';
 		publish: console at: 'console';
+		publish: [ :sent | sent ] at: 'echo';
+		publish: [ :ping | #pong ] at: 'ping';		
+		publish: [ :a :b | a + b ] at: 'sum';	
 		yourself
 ! !
 

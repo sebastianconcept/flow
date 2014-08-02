@@ -132,6 +132,13 @@ testBoolean
 	self assert: false asRemoteReference isBoolean.
 !
 
+testClass
+
+	self assert: Class asRemoteReference isRemoteReference.
+	self assert: #() class asRemoteReference isRemoteReference.
+	self assert: 42 class asRemoteReference isRemoteReference.
+!
+
 testFloat
 
 	self deny: 4.2 asRemoteReference isRemoteReference.
@@ -142,6 +149,11 @@ testInteger
 
 	self deny: 42 asRemoteReference isRemoteReference.
 	self assert: 42 asRemoteReference = 42
+!
+
+testMetaclass 
+
+	self assert: Metaclass asRemoteReference isRemoteReference
 !
 
 testUndefinedObject 

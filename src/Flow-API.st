@@ -480,7 +480,7 @@ remoteReferenceFor: anObject
 	
 	ref := anObject asRemoteReference.
 	ref isRemoteReference ifTrue:[
-		ref id: self counter		
+		ref id: self counter.		
 		self publish: anObject at: ref id].
 		
 	^ ref
@@ -779,7 +779,7 @@ executeOn: anAPIClient
 	
 	[ self processOn: anAPIClient ]
 		on: Error 
-		do:[ :x |
+		do:[ :x | 
 				self
 					isException: true;
 					answer: x asString ].
@@ -989,8 +989,9 @@ processOn: anAPIClient
 	ans := (self getReceiverOn: anAPIClient)
 					perform: self selector
 					withArguments: self arguments.
-	
-	self answer: (anAPIClient remoteReferenceFor: ans)
+	(anAPIClient remoteReferenceFor: ans) inspect.
+	self answer: 42.
+	"self answer: (anAPIClient remoteReferenceFor: ans)"
 ! !
 
 !RemoteMessageSend class methodsFor: 'actions'!

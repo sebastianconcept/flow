@@ -1,4 +1,4 @@
-define("app/Flow", ["amber/boot", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Exceptions"], function($boot){
+define("app/Flow", ["amber/boot", "amber_core/Kernel-Objects", "amber_core/Kernel-Classes", "amber_core/Kernel-Collections", "amber_core/Kernel-Exceptions"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow');
 smalltalk.packages["Flow"].transport = {"type":"amd","amdNamespace":"app"};
@@ -135,6 +135,25 @@ messageSends: ["printOn:", "nextPutAll:", ",", "asString", "receiver", "selector
 referencedClasses: []
 }),
 globals.MessageNotUnderstood);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "asRemoteReferenceFor:",
+protocol: '*Flow',
+fn: function (anObject){
+var self=this;
+function $RR(){return globals.RR||(typeof RR=="undefined"?nil:RR)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($RR())._new();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"asRemoteReferenceFor:",{anObject:anObject},globals.Metaclass)})},
+args: ["anObject"],
+source: "asRemoteReferenceFor: anObject\x0a\x09\x22Answers anObject (copy) or an appropiate reference (can't be copied) for \x0a\x09traveling over the wire and still referring to this receiver\x22\x0a\x0a\x09\x22Subclasses differ you can check on them.\x0a\x09The default is not be copied, so...\x22\x0a\x0a\x09^ RR new",
+messageSends: ["new"],
+referencedClasses: ["RR"]
+}),
+globals.Metaclass);
 
 smalltalk.addMethod(
 smalltalk.method({
