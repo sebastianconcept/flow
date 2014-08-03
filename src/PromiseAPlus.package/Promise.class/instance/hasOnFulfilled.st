@@ -1,0 +1,4 @@
+testing
+hasOnFulfilled
+
+	^ onFulfilled notNil

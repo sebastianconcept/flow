@@ -138,129 +138,6 @@ globals.APIClient);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "send:to:",
-protocol: 'actions',
-fn: function (aSelector,aRemoteObjectId){
-var self=this;
-function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
-function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
-return smalltalk.withContext(function($ctx1) { 
-self._send_withAll_to_do_onError_(aSelector,_st($Array())._new(),aRemoteObjectId,(function(ans){
-}),(function(x){
-return smalltalk.withContext(function($ctx2) {
-return _st($APIError())._signal_(_st(x)._asString());
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"send:to:",{aSelector:aSelector,aRemoteObjectId:aRemoteObjectId},globals.APIClient)})},
-args: ["aSelector", "aRemoteObjectId"],
-source: "send: aSelector to: aRemoteObjectId\x0a\x09\x22Sends the message to the remote object and\x0a\x09evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09self send: aSelector \x0a\x09\x09withAll: Array new\x0a\x09\x09to: aRemoteObjectId \x0a\x09\x09do: [ :ans | \x22ignoring it...\x22 ]\x0a\x09\x09onError: [ :x | APIError signal: x asString ]",
-messageSends: ["send:withAll:to:do:onError:", "new", "signal:", "asString"],
-referencedClasses: ["Array", "APIError"]
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "send:to:do:",
-protocol: 'actions',
-fn: function (aSelector,aRemoteObjectId,anAnswerBlock){
-var self=this;
-function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
-function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
-return smalltalk.withContext(function($ctx1) { 
-self._send_withAll_to_do_onError_(aSelector,_st($Array())._new(),aRemoteObjectId,anAnswerBlock,(function(x){
-return smalltalk.withContext(function($ctx2) {
-return _st($APIError())._signal_(_st(x)._asString());
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"send:to:do:",{aSelector:aSelector,aRemoteObjectId:aRemoteObjectId,anAnswerBlock:anAnswerBlock},globals.APIClient)})},
-args: ["aSelector", "aRemoteObjectId", "anAnswerBlock"],
-source: "send: aSelector to: aRemoteObjectId do: anAnswerBlock\x0a\x09\x22Sends the message to the remote object and\x0a\x09evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09self send: aSelector \x0a\x09\x09withAll: Array new\x0a\x09\x09to: aRemoteObjectId \x0a\x09\x09do: anAnswerBlock \x0a\x09\x09onError: [ :x | APIError signal: x asString ]",
-messageSends: ["send:withAll:to:do:onError:", "new", "signal:", "asString"],
-referencedClasses: ["Array", "APIError"]
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "send:with:to:",
-protocol: 'actions',
-fn: function (aSelector,anArgument,aRemoteObjectId){
-var self=this;
-function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
-function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
-return smalltalk.withContext(function($ctx1) { 
-self._send_withAll_to_do_onError_(aSelector,_st($Array())._with_(anArgument),aRemoteObjectId,(function(ans){
-}),(function(x){
-return smalltalk.withContext(function($ctx2) {
-return _st($APIError())._signal_(_st(x)._asString());
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"send:with:to:",{aSelector:aSelector,anArgument:anArgument,aRemoteObjectId:aRemoteObjectId},globals.APIClient)})},
-args: ["aSelector", "anArgument", "aRemoteObjectId"],
-source: "send: aSelector with: anArgument to: aRemoteObjectId\x0a\x09\x22Sends the message to the remote object and\x0a\x09evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09self send: aSelector \x0a\x09\x09withAll: (Array with: anArgument)\x0a\x09\x09to: aRemoteObjectId \x0a\x09\x09do: [ :ans | \x22ignoring it...\x22 ]\x0a\x09\x09onError: [ :x | APIError signal: x asString ]",
-messageSends: ["send:withAll:to:do:onError:", "with:", "signal:", "asString"],
-referencedClasses: ["Array", "APIError"]
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "send:with:to:do:",
-protocol: 'actions',
-fn: function (aSelector,anArgument,aRemoteObjectId,anAnswerBlock){
-var self=this;
-function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
-function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
-return smalltalk.withContext(function($ctx1) { 
-self._send_withAll_to_do_onError_(aSelector,_st($Array())._with_(anArgument),aRemoteObjectId,anAnswerBlock,(function(x){
-return smalltalk.withContext(function($ctx2) {
-return _st($APIError())._signal_(_st(x)._asString());
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"send:with:to:do:",{aSelector:aSelector,anArgument:anArgument,aRemoteObjectId:aRemoteObjectId,anAnswerBlock:anAnswerBlock},globals.APIClient)})},
-args: ["aSelector", "anArgument", "aRemoteObjectId", "anAnswerBlock"],
-source: "send: aSelector with: anArgument to: aRemoteObjectId do: anAnswerBlock\x0a\x09\x22Sends the message with an argument to the remote object and\x0a\x09evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09self send: aSelector \x0a\x09\x09withAll: (Array with: anArgument) \x0a\x09\x09to: aRemoteObjectId \x0a\x09\x09do: anAnswerBlock \x0a\x09\x09onError: [ :x | APIError signal: x asString ]",
-messageSends: ["send:withAll:to:do:onError:", "with:", "signal:", "asString"],
-referencedClasses: ["Array", "APIError"]
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "send:withAll:to:do:",
-protocol: 'actions',
-fn: function (aSelector,someArguments,aRemoteObjectId,anAnswerBlock){
-var self=this;
-function $APIError(){return globals.APIError||(typeof APIError=="undefined"?nil:APIError)}
-return smalltalk.withContext(function($ctx1) { 
-self._send_withAll_to_do_onError_(aSelector,someArguments,aRemoteObjectId,anAnswerBlock,(function(x){
-return smalltalk.withContext(function($ctx2) {
-return _st($APIError())._signal_(_st(x)._asString());
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"send:withAll:to:do:",{aSelector:aSelector,someArguments:someArguments,aRemoteObjectId:aRemoteObjectId,anAnswerBlock:anAnswerBlock},globals.APIClient)})},
-args: ["aSelector", "someArguments", "aRemoteObjectId", "anAnswerBlock"],
-source: "send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock\x0a\x09\x22Sends the message with arguments to the remote object and\x0a\x09evaluates aBlock when the answer arrives.\x22\x0a\x09\x0a\x09self send: aSelector \x0a\x09\x09withAll: someArguments \x0a\x09\x09to: aRemoteObjectId \x0a\x09\x09do: anAnswerBlock \x0a\x09\x09onError: [ :x | APIError signal: x asString ]",
-messageSends: ["send:withAll:to:do:onError:", "signal:", "asString"],
-referencedClasses: ["APIError"]
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "send:withAll:to:do:onError:",
-protocol: 'actions',
-fn: function (aSelector,someArguments,aRemoteObjectId,anAnswerBlock,anErrorBlock){
-var self=this;
-function $RemoteMessageSend(){return globals.RemoteMessageSend||(typeof RemoteMessageSend=="undefined"?nil:RemoteMessageSend)}
-return smalltalk.withContext(function($ctx1) { 
-_st(self._ws())._sendCommand_do_onError_(_st($RemoteMessageSend())._to_send_withAll_(aRemoteObjectId,aSelector,someArguments),anAnswerBlock,anErrorBlock);
-return self}, function($ctx1) {$ctx1.fill(self,"send:withAll:to:do:onError:",{aSelector:aSelector,someArguments:someArguments,aRemoteObjectId:aRemoteObjectId,anAnswerBlock:anAnswerBlock,anErrorBlock:anErrorBlock},globals.APIClient)})},
-args: ["aSelector", "someArguments", "aRemoteObjectId", "anAnswerBlock", "anErrorBlock"],
-source: "send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock onError: anErrorBlock\x0a\x09\x22Sends the message with arguments to the remote object and\x0a\x09evaluates anAnswerBlock when the answer arrives.\x22\x0a\x09\x0a\x09self ws \x0a\x09\x09sendCommand: (RemoteMessageSend to: aRemoteObjectId send: aSelector withAll: someArguments)\x0a\x09\x09do: anAnswerBlock\x0a\x09\x09onError: anErrorBlock",
-messageSends: ["sendCommand:do:onError:", "ws", "to:send:withAll:"],
-referencedClasses: ["RemoteMessageSend"]
-}),
-globals.APIClient);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "ws",
 protocol: 'accessing',
 fn: function (){
@@ -1256,20 +1133,31 @@ fn: function (anObject){
 var self=this;
 var ref;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$3;
 self._nextId();
 ref=_st(anObject)._asRemoteReference();
 $1=_st(ref)._isRemoteReference();
 if(smalltalk.assert($1)){
+var anId;
+anId=_st(self._published())._keyAtValue_ifAbsent_(anObject,(function(){
+return nil;
+}));
+anId;
+$2=_st(anId)._isNil();
+if(smalltalk.assert($2)){
 _st(ref)._id_(self._counter());
+$ctx1.sendIdx["id:"]=1;
 self._publish_at_(anObject,_st(ref)._id());
+} else {
+_st(ref)._id_(anId);
 };
-$2=ref;
-return $2;
+};
+$3=ref;
+return $3;
 }, function($ctx1) {$ctx1.fill(self,"remoteReferenceFor:",{anObject:anObject,ref:ref},globals.WebSocketAPI)})},
 args: ["anObject"],
-source: "remoteReferenceFor: anObject\x0a\x09\x22Answers a remote reference for anObject in this API or\x0a\x09a copy if the object is simple enough to travel as copy.\x0a\x09If reference, it'll keep it among those published.\x22\x0a\x0a\x09| ref |\x09\x0a\x0a\x09self nextId.\x0a\x09\x0a\x09ref := anObject asRemoteReference.\x0a\x09ref isRemoteReference ifTrue:[\x0a\x09\x09ref id: self counter.\x09\x09\x0a\x09\x09self publish: anObject at: ref id].\x0a\x09\x09\x0a\x09^ ref",
-messageSends: ["nextId", "asRemoteReference", "ifTrue:", "isRemoteReference", "id:", "counter", "publish:at:", "id"],
+source: "remoteReferenceFor: anObject\x0a\x09\x22Answers a remote reference for anObject in this API or\x0a\x09a copy if the object is simple enough to travel as copy.\x0a\x09If reference, it'll keep it among those published.\x22\x0a\x0a\x09| ref |\x09\x0a\x0a\x09self nextId.\x0a\x09\x0a\x09ref := anObject asRemoteReference.\x0a\x09ref isRemoteReference ifTrue:[ | anId |\x0a\x09\x09anId := self published keyAtValue: anObject ifAbsent: [ nil ].\x0a\x09\x09anId isNil \x0a\x09\x09\x09ifTrue:[\x0a\x09\x09\x09\x09ref id: self counter.\x09\x09\x0a\x09\x09\x09\x09self publish: anObject at: ref id ]\x0a\x09\x09\x09ifFalse:[ ref id: anId ] ].\x0a\x09\x09\x0a\x09^ ref",
+messageSends: ["nextId", "asRemoteReference", "ifTrue:", "isRemoteReference", "keyAtValue:ifAbsent:", "published", "ifTrue:ifFalse:", "isNil", "id:", "counter", "publish:at:", "id"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -1477,7 +1365,7 @@ globals.WebSocketAPI);
 
 
 smalltalk.addClass('RR', globals.Mapless, [], 'Flow-API');
-globals.RR.comment="##RR alias of RemoteReference \x0a\x0aInstances of RemoteReference are used when you cannot send as copy an object that is the answer of some remote command.\x0a\x0aThe remote end will be able to use aRemoteReference asRemote and send a message remotely to it.\x0a\x0aThe reason for the short name is merely bandwith optimization";
+globals.RR.comment="##RR alias of RemoteReference \x0a\x0aInstances of RemoteReference are used when you cannot send as copy an object that is the answer of some remote command.\x0a\x0aThe remote end will be able to use aRemoteReference asRemote and send a message remotely to it.\x0a\x0aThe reason for the short name instead of the long explicit one is merely bandwith optimization";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "isRemoteReference",
@@ -2076,7 +1964,7 @@ globals.Ping);
 
 
 smalltalk.addClass('RMS', globals.WebSocketCommand, [], 'Flow-API');
-globals.RMS.comment="##RMS alias RemoteMessageSend\x0a\x0aIs a command to send a message to a remote object published in the backend.\x0a\x0aOr..\x0a\x0aThe command received from the backend to send a message to an object published here in the frontend.\x0a\x0aRemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.\x0a\x0aThe reason for the short name is merely bandwith optimization";
+globals.RMS.comment="##RMS alias RemoteMessageSend\x0a\x0aIs a command to send a message to a remote object published in the backend.\x0a\x0aOr..\x0a\x0aThe command received from the backend to send a message to an object published here in the frontend.\x0a\x0aRemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.\x0a\x0aThe reason for the short name instead of the long explicit one is merely bandwith optimization";
 smalltalk.addMethod(
 smalltalk.method({
 selector: "getReceiverOn:",
@@ -2149,12 +2037,11 @@ var self=this;
 var ans;
 return smalltalk.withContext(function($ctx1) { 
 ans=_st(self._getReceiverOn_(anAPIClient))._perform_withArguments_(self._selector(),self._arguments());
-_st(_st(anAPIClient)._remoteReferenceFor_(ans))._inspect();
-self._answer_((42));
+self._answer_(_st(anAPIClient)._remoteReferenceFor_(ans));
 return self}, function($ctx1) {$ctx1.fill(self,"processOn:",{anAPIClient:anAPIClient,ans:ans},globals.RMS)})},
 args: ["anAPIClient"],
-source: "processOn: anAPIClient\x0a\x09\x22Executes this command comming from anAPIClient\x0a\x09loading the answer in it.\x22\x0a\x09\x0a\x09| ans |\x0a\x09\x0a\x09ans := (self getReceiverOn: anAPIClient)\x0a\x09\x09\x09\x09\x09perform: self selector\x0a\x09\x09\x09\x09\x09withArguments: self arguments.\x0a\x09(anAPIClient remoteReferenceFor: ans) inspect.\x0a\x09self answer: 42.\x0a\x09\x22self answer: (anAPIClient remoteReferenceFor: ans)\x22",
-messageSends: ["perform:withArguments:", "getReceiverOn:", "selector", "arguments", "inspect", "remoteReferenceFor:", "answer:"],
+source: "processOn: anAPIClient\x0a\x09\x22Executes this command comming from anAPIClient\x0a\x09loading the answer in it.\x22\x0a\x09\x0a\x09| ans |\x0a\x09\x0a\x09ans := (self getReceiverOn: anAPIClient)\x0a\x09\x09\x09\x09\x09perform: self selector\x0a\x09\x09\x09\x09\x09withArguments: self arguments.\x0a\x0a\x09self answer: (anAPIClient remoteReferenceFor: ans)",
+messageSends: ["perform:withArguments:", "getReceiverOn:", "selector", "arguments", "answer:", "remoteReferenceFor:"],
 referencedClasses: []
 }),
 globals.RMS);

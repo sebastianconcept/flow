@@ -33,5 +33,10 @@ onOpen
 tellMe
 
 	^ 'again how cool this is'
+!
+
+you
+
+	^ self
 ! !
 

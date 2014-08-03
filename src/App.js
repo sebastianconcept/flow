@@ -59,5 +59,20 @@ referencedClasses: []
 }),
 globals.AppController);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "you",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return self;
+},
+args: [],
+source: "you\x0a\x0a\x09^ self",
+messageSends: [],
+referencedClasses: []
+}),
+globals.AppController);
+
 
 });

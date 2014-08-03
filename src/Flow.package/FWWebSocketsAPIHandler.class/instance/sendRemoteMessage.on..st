@@ -8,6 +8,8 @@ sendRemoteMessage: aMessage on: aRemote
 		to: aRemote id
 		on: aRemote client
 		do: [ :ans | aRemote promise resolve: ans answer ]
-		onError: [ :x | aRemote promise reject: x ].
+		onError: [ :x | 
+			x class = Halt ifTrue:[self halt].
+			aRemote promise reject: x ].
 
 	^ aRemote

@@ -44,71 +44,6 @@ remoteExceptionFor: aWebSocketCommand
 	"Answers the local error handler for aWebSocketCommand"
 
 	^ self ws remoteExceptionFor: aWebSocketCommand
-!
-
-send: aSelector to: aRemoteObjectId
-	"Sends the message to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: Array new
-		to: aRemoteObjectId 
-		do: [ :ans | "ignoring it..." ]
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector to: aRemoteObjectId do: anAnswerBlock
-	"Sends the message to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: Array new
-		to: aRemoteObjectId 
-		do: anAnswerBlock 
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector with: anArgument to: aRemoteObjectId
-	"Sends the message to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: (Array with: anArgument)
-		to: aRemoteObjectId 
-		do: [ :ans | "ignoring it..." ]
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector with: anArgument to: aRemoteObjectId do: anAnswerBlock
-	"Sends the message with an argument to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: (Array with: anArgument) 
-		to: aRemoteObjectId 
-		do: anAnswerBlock 
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock
-	"Sends the message with arguments to the remote object and
-	evaluates aBlock when the answer arrives."
-	
-	self send: aSelector 
-		withAll: someArguments 
-		to: aRemoteObjectId 
-		do: anAnswerBlock 
-		onError: [ :x | APIError signal: x asString ]
-!
-
-send: aSelector withAll: someArguments to: aRemoteObjectId do: anAnswerBlock onError: anErrorBlock
-	"Sends the message with arguments to the remote object and
-	evaluates anAnswerBlock when the answer arrives."
-	
-	self ws 
-		sendCommand: (RemoteMessageSend to: aRemoteObjectId send: aSelector withAll: someArguments)
-		do: anAnswerBlock
-		onError: anErrorBlock
 ! !
 
 !APIClient methodsFor: 'initialization'!
@@ -479,9 +414,13 @@ remoteReferenceFor: anObject
 	self nextId.
 	
 	ref := anObject asRemoteReference.
-	ref isRemoteReference ifTrue:[
-		ref id: self counter.		
-		self publish: anObject at: ref id].
+	ref isRemoteReference ifTrue:[ | anId |
+		anId := self published keyAtValue: anObject ifAbsent: [ nil ].
+		anId isNil 
+			ifTrue:[
+				ref id: self counter.		
+				self publish: anObject at: ref id ]
+			ifFalse:[ ref id: anId ] ].
 		
 	^ ref
 !
@@ -639,7 +578,7 @@ Instances of RemoteReference are used when you cannot send as copy an object tha
 
 The remote end will be able to use aRemoteReference asRemote and send a message remotely to it.
 
-The reason for the short name is merely bandwith optimization!
+The reason for the short name instead of the long explicit one is merely bandwith optimization!
 
 !RR methodsFor: 'testing'!
 
@@ -961,7 +900,7 @@ The command received from the backend to send a message to an object published h
 
 RemoteMessageSends have @answer set before responding to the sender side and if an exception happens they set @isException in true and a print of the exception.
 
-The reason for the short name is merely bandwith optimization!
+The reason for the short name instead of the long explicit one is merely bandwith optimization!
 
 !RMS methodsFor: 'actions'!
 
@@ -991,9 +930,8 @@ processOn: anAPIClient
 	ans := (self getReceiverOn: anAPIClient)
 					perform: self selector
 					withArguments: self arguments.
-	(anAPIClient remoteReferenceFor: ans) inspect.
-	self answer: 42.
-	"self answer: (anAPIClient remoteReferenceFor: ans)"
+
+	self answer: (anAPIClient remoteReferenceFor: ans)
 ! !
 
 !RMS class methodsFor: 'actions'!

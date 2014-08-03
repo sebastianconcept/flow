@@ -5,7 +5,11 @@ doesNotUnderstand: aMessage
 	then: and then:ifRejected: that will be executed once the answer comes to
 	either fulfill or reject the promise"
 	
-	Transcript cr; show: aMessage; flush.
-	
+	"Transcript cr; show: aMessage; flush."
+	self promise hasOnFulfilled ifFalse:[
+		"If no expectation pre-set, then..."
+		self then: self class defaultFulfillment ].
+
 	App webSocketAPI sendRemoteMessage: aMessage on: self.
+
 

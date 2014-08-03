@@ -6,10 +6,11 @@ onClient: aWebSocket
 	
 	[ self register: aWebSocket.
 	aWebSocket runWith: [ :message |
-		"Transcript cr; show: message."
-		self onMessage: message from: aWebSocket ]]
-			on: ConnectionClosed 
-			do: [
-				self unregister: aWebSocket].
+		CurrentFlowWebSocketClient value: aWebSocket during:[
+			"Transcript cr; show: message."
+			self onMessage: message from: aWebSocket ]]]
+				on: ConnectionClosed 
+				do: [
+					self unregister: aWebSocket].
 	
 	
