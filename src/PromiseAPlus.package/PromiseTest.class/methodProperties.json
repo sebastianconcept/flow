@@ -2,9 +2,10 @@
 	"class" : {
 		 },
 	"instance" : {
+		"testChainedNestedPromises" : "sebastiansastre 8/3/2014 19:11",
 		"testChainedPromises" : "sebastiansastre 7/31/2014 11:02",
 		"testFailedChainedPromises" : "sebastiansastre 7/31/2014 12:16",
-		"testFulfilled" : "sebastiansastre 7/30/2014 23:14",
+		"testFulfilled" : "sebastiansastre 8/3/2014 18:39",
 		"testOnFulfilled" : "sebastiansastre 7/30/2014 22:45",
 		"testOnRejected" : "sebastiansastre 7/30/2014 22:45",
 		"testPending" : "sebastiansastre 7/30/2014 22:26",

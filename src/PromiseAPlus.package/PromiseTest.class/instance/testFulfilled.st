@@ -8,7 +8,7 @@ testFulfilled
 	| p |
 
 	p := Promise new.
-	p then:[:v| "ignore"].
+	p then:[:v|  v ].
 	
 	self assert: p isPending.
 	p resolve: 42.

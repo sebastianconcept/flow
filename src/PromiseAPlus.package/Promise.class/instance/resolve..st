@@ -4,9 +4,12 @@ resolve: aValue
 	
 	| answer |
 
-	^ [ answer := onFulfilled value: aValue.
+	^ [
+	onFulfilled isNil 
+		ifTrue:[ answer := aValue ]
+		ifFalse:[ answer := onFulfilled value: aValue ].
+	value := answer.
 	self beFulfilled.
-	value := aValue.
 	self hasKarma ifTrue:[
 		karma resolve: answer ].
 	answer ] 
