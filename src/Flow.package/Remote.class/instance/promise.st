@@ -1,4 +1,4 @@
 acccessing
 promise
 
-	^ promise ifNil:[ promise := Promise new ]
+	^ promise ifNil:[ self initializePromise ]

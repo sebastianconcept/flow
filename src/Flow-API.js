@@ -1227,30 +1227,33 @@ fn: function (aWebSocketCommand,anAnswerBlock,aBlock){
 var self=this;
 function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
+var $1,$2,$3,$4;
+$1=_st(aWebSocketCommand)._isFromBackend();
+if(! smalltalk.assert($1)){
 self._nextId();
-$1=self._counter();
+$2=self._counter();
 $ctx1.sendIdx["counter"]=1;
-_st(aWebSocketCommand)._fId_($1);
-$2=self._localAnswers();
-$3=self._counter();
+_st(aWebSocketCommand)._fId_($2);
+$3=self._localAnswers();
+$4=self._counter();
 $ctx1.sendIdx["counter"]=2;
-_st($2)._at_put_($3,anAnswerBlock);
+_st($3)._at_put_($4,anAnswerBlock);
 $ctx1.sendIdx["at:put:"]=1;
 _st(self._localErrors())._at_put_(self._counter(),aBlock);
+};
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(aWebSocketCommand)._onAboutToSend();
 _st(self._socket())._send_(_st(aWebSocketCommand)._asJSONString());
 return _st(aWebSocketCommand)._onAfterSent();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}))._on_do_($Error(),(function(x){
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)})}))._on_do_($Error(),(function(x){
 return smalltalk.withContext(function($ctx2) {
 return self._onError_for_(x,aWebSocketCommand);
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
+}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,3)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"sendCommand:do:onError:",{aWebSocketCommand:aWebSocketCommand,anAnswerBlock:anAnswerBlock,aBlock:aBlock},globals.WebSocketAPI)})},
 args: ["aWebSocketCommand", "anAnswerBlock", "aBlock"],
-source: "sendCommand: aWebSocketCommand do: anAnswerBlock onError: aBlock\x0a\x09\x22Sends aWebSocketCommand to the other side of the wire.\x0a\x09Registers anAnswerBlock to be evaluated later when the answer arrives.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09self nextId.\x0a\x09\x22Marks the commandwith a frontend's id.\x22\x0a\x09aWebSocketCommand fId: self counter.\x0a\x09\x0a\x09self localAnswers at: self counter put: anAnswerBlock.\x0a\x09self localErrors at: self counter put: aBlock.\x0a\x09\x0a\x09[ aWebSocketCommand onAboutToSend.\x0a\x09self socket send: aWebSocketCommand asJSONString.\x0a\x09aWebSocketCommand onAfterSent ]\x0a\x09\x09on: Error\x0a\x09\x09do:[ :x | self onError: x for: aWebSocketCommand ]\x0a\x09",
-messageSends: ["nextId", "fId:", "counter", "at:put:", "localAnswers", "localErrors", "on:do:", "onAboutToSend", "send:", "socket", "asJSONString", "onAfterSent", "onError:for:"],
+source: "sendCommand: aWebSocketCommand do: anAnswerBlock onError: aBlock\x0a\x09\x22Sends aWebSocketCommand to the other side of the wire.\x0a\x09Registers anAnswerBlock to be evaluated later when the answer arrives.\x0a\x09Evaluates aBlock if there is an exception while doing it.\x22\x0a\x09\x0a\x09aWebSocketCommand isFromBackend ifFalse:[ \x0a\x09\x09self nextId.\x0a\x09\x09\x22Marks the commandwith a frontend's id.\x22\x0a\x09\x09aWebSocketCommand fId: self counter.\x0a\x09\x09self localAnswers at: self counter put: anAnswerBlock.\x0a\x09\x09self localErrors at: self counter put: aBlock ].\x0a\x09\x0a\x09[ aWebSocketCommand onAboutToSend.\x0a\x09self socket send: aWebSocketCommand asJSONString.\x0a\x09aWebSocketCommand onAfterSent ]\x0a\x09\x09on: Error\x0a\x09\x09do:[ :x | self onError: x for: aWebSocketCommand ]\x0a\x09",
+messageSends: ["ifFalse:", "isFromBackend", "nextId", "fId:", "counter", "at:put:", "localAnswers", "localErrors", "on:do:", "onAboutToSend", "send:", "socket", "asJSONString", "onAfterSent", "onError:for:"],
 referencedClasses: ["Error"]
 }),
 globals.WebSocketAPI);
@@ -1675,6 +1678,24 @@ return $1;
 args: [],
 source: "isAnswer\x0a\x09\x22Answers true if this command is an answer.\x22\x0a\x0a\x09^ self hasAnswer",
 messageSends: ["hasAnswer"],
+referencedClasses: []
+}),
+globals.WebSocketCommand);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isFromBackend",
+protocol: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._bId())._notNil();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isFromBackend",{},globals.WebSocketCommand)})},
+args: [],
+source: "isFromBackend\x0a\x09\x22Answers true if this command was originated at the backend side.\x22\x0a\x09\x0a\x09^ self bId notNil",
+messageSends: ["notNil", "bId"],
 referencedClasses: []
 }),
 globals.WebSocketCommand);

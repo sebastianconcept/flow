@@ -85,6 +85,11 @@ RouteableController subclass: #FlowAppController
 
 !FlowAppController methodsFor: 'accessing'!
 
+console
+
+	^ console
+!
+
 session
 
 	^ session ifNil:[ session := Session new ]

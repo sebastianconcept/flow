@@ -170,6 +170,23 @@ globals.RouteableController.klass);
 smalltalk.addClass('FlowAppController', globals.RouteableController, ['session'], 'Flow-Core');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "console",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=console;
+return $1;
+},
+args: [],
+source: "console\x0a\x0a\x09^ console",
+messageSends: [],
+referencedClasses: []
+}),
+globals.FlowAppController);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "hideLoader",
 protocol: 'actions',
 fn: function (){

@@ -1,5 +1,5 @@
 initialization
-initialzie
+initialize
 
 	super initialize.
 	

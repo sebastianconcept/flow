@@ -454,12 +454,12 @@ sendCommand: aWebSocketCommand do: anAnswerBlock onError: aBlock
 	Registers anAnswerBlock to be evaluated later when the answer arrives.
 	Evaluates aBlock if there is an exception while doing it."
 	
-	self nextId.
-	"Marks the commandwith a frontend's id."
-	aWebSocketCommand fId: self counter.
-	
-	self localAnswers at: self counter put: anAnswerBlock.
-	self localErrors at: self counter put: aBlock.
+	aWebSocketCommand isFromBackend ifFalse:[ 
+		self nextId.
+		"Marks the commandwith a frontend's id."
+		aWebSocketCommand fId: self counter.
+		self localAnswers at: self counter put: anAnswerBlock.
+		self localErrors at: self counter put: aBlock ].
 	
 	[ aWebSocketCommand onAboutToSend.
 	self socket send: aWebSocketCommand asJSONString.
@@ -817,6 +817,12 @@ isAnswer
 	"Answers true if this command is an answer."
 
 	^ self hasAnswer
+!
+
+isFromBackend
+	"Answers true if this command was originated at the backend side."
+	
+	^ self bId notNil
 ! !
 
 !WebSocketCommand class methodsFor: 'actions'!

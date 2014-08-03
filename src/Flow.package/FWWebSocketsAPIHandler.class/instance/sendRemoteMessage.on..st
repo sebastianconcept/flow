@@ -7,7 +7,12 @@ sendRemoteMessage: aMessage on: aRemote
 		arguments: aMessage arguments
 		to: aRemote id
 		on: aRemote client
-		do: [ :ans | aRemote promise resolve: ans answer ]
+		do: [ :res | | ans |
+			ans := res answer.
+			ans isRemoteReference ifTrue:[
+				ans := ans asRemote "If the answer is a remote reference, we want to answer the remote"].
+			aRemote promise resolve: ans.
+			aRemote initializePromise ]
 		onError: [ :x | 
 			x class = Halt ifTrue:[self halt].
 			aRemote promise reject: x ].

@@ -4,6 +4,7 @@
 		"for:on:" : "sebastiansastre 7/30/2014 16:11" },
 	"instance" : {
 		"=" : "sebastiansastre 7/31/2014 21:28",
+		"asString" : "sebastiansastre 8/3/2014 00:35",
 		"basicSize" : "sebastiansastre 7/31/2014 21:21",
 		"client" : "sebastiansastre 7/30/2014 16:12",
 		"doesNotUnderstand:" : "sebastiansastre 8/2/2014 19:01",
@@ -11,6 +12,7 @@
 		"hash" : "sebastiansastre 7/31/2014 21:58",
 		"id" : "sebastiansastre 7/30/2014 16:12",
 		"initializeFor:on:" : "sebastiansastre 7/31/2014 15:23",
+		"initializePromise" : "sebastiansastre 8/3/2014 01:02",
 		"inspect" : "sebastiansastre 7/31/2014 21:18",
 		"inspectorClass" : "sebastiansastre 7/31/2014 21:20",
 		"instVarAt:" : "sebastiansastre 7/31/2014 22:03",
@@ -18,7 +20,7 @@
 		"printOn:" : "sebastiansastre 8/2/2014 00:36",
 		"printString" : "sebastiansastre 7/31/2014 21:59",
 		"printStringLimitedTo:" : "sebastiansastre 7/31/2014 21:59",
-		"promise" : "sebastiansastre 7/31/2014 16:32",
+		"promise" : "sebastiansastre 8/3/2014 01:03",
 		"then:" : "sebastiansastre 7/31/2014 16:25",
 		"then:ifRejected:" : "sebastiansastre 7/31/2014 16:28",
-		"yourself" : "sebastiansastre 7/31/2014 21:17" } }
+		"yourself" : "sebastiansastre 8/2/2014 23:23" } }

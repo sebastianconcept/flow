@@ -57,6 +57,27 @@ printOn: aStream
 	aStream nextPutAll: '(',content printString,')'
 ! !
 
+!JSObjectProxy methodsFor: '*Flow'!
+
+asRemoteReference
+	"Answers the object appropiate for 
+	traveling over the wire and still referring to this receiver"
+	
+	^ self class asRemoteReferenceFor: self
+! !
+
+!JSObjectProxy class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	"Subclasses differ you can check on them.
+	The default is not be copied, so..."
+
+	^ RR new
+! !
+
 !MessageNotUnderstood methodsFor: '*Flow'!
 
 printOn: aStream
