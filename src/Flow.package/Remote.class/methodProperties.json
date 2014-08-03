@@ -1,13 +1,16 @@
 {
 	"class" : {
 		"defaultFulfillment" : "sebastiansastre 8/2/2014 19:05",
-		"for:on:" : "sebastiansastre 7/30/2014 16:11" },
+		"for:on:" : "sebastiansastre 7/30/2014 16:11",
+		"fullfillBlockFor:on:" : "sebastiansastre 8/3/2014 16:14" },
 	"instance" : {
 		"=" : "sebastiansastre 7/31/2014 21:28",
+		"_isRemote" : "sebastiansastre 8/3/2014 15:56",
+		"_onAnswer:" : "sebastiansastre 8/3/2014 19:47",
 		"asString" : "sebastiansastre 8/3/2014 00:35",
 		"basicSize" : "sebastiansastre 7/31/2014 21:21",
 		"client" : "sebastiansastre 7/30/2014 16:12",
-		"doesNotUnderstand:" : "sebastiansastre 8/2/2014 19:01",
+		"doesNotUnderstand:" : "sebastiansastre 8/3/2014 15:54",
 		"errorDueTo:" : "sebastiansastre 8/2/2014 16:29",
 		"hash" : "sebastiansastre 7/31/2014 21:58",
 		"id" : "sebastiansastre 7/30/2014 16:12",
@@ -22,5 +25,5 @@
 		"printStringLimitedTo:" : "sebastiansastre 7/31/2014 21:59",
 		"promise" : "sebastiansastre 8/3/2014 01:03",
 		"then:" : "sebastiansastre 7/31/2014 16:25",
-		"then:ifRejected:" : "sebastiansastre 7/31/2014 16:28",
+		"then:ifRejected:" : "sebastiansastre 8/3/2014 16:15",
 		"yourself" : "sebastiansastre 8/2/2014 23:23" } }

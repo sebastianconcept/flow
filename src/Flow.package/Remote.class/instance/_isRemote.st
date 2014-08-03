@@ -1,0 +1,4 @@
+testing
+_isRemote
+
+	^ true

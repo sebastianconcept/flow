@@ -5,6 +5,8 @@ doesNotUnderstand: aMessage
 	then: and then:ifRejected: that will be executed once the answer comes to
 	either fulfill or reject the promise"
 	
+	aMessage selector = #answer ifTrue:[Halt signal].
+	
 	"Transcript cr; show: aMessage; flush."
 	self promise hasOnFulfilled ifFalse:[
 		"If no expectation pre-set, then..."
