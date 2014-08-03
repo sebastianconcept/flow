@@ -1,0 +1,1 @@
+A FWAPIGetOne is a command carrying an id to get one particular mapless (or nil)

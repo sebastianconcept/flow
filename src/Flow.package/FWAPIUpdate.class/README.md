@@ -1,0 +1,1 @@
+A FWAPIUpdate is a command to update a MaplessModel

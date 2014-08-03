@@ -15,7 +15,8 @@
 
     <script type='text/javascript'>
       require.config({ paths: {
-          'app': 'src' //mapping compiled .js files and smalltalk source files
+          'app': 'src', //mapping compiled .js files and smalltalk source files
+          'bower': 'bower_components'
       }});
       require([
           'amber/devel',
@@ -25,6 +26,7 @@
           'app/Flow-Core',
           'app/Flow-API',
           'app/Flow-Templates',
+          'app/Flow-Tests',
           'app/App',
           'app/App-Tests'
       ], function (smalltalk) {

@@ -1,0 +1,1 @@
+A FWAPICreate is a command to create a MaplessModel

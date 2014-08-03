@@ -1,4 +1,4 @@
 accessing
 handlers 
 
-	^ handlers ifNil:[self initializeHandlers]
+	^ handlers ifNil:[ self initializeHandlers ]

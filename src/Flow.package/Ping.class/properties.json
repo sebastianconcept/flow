@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-API",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "sebastiansastre 7/15/2014 11:19",
+	"instvars" : [
+		 ],
+	"name" : "Ping",
+	"pools" : [
+		 ],
+	"super" : "FWWebSocketAPIv10Command",
+	"type" : "normal" }

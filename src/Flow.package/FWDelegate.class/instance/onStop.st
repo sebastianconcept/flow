@@ -1,5 +1,5 @@
 actions
 onStop
 
-	self handlers do:[:e| e onStop ]
+	self handlers do:[ :e | e onStop ]
 	

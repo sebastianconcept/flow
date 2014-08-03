@@ -3,7 +3,138 @@ Object subclass: #Flow
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+!Boolean class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	^ anObject
+! !
+
+!CharacterArray methodsFor: '*Flow'!
+
+asRemote
+	"Answers a new Remote instance based in the id represented in this string"
+	
+	^ Remote for: self
+! !
+
+!CharacterArray class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	^ anObject
+! !
+
+!Date class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	^ anObject
+! !
+
+!Error methodsFor: '*Flow'!
+
+printOn: aStream
+
+	| content |
+	
+	super printOn: aStream.
+
+	(messageText notNil and:[
+	messageText notEmpty ]) ifTrue:[
+		content := messageText ].
+	
+	self isSmalltalkError ifFalse:[ content := self jsStack ].
+	
+	content isNil ifTrue:[ ^ self ].
+	
+	aStream nextPutAll: '(',content printString,')'
+! !
+
+!JSObjectProxy methodsFor: '*Flow'!
+
+asRemoteReference
+	"Answers the object appropiate for 
+	traveling over the wire and still referring to this receiver"
+	
+	^ self class asRemoteReferenceFor: self
+! !
+
+!JSObjectProxy class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	"Subclasses differ you can check on them.
+	The default is not be copied, so..."
+
+	^ RR new
+! !
+
+!MessageNotUnderstood methodsFor: '*Flow'!
+
+printOn: aStream
+
+	super printOn: aStream.
+	
+	aStream nextPutAll: '(',self receiver asString, '>>',self message selector asString,')'
+! !
+
+!Metaclass methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	"Subclasses differ you can check on them.
+	The default is not be copied, so..."
+
+	^ RR new
+! !
+
+!Number class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	^ anObject
+! !
+
 !Object methodsFor: '*Flow'!
+
+asRemote
+	"Answers this object in a way that is appropriate 
+	for a remote end to do something with it"
+	
+	#todo. "return a proxy so it gets actually useful"
+	^ self asString
+!
+
+asRemoteReference
+	"Answers the object appropiate for 
+	traveling over the wire and still referring to this receiver"
+	
+	^ self class asRemoteReferenceFor: self
+!
+
+isRemote
+	"Answers true if this object is remote"
+	
+	^ false
+!
+
+promise: onDoneBlock
+	
+	^ (jQuery value: self) promise done: onDoneBlock
+!
 
 trigger: anEventName 
 	"Triggers anEventName in this object.
@@ -18,9 +149,17 @@ trigger: anEventName with: anArgument
 	There you have it, it happened. 
 	Hey World, do something about this!!"
 	
+	^ self trigger: anEventName withAll: (Array with: anArgument)
+!
+
+trigger: anEventName withAll: someArguments
+	"Triggers anEventName in this object.
+	There you have it, it happened. 
+	Hey World, do something about this!!"
+	
 	^ (jQuery value: self) 
 			trigger: anEventName 
-			with: anArgument
+			withAll: someArguments
 !
 
 when: anEventName do: aReactionBlock
@@ -31,5 +170,41 @@ when: anEventName do: aReactionBlock
 	^ (jQuery value: self) 
 		on: anEventName 
 		do: aReactionBlock
+! !
+
+!Object class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	"Subclasses differ you can check on them.
+	The default is not be copied, so..."
+
+	^ RR new
+! !
+
+!ProtoObject methodsFor: '*Flow'!
+
+isNil
+	^ false
+!
+
+isRemoteReference
+
+	^ false
+!
+
+notNil
+	^ self isNil not
+! !
+
+!UndefinedObject class methodsFor: '*Flow'!
+
+asRemoteReferenceFor: anObject
+	"Answers anObject (copy) or an appropiate reference (can't be copied) for 
+	traveling over the wire and still referring to this receiver"
+
+	^ anObject
 ! !
 

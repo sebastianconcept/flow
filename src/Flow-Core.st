@@ -8,6 +8,11 @@ Widget subclass: #Controller
 jQueryElement
 
 	^ '#content' asJQuery
+!
+
+model
+	
+	^ model
 ! !
 
 !Controller methodsFor: 'actions'!
@@ -75,30 +80,46 @@ isValidFor: anURI
 ! !
 
 RouteableController subclass: #FlowAppController
-	instanceVariableNames: ''
+	instanceVariableNames: 'session'
 	package: 'Flow-Core'!
 
-!FlowAppController methodsFor: 'initialization'!
+!FlowAppController methodsFor: 'accessing'!
 
-initialize
+console
 
-	super initialize.
+	^ console
+!
+
+session
+
+	^ session ifNil:[ session := Session new ]
+! !
+
+!FlowAppController methodsFor: 'actions'!
+
+hideLoader
+	"Hides the loader bar/spinner"
 	
-	"Handy reference"
-	window at: 'app' put: self
+	'#loader' asJQuery hide.
 ! !
 
 !FlowAppController methodsFor: 'reactions'!
 
 onOpen
+	"All is loaded."
+
+	self hideLoader.
 
 	self render.
-	
-	'#loader' asJQuery hide.
 	
 	window document title: self class name.
 	
 	Router observeHash.
+	
+	self session open.
+	
+	"Handy reference"
+	window at: 'app' put: self
 ! !
 
 !FlowAppController class methodsFor: 'actions'!
@@ -129,6 +150,10 @@ RouteableController subclass: #NotFoundController
 	package: 'Flow-Core'!
 
 Mapless subclass: #Model
+	instanceVariableNames: ''
+	package: 'Flow-Core'!
+
+Model subclass: #User
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
 
@@ -174,6 +199,28 @@ onHashChanged
 ! !
 
 Object subclass: #Session
-	instanceVariableNames: 'user client'
+	instanceVariableNames: 'id user social api'
 	package: 'Flow-Core'!
+
+!Session methodsFor: 'accessing'!
+
+api
+
+	^ api ifNil:[ api := APIClient new ]
+!
+
+asJSONString
+
+	^ HasedCollection new
+		at: 'id' put: self id;
+		at: 'userId' put: self user id;
+		asJSONString
+! !
+
+!Session methodsFor: 'actions'!
+
+open
+
+	self api connect
+! !
 

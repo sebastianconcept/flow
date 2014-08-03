@@ -5,5 +5,4 @@ continuation
 	We pass on our log support and delegate processing to our handler."
 
 	^ [ :webSocket |
-			webSocket log: self log.
-			self onClient: webSocket ]
+		self onClient: webSocket ]

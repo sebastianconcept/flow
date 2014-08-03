@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-API",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "FWRemoteException",
+	"pools" : [
+		 ],
+	"super" : "FWAPIException",
+	"type" : "normal" }

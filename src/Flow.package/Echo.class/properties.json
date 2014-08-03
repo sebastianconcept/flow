@@ -1,0 +1,14 @@
+{
+	"category" : "Flow-API",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "sebastiansastre 7/15/2014 11:17",
+	"instvars" : [
+		 ],
+	"name" : "Echo",
+	"pools" : [
+		 ],
+	"super" : "FWWebSocketAPIv10Command",
+	"type" : "normal" }

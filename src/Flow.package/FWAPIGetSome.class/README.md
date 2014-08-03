@@ -1,0 +1,1 @@
+A FWAPIGetSome is a command that carries information to perform a query. The answer of this command is the result of that query (after sanitizing it to prevent dangerous injections)

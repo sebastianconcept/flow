@@ -312,8 +312,6 @@ initialize
 
 	data := HashedCollection new.
 	self modelClass: self class name.
-	self initializeInstanceVersion.
-	self id: self class newUUID.
 !
 
 initializeCreatedOn
@@ -573,7 +571,7 @@ fromJSONString: someJSONStringOrNil
 	
 	modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].
 	
-	modelClass := Smalltalk current globals at: modelClass ifAbsent:[  ].
+	modelClass := Smalltalk globals at: modelClass ifAbsent:[  ].
 	
 	^ modelClass notNil
 		ifTrue:[ modelClass new syncWith: json ]
@@ -659,6 +657,43 @@ onAfterReadSome: aResponse
 		MaplessError signal: 'Could not read all ', self name,':  ', aResponse responseText].
 		
 	^ self manyFromJSON: aResponse responseText
+! !
+
+Mapless subclass: #MaplessModel
+	instanceVariableNames: ''
+	package: 'MiniMapless'!
+
+!MaplessModel methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+
+	self initializeInstanceVersion.
+	self id: self class newUUID.
+! !
+
+!MaplessModel methodsFor: 'reactions'!
+
+onAboutToDelete
+
+	super onAboutToDelete.
+	
+	self deletedOn: Date now
+!
+
+onAboutToSave
+
+	super onAboutToSave.
+	
+	self updatedOn: Date now
+!
+
+onAboutToUpdate
+
+	super onAboutToUpdate.
+	
+	self updatedOn: Date now
 ! !
 
 Error subclass: #MaplessError

@@ -5,7 +5,7 @@ restfulRequest: aRequest
 
 	theHandler := self handlerFor: aRequest.
 
-	theHandler ifNil:[^ZnResponse notFound: aRequest uri].	
+	theHandler ifNil:[ ^ZnResponse notFound: aRequest uri ].	
 
 	^ theHandler 
 		value: aRequest 

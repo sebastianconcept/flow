@@ -1,0 +1,4 @@
+*Flow
+_isRemote
+
+	^ false
