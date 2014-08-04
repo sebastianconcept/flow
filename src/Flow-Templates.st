@@ -23,13 +23,7 @@ isAbstract
 	"Answers true if the receiver is abstract."
 	
 	^ self = TemplateController
-! !
-
-TemplateController subclass: #HelloWorldController
-	instanceVariableNames: ''
-	package: 'Flow-Templates'!
-
-!HelloWorldController class methodsFor: 'testing'!
+!
 
 isValidFor: anURI
 	"Answers true if this controller is the right route for anURI"
@@ -38,4 +32,8 @@ isValidFor: anURI
 	anURI notEmpty and:[
 	anURI = self keyword ] ]
 ! !
+
+TemplateController subclass: #HelloWorldController
+	instanceVariableNames: ''
+	package: 'Flow-Templates'!
 

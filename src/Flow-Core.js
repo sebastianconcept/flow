@@ -41,6 +41,52 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "model:",
+protocol: 'accessing',
+fn: function (aModel){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._onBeforeModel();
+self["@model"]=aModel;
+self._onAfterModel();
+return self}, function($ctx1) {$ctx1.fill(self,"model:",{aModel:aModel},globals.Controller)})},
+args: ["aModel"],
+source: "model: aModel\x0a\x0a\x09self onBeforeModel.\x0a\x09\x0a\x09model := aModel.\x0a\x09\x0a\x09self onAfterModel",
+messageSends: ["onBeforeModel", "onAfterModel"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAfterModel",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return self},
+args: [],
+source: "onAfterModel\x0a\x09\x22The model of this controller just have been set.\x22\x0a",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onBeforeModel",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return self},
+args: [],
+source: "onBeforeModel\x0a\x09\x22The model of this controller is about to be set.\x22",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "render",
 protocol: 'actions',
 fn: function (){
@@ -122,22 +168,21 @@ protocol: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $5,$4,$7,$6,$3,$2,$1;
-$5=self._name();
+var $4,$3,$6,$5,$2,$1;
+$4=self._name();
 $ctx1.sendIdx["name"]=1;
-$4=_st($5)._reversed();
-$7="Controller"._size();
+$3=_st($4)._reversed();
+$6="Controller"._size();
 $ctx1.sendIdx["size"]=1;
-$6=_st($7).__plus((1));
-$3=_st($4)._copyFrom_to_($6,_st(self._name())._size());
-$2=_st($3)._reversed();
+$5=_st($6).__plus((1));
+$2=_st($3)._copyFrom_to_($5,_st(self._name())._size());
+$1=_st($2)._reversed();
 $ctx1.sendIdx["reversed"]=1;
-$1=_st($2)._asLowercase();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"keyword",{},globals.RouteableController.klass)})},
 args: [],
-source: "keyword\x0a\x09\x22Answers the name of the class in lowercase without \x0a\x09the 'Controller' sufix so it can, for example, be used for friendly URI.\x0a\x09Subclasses are expected to follow the naming convention *Controller like\x0a\x09ThisNameController, ThatOtherNameController, AnyNameController, etc\x22\x0a\x0a\x09^ (self name reversed copyFrom: 'Controller' size + 1 to: self name size) reversed asLowercase",
-messageSends: ["asLowercase", "reversed", "copyFrom:to:", "name", "+", "size"],
+source: "keyword\x0a\x09\x22Answers the name of the class in lowercase without \x0a\x09the 'Controller' sufix so it can, for example, be used for friendly URI.\x0a\x09Subclasses are expected to follow the naming convention *Controller like\x0a\x09ThisNameController, ThatOtherNameController, AnyNameController, etc\x22\x0a\x0a\x09^ (self name reversed copyFrom: 'Controller' size + 1 to: self name size) reversed ",
+messageSends: ["reversed", "copyFrom:to:", "name", "+", "size"],
 referencedClasses: []
 }),
 globals.RouteableController.klass);

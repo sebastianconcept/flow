@@ -50,9 +50,6 @@ referencedClasses: ["TemplateController"]
 }),
 globals.TemplateController.klass);
 
-
-smalltalk.addClass('HelloWorldController', globals.TemplateController, [], 'Flow-Templates');
-
 smalltalk.addMethod(
 smalltalk.method({
 selector: "isValidFor:",
@@ -70,12 +67,15 @@ return _st(anURI).__eq(self._keyword());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 $ctx1.sendIdx["and:"]=1;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"isValidFor:",{anURI:anURI},globals.HelloWorldController.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"isValidFor:",{anURI:anURI},globals.TemplateController.klass)})},
 args: ["anURI"],
 source: "isValidFor: anURI\x0a\x09\x22Answers true if this controller is the right route for anURI\x22\x0a\x09\x0a\x09^ self isAbstract not and:[\x0a\x09anURI notEmpty and:[\x0a\x09anURI = self keyword ] ]",
 messageSends: ["and:", "not", "isAbstract", "notEmpty", "=", "keyword"],
 referencedClasses: []
 }),
-globals.HelloWorldController.klass);
+globals.TemplateController.klass);
+
+
+smalltalk.addClass('HelloWorldController', globals.TemplateController, [], 'Flow-Templates');
 
 });

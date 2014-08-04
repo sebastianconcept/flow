@@ -1,0 +1,97 @@
+Smalltalk createPackage: 'Flow-Binding'!
+TemplateController subclass: #BindingController
+	instanceVariableNames: 'view'
+	package: 'Flow-Binding'!
+!BindingController commentStamp!
+## BindingController is an abstraction
+The concrete subclasses of BindingController are users of the two-way data binding mechanism loaded by flow.
+
+Note that BindingController is a subclass of TemplateController so all subclasses of it follow the convention of loading a html template from the server using the keyword of the controller as the name of the template to be found at views/!
+
+!BindingController methodsFor: 'accessing'!
+
+rivets
+	"Answers the rivets accessor.
+	http://rivetsjs.com/docs/guide/"
+	
+	^ require value: 'bower/rivets/dist/rivets.min'
+!
+
+view
+	"Answers the view (element) of this controller"
+	^ view ifNil:[ view := self getView ]
+! !
+
+!BindingController methodsFor: 'actions'!
+
+asBindArgument
+	"Answers the model and this controller as rivets like it for binding."
+	
+	^ #{
+	#model -> model.
+	#controller -> self
+	}
+!
+
+bind
+	"Tells rivets.js to bind 
+	the model of this controller to its view."
+	
+	self rivets 
+		bind: self view 
+		to: self asBindArgument
+!
+
+getView
+	"Gets and answer the element which is 
+	the parent html element of the view of this controller."
+	
+	"Subclasses should return in its own way
+	^ 'bindable' asJQuery"
+
+	self subclassResponsibility
+!
+
+unbind
+	"Tells rivets.js to unbind the view."
+	
+	view ifNotNil:[ view unbind ]
+! !
+
+!BindingController methodsFor: 'reactions'!
+
+onAfterModel
+
+	super onAfterModel.
+
+	"self bind"
+! !
+
+!BindingController class methodsFor: 'testing'!
+
+isAbstract
+	"Answers true if the receiver is abstract."
+	
+	^ self = BindingController
+! !
+
+BindingController subclass: #RivetsJSTestsController
+	instanceVariableNames: ''
+	package: 'Flow-Tests'!
+
+!RivetsJSTestsController methodsFor: 'accessing'!
+
+getView
+	"Gets and answer the element which is 
+	the parent html element of the view of this controller."
+	
+	^ 'rivetsTests' asJQuery
+!
+
+initialize
+
+	super initialize.
+	
+	self inspect
+! !
+

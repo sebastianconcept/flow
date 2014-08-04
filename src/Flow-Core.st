@@ -13,6 +13,15 @@ jQueryElement
 model
 	
 	^ model
+!
+
+model: aModel
+
+	self onBeforeModel.
+	
+	model := aModel.
+	
+	self onAfterModel
 ! !
 
 !Controller methodsFor: 'actions'!
@@ -27,6 +36,16 @@ render
 renderOn: html
 
 	html h1: self class name
+! !
+
+!Controller methodsFor: 'reactions'!
+
+onAfterModel
+	"The model of this controller just have been set."
+!
+
+onBeforeModel
+	"The model of this controller is about to be set."
 ! !
 
 Controller subclass: #RouteableController
@@ -51,7 +70,7 @@ keyword
 	Subclasses are expected to follow the naming convention *Controller like
 	ThisNameController, ThatOtherNameController, AnyNameController, etc"
 
-	^ (self name reversed copyFrom: 'Controller' size + 1 to: self name size) reversed asLowercase
+	^ (self name reversed copyFrom: 'Controller' size + 1 to: self name size) reversed
 ! !
 
 !RouteableController class methodsFor: 'actions'!
