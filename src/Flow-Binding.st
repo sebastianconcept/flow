@@ -43,8 +43,10 @@ bind
 !
 
 getModelAsArgument
-	"Returns the model in a way that is appropiate for binding (usable by rivets)"
-	^ model
+	"Returns the model in a way that is appropiate for binding (usable by rivets).
+	By default BindingController assumes you are using mapless as controllers model
+	so we send their data but subclasses might differ if they please."
+	^ model data
 !
 
 getView

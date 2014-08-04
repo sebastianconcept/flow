@@ -9,11 +9,6 @@ BindingController subclass: #RivetsJSTestsController
 
 !RivetsJSTestsController methodsFor: 'actions'!
 
-getModelAsArgument
-	"Returns the model in a way that is appropiate for binding (usable by rivets)"
-	^ model data
-!
-
 getView
 	"Gets and answer the element which is 
 	the parent html element of the view of this controller."

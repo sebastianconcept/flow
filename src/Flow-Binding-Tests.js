@@ -9,24 +9,6 @@ smalltalk.addClass('MockPerson', globals.MaplessModel, [], 'Flow-Binding-Tests')
 smalltalk.addClass('RivetsJSTestsController', globals.BindingController, [], 'Flow-Binding-Tests');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "getModelAsArgument",
-protocol: 'actions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@model"])._data();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"getModelAsArgument",{},globals.RivetsJSTestsController)})},
-args: [],
-source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets)\x22\x0a\x09^ model data",
-messageSends: ["data"],
-referencedClasses: []
-}),
-globals.RivetsJSTestsController);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "getView",
 protocol: 'actions',
 fn: function (){

@@ -45,13 +45,14 @@ selector: "getModelAsArgument",
 protocol: 'actions',
 fn: function (){
 var self=this;
+return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@model"];
+$1=_st(self["@model"])._data();
 return $1;
-},
+}, function($ctx1) {$ctx1.fill(self,"getModelAsArgument",{},globals.BindingController)})},
 args: [],
-source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets)\x22\x0a\x09^ model ",
-messageSends: [],
+source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using mapless as controllers model\x0a\x09so we send their data but subclasses might differ if they please.\x22\x0a\x09^ model data",
+messageSends: ["data"],
 referencedClasses: []
 }),
 globals.BindingController);
