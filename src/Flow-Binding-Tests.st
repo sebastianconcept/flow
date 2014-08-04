@@ -7,17 +7,6 @@ BindingController subclass: #RivetsJSTestsController
 	instanceVariableNames: ''
 	package: 'Flow-Binding-Tests'!
 
-!RivetsJSTestsController methodsFor: 'accessing'!
-
-initialize
-
-	super initialize.
-	
-	self model: self newPerson.
-	
-	self inspect
-! !
-
 !RivetsJSTestsController methodsFor: 'actions'!
 
 getModelAsArgument
@@ -29,7 +18,7 @@ getView
 	"Gets and answer the element which is 
 	the parent html element of the view of this controller."
 	
-	^ 'rivetsTests' asJQuery
+	^ '#rivetsTests' asJQuery
 !
 
 newPerson
@@ -38,5 +27,16 @@ newPerson
 		name: 'John Galt';
 		age: 42;
 		yourself
+! !
+
+!RivetsJSTestsController methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self model: self newPerson.
+	
+	window at: 'r' put: self
 ! !
 

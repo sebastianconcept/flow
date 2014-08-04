@@ -28,8 +28,8 @@ asBindArgument
 	"Answers the model and this controller as rivets like it for binding."
 	
 	^ #{
-	#model -> self getModelAsArgument.
-	#controller -> self
+	'model' -> self getModelAsArgument.
+	'controller' -> self
 	}
 !
 

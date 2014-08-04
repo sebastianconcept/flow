@@ -17,7 +17,7 @@ $1=globals.HashedCollection._newFromPairs_(["model",self._getModelAsArgument(),"
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"asBindArgument",{},globals.BindingController)})},
 args: [],
-source: "asBindArgument\x0a\x09\x22Answers the model and this controller as rivets like it for binding.\x22\x0a\x09\x0a\x09^ #{\x0a\x09#model -> self getModelAsArgument.\x0a\x09#controller -> self\x0a\x09}",
+source: "asBindArgument\x0a\x09\x22Answers the model and this controller as rivets like it for binding.\x22\x0a\x09\x0a\x09^ #{\x0a\x09'model' -> self getModelAsArgument.\x0a\x09'controller' -> self\x0a\x09}",
 messageSends: ["getModelAsArgument"],
 referencedClasses: []
 }),

@@ -33,11 +33,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1="rivetsTests"._asJQuery();
+$1="#rivetsTests"._asJQuery();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"getView",{},globals.RivetsJSTestsController)})},
 args: [],
-source: "getView\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of the view of this controller.\x22\x0a\x09\x0a\x09^ 'rivetsTests' asJQuery\x0a\x09",
+source: "getView\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of the view of this controller.\x22\x0a\x09\x0a\x09^ '#rivetsTests' asJQuery\x0a\x09",
 messageSends: ["asJQuery"],
 referencedClasses: []
 }),
@@ -46,18 +46,18 @@ globals.RivetsJSTestsController);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
-protocol: 'accessing',
+protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.RivetsJSTestsController.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self._model_(self._newPerson());
-self._inspect();
+_st(window)._at_put_("r",self);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.RivetsJSTestsController)})},
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self model: self newPerson.\x0a\x09\x0a\x09self inspect",
-messageSends: ["initialize", "model:", "newPerson", "inspect"],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self model: self newPerson.\x0a\x09\x0a\x09window at: 'r' put: self",
+messageSends: ["initialize", "model:", "newPerson", "at:put:"],
 referencedClasses: []
 }),
 globals.RivetsJSTestsController);
