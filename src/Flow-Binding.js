@@ -11,13 +11,14 @@ selector: "asBindArgument",
 protocol: 'actions',
 fn: function (){
 var self=this;
+return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=globals.HashedCollection._newFromPairs_(["model",self["@model"],"controller",self]);
+$1=globals.HashedCollection._newFromPairs_(["model",self._getModelAsArgument(),"controller",self]);
 return $1;
-},
+}, function($ctx1) {$ctx1.fill(self,"asBindArgument",{},globals.BindingController)})},
 args: [],
-source: "asBindArgument\x0a\x09\x22Answers the model and this controller as rivets like it for binding.\x22\x0a\x09\x0a\x09^ #{\x0a\x09#model -> model.\x0a\x09#controller -> self\x0a\x09}",
-messageSends: [],
+source: "asBindArgument\x0a\x09\x22Answers the model and this controller as rivets like it for binding.\x22\x0a\x09\x0a\x09^ #{\x0a\x09#model -> self getModelAsArgument.\x0a\x09#controller -> self\x0a\x09}",
+messageSends: ["getModelAsArgument"],
 referencedClasses: []
 }),
 globals.BindingController);
@@ -34,6 +35,23 @@ return self}, function($ctx1) {$ctx1.fill(self,"bind",{},globals.BindingControll
 args: [],
 source: "bind\x0a\x09\x22Tells rivets.js to bind \x0a\x09the model of this controller to its view.\x22\x0a\x09\x0a\x09self rivets \x0a\x09\x09bind: self view \x0a\x09\x09to: self asBindArgument\x0a\x09",
 messageSends: ["bind:to:", "rivets", "view", "asBindArgument"],
+referencedClasses: []
+}),
+globals.BindingController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getModelAsArgument",
+protocol: 'actions',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@model"];
+return $1;
+},
+args: [],
+source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets)\x22\x0a\x09^ model ",
+messageSends: [],
 referencedClasses: []
 }),
 globals.BindingController);
@@ -154,44 +172,5 @@ messageSends: ["="],
 referencedClasses: ["BindingController"]
 }),
 globals.BindingController.klass);
-
-
-smalltalk.addClass('RivetsJSTestsController', globals.BindingController, [], 'Flow-Tests');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "getView",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1="rivetsTests"._asJQuery();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"getView",{},globals.RivetsJSTestsController)})},
-args: [],
-source: "getView\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of the view of this controller.\x22\x0a\x09\x0a\x09^ 'rivetsTests' asJQuery\x0a\x09",
-messageSends: ["asJQuery"],
-referencedClasses: []
-}),
-globals.RivetsJSTestsController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.RivetsJSTestsController.superclass.fn.prototype._initialize.apply(_st(self), []));
-$ctx1.supercall = false;
-self._inspect();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.RivetsJSTestsController)})},
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self inspect",
-messageSends: ["initialize", "inspect"],
-referencedClasses: []
-}),
-globals.RivetsJSTestsController);
-
 
 });

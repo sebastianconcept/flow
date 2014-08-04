@@ -117,14 +117,6 @@ testPing
 			self assert: ans answer pongOn notNil ]
 ! !
 
-MaplessModel subclass: #MockPerson
-	instanceVariableNames: ''
-	package: 'Flow-Tests'!
-
-MaplessModel subclass: #MockUser
-	instanceVariableNames: ''
-	package: 'Flow-Tests'!
-
 TestCase subclass: #RemoteReferenceTest
 	instanceVariableNames: ''
 	package: 'Flow-Tests'!
@@ -168,38 +160,6 @@ testUndefinedObject
 
 	self deny: nil asRemoteReference isRemoteReference.
 	self assert: nil asRemoteReference = nil
-! !
-
-BindingController subclass: #RivetsJSTestsController
-	instanceVariableNames: ''
-	package: 'Flow-Tests'!
-
-!RivetsJSTestsController methodsFor: 'accessing'!
-
-getView
-	"Gets and answer the element which is 
-	the parent html element of the view of this controller."
-	
-	^ 'rivetsTests' asJQuery
-! !
-
-!RivetsJSTestsController methodsFor: 'actions'!
-
-newUser
-
-	^ MockUser new 
-		name: 'John Galt';
-		age: 42;
-		yourself
-! !
-
-!RivetsJSTestsController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self model: self newUser
 ! !
 
 WebSocketCommand subclass: #WillFailAfterResponded

@@ -28,7 +28,7 @@ asBindArgument
 	"Answers the model and this controller as rivets like it for binding."
 	
 	^ #{
-	#model -> model.
+	#model -> self getModelAsArgument.
 	#controller -> self
 	}
 !
@@ -40,6 +40,11 @@ bind
 	self rivets 
 		bind: self view 
 		to: self asBindArgument
+!
+
+getModelAsArgument
+	"Returns the model in a way that is appropiate for binding (usable by rivets)"
+	^ model
 !
 
 getView
@@ -73,25 +78,5 @@ isAbstract
 	"Answers true if the receiver is abstract."
 	
 	^ self = BindingController
-! !
-
-BindingController subclass: #RivetsJSTestsController
-	instanceVariableNames: ''
-	package: 'Flow-Tests'!
-
-!RivetsJSTestsController methodsFor: 'accessing'!
-
-getView
-	"Gets and answer the element which is 
-	the parent html element of the view of this controller."
-	
-	^ 'rivetsTests' asJQuery
-!
-
-initialize
-
-	super initialize.
-	
-	self inspect
 ! !
 
