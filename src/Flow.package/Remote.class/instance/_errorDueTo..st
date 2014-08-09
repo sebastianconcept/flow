@@ -1,4 +1,4 @@
 actions
-errorDueTo: aReason
+_errorDueTo: aReason
 
 	aReason signal

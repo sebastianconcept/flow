@@ -2,4 +2,4 @@ testing
 = anObject
 
 	 ^ anObject class = self class and:[
-	anObject id = id ]
+	anObject _id = id ]

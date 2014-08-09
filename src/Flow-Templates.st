@@ -7,6 +7,24 @@ RouteableController subclass: #TemplateController
 The concrete subclasses of TemplateController follow the convention of loading html from the server.
 This convention uses the keyword of the controller as the name of the template to be found at views/!
 
+!TemplateController methodsFor: 'accessing'!
+
+getView
+	"Gets and answer the element which is 
+	the parent html element of this controller."
+	
+	^ ((self jQueryElement find: ':first-child') at: 0) asJQuery
+! !
+
+!TemplateController methodsFor: 'reactions'!
+
+onTemplate: data
+	"Receives data once requirejs have received it from the server."
+
+	"Make it to be the contents of this controllers element"
+	self jQueryElement html: data.
+! !
+
 !TemplateController methodsFor: 'rendering'!
 
 renderOn: html
@@ -14,7 +32,7 @@ renderOn: html
 	require 
 		value:(Array with: 'bower_components/text/text!!views/',self class keyword,'.html')
 		value:[	:template | 
-			self jQueryElement html: template]
+			self onTemplate: template]
 ! !
 
 !TemplateController class methodsFor: 'testing'!
@@ -23,13 +41,7 @@ isAbstract
 	"Answers true if the receiver is abstract."
 	
 	^ self = TemplateController
-! !
-
-TemplateController subclass: #HelloWorldController
-	instanceVariableNames: ''
-	package: 'Flow-Templates'!
-
-!HelloWorldController class methodsFor: 'testing'!
+!
 
 isValidFor: anURI
 	"Answers true if this controller is the right route for anURI"
@@ -38,4 +50,8 @@ isValidFor: anURI
 	anURI notEmpty and:[
 	anURI = self keyword ] ]
 ! !
+
+TemplateController subclass: #HelloWorldController
+	instanceVariableNames: ''
+	package: 'Flow-Templates'!
 
