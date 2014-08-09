@@ -31,7 +31,8 @@
 	<section rv-unless="item.locked"></section>
 
 	<p>Sets the element's value when the attribute changes and sets the bound object's value when the input element changes from user input (two-way).</p>
-	<input rv-value="item.name">
+	<input rv-value="model.name">
+	<p>{ model.name }</p>
 
 	<p>Checks the input when the value evaluates to true and unchecks the input when the value evaluates to false. This also sets the bound object's value to true/false when the user checks/unchecks the input (two-way).
 

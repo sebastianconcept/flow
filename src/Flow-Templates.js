@@ -7,6 +7,22 @@ smalltalk.addClass('TemplateController', globals.RouteableController, [], 'Flow-
 globals.TemplateController.comment="## TemplateController is an abstraction\x0aThe concrete subclasses of TemplateController follow the convention of loading html from the server.\x0aThis convention uses the keyword of the controller as the name of the template to be found at views/";
 smalltalk.addMethod(
 smalltalk.method({
+selector: "onTemplate:",
+protocol: 'reactions',
+fn: function (data){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self._jQueryElement())._html_(data);
+return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.TemplateController)})},
+args: ["data"],
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09\x22Make it to be the contents of this controllers element\x22\x0a\x09self jQueryElement html: data.",
+messageSends: ["html:", "jQueryElement"],
+referencedClasses: []
+}),
+globals.TemplateController);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderOn:",
 protocol: 'rendering',
 fn: function (html){
@@ -20,12 +36,12 @@ $ctx1.sendIdx[","]=1;
 $2=_st($Array())._with_($3);
 _st($1)._value_value_($2,(function(template){
 return smalltalk.withContext(function($ctx2) {
-return _st(self._jQueryElement())._html_(template);
+return self._onTemplate_(template);
 }, function($ctx2) {$ctx2.fillBlock({template:template},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TemplateController)})},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09require \x0a\x09\x09value:(Array with: 'bower_components/text/text!views/',self class keyword,'.html')\x0a\x09\x09value:[\x09:template | \x0a\x09\x09\x09self jQueryElement html: template]\x09",
-messageSends: ["value:value:", "with:", ",", "keyword", "class", "html:", "jQueryElement"],
+source: "renderOn: html\x0a\x0a\x09require \x0a\x09\x09value:(Array with: 'bower_components/text/text!views/',self class keyword,'.html')\x0a\x09\x09value:[\x09:template | \x0a\x09\x09\x09self onTemplate: template]\x09",
+messageSends: ["value:value:", "with:", ",", "keyword", "class", "onTemplate:"],
 referencedClasses: ["Array"]
 }),
 globals.TemplateController);

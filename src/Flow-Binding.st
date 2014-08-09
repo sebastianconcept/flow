@@ -72,6 +72,14 @@ onAfterModel
 	super onAfterModel.
 
 	"self bind"
+!
+
+onTemplate: data
+	"Receives data once requirejs have received it from the server."
+
+	super onTemplate: data.	
+
+	self bind
 ! !
 
 !BindingController class methodsFor: 'testing'!

@@ -92,6 +92,24 @@ globals.BindingController);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "onTemplate:",
+protocol: 'reactions',
+fn: function (data){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.BindingController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
+$ctx1.supercall = false;
+self._bind();
+return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.BindingController)})},
+args: ["data"],
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x0a\x09self bind",
+messageSends: ["onTemplate:", "bind"],
+referencedClasses: []
+}),
+globals.BindingController);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "rivets",
 protocol: 'accessing',
 fn: function (){

@@ -7,6 +7,15 @@ RouteableController subclass: #TemplateController
 The concrete subclasses of TemplateController follow the convention of loading html from the server.
 This convention uses the keyword of the controller as the name of the template to be found at views/!
 
+!TemplateController methodsFor: 'reactions'!
+
+onTemplate: data
+	"Receives data once requirejs have received it from the server."
+
+	"Make it to be the contents of this controllers element"
+	self jQueryElement html: data.
+! !
+
 !TemplateController methodsFor: 'rendering'!
 
 renderOn: html
@@ -14,7 +23,7 @@ renderOn: html
 	require 
 		value:(Array with: 'bower_components/text/text!!views/',self class keyword,'.html')
 		value:[	:template | 
-			self jQueryElement html: template]
+			self onTemplate: template]
 ! !
 
 !TemplateController class methodsFor: 'testing'!
