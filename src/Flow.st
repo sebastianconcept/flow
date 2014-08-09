@@ -1,7 +1,76 @@
 Smalltalk createPackage: 'Flow'!
+Object subclass: #AbsrtactGenerator
+	instanceVariableNames: ''
+	package: 'Flow'!
+
+!AbsrtactGenerator class methodsFor: 'actions'!
+
+scaffold: anObject
+	"Scaffold what's relevnt to this generator"
+	
+	^ self subclassResponsibility
+! !
+
+AbsrtactGenerator subclass: #CRUDGenerator
+	instanceVariableNames: ''
+	package: 'Flow'!
+
+AbsrtactGenerator subclass: #MaplessGenerator
+	instanceVariableNames: ''
+	package: 'Flow'!
+
+AbsrtactGenerator subclass: #ModelGenerator
+	instanceVariableNames: ''
+	package: 'Flow'!
+
 Object subclass: #Flow
 	instanceVariableNames: ''
 	package: 'Flow'!
+
+!Flow class methodsFor: 'accessing'!
+
+generate
+
+	^ 3
+! !
+
+Object subclass: #Generator
+	instanceVariableNames: ''
+	package: 'Flow'!
+
+!Generator class methodsFor: 'accessing'!
+
+crudGenerator
+
+	^ CRUDGenerator
+!
+
+maplessGenerator
+
+	^ MaplessGenerator
+!
+
+modelGenerator
+
+	^ ModelGenerator
+! !
+
+!Generator class methodsFor: 'actions'!
+
+crud: aMaplessClassOrName
+
+	^ self crudGenerator scaffold: aMaplessClassOrName
+!
+
+mapless: aMaplessName
+
+	^ self maplessGenerator scaffold: aMaplessName
+!
+
+model: aModelName
+
+	^ self modelGenerator scaffold: aModelName
+! !
 
 !Boolean class methodsFor: '*Flow'!
 
