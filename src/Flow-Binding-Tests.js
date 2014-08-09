@@ -9,24 +9,6 @@ smalltalk.addClass('MockPerson', globals.MaplessModel, [], 'Flow-Binding-Tests')
 smalltalk.addClass('RivetsJSTestsController', globals.BindingController, [], 'Flow-Binding-Tests');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "getView",
-protocol: 'actions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1="#rivetsTests"._asJQuery();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"getView",{},globals.RivetsJSTestsController)})},
-args: [],
-source: "getView\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of the view of this controller.\x22\x0a\x09\x0a\x09^ '#rivetsTests' asJQuery\x0a\x09",
-messageSends: ["asJQuery"],
-referencedClasses: []
-}),
-globals.RivetsJSTestsController);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initialize",
 protocol: 'initialization',
 fn: function (){

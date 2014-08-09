@@ -37,7 +37,7 @@ bind
 	"Tells rivets.js to bind 
 	the model of this controller to its view."
 	
-	self rivets 
+	self rivets
 		bind: self view 
 		to: self asBindArgument
 !
@@ -49,16 +49,6 @@ getModelAsArgument
 	^ model data
 !
 
-getView
-	"Gets and answer the element which is 
-	the parent html element of the view of this controller."
-	
-	"Subclasses should return in its own way
-	^ 'bindable' asJQuery"
-
-	self subclassResponsibility
-!
-
 unbind
 	"Tells rivets.js to unbind the view."
 	
@@ -66,13 +56,6 @@ unbind
 ! !
 
 !BindingController methodsFor: 'reactions'!
-
-onAfterModel
-
-	super onAfterModel.
-
-	"self bind"
-!
 
 onTemplate: data
 	"Receives data once requirejs have received it from the server."

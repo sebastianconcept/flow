@@ -33,7 +33,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(self._rivets())._bind_to_(self._view(),self._asBindArgument());
 return self}, function($ctx1) {$ctx1.fill(self,"bind",{},globals.BindingController)})},
 args: [],
-source: "bind\x0a\x09\x22Tells rivets.js to bind \x0a\x09the model of this controller to its view.\x22\x0a\x09\x0a\x09self rivets \x0a\x09\x09bind: self view \x0a\x09\x09to: self asBindArgument\x0a\x09",
+source: "bind\x0a\x09\x22Tells rivets.js to bind \x0a\x09the model of this controller to its view.\x22\x0a\x09\x0a\x09self rivets\x0a\x09\x09bind: self view \x0a\x09\x09to: self asBindArgument\x0a\x09",
 messageSends: ["bind:to:", "rivets", "view", "asBindArgument"],
 referencedClasses: []
 }),
@@ -53,39 +53,6 @@ return $1;
 args: [],
 source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using mapless as controllers model\x0a\x09so we send their data but subclasses might differ if they please.\x22\x0a\x09^ model data",
 messageSends: ["data"],
-referencedClasses: []
-}),
-globals.BindingController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "getView",
-protocol: 'actions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"getView",{},globals.BindingController)})},
-args: [],
-source: "getView\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of the view of this controller.\x22\x0a\x09\x0a\x09\x22Subclasses should return in its own way\x0a\x09^ 'bindable' asJQuery\x22\x0a\x0a\x09self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
-referencedClasses: []
-}),
-globals.BindingController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "onAfterModel",
-protocol: 'reactions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.BindingController.superclass.fn.prototype._onAfterModel.apply(_st(self), []));
-$ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"onAfterModel",{},globals.BindingController)})},
-args: [],
-source: "onAfterModel\x0a\x0a\x09super onAfterModel.\x0a\x0a\x09\x22self bind\x22",
-messageSends: ["onAfterModel"],
 referencedClasses: []
 }),
 globals.BindingController);

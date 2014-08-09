@@ -7,6 +7,24 @@ smalltalk.addClass('TemplateController', globals.RouteableController, [], 'Flow-
 globals.TemplateController.comment="## TemplateController is an abstraction\x0aThe concrete subclasses of TemplateController follow the convention of loading html from the server.\x0aThis convention uses the keyword of the controller as the name of the template to be found at views/";
 smalltalk.addMethod(
 smalltalk.method({
+selector: "getView",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self._jQueryElement())._find_(":first-child"))._at_((0)))._asJQuery();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"getView",{},globals.TemplateController)})},
+args: [],
+source: "getView\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of this controller.\x22\x0a\x09\x0a\x09^ ((self jQueryElement find: ':first-child') at: 0) asJQuery",
+messageSends: ["asJQuery", "at:", "find:", "jQueryElement"],
+referencedClasses: []
+}),
+globals.TemplateController);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "onTemplate:",
 protocol: 'reactions',
 fn: function (data){

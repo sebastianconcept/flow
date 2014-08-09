@@ -9,13 +9,6 @@ BindingController subclass: #RivetsJSTestsController
 
 !RivetsJSTestsController methodsFor: 'actions'!
 
-getView
-	"Gets and answer the element which is 
-	the parent html element of the view of this controller."
-	
-	^ '#rivetsTests' asJQuery
-!
-
 newPerson
 
 	^ MockPerson new
