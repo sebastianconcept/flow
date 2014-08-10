@@ -594,15 +594,19 @@ protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-self["@uri"]=_st("ws://".__comma(_st(_st(window)._location())._hostname())).__comma(":21004/");
+var $3,$2,$1;
+$3=_st("ws://".__comma(_st(_st(window)._location())._hostname())).__comma(":");
+$ctx1.sendIdx[","]=3;
+$2=_st($3).__comma(_st(_st(self._class())._port())._asString());
+$ctx1.sendIdx[","]=2;
+self["@uri"]=_st($2).__comma("/");
 $ctx1.sendIdx[","]=1;
 $1=self["@uri"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"initializeURI",{},globals.WebSocketAPI)})},
 args: [],
-source: "initializeURI\x0a\x0a\x09^ uri := 'ws://',window location hostname,':21004/'",
-messageSends: [",", "hostname", "location"],
+source: "initializeURI\x0a\x0a\x09^ uri := 'ws://',window location hostname,':',self class port asString,'/'",
+messageSends: [",", "hostname", "location", "asString", "port", "class"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -1365,6 +1369,21 @@ referencedClasses: []
 }),
 globals.WebSocketAPI);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "port",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return (4444);
+},
+args: [],
+source: "port\x0a\x0a\x09^ 4444",
+messageSends: [],
+referencedClasses: []
+}),
+globals.WebSocketAPI.klass);
 
 
 smalltalk.addClass('RR', globals.Mapless, [], 'Flow-API');

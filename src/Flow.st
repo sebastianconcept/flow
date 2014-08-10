@@ -19,9 +19,62 @@ AbsrtactGenerator subclass: #MaplessGenerator
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-AbsrtactGenerator subclass: #ModelGenerator
+MaplessGenerator class instanceVariableNames: 'api'!
+
+!MaplessGenerator class methodsFor: 'accessing'!
+
+api
+
+	^ api ifNil:[ api := RESTfulAPI new ]
+!
+
+parentClass
+
+	^ Mapless
+!
+
+path
+
+	^ 'http://localhost:3333/',Mapless basePath,'/generate'
+! !
+
+!MaplessGenerator class methodsFor: 'actions'!
+
+backendScaffold: aString do: aBlock onError: anErrorBlock
+
+	self api
+		post: self path  
+		data: aString
+		do: aBlock
+		onError: anErrorBlock
+!
+
+frontEndScaffold: aString
+	
+	self parentClass 
+		subclass: aString 
+		instanceVariableNames: '' 
+		package: Flow generator packageName
+!
+
+scaffold: aString
+	"Scaffold what's relevnt to this generator"
+	
+	self backendScaffold: aString 
+		do:[ :res | self frontendScaffold: aString ]
+		onError:[ :x | self error: 'Backend scaffolding failed: ', x messageText asString ]
+! !
+
+MaplessGenerator subclass: #ModelGenerator
 	instanceVariableNames: ''
 	package: 'Flow'!
+
+!ModelGenerator class methodsFor: 'accessing'!
+
+parentClass
+
+	^ MaplessModel
+! !
 
 Object subclass: #Flow
 	instanceVariableNames: ''
@@ -29,14 +82,21 @@ Object subclass: #Flow
 
 !Flow class methodsFor: 'accessing'!
 
+gen
+
+	^ self generate
+!
+
 generate
 
-	^ 3
+	^ Generator
 ! !
 
 Object subclass: #Generator
 	instanceVariableNames: ''
 	package: 'Flow'!
+
+Generator class instanceVariableNames: 'packageName'!
 
 !Generator class methodsFor: 'accessing'!
 
@@ -53,6 +113,16 @@ maplessGenerator
 modelGenerator
 
 	^ ModelGenerator
+!
+
+packageName
+
+	^ packageName
+!
+
+packageName: aString
+
+	packageName := aString
 ! !
 
 !Generator class methodsFor: 'actions'!
