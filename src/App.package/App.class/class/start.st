@@ -1,13 +1,14 @@
 actions
 start
 
+	self reset.
+
 	self startHttpd.
 	
 	self startTimer.
 
 	self startVNC.
 	
-	self startWebsocket.
 	self setupServer.
 
 	self publishObjects

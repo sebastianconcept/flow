@@ -594,19 +594,36 @@ protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $3,$2,$1;
-$3=_st("ws://".__comma(_st(_st(window)._location())._hostname())).__comma(":");
+var $4,$3,$2,$9,$8,$7,$6,$5,$1;
+$4=_st(window)._location();
+$ctx1.sendIdx["location"]=1;
+$3=_st($4)._hostname();
+$ctx1.sendIdx["hostname"]=1;
+$2=_st($3).__eq("localhost");
+if(smalltalk.assert($2)){
+$9=_st(window)._location();
+$ctx1.sendIdx["location"]=2;
+$8=_st($9)._hostname();
+$ctx1.sendIdx["hostname"]=2;
+$7="ws://".__comma($8);
+$ctx1.sendIdx[","]=4;
+$6=_st($7).__comma(":");
 $ctx1.sendIdx[","]=3;
-$2=_st($3).__comma(_st(_st(self._class())._port())._asString());
+$5=_st($6).__comma(_st(_st(self._class())._port())._asString());
 $ctx1.sendIdx[","]=2;
-self["@uri"]=_st($2).__comma("/");
+self["@uri"]=_st($5).__comma("/ws");
 $ctx1.sendIdx[","]=1;
 $1=self["@uri"];
+} else {
+self["@uri"]=_st("ws://".__comma(_st(_st(window)._location())._hostname())).__comma("/ws");
+$ctx1.sendIdx[","]=5;
+$1=self["@uri"];
+};
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"initializeURI",{},globals.WebSocketAPI)})},
 args: [],
-source: "initializeURI\x0a\x0a\x09^ uri := 'ws://',window location hostname,':',self class port asString,'/'",
-messageSends: [",", "hostname", "location", "asString", "port", "class"],
+source: "initializeURI\x0a\x0a\x09^ window location hostname = 'localhost' \x0a\x09\x09ifTrue:[ uri := 'ws://',window location hostname,':',self class port asString,'/ws' ]\x0a\x09\x09ifFalse:[ uri := 'ws://',window location hostname, '/ws' ]",
+messageSends: ["ifTrue:ifFalse:", "=", "hostname", "location", ",", "asString", "port", "class"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -1376,10 +1393,10 @@ selector: "port",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-return (4444);
+return (3333);
 },
 args: [],
-source: "port\x0a\x0a\x09^ 4444",
+source: "port\x0a\x0a\x09^ 3333",
 messageSends: [],
 referencedClasses: []
 }),

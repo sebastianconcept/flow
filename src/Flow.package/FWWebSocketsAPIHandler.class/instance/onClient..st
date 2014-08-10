@@ -2,6 +2,7 @@ reactions
 onClient: aWebSocket	
 	"Handle a new incoming web socket connection."
 
+	Transcript cr; show: aWebSocket.
 	self purgeClients.
 	
 	[ self register: aWebSocket.

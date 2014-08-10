@@ -512,7 +512,9 @@ initializeSocket
 
 initializeURI
 
-	^ uri := 'ws://',window location hostname,':',self class port asString,'/'
+	^ window location hostname = 'localhost' 
+		ifTrue:[ uri := 'ws://',window location hostname,':',self class port asString,'/ws' ]
+		ifFalse:[ uri := 'ws://',window location hostname, '/ws' ]
 ! !
 
 !WebSocketAPI methodsFor: 'reactions'!
@@ -573,7 +575,7 @@ isDisconnected
 
 port
 
-	^ 4444
+	^ 3333
 ! !
 
 Mapless subclass: #RR

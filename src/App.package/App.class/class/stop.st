@@ -7,3 +7,5 @@ stop
 	
 	self stopVNC.
 	5 timesRepeat:[ Smalltalk garbageCollect ].
+	
+	
