@@ -28,14 +28,24 @@ api
 	^ api ifNil:[ api := RESTfulAPI new ]
 !
 
+command
+
+	^ '/mapless'
+!
+
 parentClass
 
 	^ Mapless
 !
 
-path
+port
 
-	^ 'http://localhost:3333/',Mapless basePath,'/generate'
+	^ 3333
+!
+
+url
+
+	^ 'http://localhost:',self port asString,'/',Mapless basePath,'/generate',self command
 ! !
 
 !MaplessGenerator class methodsFor: 'actions'!
@@ -43,7 +53,7 @@ path
 backendScaffold: aString do: aBlock onError: anErrorBlock
 
 	self api
-		post: self path  
+		post: self url  
 		data: aString
 		do: aBlock
 		onError: anErrorBlock
@@ -62,7 +72,9 @@ scaffold: aString
 	
 	self backendScaffold: aString 
 		do:[ :res | self frontendScaffold: aString ]
-		onError:[ :x | self error: 'Backend scaffolding failed: ', x messageText asString ]
+		onError:[ :x | 
+			x inspect.
+			self error: 'Backend scaffolding failed: ', x messageText asString ]
 ! !
 
 MaplessGenerator subclass: #ModelGenerator
@@ -70,6 +82,11 @@ MaplessGenerator subclass: #ModelGenerator
 	package: 'Flow'!
 
 !ModelGenerator class methodsFor: 'accessing'!
+
+command
+
+	^ '/model'
+!
 
 parentClass
 

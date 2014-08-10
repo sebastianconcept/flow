@@ -62,11 +62,26 @@ protocol: 'actions',
 fn: function (aString,aBlock,anErrorBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self._api())._post_data_do_onError_(self._path(),aString,aBlock,anErrorBlock);
+_st(self._api())._post_data_do_onError_(self._url(),aString,aBlock,anErrorBlock);
 return self}, function($ctx1) {$ctx1.fill(self,"backendScaffold:do:onError:",{aString:aString,aBlock:aBlock,anErrorBlock:anErrorBlock},globals.MaplessGenerator.klass)})},
 args: ["aString", "aBlock", "anErrorBlock"],
-source: "backendScaffold: aString do: aBlock onError: anErrorBlock\x0a\x0a\x09self api\x0a\x09\x09post: self path  \x0a\x09\x09data: aString\x0a\x09\x09do: aBlock\x0a\x09\x09onError: anErrorBlock",
-messageSends: ["post:data:do:onError:", "api", "path"],
+source: "backendScaffold: aString do: aBlock onError: anErrorBlock\x0a\x0a\x09self api\x0a\x09\x09post: self url  \x0a\x09\x09data: aString\x0a\x09\x09do: aBlock\x0a\x09\x09onError: anErrorBlock",
+messageSends: ["post:data:do:onError:", "api", "url"],
+referencedClasses: []
+}),
+globals.MaplessGenerator.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "command",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return "/mapless";
+},
+args: [],
+source: "command\x0a\x0a\x09^ '/mapless'",
+messageSends: [],
 referencedClasses: []
 }),
 globals.MaplessGenerator.klass);
@@ -106,21 +121,16 @@ globals.MaplessGenerator.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "path",
+selector: "port",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st("http://localhost:3333/".__comma(_st($Mapless())._basePath())).__comma("/generate");
-$ctx1.sendIdx[","]=1;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"path",{},globals.MaplessGenerator.klass)})},
+return (3333);
+},
 args: [],
-source: "path\x0a\x0a\x09^ 'http://localhost:3333/',Mapless basePath,'/generate'",
-messageSends: [",", "basePath"],
-referencedClasses: ["Mapless"]
+source: "port\x0a\x0a\x09^ 3333",
+messageSends: [],
+referencedClasses: []
 }),
 globals.MaplessGenerator.klass);
 
@@ -136,18 +146,60 @@ return smalltalk.withContext(function($ctx2) {
 return self._frontendScaffold_(aString);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}),(function(x){
 return smalltalk.withContext(function($ctx2) {
+_st(x)._inspect();
 return self._error_("Backend scaffolding failed: ".__comma(_st(_st(x)._messageText())._asString()));
 }, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"scaffold:",{aString:aString},globals.MaplessGenerator.klass)})},
 args: ["aString"],
-source: "scaffold: aString\x0a\x09\x22Scaffold what's relevnt to this generator\x22\x0a\x09\x0a\x09self backendScaffold: aString \x0a\x09\x09do:[ :res | self frontendScaffold: aString ]\x0a\x09\x09onError:[ :x | self error: 'Backend scaffolding failed: ', x messageText asString ]",
-messageSends: ["backendScaffold:do:onError:", "frontendScaffold:", "error:", ",", "asString", "messageText"],
+source: "scaffold: aString\x0a\x09\x22Scaffold what's relevnt to this generator\x22\x0a\x09\x0a\x09self backendScaffold: aString \x0a\x09\x09do:[ :res | self frontendScaffold: aString ]\x0a\x09\x09onError:[ :x | \x0a\x09\x09\x09x inspect.\x0a\x09\x09\x09self error: 'Backend scaffolding failed: ', x messageText asString ]",
+messageSends: ["backendScaffold:do:onError:", "frontendScaffold:", "inspect", "error:", ",", "asString", "messageText"],
 referencedClasses: []
+}),
+globals.MaplessGenerator.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
+return smalltalk.withContext(function($ctx1) { 
+var $4,$3,$2,$1;
+$4=_st("http://localhost:".__comma(_st(self._port())._asString())).__comma("/");
+$ctx1.sendIdx[","]=4;
+$3=_st($4).__comma(_st($Mapless())._basePath());
+$ctx1.sendIdx[","]=3;
+$2=_st($3).__comma("/generate");
+$ctx1.sendIdx[","]=2;
+$1=_st($2).__comma(self._command());
+$ctx1.sendIdx[","]=1;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"url",{},globals.MaplessGenerator.klass)})},
+args: [],
+source: "url\x0a\x0a\x09^ 'http://localhost:',self port asString,'/',Mapless basePath,'/generate',self command",
+messageSends: [",", "asString", "port", "basePath", "command"],
+referencedClasses: ["Mapless"]
 }),
 globals.MaplessGenerator.klass);
 
 
 smalltalk.addClass('ModelGenerator', globals.MaplessGenerator, [], 'Flow');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "command",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return "/model";
+},
+args: [],
+source: "command\x0a\x0a\x09^ '/model'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ModelGenerator.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
