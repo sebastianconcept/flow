@@ -121,21 +121,6 @@ globals.MaplessGenerator.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "port",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-return (3333);
-},
-args: [],
-source: "port\x0a\x0a\x09^ 3333",
-messageSends: [],
-referencedClasses: []
-}),
-globals.MaplessGenerator.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "scaffold:",
 protocol: 'actions',
 fn: function (aString){
@@ -165,10 +150,8 @@ fn: function (){
 var self=this;
 function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
 return smalltalk.withContext(function($ctx1) { 
-var $4,$3,$2,$1;
-$4=_st("http://localhost:".__comma(_st(self._port())._asString())).__comma("/");
-$ctx1.sendIdx[","]=4;
-$3=_st($4).__comma(_st($Mapless())._basePath());
+var $3,$2,$1;
+$3=_st("http://".__comma(_st(window)._location())).__comma(_st($Mapless())._basePath());
 $ctx1.sendIdx[","]=3;
 $2=_st($3).__comma("/generate");
 $ctx1.sendIdx[","]=2;
@@ -177,8 +160,8 @@ $ctx1.sendIdx[","]=1;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"url",{},globals.MaplessGenerator.klass)})},
 args: [],
-source: "url\x0a\x0a\x09^ 'http://localhost:',self port asString,'/',Mapless basePath,'/generate',self command",
-messageSends: [",", "asString", "port", "basePath", "command"],
+source: "url\x0a\x0a\x09^ 'http://',window location,Mapless basePath,'/generate',self command",
+messageSends: [",", "location", "basePath", "command"],
 referencedClasses: ["Mapless"]
 }),
 globals.MaplessGenerator.klass);

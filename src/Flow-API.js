@@ -333,7 +333,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 self._trigger_("aboutToAJAX");
 $ctx1.sendIdx["trigger:"]=1;
-_st(jQuery)._ajax_(globals.HashedCollection._newFromPairs_(["url",anURLString,"type","POST","contentType","text/json","data",aDataString,"complete",(function(res){
+_st(jQuery)._ajax_options_(anURLString,globals.HashedCollection._newFromPairs_(["type","POST","contentType","text/json","data",aDataString,"complete",(function(res){
 return smalltalk.withContext(function($ctx2) {
 self._trigger_("afterAJAX");
 $1=_st(_st(res)._status()).__eq((200));
@@ -346,8 +346,8 @@ return _st(errorBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"post:data:do:onError:",{anURLString:anURLString,aDataString:aDataString,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
 args: ["anURLString", "aDataString", "aBlock", "errorBlock"],
-source: "post: anURLString data: aDataString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: #{\x0a\x09\x09'url' -> anURLString.\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aDataString.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
-messageSends: ["trigger:", "ajax:", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
+source: "post: anURLString data: aDataString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aDataString.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
+messageSends: ["trigger:", "ajax:options:", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
 referencedClasses: []
 }),
 globals.RESTfulAPI);

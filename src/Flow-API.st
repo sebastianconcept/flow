@@ -166,8 +166,7 @@ post: anURLString data: aDataString do: aBlock onError: errorBlock
 
 	self trigger: 'aboutToAJAX'.
 
-	jQuery ajax: #{
-		'url' -> anURLString.
+	jQuery ajax: anURLString options: #{
 		'type' -> 'POST'.
 		'contentType' -> 'text/json'.
 		'data' -> aDataString.

@@ -38,14 +38,9 @@ parentClass
 	^ Mapless
 !
 
-port
-
-	^ 3333
-!
-
 url
 
-	^ 'http://localhost:',self port asString,'/',Mapless basePath,'/generate',self command
+	^ 'http://',window location,Mapless basePath,'/generate',self command
 ! !
 
 !MaplessGenerator class methodsFor: 'actions'!
