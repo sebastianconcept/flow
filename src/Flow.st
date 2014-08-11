@@ -1,11 +1,11 @@
 Smalltalk createPackage: 'Flow'!
-Object subclass: #AbsrtactGenerator
+Object subclass: #AbsrtactScaffolder
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-AbsrtactGenerator class instanceVariableNames: 'api'!
+AbsrtactScaffolder class instanceVariableNames: 'api'!
 
-!AbsrtactGenerator class methodsFor: 'accessing'!
+!AbsrtactScaffolder class methodsFor: 'accessing'!
 
 api
 
@@ -17,30 +17,30 @@ url
 	^ window location asString,Mapless basePath,'/generate',self command,'/'
 ! !
 
-!AbsrtactGenerator class methodsFor: 'actions'!
+!AbsrtactScaffolder class methodsFor: 'actions'!
 
 scaffold: anObject
-	"Scaffold what's relevnt to this generator"
+	"Scaffold what's relevnt to this scaffolder"
 	
 	^ self subclassResponsibility
 ! !
 
-AbsrtactGenerator subclass: #CRUDGenerator
+AbsrtactScaffolder subclass: #CRUDScaffolder
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-!CRUDGenerator class methodsFor: 'accessing'!
+!CRUDScaffolder class methodsFor: 'accessing'!
 
 command
 
 	^ '/crud'
 ! !
 
-AbsrtactGenerator subclass: #MaplessGenerator
+AbsrtactScaffolder subclass: #MaplessScaffolder
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-!MaplessGenerator class methodsFor: 'accessing'!
+!MaplessScaffolder class methodsFor: 'accessing'!
 
 command
 
@@ -52,7 +52,7 @@ parentClass
 	^ Mapless
 ! !
 
-!MaplessGenerator class methodsFor: 'actions'!
+!MaplessScaffolder class methodsFor: 'actions'!
 
 backendScaffold: aString do: aBlock onError: anErrorBlock
 
@@ -72,7 +72,7 @@ frontendScaffold: aString
 !
 
 scaffold: aString
-	"Scaffold what's relevnt to this generator"
+	"Scaffold what's relevnt to this scaffolder"
 	
 	self backendScaffold: aString 
 		do:[ :res | self frontendScaffold: aString ]
@@ -80,11 +80,11 @@ scaffold: aString
 			self error: res responseText ]
 ! !
 
-MaplessGenerator subclass: #ModelGenerator
+MaplessScaffolder subclass: #ModelScaffolder
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-!ModelGenerator class methodsFor: 'accessing'!
+!ModelScaffolder class methodsFor: 'accessing'!
 
 command
 
@@ -102,42 +102,37 @@ Object subclass: #Flow
 
 !Flow class methodsFor: 'accessing'!
 
-gen
+scaffold
 
-	^ self generate
+	^ self scaffolder
 !
 
-generate
+scaffolder
 
-	^ self generator
-!
-
-generator
-
-	^ Generator
+	^ Scaffolder
 ! !
 
-Object subclass: #Generator
+Object subclass: #Scaffolder
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-Generator class instanceVariableNames: 'packageName'!
+Scaffolder class instanceVariableNames: 'packageName'!
 
-!Generator class methodsFor: 'accessing'!
+!Scaffolder class methodsFor: 'accessing'!
 
-crudGenerator
+crudScaffolder
 
-	^ CRUDGenerator
+	^ CRUDScaffolder
 !
 
-maplessGenerator
+maplessScaffolder
 
-	^ MaplessGenerator
+	^ MaplessScaffolder
 !
 
-modelGenerator
+modelScaffolder
 
-	^ ModelGenerator
+	^ ModelScaffolder
 !
 
 packageName
@@ -150,7 +145,7 @@ packageName: aString
 	packageName := aString
 ! !
 
-!Generator class methodsFor: 'actions'!
+!Scaffolder class methodsFor: 'actions'!
 
 crud: aMaplessClassOrName
 
@@ -161,24 +156,24 @@ crudMapless: aMaplessClassOrName
 
 	self mapless: aMaplessClassOrName.
 
-	^ self crudGenerator scaffold: aMaplessClassOrName
+	^ self crudScaffolder scaffold: aMaplessClassOrName
 !
 
 crudModel: aMaplessClassOrName
 
 	self model: aMaplessClassOrName.
 
-	^ self crudGenerator scaffold: aMaplessClassOrName
+	^ self crudScaffolder scaffold: aMaplessClassOrName
 !
 
 mapless: aMaplessName
 
-	^ self maplessGenerator scaffold: aMaplessName
+	^ self maplessScaffolder scaffold: aMaplessName
 !
 
 model: aModelName
 
-	^ self modelGenerator scaffold: aModelName
+	^ self modelScaffolder scaffold: aModelName
 ! !
 
 !Boolean class methodsFor: '*Flow'!

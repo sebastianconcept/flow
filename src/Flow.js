@@ -3,9 +3,9 @@ var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow');
 smalltalk.packages["Flow"].transport = {"type":"amd","amdNamespace":"app"};
 
-smalltalk.addClass('AbsrtactGenerator', globals.Object, [], 'Flow');
+smalltalk.addClass('AbsrtactScaffolder', globals.Object, [], 'Flow');
 
-globals.AbsrtactGenerator.klass.iVarNames = ['api'];
+globals.AbsrtactScaffolder.klass.iVarNames = ['api'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "api",
@@ -23,13 +23,13 @@ $1=self["@api"];
 $1=$2;
 };
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"api",{},globals.AbsrtactGenerator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"api",{},globals.AbsrtactScaffolder.klass)})},
 args: [],
 source: "api\x0a\x0a\x09^ api ifNil:[ api := RESTfulAPI new ]",
 messageSends: ["ifNil:", "new"],
 referencedClasses: ["RESTfulAPI"]
 }),
-globals.AbsrtactGenerator.klass);
+globals.AbsrtactScaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -41,13 +41,13 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=self._subclassResponsibility();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"scaffold:",{anObject:anObject},globals.AbsrtactGenerator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"scaffold:",{anObject:anObject},globals.AbsrtactScaffolder.klass)})},
 args: ["anObject"],
-source: "scaffold: anObject\x0a\x09\x22Scaffold what's relevnt to this generator\x22\x0a\x09\x0a\x09^ self subclassResponsibility",
+source: "scaffold: anObject\x0a\x09\x22Scaffold what's relevnt to this scaffolder\x22\x0a\x09\x0a\x09^ self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-globals.AbsrtactGenerator.klass);
+globals.AbsrtactScaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -65,16 +65,16 @@ $ctx1.sendIdx[","]=2;
 $1=_st($2).__comma("/");
 $ctx1.sendIdx[","]=1;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"url",{},globals.AbsrtactGenerator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"url",{},globals.AbsrtactScaffolder.klass)})},
 args: [],
 source: "url\x0a\x0a\x09^ window location asString,Mapless basePath,'/generate',self command,'/'",
 messageSends: [",", "asString", "location", "basePath", "command"],
 referencedClasses: ["Mapless"]
 }),
-globals.AbsrtactGenerator.klass);
+globals.AbsrtactScaffolder.klass);
 
 
-smalltalk.addClass('CRUDGenerator', globals.AbsrtactGenerator, [], 'Flow');
+smalltalk.addClass('CRUDScaffolder', globals.AbsrtactScaffolder, [], 'Flow');
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -89,10 +89,10 @@ source: "command\x0a\x0a\x09^ '/crud'",
 messageSends: [],
 referencedClasses: []
 }),
-globals.CRUDGenerator.klass);
+globals.CRUDScaffolder.klass);
 
 
-smalltalk.addClass('MaplessGenerator', globals.AbsrtactGenerator, [], 'Flow');
+smalltalk.addClass('MaplessScaffolder', globals.AbsrtactScaffolder, [], 'Flow');
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -102,13 +102,13 @@ fn: function (aString,aBlock,anErrorBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self._api())._post_data_do_onError_(self._url(),aString,aBlock,anErrorBlock);
-return self}, function($ctx1) {$ctx1.fill(self,"backendScaffold:do:onError:",{aString:aString,aBlock:aBlock,anErrorBlock:anErrorBlock},globals.MaplessGenerator.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"backendScaffold:do:onError:",{aString:aString,aBlock:aBlock,anErrorBlock:anErrorBlock},globals.MaplessScaffolder.klass)})},
 args: ["aString", "aBlock", "anErrorBlock"],
 source: "backendScaffold: aString do: aBlock onError: anErrorBlock\x0a\x0a\x09self api\x0a\x09\x09post: self url  \x0a\x09\x09data: aString\x0a\x09\x09do: aBlock\x0a\x09\x09onError: anErrorBlock",
 messageSends: ["post:data:do:onError:", "api", "url"],
 referencedClasses: []
 }),
-globals.MaplessGenerator.klass);
+globals.MaplessScaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -123,7 +123,7 @@ source: "command\x0a\x0a\x09^ '/mapless'",
 messageSends: [],
 referencedClasses: []
 }),
-globals.MaplessGenerator.klass);
+globals.MaplessScaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -134,13 +134,13 @@ var self=this;
 function $Flow(){return globals.Flow||(typeof Flow=="undefined"?nil:Flow)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self._parentClass())._subclass_instanceVariableNames_package_(aString,"",_st(_st($Flow())._generator())._packageName());
-return self}, function($ctx1) {$ctx1.fill(self,"frontendScaffold:",{aString:aString},globals.MaplessGenerator.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"frontendScaffold:",{aString:aString},globals.MaplessScaffolder.klass)})},
 args: ["aString"],
 source: "frontendScaffold: aString\x0a\x09\x0a\x09self parentClass \x0a\x09\x09subclass: aString \x0a\x09\x09instanceVariableNames: '' \x0a\x09\x09package: Flow generator packageName",
 messageSends: ["subclass:instanceVariableNames:package:", "parentClass", "packageName", "generator"],
 referencedClasses: ["Flow"]
 }),
-globals.MaplessGenerator.klass);
+globals.MaplessScaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -156,7 +156,7 @@ source: "parentClass\x0a\x0a\x09^ Mapless",
 messageSends: [],
 referencedClasses: ["Mapless"]
 }),
-globals.MaplessGenerator.klass);
+globals.MaplessScaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -172,16 +172,16 @@ return self._frontendScaffold_(aString);
 return smalltalk.withContext(function($ctx2) {
 return self._error_(_st(res)._responseText());
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,2)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"scaffold:",{aString:aString},globals.MaplessGenerator.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"scaffold:",{aString:aString},globals.MaplessScaffolder.klass)})},
 args: ["aString"],
-source: "scaffold: aString\x0a\x09\x22Scaffold what's relevnt to this generator\x22\x0a\x09\x0a\x09self backendScaffold: aString \x0a\x09\x09do:[ :res | self frontendScaffold: aString ]\x0a\x09\x09onError:[ :res | \x0a\x09\x09\x09self error: res responseText ]",
+source: "scaffold: aString\x0a\x09\x22Scaffold what's relevnt to this scaffolder\x22\x0a\x09\x0a\x09self backendScaffold: aString \x0a\x09\x09do:[ :res | self frontendScaffold: aString ]\x0a\x09\x09onError:[ :res | \x0a\x09\x09\x09self error: res responseText ]",
 messageSends: ["backendScaffold:do:onError:", "frontendScaffold:", "error:", "responseText"],
 referencedClasses: []
 }),
-globals.MaplessGenerator.klass);
+globals.MaplessScaffolder.klass);
 
 
-smalltalk.addClass('ModelGenerator', globals.MaplessGenerator, [], 'Flow');
+smalltalk.addClass('ModelScaffolder', globals.MaplessScaffolder, [], 'Flow');
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -196,7 +196,7 @@ source: "command\x0a\x0a\x09^ '/model'",
 messageSends: [],
 referencedClasses: []
 }),
-globals.ModelGenerator.klass);
+globals.ModelScaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -212,67 +212,49 @@ source: "parentClass\x0a\x0a\x09^ MaplessModel",
 messageSends: [],
 referencedClasses: ["MaplessModel"]
 }),
-globals.ModelGenerator.klass);
+globals.ModelScaffolder.klass);
 
 
 smalltalk.addClass('Flow', globals.Object, [], 'Flow');
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "gen",
+selector: "scaffold",
 protocol: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._generate();
+$1=self._scaffolder();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"gen",{},globals.Flow.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"scaffold",{},globals.Flow.klass)})},
 args: [],
-source: "gen\x0a\x0a\x09^ self generate",
-messageSends: ["generate"],
+source: "scaffold\x0a\x0a\x09^ self scaffolder",
+messageSends: ["scaffolder"],
 referencedClasses: []
 }),
 globals.Flow.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "generate",
+selector: "scaffolder",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self._generator();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"generate",{},globals.Flow.klass)})},
-args: [],
-source: "generate\x0a\x0a\x09^ self generator",
-messageSends: ["generator"],
-referencedClasses: []
-}),
-globals.Flow.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "generator",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $Generator(){return globals.Generator||(typeof Generator=="undefined"?nil:Generator)}
-return $Generator();
+function $Scaffolder(){return globals.Scaffolder||(typeof Scaffolder=="undefined"?nil:Scaffolder)}
+return $Scaffolder();
 },
 args: [],
-source: "generator\x0a\x0a\x09^ Generator",
+source: "scaffolder\x0a\x0a\x09^ Scaffolder",
 messageSends: [],
-referencedClasses: ["Generator"]
+referencedClasses: ["Scaffolder"]
 }),
 globals.Flow.klass);
 
 
-smalltalk.addClass('Generator', globals.Object, [], 'Flow');
+smalltalk.addClass('Scaffolder', globals.Object, [], 'Flow');
 
-globals.Generator.klass.iVarNames = ['packageName'];
+globals.Scaffolder.klass.iVarNames = ['packageName'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "crud:",
@@ -283,29 +265,13 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=self._crudModel_(aMaplessClassOrName);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"crud:",{aMaplessClassOrName:aMaplessClassOrName},globals.Generator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"crud:",{aMaplessClassOrName:aMaplessClassOrName},globals.Scaffolder.klass)})},
 args: ["aMaplessClassOrName"],
 source: "crud: aMaplessClassOrName\x0a\x0a\x09^ self crudModel: aMaplessClassOrName",
 messageSends: ["crudModel:"],
 referencedClasses: []
 }),
-globals.Generator.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "crudGenerator",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $CRUDGenerator(){return globals.CRUDGenerator||(typeof CRUDGenerator=="undefined"?nil:CRUDGenerator)}
-return $CRUDGenerator();
-},
-args: [],
-source: "crudGenerator\x0a\x0a\x09^ CRUDGenerator ",
-messageSends: [],
-referencedClasses: ["CRUDGenerator"]
-}),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -316,15 +282,15 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 self._mapless_(aMaplessClassOrName);
-$1=_st(self._crudGenerator())._scaffold_(aMaplessClassOrName);
+$1=_st(self._crudScaffolder())._scaffold_(aMaplessClassOrName);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"crudMapless:",{aMaplessClassOrName:aMaplessClassOrName},globals.Generator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"crudMapless:",{aMaplessClassOrName:aMaplessClassOrName},globals.Scaffolder.klass)})},
 args: ["aMaplessClassOrName"],
-source: "crudMapless: aMaplessClassOrName\x0a\x0a\x09self mapless: aMaplessClassOrName.\x0a\x0a\x09^ self crudGenerator scaffold: aMaplessClassOrName",
-messageSends: ["mapless:", "scaffold:", "crudGenerator"],
+source: "crudMapless: aMaplessClassOrName\x0a\x0a\x09self mapless: aMaplessClassOrName.\x0a\x0a\x09^ self crudScaffolder scaffold: aMaplessClassOrName",
+messageSends: ["mapless:", "scaffold:", "crudScaffolder"],
 referencedClasses: []
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -335,15 +301,31 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 self._model_(aMaplessClassOrName);
-$1=_st(self._crudGenerator())._scaffold_(aMaplessClassOrName);
+$1=_st(self._crudScaffolder())._scaffold_(aMaplessClassOrName);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"crudModel:",{aMaplessClassOrName:aMaplessClassOrName},globals.Generator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"crudModel:",{aMaplessClassOrName:aMaplessClassOrName},globals.Scaffolder.klass)})},
 args: ["aMaplessClassOrName"],
-source: "crudModel: aMaplessClassOrName\x0a\x0a\x09self model: aMaplessClassOrName.\x0a\x0a\x09^ self crudGenerator scaffold: aMaplessClassOrName",
-messageSends: ["model:", "scaffold:", "crudGenerator"],
+source: "crudModel: aMaplessClassOrName\x0a\x0a\x09self model: aMaplessClassOrName.\x0a\x0a\x09^ self crudScaffolder scaffold: aMaplessClassOrName",
+messageSends: ["model:", "scaffold:", "crudScaffolder"],
 referencedClasses: []
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "crudScaffolder",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $CRUDScaffolder(){return globals.CRUDScaffolder||(typeof CRUDScaffolder=="undefined"?nil:CRUDScaffolder)}
+return $CRUDScaffolder();
+},
+args: [],
+source: "crudScaffolder\x0a\x0a\x09^ CRUDScaffolder",
+messageSends: [],
+referencedClasses: ["CRUDScaffolder"]
+}),
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -353,31 +335,31 @@ fn: function (aMaplessName){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._maplessGenerator())._scaffold_(aMaplessName);
+$1=_st(self._maplessScaffolder())._scaffold_(aMaplessName);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"mapless:",{aMaplessName:aMaplessName},globals.Generator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"mapless:",{aMaplessName:aMaplessName},globals.Scaffolder.klass)})},
 args: ["aMaplessName"],
-source: "mapless: aMaplessName\x0a\x0a\x09^ self maplessGenerator scaffold: aMaplessName",
-messageSends: ["scaffold:", "maplessGenerator"],
+source: "mapless: aMaplessName\x0a\x0a\x09^ self maplessScaffolder scaffold: aMaplessName",
+messageSends: ["scaffold:", "maplessScaffolder"],
 referencedClasses: []
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "maplessGenerator",
+selector: "maplessScaffolder",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $MaplessGenerator(){return globals.MaplessGenerator||(typeof MaplessGenerator=="undefined"?nil:MaplessGenerator)}
-return $MaplessGenerator();
+function $MaplessScaffolder(){return globals.MaplessScaffolder||(typeof MaplessScaffolder=="undefined"?nil:MaplessScaffolder)}
+return $MaplessScaffolder();
 },
 args: [],
-source: "maplessGenerator\x0a\x0a\x09^ MaplessGenerator ",
+source: "maplessScaffolder\x0a\x0a\x09^ MaplessScaffolder",
 messageSends: [],
-referencedClasses: ["MaplessGenerator"]
+referencedClasses: ["MaplessScaffolder"]
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -387,31 +369,31 @@ fn: function (aModelName){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._modelGenerator())._scaffold_(aModelName);
+$1=_st(self._modelScaffolder())._scaffold_(aModelName);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"model:",{aModelName:aModelName},globals.Generator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"model:",{aModelName:aModelName},globals.Scaffolder.klass)})},
 args: ["aModelName"],
-source: "model: aModelName\x0a\x0a\x09^ self modelGenerator scaffold: aModelName",
-messageSends: ["scaffold:", "modelGenerator"],
+source: "model: aModelName\x0a\x0a\x09^ self modelScaffolder scaffold: aModelName",
+messageSends: ["scaffold:", "modelScaffolder"],
 referencedClasses: []
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "modelGenerator",
+selector: "modelScaffolder",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $ModelGenerator(){return globals.ModelGenerator||(typeof ModelGenerator=="undefined"?nil:ModelGenerator)}
-return $ModelGenerator();
+function $ModelScaffolder(){return globals.ModelScaffolder||(typeof ModelScaffolder=="undefined"?nil:ModelScaffolder)}
+return $ModelScaffolder();
 },
 args: [],
-source: "modelGenerator\x0a\x0a\x09^ ModelGenerator ",
+source: "modelScaffolder\x0a\x0a\x09^ ModelScaffolder",
 messageSends: [],
-referencedClasses: ["ModelGenerator"]
+referencedClasses: ["ModelScaffolder"]
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -428,7 +410,7 @@ source: "packageName\x0a\x0a\x09^ packageName",
 messageSends: [],
 referencedClasses: []
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -443,7 +425,7 @@ source: "packageName: aString\x0a\x0a\x09packageName := aString",
 messageSends: [],
 referencedClasses: []
 }),
-globals.Generator.klass);
+globals.Scaffolder.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
