@@ -49,10 +49,11 @@ remoteExceptionFor: aWebSocketCommand
 !APIClient methodsFor: 'initialization'!
 
 initializeWs
+	"Initializes the WebSocket API"
 
 	^ ws := WebSocketAPI new
-					when: 'commandReceived:' do:[ :cmd | self onCommand: cmd ];
-					yourself
+				when: 'commandReceived:' do:[ :cmd | self onCommand: cmd ];
+				yourself
 ! !
 
 !APIClient methodsFor: 'reactions'!
@@ -115,12 +116,50 @@ APIError subclass: #APIRemoteException
 	package: 'Flow-API'!
 
 Object subclass: #APIStrategy
-	instanceVariableNames: ''
+	instanceVariableNames: 'uri apiPath'
 	package: 'Flow-API'!
 !APIStrategy commentStamp!
 ## APIStrategy is an abstraction
 
 See concrete subclasses of API for concrete backend interaction!
+
+!APIStrategy methodsFor: 'accessing'!
+
+apiPath
+
+	^ apiPath ifNil:[ self initializeAPIPath ]
+!
+
+apiPath: aString
+
+	apiPath := aString
+!
+
+uri
+
+	^ uri ifNil:[ self initializeURI ]
+!
+
+uri: aString
+
+	uri := aString
+! !
+
+!APIStrategy methodsFor: 'testing'!
+
+isSSL
+	"Answers true if all this is going over SSL."
+	
+	^ self class isSSL
+! !
+
+!APIStrategy class methodsFor: 'accessing'!
+
+isSSL
+	"Answers true if all this is going over SSL."
+	
+	^ window location protocol = 'https:'
+! !
 
 APIStrategy subclass: #RESTfulAPI
 	instanceVariableNames: ''
@@ -142,8 +181,8 @@ delete: anURLString do: aBlock onError: errorBlock
 		'complete' -> [:res |
 			self trigger: 'afterAJAX'.
 			res status = 200
-				ifTrue: [aBlock value: res responseText]
-				ifFalse: [errorBlock value: res]]
+				ifTrue: [ aBlock value: res responseText ]
+				ifFalse: [ errorBlock value: res ] ]
 	}
 !
 
@@ -157,8 +196,8 @@ get: anURLString do: aBlock onError: errorBlock
 		'complete' -> [:res |
 			self trigger: 'afterAJAX'.
 			res status = 200
-				ifTrue: [aBlock value: res responseText]
-				ifFalse: [errorBlock value: res responseText]]
+				ifTrue: [ aBlock value: res responseText ]
+				ifFalse: [ errorBlock value: res responseText ] ]
 	}
 !
 
@@ -173,8 +212,8 @@ post: anURLString data: aDataString do: aBlock onError: errorBlock
 		'complete' -> [:res |
 			self trigger: 'afterAJAX'.
 			res status = 200
-				ifTrue: [aBlock value: res responseText]
-				ifFalse: [errorBlock value: res]]
+				ifTrue: [ aBlock value: res responseText ]
+				ifFalse: [ errorBlock value: res ] ]
 	}
 !
 
@@ -189,13 +228,36 @@ put: anURLString data: aDataString do: aBlock onError: errorBlock
 		'complete' -> [:res |
 			self trigger: 'afterAJAX'.
 			res status = 200
-				ifTrue: [aBlock value: res responseText]
-				ifFalse: [errorBlock value: res]]
+				ifTrue: [ aBlock value: res responseText ]
+				ifFalse: [ errorBlock value: res ] ]
 	}
 ! !
 
+!RESTfulAPI methodsFor: 'initialization'!
+
+initializeAPIPath
+
+	^ apiPath := 'api/1.0'
+!
+
+initializeURI
+
+	^ window location hostname = 'localhost' 
+		ifTrue:[ uri := self class protocol,'//',window location hostname,':',self class port asString,'/', self apiPath]
+		ifFalse:[ uri := self class protocol,'//',window location hostname, '/', self apiPath]
+! !
+
+!RESTfulAPI class methodsFor: 'accessing'!
+
+protocol
+
+	^ self isSSL
+		ifTrue:[ 'https:' ]
+		ifFalse:[ 'http:' ]
+! !
+
 APIStrategy subclass: #WebSocketAPI
-	instanceVariableNames: 'socket uri onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter localAnswers localErrors published'
+	instanceVariableNames: 'socket onOpenBlock onCloseBlock onMessageBlock onErrorBlock counter localAnswers localErrors published'
 	package: 'Flow-API'!
 !WebSocketAPI commentStamp!
 ## WebSocketAPI
@@ -299,16 +361,6 @@ published
 socket
 
 	^ socket ifNil:[ self initializeSocket ]
-!
-
-uri
-
-	^ uri ifNil:[ self initializeURI ]
-!
-
-uri: aString
-
-	uri := aString
 ! !
 
 !WebSocketAPI methodsFor: 'actions'!
@@ -499,6 +551,11 @@ initialize
 		self reset ]
 !
 
+initializeAPIPath
+
+	^ apiPath := 'ws'
+!
+
 initializeSocket
 	
 	^ socket := (self newWebSocketOn: self uri)
@@ -512,8 +569,8 @@ initializeSocket
 initializeURI
 
 	^ window location hostname = 'localhost' 
-		ifTrue:[ uri := 'ws://',window location hostname,':',self class port asString,'/ws' ]
-		ifFalse:[ uri := 'ws://',window location hostname, '/ws' ]
+		ifTrue:[ uri := self class protocol,'//',window location hostname,':',self class port asString,'/',self apiPath ]
+		ifFalse:[ uri := self class protocol,'//',window location hostname, '/',self apiPath ]
 ! !
 
 !WebSocketAPI methodsFor: 'reactions'!
@@ -575,6 +632,13 @@ isDisconnected
 port
 
 	^ 3333
+!
+
+protocol
+
+	^ self isSSL
+		ifTrue:[ 'wss:' ]
+		ifFalse:[ 'ws:' ]
 ! !
 
 Mapless subclass: #RR

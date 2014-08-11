@@ -57,7 +57,7 @@ $1=self["@ws"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"initializeWs",{},globals.APIClient)})},
 args: [],
-source: "initializeWs\x0a\x0a\x09^ ws := WebSocketAPI new\x0a\x09\x09\x09\x09\x09when: 'commandReceived:' do:[ :cmd | self onCommand: cmd ];\x0a\x09\x09\x09\x09\x09yourself",
+source: "initializeWs\x0a\x09\x22Initializes the WebSocket API\x22\x0a\x0a\x09^ ws := WebSocketAPI new\x0a\x09\x09\x09\x09when: 'commandReceived:' do:[ :cmd | self onCommand: cmd ];\x0a\x09\x09\x09\x09yourself",
 messageSends: ["when:do:", "new", "onCommand:", "yourself"],
 referencedClasses: ["WebSocketAPI"]
 }),
@@ -257,8 +257,120 @@ globals.APIError.klass);
 smalltalk.addClass('APIRemoteException', globals.APIError, [], 'Flow-API');
 
 
-smalltalk.addClass('APIStrategy', globals.Object, [], 'Flow-API');
+smalltalk.addClass('APIStrategy', globals.Object, ['uri', 'apiPath'], 'Flow-API');
 globals.APIStrategy.comment="## APIStrategy is an abstraction\x0a\x0aSee concrete subclasses of API for concrete backend interaction\x0a";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "apiPath",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@apiPath"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeAPIPath();
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"apiPath",{},globals.APIStrategy)})},
+args: [],
+source: "apiPath\x0a\x0a\x09^ apiPath ifNil:[ self initializeAPIPath ]",
+messageSends: ["ifNil:", "initializeAPIPath"],
+referencedClasses: []
+}),
+globals.APIStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "apiPath:",
+protocol: 'accessing',
+fn: function (aString){
+var self=this;
+self["@apiPath"]=aString;
+return self},
+args: ["aString"],
+source: "apiPath: aString\x0a\x0a\x09apiPath := aString",
+messageSends: [],
+referencedClasses: []
+}),
+globals.APIStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isSSL",
+protocol: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._class())._isSSL();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isSSL",{},globals.APIStrategy)})},
+args: [],
+source: "isSSL\x0a\x09\x22Answers true if all this is going over SSL.\x22\x0a\x09\x0a\x09^ self class isSSL",
+messageSends: ["isSSL", "class"],
+referencedClasses: []
+}),
+globals.APIStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "uri",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@uri"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeURI();
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"uri",{},globals.APIStrategy)})},
+args: [],
+source: "uri\x0a\x0a\x09^ uri ifNil:[ self initializeURI ]",
+messageSends: ["ifNil:", "initializeURI"],
+referencedClasses: []
+}),
+globals.APIStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "uri:",
+protocol: 'accessing',
+fn: function (aString){
+var self=this;
+self["@uri"]=aString;
+return self},
+args: ["aString"],
+source: "uri: aString\x0a\x0a\x09uri := aString",
+messageSends: [],
+referencedClasses: []
+}),
+globals.APIStrategy);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isSSL",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(window)._location())._protocol()).__eq("https:");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isSSL",{},globals.APIStrategy.klass)})},
+args: [],
+source: "isSSL\x0a\x09\x22Answers true if all this is going over SSL.\x22\x0a\x09\x0a\x09^ window location protocol = 'https:' \x0a\x09",
+messageSends: ["=", "protocol", "location"],
+referencedClasses: []
+}),
+globals.APIStrategy.klass);
 
 
 smalltalk.addClass('RESTfulAPI', globals.APIStrategy, [], 'Flow-API');
@@ -286,7 +398,7 @@ return _st(errorBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"delete:do:onError:",{anURLString:anURLString,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
 args: ["anURLString", "aBlock", "errorBlock"],
-source: "delete: anURLString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'DELETE'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
+source: "delete: anURLString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'DELETE'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [ aBlock value: res responseText ]\x0a\x09\x09\x09\x09ifFalse: [ errorBlock value: res ] ]\x0a\x09}",
 messageSends: ["trigger:", "ajax:options:", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
 referencedClasses: []
 }),
@@ -317,8 +429,85 @@ return _st(errorBlock)._value_(_st(res)._responseText());
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"get:do:onError:",{anURLString:anURLString,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
 args: ["anURLString", "aBlock", "errorBlock"],
-source: "get: anURLString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'GET'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res responseText]]\x0a\x09}",
+source: "get: anURLString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'GET'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [ aBlock value: res responseText ]\x0a\x09\x09\x09\x09ifFalse: [ errorBlock value: res responseText ] ]\x0a\x09}",
 messageSends: ["trigger:", "ajax:options:", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
+referencedClasses: []
+}),
+globals.RESTfulAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeAPIPath",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+var $1;
+self["@apiPath"]="api/1.0";
+$1=self["@apiPath"];
+return $1;
+},
+args: [],
+source: "initializeAPIPath\x0a\x0a\x09^ apiPath := 'api/1.0'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.RESTfulAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeURI",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $4,$3,$2,$11,$10,$9,$13,$12,$8,$7,$16,$15,$14,$6,$5,$17,$19,$18,$1;
+$4=_st(window)._location();
+$ctx1.sendIdx["location"]=1;
+$3=_st($4)._hostname();
+$ctx1.sendIdx["hostname"]=1;
+$2=_st($3).__eq("localhost");
+if(smalltalk.assert($2)){
+$11=self._class();
+$ctx1.sendIdx["class"]=1;
+$10=_st($11)._protocol();
+$ctx1.sendIdx["protocol"]=1;
+$9=_st($10).__comma("//");
+$ctx1.sendIdx[","]=6;
+$13=_st(window)._location();
+$ctx1.sendIdx["location"]=2;
+$12=_st($13)._hostname();
+$ctx1.sendIdx["hostname"]=2;
+$8=_st($9).__comma($12);
+$ctx1.sendIdx[","]=5;
+$7=_st($8).__comma(":");
+$ctx1.sendIdx[","]=4;
+$16=self._class();
+$ctx1.sendIdx["class"]=2;
+$15=_st($16)._port();
+$14=_st($15)._asString();
+$6=_st($7).__comma($14);
+$ctx1.sendIdx[","]=3;
+$5=_st($6).__comma("/");
+$ctx1.sendIdx[","]=2;
+$17=self._apiPath();
+$ctx1.sendIdx["apiPath"]=1;
+self["@uri"]=_st($5).__comma($17);
+$ctx1.sendIdx[","]=1;
+$1=self["@uri"];
+} else {
+$19=_st(_st(_st(self._class())._protocol()).__comma("//")).__comma(_st(_st(window)._location())._hostname());
+$ctx1.sendIdx[","]=9;
+$18=_st($19).__comma("/");
+$ctx1.sendIdx[","]=8;
+self["@uri"]=_st($18).__comma(self._apiPath());
+$ctx1.sendIdx[","]=7;
+$1=self["@uri"];
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"initializeURI",{},globals.RESTfulAPI)})},
+args: [],
+source: "initializeURI\x0a\x0a\x09^ window location hostname = 'localhost' \x0a\x09\x09ifTrue:[ uri := self class protocol,'//',window location hostname,':',self class port asString,'/', self apiPath]\x0a\x09\x09ifFalse:[ uri := self class protocol,'//',window location hostname, '/', self apiPath]",
+messageSends: ["ifTrue:ifFalse:", "=", "hostname", "location", ",", "protocol", "class", "asString", "port", "apiPath"],
 referencedClasses: []
 }),
 globals.RESTfulAPI);
@@ -346,7 +535,7 @@ return _st(errorBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"post:data:do:onError:",{anURLString:anURLString,aDataString:aDataString,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
 args: ["anURLString", "aDataString", "aBlock", "errorBlock"],
-source: "post: anURLString data: aDataString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aDataString.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
+source: "post: anURLString data: aDataString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'POST'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aDataString.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [ aBlock value: res responseText ]\x0a\x09\x09\x09\x09ifFalse: [ errorBlock value: res ] ]\x0a\x09}",
 messageSends: ["trigger:", "ajax:options:", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
 referencedClasses: []
 }),
@@ -375,15 +564,38 @@ return _st(errorBlock)._value_(res);
 }, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})})]));
 return self}, function($ctx1) {$ctx1.fill(self,"put:data:do:onError:",{anURLString:anURLString,aDataString:aDataString,aBlock:aBlock,errorBlock:errorBlock},globals.RESTfulAPI)})},
 args: ["anURLString", "aDataString", "aBlock", "errorBlock"],
-source: "put: anURLString data: aDataString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'PUT'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aDataString.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [aBlock value: res responseText]\x0a\x09\x09\x09\x09ifFalse: [errorBlock value: res]]\x0a\x09}",
+source: "put: anURLString data: aDataString do: aBlock onError: errorBlock\x0a\x0a\x09self trigger: 'aboutToAJAX'.\x0a\x0a\x09jQuery ajax: anURLString options: #{\x0a\x09\x09'type' -> 'PUT'.\x0a\x09\x09'contentType' -> 'text/json'.\x0a\x09\x09'data' -> aDataString.\x0a\x09\x09'complete' -> [:res |\x0a\x09\x09\x09self trigger: 'afterAJAX'.\x0a\x09\x09\x09res status = 200\x0a\x09\x09\x09\x09ifTrue: [ aBlock value: res responseText ]\x0a\x09\x09\x09\x09ifFalse: [ errorBlock value: res ] ]\x0a\x09}",
 messageSends: ["trigger:", "ajax:options:", "ifTrue:ifFalse:", "=", "status", "value:", "responseText"],
 referencedClasses: []
 }),
 globals.RESTfulAPI);
 
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "protocol",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=self._isSSL();
+if(smalltalk.assert($2)){
+$1="https:";
+} else {
+$1="http:";
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"protocol",{},globals.RESTfulAPI.klass)})},
+args: [],
+source: "protocol\x0a\x0a\x09^ self isSSL\x0a\x09\x09ifTrue:[ 'https:' ]\x0a\x09\x09ifFalse:[ 'http:' ]",
+messageSends: ["ifTrue:ifFalse:", "isSSL"],
+referencedClasses: []
+}),
+globals.RESTfulAPI.klass);
 
-smalltalk.addClass('WebSocketAPI', globals.APIStrategy, ['socket', 'uri', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock', 'counter', 'localAnswers', 'localErrors', 'published'], 'Flow-API');
+
+smalltalk.addClass('WebSocketAPI', globals.APIStrategy, ['socket', 'onOpenBlock', 'onCloseBlock', 'onMessageBlock', 'onErrorBlock', 'counter', 'localAnswers', 'localErrors', 'published'], 'Flow-API');
 globals.WebSocketAPI.comment="## WebSocketAPI\x0a\x0aThis API is WebSockets based (so is full-duplex)";
 smalltalk.addMethod(
 smalltalk.method({
@@ -564,6 +776,24 @@ globals.WebSocketAPI);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeAPIPath",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+var $1;
+self["@apiPath"]="ws";
+$1=self["@apiPath"];
+return $1;
+},
+args: [],
+source: "initializeAPIPath\x0a\x0a\x09^ apiPath := 'ws'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.WebSocketAPI);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeSocket",
 protocol: 'initialization',
 fn: function (){
@@ -594,36 +824,54 @@ protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $4,$3,$2,$9,$8,$7,$6,$5,$1;
+var $4,$3,$2,$11,$10,$9,$13,$12,$8,$7,$16,$15,$14,$6,$5,$17,$19,$18,$1;
 $4=_st(window)._location();
 $ctx1.sendIdx["location"]=1;
 $3=_st($4)._hostname();
 $ctx1.sendIdx["hostname"]=1;
 $2=_st($3).__eq("localhost");
 if(smalltalk.assert($2)){
-$9=_st(window)._location();
+$11=self._class();
+$ctx1.sendIdx["class"]=1;
+$10=_st($11)._protocol();
+$ctx1.sendIdx["protocol"]=1;
+$9=_st($10).__comma("//");
+$ctx1.sendIdx[","]=6;
+$13=_st(window)._location();
 $ctx1.sendIdx["location"]=2;
-$8=_st($9)._hostname();
+$12=_st($13)._hostname();
 $ctx1.sendIdx["hostname"]=2;
-$7="ws://".__comma($8);
+$8=_st($9).__comma($12);
+$ctx1.sendIdx[","]=5;
+$7=_st($8).__comma(":");
 $ctx1.sendIdx[","]=4;
-$6=_st($7).__comma(":");
+$16=self._class();
+$ctx1.sendIdx["class"]=2;
+$15=_st($16)._port();
+$14=_st($15)._asString();
+$6=_st($7).__comma($14);
 $ctx1.sendIdx[","]=3;
-$5=_st($6).__comma(_st(_st(self._class())._port())._asString());
+$5=_st($6).__comma("/");
 $ctx1.sendIdx[","]=2;
-self["@uri"]=_st($5).__comma("/ws");
+$17=self._apiPath();
+$ctx1.sendIdx["apiPath"]=1;
+self["@uri"]=_st($5).__comma($17);
 $ctx1.sendIdx[","]=1;
 $1=self["@uri"];
 } else {
-self["@uri"]=_st("ws://".__comma(_st(_st(window)._location())._hostname())).__comma("/ws");
-$ctx1.sendIdx[","]=5;
+$19=_st(_st(_st(self._class())._protocol()).__comma("//")).__comma(_st(_st(window)._location())._hostname());
+$ctx1.sendIdx[","]=9;
+$18=_st($19).__comma("/");
+$ctx1.sendIdx[","]=8;
+self["@uri"]=_st($18).__comma(self._apiPath());
+$ctx1.sendIdx[","]=7;
 $1=self["@uri"];
 };
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"initializeURI",{},globals.WebSocketAPI)})},
 args: [],
-source: "initializeURI\x0a\x0a\x09^ window location hostname = 'localhost' \x0a\x09\x09ifTrue:[ uri := 'ws://',window location hostname,':',self class port asString,'/ws' ]\x0a\x09\x09ifFalse:[ uri := 'ws://',window location hostname, '/ws' ]",
-messageSends: ["ifTrue:ifFalse:", "=", "hostname", "location", ",", "asString", "port", "class"],
+source: "initializeURI\x0a\x0a\x09^ window location hostname = 'localhost' \x0a\x09\x09ifTrue:[ uri := self class protocol,'//',window location hostname,':',self class port asString,'/',self apiPath ]\x0a\x09\x09ifFalse:[ uri := self class protocol,'//',window location hostname, '/',self apiPath ]",
+messageSends: ["ifTrue:ifFalse:", "=", "hostname", "location", ",", "protocol", "class", "asString", "port", "apiPath"],
 referencedClasses: []
 }),
 globals.WebSocketAPI);
@@ -1348,44 +1596,6 @@ referencedClasses: []
 }),
 globals.WebSocketAPI);
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "uri",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@uri"];
-if(($receiver = $2) == null || $receiver.isNil){
-$1=self._initializeURI();
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"uri",{},globals.WebSocketAPI)})},
-args: [],
-source: "uri\x0a\x0a\x09^ uri ifNil:[ self initializeURI ]",
-messageSends: ["ifNil:", "initializeURI"],
-referencedClasses: []
-}),
-globals.WebSocketAPI);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "uri:",
-protocol: 'accessing',
-fn: function (aString){
-var self=this;
-self["@uri"]=aString;
-return self},
-args: ["aString"],
-source: "uri: aString\x0a\x0a\x09uri := aString",
-messageSends: [],
-referencedClasses: []
-}),
-globals.WebSocketAPI);
-
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1398,6 +1608,29 @@ return (3333);
 args: [],
 source: "port\x0a\x0a\x09^ 3333",
 messageSends: [],
+referencedClasses: []
+}),
+globals.WebSocketAPI.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "protocol",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=self._isSSL();
+if(smalltalk.assert($2)){
+$1="wss:";
+} else {
+$1="ws:";
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"protocol",{},globals.WebSocketAPI.klass)})},
+args: [],
+source: "protocol\x0a\x0a\x09^ self isSSL\x0a\x09\x09ifTrue:[ 'wss:' ]\x0a\x09\x09ifFalse:[ 'ws:' ]",
+messageSends: ["ifTrue:ifFalse:", "isSSL"],
 referencedClasses: []
 }),
 globals.WebSocketAPI.klass);

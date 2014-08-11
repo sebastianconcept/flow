@@ -3,4 +3,5 @@ isHandlerFor: aRequest
 	"Answers true if this handler should 
 	take care of aRequest or completely ignore it."
 
-	^ aRequest uri scheme = 'ws'
+	^ aRequest uri scheme = 'ws' or:[
+	aRequest uri scheme = 'wss' ]

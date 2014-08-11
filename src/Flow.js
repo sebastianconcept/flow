@@ -129,15 +129,14 @@ return smalltalk.withContext(function($ctx1) {
 self._backendScaffold_do_onError_(aString,(function(res){
 return smalltalk.withContext(function($ctx2) {
 return self._frontendScaffold_(aString);
-}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}),(function(x){
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}),(function(res){
 return smalltalk.withContext(function($ctx2) {
-_st(x)._inspect();
-return self._error_("Backend scaffolding failed: ".__comma(_st(_st(x)._messageText())._asString()));
-}, function($ctx2) {$ctx2.fillBlock({x:x},$ctx1,2)})}));
+return self._error_(_st(res)._responseText());
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,2)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"scaffold:",{aString:aString},globals.MaplessGenerator.klass)})},
 args: ["aString"],
-source: "scaffold: aString\x0a\x09\x22Scaffold what's relevnt to this generator\x22\x0a\x09\x0a\x09self backendScaffold: aString \x0a\x09\x09do:[ :res | self frontendScaffold: aString ]\x0a\x09\x09onError:[ :x | \x0a\x09\x09\x09x inspect.\x0a\x09\x09\x09self error: 'Backend scaffolding failed: ', x messageText asString ]",
-messageSends: ["backendScaffold:do:onError:", "frontendScaffold:", "inspect", "error:", ",", "asString", "messageText"],
+source: "scaffold: aString\x0a\x09\x22Scaffold what's relevnt to this generator\x22\x0a\x09\x0a\x09self backendScaffold: aString \x0a\x09\x09do:[ :res | self frontendScaffold: aString ]\x0a\x09\x09onError:[ :res | \x0a\x09\x09\x09self error: res responseText ]",
+messageSends: ["backendScaffold:do:onError:", "frontendScaffold:", "error:", "responseText"],
 referencedClasses: []
 }),
 globals.MaplessGenerator.klass);
@@ -151,17 +150,17 @@ var self=this;
 function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
 return smalltalk.withContext(function($ctx1) { 
 var $3,$2,$1;
-$3=_st("http://".__comma(_st(window)._location())).__comma(_st($Mapless())._basePath());
+$3=_st(_st(_st(_st(window)._location())._asString()).__comma(_st($Mapless())._basePath())).__comma("/generate");
 $ctx1.sendIdx[","]=3;
-$2=_st($3).__comma("/generate");
+$2=_st($3).__comma(self._command());
 $ctx1.sendIdx[","]=2;
-$1=_st($2).__comma(self._command());
+$1=_st($2).__comma("/");
 $ctx1.sendIdx[","]=1;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"url",{},globals.MaplessGenerator.klass)})},
 args: [],
-source: "url\x0a\x0a\x09^ 'http://',window location,Mapless basePath,'/generate',self command",
-messageSends: [",", "location", "basePath", "command"],
+source: "url\x0a\x0a\x09^ window location asString,Mapless basePath,'/generate',self command,'/'",
+messageSends: [",", "asString", "location", "basePath", "command"],
 referencedClasses: ["Mapless"]
 }),
 globals.MaplessGenerator.klass);

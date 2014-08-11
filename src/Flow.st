@@ -40,7 +40,7 @@ parentClass
 
 url
 
-	^ 'http://',window location,Mapless basePath,'/generate',self command
+	^ window location asString,Mapless basePath,'/generate',self command,'/'
 ! !
 
 !MaplessGenerator class methodsFor: 'actions'!
@@ -67,9 +67,8 @@ scaffold: aString
 	
 	self backendScaffold: aString 
 		do:[ :res | self frontendScaffold: aString ]
-		onError:[ :x | 
-			x inspect.
-			self error: 'Backend scaffolding failed: ', x messageText asString ]
+		onError:[ :res | 
+			self error: res responseText ]
 ! !
 
 MaplessGenerator subclass: #ModelGenerator

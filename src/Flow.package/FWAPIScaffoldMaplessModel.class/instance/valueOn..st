@@ -3,8 +3,8 @@ valueOn: aHandler
 	"Executes this command for aHandler and the request ."
 		
 	^ self databaseDo: [ | newMaplessName |
-		self halt.
 		newMaplessName :=  self request contents.
+		self halt.
 		newMaplessName
 			ifNil:[ ZnResponse ok: (ZnStringEntity text: false asJSONString) ]
 			ifNotNil:[
