@@ -3,6 +3,20 @@ Object subclass: #AbsrtactGenerator
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+AbsrtactGenerator class instanceVariableNames: 'api'!
+
+!AbsrtactGenerator class methodsFor: 'accessing'!
+
+api
+
+	^ api ifNil:[ api := RESTfulAPI new ]
+!
+
+url
+
+	^ window location asString,Mapless basePath,'/generate',self command,'/'
+! !
+
 !AbsrtactGenerator class methodsFor: 'actions'!
 
 scaffold: anObject
@@ -15,18 +29,18 @@ AbsrtactGenerator subclass: #CRUDGenerator
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+!CRUDGenerator class methodsFor: 'accessing'!
+
+command
+
+	^ '/crud'
+! !
+
 AbsrtactGenerator subclass: #MaplessGenerator
 	instanceVariableNames: ''
 	package: 'Flow'!
 
-MaplessGenerator class instanceVariableNames: 'api'!
-
 !MaplessGenerator class methodsFor: 'accessing'!
-
-api
-
-	^ api ifNil:[ api := RESTfulAPI new ]
-!
 
 command
 
@@ -36,11 +50,6 @@ command
 parentClass
 
 	^ Mapless
-!
-
-url
-
-	^ window location asString,Mapless basePath,'/generate',self command,'/'
 ! !
 
 !MaplessGenerator class methodsFor: 'actions'!
@@ -144,6 +153,20 @@ packageName: aString
 !Generator class methodsFor: 'actions'!
 
 crud: aMaplessClassOrName
+
+	^ self crudModel: aMaplessClassOrName
+!
+
+crudMapless: aMaplessClassOrName
+
+	self mapless: aMaplessClassOrName.
+
+	^ self crudGenerator scaffold: aMaplessClassOrName
+!
+
+crudModel: aMaplessClassOrName
+
+	self model: aMaplessClassOrName.
 
 	^ self crudGenerator scaffold: aMaplessClassOrName
 !

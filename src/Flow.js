@@ -5,6 +5,32 @@ smalltalk.packages["Flow"].transport = {"type":"amd","amdNamespace":"app"};
 
 smalltalk.addClass('AbsrtactGenerator', globals.Object, [], 'Flow');
 
+globals.AbsrtactGenerator.klass.iVarNames = ['api'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "api",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $RESTfulAPI(){return globals.RESTfulAPI||(typeof RESTfulAPI=="undefined"?nil:RESTfulAPI)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@api"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@api"]=_st($RESTfulAPI())._new();
+$1=self["@api"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"api",{},globals.AbsrtactGenerator.klass)})},
+args: [],
+source: "api\x0a\x0a\x09^ api ifNil:[ api := RESTfulAPI new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: ["RESTfulAPI"]
+}),
+globals.AbsrtactGenerator.klass);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "scaffold:",
@@ -23,37 +49,50 @@ referencedClasses: []
 }),
 globals.AbsrtactGenerator.klass);
 
-
-smalltalk.addClass('CRUDGenerator', globals.AbsrtactGenerator, [], 'Flow');
-
-
-smalltalk.addClass('MaplessGenerator', globals.AbsrtactGenerator, [], 'Flow');
-
-globals.MaplessGenerator.klass.iVarNames = ['api'];
 smalltalk.addMethod(
 smalltalk.method({
-selector: "api",
+selector: "url",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $RESTfulAPI(){return globals.RESTfulAPI||(typeof RESTfulAPI=="undefined"?nil:RESTfulAPI)}
+function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@api"];
-if(($receiver = $2) == null || $receiver.isNil){
-self["@api"]=_st($RESTfulAPI())._new();
-$1=self["@api"];
-} else {
-$1=$2;
-};
+var $3,$2,$1;
+$3=_st(_st(_st(_st(window)._location())._asString()).__comma(_st($Mapless())._basePath())).__comma("/generate");
+$ctx1.sendIdx[","]=3;
+$2=_st($3).__comma(self._command());
+$ctx1.sendIdx[","]=2;
+$1=_st($2).__comma("/");
+$ctx1.sendIdx[","]=1;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"api",{},globals.MaplessGenerator.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"url",{},globals.AbsrtactGenerator.klass)})},
 args: [],
-source: "api\x0a\x0a\x09^ api ifNil:[ api := RESTfulAPI new ]",
-messageSends: ["ifNil:", "new"],
-referencedClasses: ["RESTfulAPI"]
+source: "url\x0a\x0a\x09^ window location asString,Mapless basePath,'/generate',self command,'/'",
+messageSends: [",", "asString", "location", "basePath", "command"],
+referencedClasses: ["Mapless"]
 }),
-globals.MaplessGenerator.klass);
+globals.AbsrtactGenerator.klass);
+
+
+smalltalk.addClass('CRUDGenerator', globals.AbsrtactGenerator, [], 'Flow');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "command",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return "/crud";
+},
+args: [],
+source: "command\x0a\x0a\x09^ '/crud'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.CRUDGenerator.klass);
+
+
+smalltalk.addClass('MaplessGenerator', globals.AbsrtactGenerator, [], 'Flow');
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -138,30 +177,6 @@ args: ["aString"],
 source: "scaffold: aString\x0a\x09\x22Scaffold what's relevnt to this generator\x22\x0a\x09\x0a\x09self backendScaffold: aString \x0a\x09\x09do:[ :res | self frontendScaffold: aString ]\x0a\x09\x09onError:[ :res | \x0a\x09\x09\x09self error: res responseText ]",
 messageSends: ["backendScaffold:do:onError:", "frontendScaffold:", "error:", "responseText"],
 referencedClasses: []
-}),
-globals.MaplessGenerator.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "url",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
-return smalltalk.withContext(function($ctx1) { 
-var $3,$2,$1;
-$3=_st(_st(_st(_st(window)._location())._asString()).__comma(_st($Mapless())._basePath())).__comma("/generate");
-$ctx1.sendIdx[","]=3;
-$2=_st($3).__comma(self._command());
-$ctx1.sendIdx[","]=2;
-$1=_st($2).__comma("/");
-$ctx1.sendIdx[","]=1;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"url",{},globals.MaplessGenerator.klass)})},
-args: [],
-source: "url\x0a\x0a\x09^ window location asString,Mapless basePath,'/generate',self command,'/'",
-messageSends: [",", "asString", "location", "basePath", "command"],
-referencedClasses: ["Mapless"]
 }),
 globals.MaplessGenerator.klass);
 
@@ -266,12 +281,12 @@ fn: function (aMaplessClassOrName){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._crudGenerator())._scaffold_(aMaplessClassOrName);
+$1=self._crudModel_(aMaplessClassOrName);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"crud:",{aMaplessClassOrName:aMaplessClassOrName},globals.Generator.klass)})},
 args: ["aMaplessClassOrName"],
-source: "crud: aMaplessClassOrName\x0a\x0a\x09^ self crudGenerator scaffold: aMaplessClassOrName",
-messageSends: ["scaffold:", "crudGenerator"],
+source: "crud: aMaplessClassOrName\x0a\x0a\x09^ self crudModel: aMaplessClassOrName",
+messageSends: ["crudModel:"],
 referencedClasses: []
 }),
 globals.Generator.klass);
@@ -289,6 +304,44 @@ args: [],
 source: "crudGenerator\x0a\x0a\x09^ CRUDGenerator ",
 messageSends: [],
 referencedClasses: ["CRUDGenerator"]
+}),
+globals.Generator.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "crudMapless:",
+protocol: 'actions',
+fn: function (aMaplessClassOrName){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self._mapless_(aMaplessClassOrName);
+$1=_st(self._crudGenerator())._scaffold_(aMaplessClassOrName);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"crudMapless:",{aMaplessClassOrName:aMaplessClassOrName},globals.Generator.klass)})},
+args: ["aMaplessClassOrName"],
+source: "crudMapless: aMaplessClassOrName\x0a\x0a\x09self mapless: aMaplessClassOrName.\x0a\x0a\x09^ self crudGenerator scaffold: aMaplessClassOrName",
+messageSends: ["mapless:", "scaffold:", "crudGenerator"],
+referencedClasses: []
+}),
+globals.Generator.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "crudModel:",
+protocol: 'actions',
+fn: function (aMaplessClassOrName){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self._model_(aMaplessClassOrName);
+$1=_st(self._crudGenerator())._scaffold_(aMaplessClassOrName);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"crudModel:",{aMaplessClassOrName:aMaplessClassOrName},globals.Generator.klass)})},
+args: ["aMaplessClassOrName"],
+source: "crudModel: aMaplessClassOrName\x0a\x0a\x09self model: aMaplessClassOrName.\x0a\x0a\x09^ self crudGenerator scaffold: aMaplessClassOrName",
+messageSends: ["model:", "scaffold:", "crudGenerator"],
+referencedClasses: []
 }),
 globals.Generator.klass);
 
