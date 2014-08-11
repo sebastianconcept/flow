@@ -58,7 +58,7 @@ var self=this;
 function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
 return smalltalk.withContext(function($ctx1) { 
 var $3,$2,$1;
-$3=_st(_st(_st(_st(window)._location())._asString()).__comma(_st($Mapless())._basePath())).__comma("/generate");
+$3=_st(_st(_st(_st(window)._location())._asString()).__comma(_st($Mapless())._basePath())).__comma("/scaffold");
 $ctx1.sendIdx[","]=3;
 $2=_st($3).__comma(self._command());
 $ctx1.sendIdx[","]=2;
@@ -67,7 +67,7 @@ $ctx1.sendIdx[","]=1;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"url",{},globals.AbsrtactScaffolder.klass)})},
 args: [],
-source: "url\x0a\x0a\x09^ window location asString,Mapless basePath,'/generate',self command,'/'",
+source: "url\x0a\x0a\x09^ window location asString,Mapless basePath,'/scaffold',self command,'/'",
 messageSends: [",", "asString", "location", "basePath", "command"],
 referencedClasses: ["Mapless"]
 }),

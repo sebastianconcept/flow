@@ -6,4 +6,4 @@ isValidFor: aRequest
 	Flow isProduction not and:[
 	aRequest uri segments size >= 5 and:[
 	aRequest uri segments third = 'scaffold' and:[
-	aRequest uri segments fourth = 'model' ] ] ] ]
+	aRequest uri segments fourth = 'crud' ] ] ] ]

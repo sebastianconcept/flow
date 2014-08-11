@@ -14,7 +14,7 @@ api
 
 url
 
-	^ window location asString,Mapless basePath,'/generate',self command,'/'
+	^ window location asString,Mapless basePath,'/scaffold',self command,'/'
 ! !
 
 !AbsrtactScaffolder class methodsFor: 'actions'!
