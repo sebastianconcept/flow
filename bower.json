@@ -28,6 +28,7 @@
   "dependencies": {
     "amber": "~0.12.4",
     "text": "requirejs/text#~2.0.12",
-    "rivets": "~0.6.9"
+    "rivets": "~0.6.9",
+    "bootstrap": "~3.2.0"
   }
 }

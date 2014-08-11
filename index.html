@@ -7,6 +7,7 @@
     <meta name="author" content="Sebastian Sastre" />
     <script type='text/javascript' src='bower_components/amber/support/requirejs/require.min.js'></script>
     <script type='text/javascript' src='bower_components/amber/support/amber.js'></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   </head>
 
   <body>
@@ -37,7 +38,8 @@
           smalltalk.initialize({
             'transport.defaultAmdNamespace': "app"
           });
-          require('amber/helpers').globals.AppController._open()
+          require(['bower/bootstrap/dist/js/bootstrap.min']);
+          require('amber/helpers').globals.AppController._open();
       });
     </script>
 
@@ -50,6 +52,7 @@
         src="static/img/tinylogo.png" 
         onclick="require('amber/helpers').popupHelios()"
         style="position: fixed; bottom: 0; right: 30px"></img>
+
   </body>
 
 </html>
