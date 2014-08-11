@@ -4,9 +4,9 @@ valueOn: aHandler
 		
 	^ self databaseDo: [ | newMaplessName |
 		newMaplessName :=  self request contents.
-		self halt.
 		newMaplessName
 			ifNil:[ ZnResponse ok: (ZnStringEntity text: false asJSONString) ]
 			ifNotNil:[
+				self scaffold: newMaplessName.
 				ZnResponse ok: (ZnStringEntity text: true asJSONString) ] ]
 	 

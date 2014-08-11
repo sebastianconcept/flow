@@ -54,7 +54,7 @@ backendScaffold: aString do: aBlock onError: anErrorBlock
 		onError: anErrorBlock
 !
 
-frontEndScaffold: aString
+frontendScaffold: aString
 	
 	self parentClass 
 		subclass: aString 
@@ -99,6 +99,11 @@ gen
 !
 
 generate
+
+	^ self generator
+!
+
+generator
 
 	^ Generator
 ! !

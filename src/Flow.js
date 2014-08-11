@@ -88,16 +88,16 @@ globals.MaplessGenerator.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "frontEndScaffold:",
+selector: "frontendScaffold:",
 protocol: 'actions',
 fn: function (aString){
 var self=this;
 function $Flow(){return globals.Flow||(typeof Flow=="undefined"?nil:Flow)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self._parentClass())._subclass_instanceVariableNames_package_(aString,"",_st(_st($Flow())._generator())._packageName());
-return self}, function($ctx1) {$ctx1.fill(self,"frontEndScaffold:",{aString:aString},globals.MaplessGenerator.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"frontendScaffold:",{aString:aString},globals.MaplessGenerator.klass)})},
 args: ["aString"],
-source: "frontEndScaffold: aString\x0a\x09\x0a\x09self parentClass \x0a\x09\x09subclass: aString \x0a\x09\x09instanceVariableNames: '' \x0a\x09\x09package: Flow generator packageName",
+source: "frontendScaffold: aString\x0a\x09\x0a\x09self parentClass \x0a\x09\x09subclass: aString \x0a\x09\x09instanceVariableNames: '' \x0a\x09\x09package: Flow generator packageName",
 messageSends: ["subclass:instanceVariableNames:package:", "parentClass", "packageName", "generator"],
 referencedClasses: ["Flow"]
 }),
@@ -226,11 +226,29 @@ selector: "generate",
 protocol: 'accessing',
 fn: function (){
 var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._generator();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"generate",{},globals.Flow.klass)})},
+args: [],
+source: "generate\x0a\x0a\x09^ self generator",
+messageSends: ["generator"],
+referencedClasses: []
+}),
+globals.Flow.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "generator",
+protocol: 'accessing',
+fn: function (){
+var self=this;
 function $Generator(){return globals.Generator||(typeof Generator=="undefined"?nil:Generator)}
 return $Generator();
 },
 args: [],
-source: "generate\x0a\x0a\x09^ Generator",
+source: "generator\x0a\x0a\x09^ Generator",
 messageSends: [],
 referencedClasses: ["Generator"]
 }),

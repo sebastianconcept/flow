@@ -4,5 +4,5 @@ isValidFor: aRequest
 
 	^ (super isValidFor: aRequest) and:[
 	aRequest uri segments size >= 5 and:[
-	aRequest uri segments fourth = 'generate' and:[
-	(aRequest uri segments at: 5) = 'mapless' ] ] ]
+	aRequest uri segments third = 'generate' and:[
+	aRequest uri segments fourth = 'mapless' ] ] ]
