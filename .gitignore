@@ -1,4 +1,4 @@
-/node_modules
+/backend/node_modules
 /bower_components
 /test_runner
 /dist

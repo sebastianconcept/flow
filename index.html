@@ -16,7 +16,7 @@
 
     <script type='text/javascript'>
       require.config({ paths: {
-          'app': 'frontend', //mapping compiled .js files and smalltalk source files
+          'app': 'frontend/src', //mapping compiled .js files and smalltalk source files
           'bower': 'bower_components'
       }});
       require([
@@ -44,12 +44,12 @@
     </script>
 
     <img id="ide" 
-        src="static/img/tinylogo.png" 
+        src="public/img/tinylogo.png" 
         onclick="require('amber/helpers').globals.Browser._open()"
         style="position: fixed; bottom: 0; right: 0"></img>
 
     <img id="ide" 
-        src="static/img/tinylogo.png" 
+        src="public/img/tinylogo.png" 
         onclick="require('amber/helpers').popupHelios()"
         style="position: fixed; bottom: 0; right: 30px"></img>
 

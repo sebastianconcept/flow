@@ -7,7 +7,7 @@ map $http_upgrade $connection_upgrade {
 
 server {
   server_name flow.dev;
-  root  /Users/sebastian/git/flow;
+  root  /Users/sebastian/git/flow/;
 
   try_files $uri $uri/index.html $uri.html @pharoFlow;
 
