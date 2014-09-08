@@ -91,6 +91,38 @@ referencedClasses: []
 }),
 globals.CRUDScaffolder.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "scaffold:",
+protocol: 'actions',
+fn: function (aString){
+var self=this;
+function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$3;
+_st($Transcript())._cr();
+$ctx1.sendIdx["cr"]=1;
+$2=_st("CRUD scaffolding ".__comma(aString)).__comma("...");
+$ctx1.sendIdx[","]=1;
+$1=_st($Transcript())._show_($2);
+$ctx1.sendIdx["show:"]=1;
+_st(self._api())._post_data_do_onError_(self._url(),aString,(function(res){
+return smalltalk.withContext(function($ctx2) {
+_st($Transcript())._cr();
+$3=_st($Transcript())._show_(" ...done");
+return $3;
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,1)})}),(function(res){
+return smalltalk.withContext(function($ctx2) {
+return self._error_(_st(res)._responseText());
+}, function($ctx2) {$ctx2.fillBlock({res:res},$ctx1,2)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"scaffold:",{aString:aString},globals.CRUDScaffolder.klass)})},
+args: ["aString"],
+source: "scaffold: aString \x0a\x0a\x09Transcript cr; show: 'CRUD scaffolding ', aString,'...'.\x0a\x0a\x09self api\x0a\x09\x09post: self url  \x0a\x09\x09data: aString\x0a\x09\x09do: [ :res | Transcript cr; show: ' ...done']\x0a\x09\x09onError: [ :res | self error: res responseText ]\x09",
+messageSends: ["cr", "show:", ",", "post:data:do:onError:", "api", "url", "error:", "responseText"],
+referencedClasses: ["Transcript"]
+}),
+globals.CRUDScaffolder.klass);
+
 
 smalltalk.addClass('MaplessScaffolder', globals.AbsrtactScaffolder, [], 'Flow');
 
@@ -133,11 +165,11 @@ fn: function (aString){
 var self=this;
 function $Flow(){return globals.Flow||(typeof Flow=="undefined"?nil:Flow)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self._parentClass())._subclass_instanceVariableNames_package_(aString,"",_st(_st($Flow())._generator())._packageName());
+_st(self._parentClass())._subclass_instanceVariableNames_package_(aString,"",_st(_st($Flow())._scaffolder())._packageName());
 return self}, function($ctx1) {$ctx1.fill(self,"frontendScaffold:",{aString:aString},globals.MaplessScaffolder.klass)})},
 args: ["aString"],
-source: "frontendScaffold: aString\x0a\x09\x0a\x09self parentClass \x0a\x09\x09subclass: aString \x0a\x09\x09instanceVariableNames: '' \x0a\x09\x09package: Flow generator packageName",
-messageSends: ["subclass:instanceVariableNames:package:", "parentClass", "packageName", "generator"],
+source: "frontendScaffold: aString\x0a\x09\x0a\x09self parentClass \x0a\x09\x09subclass: aString \x0a\x09\x09instanceVariableNames: '' \x0a\x09\x09package: Flow scaffolder packageName",
+messageSends: ["subclass:instanceVariableNames:package:", "parentClass", "packageName", "scaffolder"],
 referencedClasses: ["Flow"]
 }),
 globals.MaplessScaffolder.klass);

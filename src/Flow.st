@@ -36,6 +36,19 @@ command
 	^ '/crud'
 ! !
 
+!CRUDScaffolder class methodsFor: 'actions'!
+
+scaffold: aString 
+
+	Transcript cr; show: 'CRUD scaffolding ', aString,'...'.
+
+	self api
+		post: self url  
+		data: aString
+		do: [ :res | Transcript cr; show: ' ...done']
+		onError: [ :res | self error: res responseText ]
+! !
+
 AbsrtactScaffolder subclass: #MaplessScaffolder
 	instanceVariableNames: ''
 	package: 'Flow'!
@@ -68,7 +81,7 @@ frontendScaffold: aString
 	self parentClass 
 		subclass: aString 
 		instanceVariableNames: '' 
-		package: Flow generator packageName
+		package: Flow scaffolder packageName
 !
 
 scaffold: aString

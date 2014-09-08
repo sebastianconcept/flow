@@ -1,13 +1,20 @@
 ({
    //appDir: "src/",
-    baseUrl: ".",
-    dir: "./build/js",
-    paths: {
-    	"amber/devel": "bower_components/amber/src/",
-    	"app/MiniMapless": "src"
-    },
+    baseUrl: './src',
+    dir: 'dist',
     modules: [
-        {name: "amber/devel"}
-        ,{name: "app/MiniMapless"}
-    ]
+      'amber/deploy',
+      'bower/rivets/dist/rivets.min',
+      {
+        name: 'app'
+          // 'app/MiniMapless',
+          // 'app/Flow',
+          // 'app/Flow-Core',
+          // 'app/Flow-API',
+          // 'app/Flow-Templates',
+          // 'app/Flow-Binding',
+          // 'app/App'
+      }
+    ],
+    removeCombined: true
 })

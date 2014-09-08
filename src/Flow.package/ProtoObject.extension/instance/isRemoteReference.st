@@ -1,4 +1,0 @@
-*Flow
-isRemoteReference
-
-	^ false

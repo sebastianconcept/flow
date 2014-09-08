@@ -30,9 +30,17 @@ onTemplate: data
 renderOn: html
 
 	require 
-		value:(Array with: 'bower_components/text/text!!views/',self class keyword,'.html')
+		value:(Array with: self class viewPath, self class keyword,'.html')
 		value:[	:template | 
 			self onTemplate: template]
+! !
+
+!TemplateController class methodsFor: 'accessing'!
+
+viewPath
+	"Returns the path where the template of the view should be found"
+	
+	^ 'bower_components/text/text!!views/'
 ! !
 
 !TemplateController class methodsFor: 'testing'!
@@ -54,4 +62,12 @@ isValidFor: anURI
 TemplateController subclass: #HelloWorldController
 	instanceVariableNames: ''
 	package: 'Flow-Templates'!
+
+!HelloWorldController class methodsFor: 'accessing'!
+
+viewPath
+	"Returns the path where the template of the view should be found"
+	
+	^ 'bower_components/text/text!!views/demo/'
+! !
 

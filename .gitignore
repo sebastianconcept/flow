@@ -1,7 +1,7 @@
 /node_modules
 /bower_components
 /test_runner
-/build
+/dist
 /art
 
 *-readonly

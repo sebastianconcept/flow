@@ -47,9 +47,13 @@ fn: function (html){
 var self=this;
 function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$2;
+var $1,$6,$5,$4,$3,$2;
 $1=require;
-$3=_st("bower_components/text/text!views/".__comma(_st(self._class())._keyword())).__comma(".html");
+$6=self._class();
+$ctx1.sendIdx["class"]=1;
+$5=_st($6)._viewPath();
+$4=_st($5).__comma(_st(self._class())._keyword());
+$3=_st($4).__comma(".html");
 $ctx1.sendIdx[","]=1;
 $2=_st($Array())._with_($3);
 _st($1)._value_value_($2,(function(template){
@@ -58,8 +62,8 @@ return self._onTemplate_(template);
 }, function($ctx2) {$ctx2.fillBlock({template:template},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TemplateController)})},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09require \x0a\x09\x09value:(Array with: 'bower_components/text/text!views/',self class keyword,'.html')\x0a\x09\x09value:[\x09:template | \x0a\x09\x09\x09self onTemplate: template]\x09",
-messageSends: ["value:value:", "with:", ",", "keyword", "class", "onTemplate:"],
+source: "renderOn: html\x0a\x0a\x09require \x0a\x09\x09value:(Array with: self class viewPath, self class keyword,'.html')\x0a\x09\x09value:[\x09:template | \x0a\x09\x09\x09self onTemplate: template]\x09",
+messageSends: ["value:value:", "with:", ",", "viewPath", "class", "keyword", "onTemplate:"],
 referencedClasses: ["Array"]
 }),
 globals.TemplateController);
@@ -109,7 +113,37 @@ referencedClasses: []
 }),
 globals.TemplateController.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "viewPath",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return "bower_components/text/text!views/";
+},
+args: [],
+source: "viewPath\x0a\x09\x22Returns the path where the template of the view should be found\x22\x0a\x09\x0a\x09^ 'bower_components/text/text!views/'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.TemplateController.klass);
+
 
 smalltalk.addClass('HelloWorldController', globals.TemplateController, [], 'Flow-Templates');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "viewPath",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return "bower_components/text/text!views/demo/";
+},
+args: [],
+source: "viewPath\x0a\x09\x22Returns the path where the template of the view should be found\x22\x0a\x09\x0a\x09^ 'bower_components/text/text!views/demo/'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.HelloWorldController.klass);
 
 });

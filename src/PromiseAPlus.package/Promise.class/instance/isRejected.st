@@ -1,4 +1,0 @@
-testing
-isRejected
-
-	^ state = #rejected
