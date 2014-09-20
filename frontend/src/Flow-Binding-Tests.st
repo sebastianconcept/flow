@@ -28,3 +28,11 @@ initialize
 	window at: 'r' put: self
 ! !
 
+!RivetsJSTestsController class methodsFor: 'accessing'!
+
+viewPath
+	"Returns the path where the template of the view should be found"
+	
+	^ 'bower_components/text/text!!views/demo/'
+! !
+

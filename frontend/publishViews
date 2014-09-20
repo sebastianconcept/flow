@@ -1,0 +1,7 @@
+#!/bin/bash
+# Builds the CSS output of this flow app.
+
+# Actually just copies the CSS from frontend/css/ to public/css/
+#cp css/ ../public
+
+echo "Actually just copies the templates from frontend/views/ to public/views/"

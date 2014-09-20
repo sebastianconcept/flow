@@ -50,4 +50,19 @@ referencedClasses: ["MockPerson"]
 globals.RivetsJSTestsController);
 
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "viewPath",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return "bower_components/text/text!views/demo/";
+},
+args: [],
+source: "viewPath\x0a\x09\x22Returns the path where the template of the view should be found\x22\x0a\x09\x0a\x09^ 'bower_components/text/text!views/demo/'",
+messageSends: [],
+referencedClasses: []
+}),
+globals.RivetsJSTestsController.klass);
+
 });

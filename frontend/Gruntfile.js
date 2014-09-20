@@ -8,10 +8,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-execute');
   grunt.loadNpmTasks('amber-dev');
 
+
   // Default task.
   grunt.registerTask('default', ['amberc:all']);
   grunt.registerTask('test', ['amberc:test_runner', 'execute:test_runner', 'clean:test_runner']);
 
+  // flow: enable the 'watch' plugin and 'run'
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-run');
+
+    
   // Project configuration.
   grunt.initConfig({
     // Metadata.
@@ -57,6 +63,27 @@ module.exports = function(grunt) {
 
     clean: {
       test_runner: ['test_runner.js']
+    },
+
+
+    // flow: adds the tasks that run some bash scripts
+    run: {
+      // flow: adds the css task to build CSS
+      buildCss: {
+        cmd: './publishCss'
+      },
+
+      // flow: adds the css task to build the templates
+      buildViews: {
+        cmd: './publishViews'
+      }
+    },
+
+    // flow: observer that reacts rebuilding the static stuff
+    watch: {
+      files: [ 'css/**', 'views/**' ],
+      tasks: [ 'run:buildCss', 'run:buildViews' ]
+
     }
   });
 
