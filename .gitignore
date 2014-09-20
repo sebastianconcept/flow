@@ -3,6 +3,7 @@
 /test_runner
 /dist
 /art
+/public/
 
 *-readonly
 pharo-vm/

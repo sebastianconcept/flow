@@ -1,7 +1,8 @@
 #!/bin/bash
-# Builds the CSS output of this flow app.
+# Builds the templates output of this flow app.
 
-# Actually just copies the CSS from frontend/css/ to public/css/
-#cp css/ ../public
+# Actually just copies the views from frontend/views/ to public/views/
 
-echo "Actually just copies the templates from frontend/views/ to public/views/"
+echo "deleting public/views/"
+rm -r ../public/views
+mkdir -p ../public/views && cp -R views/ ../public/views
