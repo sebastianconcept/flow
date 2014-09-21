@@ -81,13 +81,18 @@ module.exports = function(grunt) {
       // flow: adds the img task to build the images
       buildImg: {
         cmd: './publishImg'
+      },
+
+      // flow: adds the task that takes the javascript sources and makes one big ball of js
+      buildJs: {
+        cmd: './publishJs'
       }
     },
 
     // flow: observer that reacts rebuilding the static stuff
     watch: {
-      files: [ 'css/**', 'views/**' ],
-      tasks: [ 'run:buildCss', 'run:buildViews', 'run:buildImg' ]
+      files: [ 'css/**', 'views/**', 'src/**' ],
+      tasks: [ 'run:buildCss', 'run:buildViews', 'run:buildImg', 'run:buildJs' ]
 
     }
   });

@@ -1,0 +1,8 @@
+#!/bin/bash
+# Builds the javascript output of this flow app.
+
+# Takes the sources at frontend/src/ and tells require to minify and write public/js/app.js
+
+echo "deleting public/js/"
+rm -r ../public/js
+mkdir -p ../public/js && r.js -o dist.conf.js

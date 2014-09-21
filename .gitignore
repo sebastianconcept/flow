@@ -1,5 +1,5 @@
 /backend/node_modules
-/bower_components
+/frontend/bower_components
 /test_runner
 /dist
 /art

@@ -1,4 +1,6 @@
-// Instructs require.js how to make an all in one js file for this app
+// Configuration file for require.js on how to make the distributable `all.js` file
+// This will take all your frontend app needs and make one js file 
+
 ({
     preserveLicenseComments: false,
     paths: {
@@ -6,7 +8,7 @@
         'amber': 'bower_components/amber/support',
         'amber_core': 'bower_components/amber/src',
         'amber_lib': 'bower_components',
-        'app': 'frontend/src'
+        'app': 'src'
     },
     include: [
         'bower_components/amber/support/requirejs/require.min',
@@ -29,5 +31,5 @@
         'app/Flow-Binding',
         'app/App',
     ],
-    out: 'dist/js/all.js'
+    out: '../public/js/app.js'
 })
