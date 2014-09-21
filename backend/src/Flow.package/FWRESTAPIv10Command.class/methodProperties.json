@@ -1,0 +1,18 @@
+{
+	"class" : {
+		"acceptedMethods" : "sebastiansastre 7/7/2014 14:34",
+		"databaseDo:" : "sebastiansastre 7/2/2014 19:58",
+		"databaseName" : "sebastiansastre 7/6/2014 19:35",
+		"databaseName:" : "sebastiansastre 7/2/2014 20:01",
+		"for:" : "sebastiansastre 7/2/2014 18:16",
+		"fromRequest:" : "sebastiansastre 7/7/2014 15:34",
+		"hasModelNameFor:" : "sebastiansastre 7/7/2014 11:08",
+		"hasValidDetailsFor:" : "sebastiansastre 7/7/2014 14:36",
+		"isBasePathValidFor:" : "sebastiansastre 7/7/2014 11:09",
+		"isValidFor:" : "sebastiansastre 7/7/2014 14:32",
+		"reset" : "sebastiansastre 7/2/2014 20:01",
+		"sanitizePayload:" : "sebastiansastre 7/12/2014 00:39" },
+	"instance" : {
+		"apiObjectClass" : "sebastiansastre 7/7/2014 15:09",
+		"databaseDo:" : "sebastiansastre 7/2/2014 19:52",
+		"valueOn:" : "sebastiansastre 7/2/2014 18:22" } }

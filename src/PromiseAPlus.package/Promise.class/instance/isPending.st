@@ -1,4 +1,0 @@
-testing
-isPending
-
-	^ state = #pending

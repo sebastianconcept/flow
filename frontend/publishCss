@@ -1,0 +1,8 @@
+#!/bin/bash
+# Builds the CSS output of this flow app.
+
+# Actually just copies the CSS from frontend/css/ to public/css/
+
+echo "deleting public/css/"
+rm -r ../public/css
+mkdir -p ../public/css && cp -R css/ ../public/css

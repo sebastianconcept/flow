@@ -1,8 +1,9 @@
-/node_modules
-/bower_components
+/backend/node_modules
+/frontend/bower_components
 /test_runner
-/build
+/dist
 /art
+public/
 
 *-readonly
 pharo-vm/

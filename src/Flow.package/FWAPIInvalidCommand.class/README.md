@@ -1,1 +1,0 @@
-A FWAPIInvalidCommand is the command we have as fallback when no other command is a good fit in this API

@@ -1,1 +1,0 @@
-A FWAPIGetAll is a command to get all the mapless that are found in the database. This is meant for prototyping and development. Real production apps should forbid this with a bad request.

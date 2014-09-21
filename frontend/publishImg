@@ -1,0 +1,8 @@
+#!/bin/bash
+# Builds the images output of this flow app.
+
+# Actually just copies the images from frontend/img/ to public/img/
+
+echo "deleting public/img/"
+rm -r ../public/img
+mkdir -p ../public/img && cp -R img/ ../public/img

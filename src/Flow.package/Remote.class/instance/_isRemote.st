@@ -1,4 +1,0 @@
-testing
-_isRemote
-
-	^ true

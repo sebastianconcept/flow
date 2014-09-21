@@ -1,0 +1,44 @@
+{
+  "name": "app",
+  "title": "App",
+  "description": "The App.",
+  "version": "0.9.1",
+  "homepage": "https://github.com/sebastian/flow",
+  "author": {
+    "name": "Sebastian Sastre",
+    "email": "sebastian@flowingconcept.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sebastian/flow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sebastian/flow/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/sebastian/flow/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "amber-dev": "~0.1.1",
+    "grunt": "~0.4.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-execute": "~0.2.1"
+  },
+  "keywords": [
+    "Amber",
+    "Smalltalk"
+  ],
+  "dependencies": {
+    "grunt-run": "^0.2.4"
+  }
+}
