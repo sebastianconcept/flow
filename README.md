@@ -13,7 +13,7 @@ There are plenty of stacks available for the web and yet there is none that stic
 
 ## General view
 
-Flow is a full stack framework so it has two important directories:  `backend/` and `frontend/`. It also has the `public/` directory that's used as output of the frontend's build process and meant to be used only for production (or staging).
+Flow is a full stack framework so it has two important directories:  `backend/` and `frontend/`. It also has the `public/` directory that's used as output of the frontend's build process and is meant to be used only for [staging](http://en.wikipedia.org/wiki/Staging_site) or production.
 
 - **app/** the root directory of your flow based app.
 - **backend/** where you'll find the development Pharo worker image and all the things needed for the backend to run.
