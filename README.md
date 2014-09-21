@@ -7,11 +7,12 @@ A full-stack living framework for the web.
 
 There are plenty of stacks available for the web -- and yet there is none that really sticks to *intuition*, *discovery* and *personal mastery* for the modern web. 
 
-There is a language that was [designed with those principles](http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html) as premises and that's why flow embraces [Smalltalk](http://en.wikipedia.org/wiki/Smalltalk). With [Amber](http://amber-lang.net/) taking care of html5 and doing everything in the browser, and [Pharo](http://pharo.org/) being incredibly productive in the backend, this stack is an answer to that call. 
+There is technology that was [designed with those principles](http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html) as premises and that's why flow embraces [Smalltalk](http://en.wikipedia.org/wiki/Smalltalk). With [Amber](http://amber-lang.net/) taking care of html5 and doing everything in the browser, and [Pharo](http://pharo.org/) being incredibly productive in the backend, this stack is an answer to that call. 
+
 
 ## What is flow?
 
-Flow is an open-source project with a *mission*.
+Flow is an open-source project with a *mission*. 
 
 Flow's mission is to provide *consultants*, *startups* and *software houses* with **a competitive Smalltalk full-stack framework** that allows them to quickly deliver a demo with all the modern html5 features the market expects today (2014). The idea is that they can tactically use this framework to keep momentum up among their prospects and clients and scale things to full successful projects delivered by kickass productive teams or individuals.
 
