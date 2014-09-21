@@ -12,9 +12,9 @@ There are plenty of stacks available for the web and yet there is none that stic
 1. Open a terminal in your `git/` directory.
 2. Execute: `mkdir newAppName`
 3. Execute: `cd newAppName`
-4. Execute: `git clone https://github.com/sebastianconcept/flow.git .` (note the dot at the end signalling that you want it cloned in that directory)
-5. Execute: `./cleanBuild.sh` and wait it until finishes installing all the frontend dependencies and backend Pharo image.
-6. Once finishes, execute: `./flow.sh` and happy coding
+4. Execute: `git clone https://github.com/sebastianconcept/flow.git .` Note the dot at the end signalling that you want it cloned in that directory.
+5. Execute: `./cleanBuild.sh` and wait it until finishes installing all the frontend dependencies and backend Pharo image. It will take a while but is done only once.
+6. After the build, execute: `./flow.sh` and happy coding
 
 ## General view
 
