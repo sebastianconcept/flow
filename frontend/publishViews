@@ -1,0 +1,8 @@
+#!/bin/bash
+# Builds the templates output of this flow app.
+
+# Actually just copies the views from frontend/views/ to public/views/
+
+echo "deleting public/views/"
+rm -r ../public/views
+mkdir -p ../public/views && cp -R views/ ../public/views

@@ -1,0 +1,37 @@
+<!-- This is the template that the CRUD scaffolder uses to create the editor of a Mapless -->
+<div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{ model.singularName } Editor</h3>
+  </div>
+  <div class="panel-body">
+	<form role="form">
+		<div class="form-group">
+		    <label class="col-sm-2 control-label">ID:</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static">{ model.item.id }</p>
+		    </div>
+		</div>
+		<div class="form-group">
+		    <label class="col-sm-2 control-label">Created on</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static">{ model.item.createdOn }</p>
+		    </div>
+		</div>
+		<div class="form-group">
+		    <label for="descriptionInput">Description</label>
+		    <input 
+		    	type="text" 
+		    	class="form-control" 
+		    	id="descriptionInput" 
+		    	placeholder="Enter the description"
+		    	rv-value="model.description">
+		</div>
+		<button type="button" class="btn btn-primary" rv-on-click="model.save">Save</button>
+		<span>or</span>
+		<button type="button" class="btn btn-link" rv-on-click="model.cancel">Cancel</button>
+	</form>
+  </div>
+</div>
+
+</div>
