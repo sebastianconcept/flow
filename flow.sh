@@ -31,6 +31,6 @@ osascript 2>/dev/null <<EOF
     tell application "Terminal"
         activate
         do script with command "cd \"$PWD/backend\"; $*" in window 0
-        do script with command "./pharo-ui app.image" in window 0
+        do script with command "./pharo-ui Pharo.image" in window 0
     end
 EOF

@@ -1,13 +1,17 @@
 #!/bin/bash
 # gets a fresh Pharo 3.0 image and loads the project
 
+echo "Removing image..."
+rm app.image
+rm app.changes
+
 echo "Downloading Pharo 3.0 and a VM ..."
-rm pharo
-rm pharo-ui
-rm -rf pharo-vm
 wget -O- get.pharo.org/30+vm | bash
 
-echo "Opening Pharo to load project ..."
+echo "Opening Pharo and kick off loading project ..."
 ./pharo-ui Pharo.image FlowLoader.st
 
-echo "Ready!"
+echo
+echo "Done building the Pharo worker image"
+echo
+
