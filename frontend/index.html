@@ -5,9 +5,9 @@
     <title>App</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="Sebastian Sastre" />
-    <script type='text/javascript' src='frontend/bower_components/amber/support/requirejs/require.min.js'></script>
-    <script type='text/javascript' src='frontend/bower_components/amber/support/amber.js'></script>
-    <link rel="stylesheet" href="frontend/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script type='text/javascript' src='bower_components/amber/support/requirejs/require.min.js'></script>
+    <script type='text/javascript' src='bower_components/amber/support/amber.js'></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   </head>
 
   <body>
@@ -16,8 +16,8 @@
 
     <script type='text/javascript'>
       require.config({ paths: {
-          'app': 'frontend/src', //mapping compiled .js files and smalltalk source files
-          'bower': 'frontend/bower_components'
+          'app': 'src', //mapping compiled .js files and smalltalk source files
+          'bower': 'bower_components'
       }});
       require([
           'amber/devel',
@@ -44,12 +44,12 @@
     </script>
 
     <img id="ide" 
-        src="public/img/tinylogo.png" 
+        src="img/tinylogo.png" 
         onclick="require('amber/helpers').globals.Browser._open()"
         style="position: fixed; bottom: 0; right: 0"></img>
 
     <img id="ide" 
-        src="public/img/tinylogo.png" 
+        src="img/tinylogo.png" 
         onclick="require('amber/helpers').popupHelios()"
         style="position: fixed; bottom: 0; right: 30px"></img>
 
