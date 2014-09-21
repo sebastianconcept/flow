@@ -1,0 +1,15 @@
+#!/bin/bash
+# Removes old backend build (if any) and builds a fresh one
+
+echo "Removing old backend image..."
+rm backend/app.changes
+rm backend/app.image
+
+echo "Building backend..."
+cd $PWD/backend
+./load
+cd ..
+
+echo
+echo "Enjoy your fresh backend!"
+echo
