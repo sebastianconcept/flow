@@ -7,9 +7,14 @@ A full-stack living framework for the web.
 
 There are plenty of stacks available for the web and yet there is none that sticks to *developer productivity*, *intuition*, *discovery*, *mastery* and *fast feedback loops* for the modern web. With [Amber](http://amber-lang.net/) taking care of html5 and doing everything in the browser and [Pharo](http://pharo.org/) being incredibly productive in the backend, this stack is an answer to that call. 
 
-##Install
+##Starting a fresh flow app
 
-*to be continued...*
+1. Open a terminal in your `git/` directory.
+2. Execute: `mkdir newAppName`
+3. Execute: `cd newAppName`
+4. Execute: `git clone https://github.com/sebastianconcept/flow.git .` (note the dot at the end signalling that you want it cloned in that directory)
+5. Execute: `./cleanBuild.sh` and wait it until finishes installing all the frontend dependencies and backend Pharo image.
+6. Once finishes, execute: `./flow.sh` and happy coding
 
 ## General view
 
