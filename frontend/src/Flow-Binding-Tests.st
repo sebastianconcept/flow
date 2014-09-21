@@ -10,6 +10,8 @@ BindingController subclass: #RivetsJSTestsController
 !RivetsJSTestsController methodsFor: 'actions'!
 
 newPerson
+	"Answers a new MockPerson to be used as model for the demo.
+	Note that its attributes are probably used from the template (read and write)"
 
 	^ MockPerson new
 		name: 'John Galt';
@@ -20,12 +22,24 @@ newPerson
 !RivetsJSTestsController methodsFor: 'initialization'!
 
 initialize
-
+	"Initializes the controller of the rivets test view"
+	
 	super initialize.
 	
+	"As the controller's model we're using a new mapless"
 	self model: self newPerson.
-	
-	window at: 'r' put: self
+! !
+
+!RivetsJSTestsController methodsFor: 'reactions'!
+
+onAha
+
+	Transcript cr; show: 'Woha!! it was you who clicked that?'
+!
+
+onMhm
+
+	window alert: 'Nicely clicked!!'
 ! !
 
 !RivetsJSTestsController class methodsFor: 'accessing'!

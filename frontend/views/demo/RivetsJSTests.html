@@ -22,10 +22,10 @@ The parent here is the element that is going to be bound -->
 	<section rv-hide="feature.disabled"></section>
 
 	<p>Enables the element when the value evaluates to true and disables the element when the value evaluates to false.</p>
-	<button rv-enabled="user.canVote">Upvote</button>
+	<button rv-on-click="controller._onAha">Do you click?</button>
 
 	<p>Disables the element when the value evaluates to true and enables the element when the value evaluates to false.</p>
-	<button rv-disabled="user.suspended">Upvote</button>
+	<button rv-on-click="controller._onMhm">Here?</button>
 
 	<p>Inserts and binds the element as well as it's child nodes into the DOM when the value evaluates to true and removes / unbinds the element when the value evaluates to false.</p>
 	<section rv-if="item.editable"></section>
