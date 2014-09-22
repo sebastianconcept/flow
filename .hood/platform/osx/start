@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# Starts the services needed to have a developing session with a flow-based app
+
+echo "Not implemented yet"
+exit 0
