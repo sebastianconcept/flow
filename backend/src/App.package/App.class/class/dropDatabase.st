@@ -1,5 +1,5 @@
 actions
 dropDatabase
 
-	(self confirm: 'Wait whaaat? R U sure I should drop the MongoDB database named: ',FWRESTAPIv10Command databaseName,'? (no undo)') ifTrue:[
+	(self confirm: 'Wait whaaat? Dropping MongoDB database named: ',FWRESTAPIv10Command databaseName,' has no undo. Are your sure?') ifTrue:[
 		OSProcess command: 'mongo ',FWRESTAPIv10Command databaseName,' --eval "db.dropDatabase()"']

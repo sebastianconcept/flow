@@ -52,9 +52,14 @@ Once your backend is built (see how-to below), the typical development workflow 
 *`flow.sh` is for OS X only and it assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you're interested in doing a similar script for Linux or Windows, you're welcome to do so (see the 'Contributing' section below).
 
 ## How-to build a backend?
-Flow's backend is a Pharo image. You can scale your app using many Pharo worker images (more on that below) and here is how you build one.
+The backend of a flow app is a Pharo image. Is out of scope here, but please note that the way flow works, actually allows you to scale the app horizontally using many Pharo worker images. Here is how you build one.
 
-*to be continued...*
+1. In your terminal, go to `app/`
+2. Execute: `./cleanBuildBackend`
+3. Wait for the image to load all the packages.
+4. Once finishes open a workspace and execute: `App start`. That should make the image start listening for frontend's connections. You guessed it, you can also run `App stop` or `App restart`.
+
+**Note** if you like [sublime](http://www.sublimetext.com/) or dark themes, you might want to evaluate `FlowLoader dawn`.
 
 ## Deploying
 
