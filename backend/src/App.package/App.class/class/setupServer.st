@@ -6,11 +6,8 @@ setupServer
 		e port = (ConfigurationFiles at: 'API' at: 'port')]) 
 			delegate: (FWDelegate new
 						addHandler: FWWebSocketsAPIHandler new;
+						addHandler: FWRESTAPIv10Handler new;
+						addHandler: (FWFilesHandler for: (FileLocator imageDirectory / 'service') resolve fullName base: 'service');
 						yourself).
 		
-	"Setting up the RESTful handler for the flow-based app and static content"
-	ZnServer default delegate	
-		addHandler: FWRESTAPIv10Handler new;
-		addHandler: (FWFilesHandler for: (FileLocator imageDirectory / 'service') resolve fullName base: 'service');
-		yourself.
 	
