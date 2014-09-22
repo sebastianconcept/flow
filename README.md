@@ -16,7 +16,7 @@ Flow is an open-source project with a *mission*.
 
 Flow's mission is to provide *consultants*, *startups* and *software houses* with **a competitive Smalltalk full-stack framework** that allows them to quickly deliver a demo with all the modern html5 features the market expects today (2014). The idea is that they can tactically use this framework to keep momentum up among their prospects and clients and scale things to full successful projects delivered by kickass productive teams or individuals.
 
-If you resonate with this, **please give it a star** or, *way better*, be part of it helping us pushing some contributions (see the *Contributing* section below). Thank you!
+If you resonate with this, **please give it a star** and be part of it helping us pushing some features and bugfixes (see the *Contributing* section below). *Thank you!*
 
 ##Starting a fresh flow app
 
@@ -34,9 +34,9 @@ If you resonate with this, **please give it a star** or, *way better*, be part o
 Flow is a full stack framework, and thus has two important directories:  `backend/` and `frontend/`. It also has the `public/` directory that's used as output of the frontend's build process and is meant to be used only for [staging](http://en.wikipedia.org/wiki/Staging_site) or production.
 
 - **app/** the root directory of your flow based app.
-- **backend/** where you'll find the development Pharo worker image and all the things needed for the backend to run.
-- **frontend/** where you have Amber, its configuration material and requisites, the sources of your particular Amber app and  also `css/` `img/` and `views/` where flow finds your app's stylesheets, images and templates sources respectively.
-- **public/** is the directory used by the http server for the static content. You basically ignore this directory during development because is supposed to be cacheable and gets automatically re-built every time you change the sources by the `grunt watch` task.
+- **app/backend/** where you'll find the development Pharo worker image and all the things needed for the backend to run.
+- **app/frontend/** where you have Amber, its configuration material and requisites, the sources of your particular Amber app and  also `css/` `img/` and `views/` where flow finds your app's stylesheets, images and templates sources respectively.
+- **app/public/** is the directory used by the http server for the static content. You basically ignore this directory during development because is supposed to be cacheable and gets automatically re-built every time you change the sources by the `grunt watch` task.
 
 ##Development workflow
 Once your backend is built (see how-to below), the typical development workflow in flow  apps goes like this:
