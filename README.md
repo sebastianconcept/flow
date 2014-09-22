@@ -5,20 +5,38 @@ A full-stack living framework for the web.
 
 ## Why flow?
 
-There are plenty of stacks available for the web and yet there is none that sticks to *developer productivity*, *intuition*, *discovery*, *mastery* and *fast feedback loops* for the modern web. With [Amber](http://amber-lang.net/) taking care of html5 and doing everything in the browser and [Pharo](http://pharo.org/) being incredibly productive in the backend, this stack is an answer to that call. 
+There are plenty of stacks available for the web -- and yet there is none that really sticks to *intuition*, *discovery* and *personal mastery* for the modern web. 
 
-##Install
+There is technology that was [designed with those principles](http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html) as premises and that's why flow embraces [Smalltalk](http://en.wikipedia.org/wiki/Smalltalk). With [Amber](http://amber-lang.net/) taking care of html5 and doing everything in the browser, and [Pharo](http://pharo.org/) being incredibly productive in the backend, this stack is an answer to that call. 
 
-*to be continued...*
+
+## What is flow?
+
+Flow is an open-source project with a *mission*. 
+
+Flow's mission is to provide *consultants*, *startups* and *software houses* with **a competitive Smalltalk full-stack framework** that allows them to quickly deliver a demo with all the modern html5 features the market expects today (2014). The idea is that they can tactically use this framework to keep momentum up among their prospects and clients and scale things to full successful projects delivered by kickass productive teams or individuals.
+
+If you resonate with this, **please give it a star** and be part of it helping us pushing some features and bugfixes (see the *Contributing* section below). *Thank you!*
+
+##Starting a fresh flow app
+
+1. Open a terminal in your `git/` directory.
+2. Execute: `mkdir newAppName`
+3. Execute: `cd newAppName`
+4. Execute: `git clone https://github.com/sebastianconcept/flow.git .` Note the dot at the end signalling that you want it cloned in that directory.
+5. Execute: `./cleanBuild.sh` and wait it until finishes installing all the frontend dependencies and backend Pharo image. It will take a while but is done only once.
+6. After the build completes, execute: `./flow.sh` and 
+
+*Happy `newAppName` coding!*
 
 ## General view
 
-Flow is a full stack framework so it has two important directories:  `backend/` and `frontend/`. It also has the `public/` directory that's used as output of the frontend's build process and meant to be used only for production (or staging).
+Flow is a full stack framework, and thus has two important directories:  `backend/` and `frontend/`. It also has the `public/` directory that's used as output of the frontend's build process and is meant to be used only for [staging](http://en.wikipedia.org/wiki/Staging_site) or production.
 
 - **app/** the root directory of your flow based app.
-- **backend/** where you'll find the development Pharo worker image and all the things needed for the backend to run.
-- **frontend/** where you have Amber, its configuration material and requisites, the sources of your particular Amber app and  also `css/` `img/` and `views/` where flow finds your app's stylesheets, images and templates sources respectively.
-- **public/** is the directory used by the http server for the static content. You basically ignore this directory during development because is supposed to be cacheable and gets automatically re-built every time you change the sources by the `grunt watch` task.
+- **app/backend/** where you'll find the development Pharo worker image and all the things needed for the backend to run.
+- **app/frontend/** where you have Amber, its configuration material and requisites, the sources of your particular Amber app and  also `css/` `img/` and `views/` where flow finds your app's stylesheets, images and templates sources respectively.
+- **app/public/** is the directory used by the http server for the static content. You basically ignore this directory during development because is supposed to be cacheable and gets automatically re-built every time you change the sources by the `grunt watch` task.
 
 ##Development workflow
 Once your backend is built (see how-to below), the typical development workflow in flow  apps goes like this:
@@ -34,9 +52,14 @@ Once your backend is built (see how-to below), the typical development workflow 
 *`flow.sh` is for OS X only and it assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you're interested in doing a similar script for Linux or Windows, you're welcome to do so (see the 'Contributing' section below).
 
 ## How-to build a backend?
-Flow's backend is a Pharo image. You can scale your app using many Pharo worker images (more on that below) and here is how you build one.
+The backend of a flow app is a Pharo image. Is out of scope here, but please note that the way flow works, actually allows you to scale the app horizontally using many Pharo worker images. Here is how you build one.
 
-*to be continued...*
+1. In your terminal, go to `app/`
+2. Execute: `./cleanBuildBackend`
+3. Wait for the image to load all the packages.
+4. Once finishes open a workspace and execute: `App start`. That should make the image start listening for frontend's connections. You guessed it, you can also run `App stop` or `App restart`.
+
+**Note** if you like [sublime](http://www.sublimetext.com/) or dark themes, you might want to evaluate `FlowLoader dawn`.
 
 ## Deploying
 
@@ -52,35 +75,26 @@ The backend is the Pharo image you were working on. The suggested strategy for s
 4. Start the service of that worker image.
 5. Setup [nginx](http://en.wikipedia.org/wiki/Nginx) so everything points where it should (we can't recommend Apache for flow since it doesn't officially support [WebSockets](http://en.wikipedia.org/wiki/WebSocket)).
 
-**Note** that optionally, if your server has a GUI, you can manually open the worker image with GUI and have an environment with the full living debugging and inspecting power that [Smalltalk](http://en.wikipedia.org/wiki/Smalltalk) gives to you.
+**Note** that optionally, if your server has a GUI, you can manually open the worker image with the GUI and have an environment with the full living debugging and inspection power that Smalltalk gives to you.
 
-Setting up a **serious production backend** will require additional work and that varies quite a lot depending on the app's architecture and business demands so is out of scope here. 
+Setting up a **serious production backend** will require additional work and that varies quite a lot depending on the app's architecture and business demands, so is out of scope here. 
 
 But here you have the suggested strategy for setting that up: 
 
 1. A [CI](http://en.wikipedia.org/wiki/Continuous_integration) (like [this one](http://jenkins-ci.org/)). 
 2. A git server like [gitlab](https://about.gitlab.com/) or [this](https://github.com/) or [this](https://bitbucket.org/) or any other you like (should have the commit hook feature).
-3. Setup hooks in your CI so the CI can react building a new version of your app every time you commit code.
-3. Setup your CI to do all the necessary moves for stoping things, installing the new version and starting things with the new version.
+3. Setup hooks in your CI so the CI can react by building a new version of your app every time you commit code.
+3. Setup your CI to do all the necessary moves for stopping things, installing the new version and starting things with the new version.
 
-**Note** you could do load balancing of your backend in several worker images and/or servers. Is out of scope here but totally doable.
-
-## Direction?
-
-Flow an open-source project with a *mission*.
-
-Flow's mission is to provide *consultants*, *startups* and *software houses* with **a competitive Smalltalk full-stack framework** that allows them to quickly deliver a demo with all the modern html5 features the market expects today (2014) so they can keep momentum up among their prospects and clients and scale things to full successful projects delivered by kickass productive teams or individuals.
-
-If you resonate with this, **please don't forget to give it a star**. Thank you!
+**Note** load balancing of the backend can be achieved in several worker images and/or servers. How to do that is out of scope here but totally doable.
 
 ## Contributing
 
-Because this project has a mission, this is a curated project. Said that, all contributions converging to it are gratefully received, discussed and eventually done.
+This project is curated and we enjoy listening all kinds of new input and feedback. Contributions are gratefully received. We can't wait to see yours. 
 
-We're organising efforts on this project in this open Trello board [here](https://trello.com/b/oQ17lPpV/flow). If you're having ideas you'd like to see added to flow, please join that Trello board, make a new card in the 'Input / Feedback' column with a short title and using the card description to describe your idea (have in mind that framing it as a problem is the most effective way to do it). We'll pull things from there. Start a conversation and lets make it rock! 
+We're organising efforts on this project in this open Trello board [here](https://trello.com/b/oQ17lPpV/flow). If you have ideas you'd like to see added to flow, please join that Trello board, make a new card in the 'Input / Feedback' column with a short title and using the card description to describe your idea (have in mind that framing it as a problem is the most effective way to do it). We'll pull things from there. Start a conversation and let's make it thrive together!
 
-And documenting in the wiki [here](https://github.com/sebastianconcept/flow/wiki)
-
+Also we're documenting in the wiki [here](https://github.com/sebastianconcept/flow/wiki)
 
 ____
 

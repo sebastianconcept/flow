@@ -1,0 +1,15 @@
+#!/bin/bash
+# Removes old frontend build (if any) and builds a fresh one
+
+echo "Removing old frontend components and modules..."
+rm -r frontend/bower_components
+rm -r frontend/node_modules
+
+echo "Building frontend..."
+cd $PWD/frontend
+./load
+cd ..
+
+echo
+echo "Enjoy your fresh frontend!"
+echo

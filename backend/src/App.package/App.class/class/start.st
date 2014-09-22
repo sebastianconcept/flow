@@ -7,5 +7,4 @@ start
 
 	self startVNC.
 	
-	self startWebsocket.
 	self setupServer.
