@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# Starts the services needed to have a developing session with a flow-based app
+# This is a clean strategy. Detects the OS and delegates to the right set of scripts to actually do it.
+
+platform='unknown'
+unamestr=`uname`
+if [[ "$unamestr" == Linux* ]]; then
+   platform='linux'
+elif [[ "$unamestr" == OSX* ]]; then
+   platform='OSX'
+elif [[ "$unamestr" == MINGW* ]]; then
+   platform='win32'
+fi
+
+echo
+echo $platform
+echo
