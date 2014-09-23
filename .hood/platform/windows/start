@@ -3,5 +3,13 @@
 # Starts the services needed to have a developing session with a flow-based app
 
 
-cmd "/C basicStart" 
+#cmd "/C basicStart" 
+echo "from bash:"
+#echo ${PWD}
+
+echo "/C ${PWD}/.hoodp/platform/windows/basicStart.bat"
+
+cmd "/C ${PWD}/.hoodp/platform/windows/basicStart.bat"
+
+#cmd "/C C:\Users\seb\git\flow\.hood\platform\windows\basicStart.bat"
 exit 0
