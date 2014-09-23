@@ -2,8 +2,8 @@
 # Removes old frontend build (if any) and builds a fresh one
 
 echo "Removing old frontend components and modules..."
-rm -r frontend/bower_components
-rm -r frontend/node_modules
+rm -rf frontend/bower_components
+rm -rf frontend/node_modules
 
 echo "Building frontend..."
 cd $PWD/frontend

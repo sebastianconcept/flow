@@ -1,0 +1,61 @@
+#!/bin/bash
+# Gets a fresh Pharo 3.0 image and VM
+
+# Load Pharo 3.0 image (without dependency on mktemp)
+
+# stop the script if a single command fails
+set -e
+
+# define an echo that only outputs to stderr
+echoerr() { echo "$@" 1>&2; }
+#  try to use curl if possible
+if [[ `which curl 2> /dev/null` ]]; then
+	DOWNLOAD="curl --silent --location --compressed ";
+	DOWNLOAD_TO="$DOWNLOAD --output ";
+elif [[ `which wget 2> /dev/null` ]]; then
+	DOWNLOAD_TO="wget --quiet --output-document=";
+	DOWNLOAD="$DOWNLOAD_TO-";
+else
+	echo "Please install curl or wget on your machine";
+	exit 1
+fi
+
+
+# ARGUMENT HANDLING =============================================================
+if { [ "$1" = "-h" ] || [ "$1" = "--help" ]; }; then
+	echo "This script downloads the latest Pharo 30 Image.
+The following artifacts are created:
+    Pharo.changes  A changes file for the Pharo Image
+    Pharo.image    A Pharo image, to be opened with the Pharo VM
+"
+	exit 0;
+elif [ $# -gt 0 ]; then
+	echo "--help is the only argument allowed"
+	exit 1;
+fi
+
+
+# DOWNLOADING THE LATEST PHARO 30 IMAGE =========================================
+IMAGE_URL="http://files.pharo.org/image/30/latest.zip"
+
+echoerr "Downloading the latest 30 Image:"
+echoerr "    $IMAGE_URL"
+
+rm -rf pharotmp
+
+TMP_DIR=`mkdir pharotmp`
+$DOWNLOAD_TO$TMP_DIR/image.zip $IMAGE_URL
+
+unzip -q $TMP_DIR/image.zip -d $TMP_DIR
+rm -rf image image.zip
+
+PHARO_IMAGE=`find $TMP_DIR -name \*.image`
+mv "$PHARO_IMAGE" Pharo.image
+
+PHARO_CHANGES=`find $TMP_DIR -name \*.changes`
+mv "$PHARO_CHANGES" Pharo.changes;
+
+rm -r $TMP_DIR >> /dev/null
+
+# Load VM
+curl get.pharo.org/vm | bash

@@ -1,7 +1,8 @@
 #!/bin/bash
 #
 # Starts the services needed to have a developing session with a flow-based app
-# This is a clean strategy. Detects the OS and delegates to the right set of scripts to actually do it.
+# This is a friendly strategy method. 
+# Detects the OS and delegates to the right set of scripts to actually do it.
 
 platform='unknown'
 unamestr=`uname`
