@@ -1,7 +1,7 @@
 flow
 ====
 
-A full-stack living framework for the web. 
+A living full-stack framework for the web. 
 
 ## Why flow?
 
@@ -19,6 +19,8 @@ Flow's mission is to provide *consultants*, *startups* and *software houses* wit
 If you resonate with this, **please give it a star** and be part of it helping us pushing some features and bugfixes (see the *Contributing* section below). *Thank you!*
 
 ##Starting a fresh flow app
+
+Please have in mind that *flow* has some popular [requisites](https://github.com/sebastianconcept/flow/wiki/flow-requirements). If you have all that sorted out, here is how you start a brand new flow-based app:
 
 1. Open a terminal in your `git/` directory.
 2. Execute: `mkdir newAppName`
