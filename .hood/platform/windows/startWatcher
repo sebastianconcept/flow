@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# Starts the grunt watch task
+
+# Start the database server...
+echo "Starts the watch task..."

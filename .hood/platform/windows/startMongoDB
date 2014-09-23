@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Starts the MongoDB server
+
+DIR=/c/data
+
+echo "Starts MongoDB..."
+if [ -d $DIR ];
+then
+	echo "MongoDB opening in $DIR"
+else
+	echo "Path for data not detected, creating c:\data"
+	mkdir /c/data
+fi
+
+shell &gt; "C:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath "c:\data"

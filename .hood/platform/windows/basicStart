@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# Starts the services needed to have a developing session with a flow-based app
+
+# Start the database server...
+.hood/platform/windows/startMongoDB
+
+# Start Amber server to handle frontend dev and its commits...
+.hood/platform/windows/startAmber
+
+# Start our Pharo backend...
+.hood/platform/windows/startPharo
+
+# Start grunt to detect frontend sources changing and trigger rebuilds...
+.hood/platform/windows/startWatcher

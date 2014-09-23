@@ -7,9 +7,12 @@
 echo "from bash:"
 #echo ${PWD}
 
-echo "/C ${PWD}/.hoodp/platform/windows/basicStart.bat"
+echo "/C ${PWD}"
+echo "/.hoodp/platform/windows/basicStart"
 
-cmd "/C ${PWD}/.hoodp/platform/windows/basicStart.bat"
-
+#cmd "start 'flow' /D .hood\platform\windows\ basicStart.bat"
 #cmd "/C C:\Users\seb\git\flow\.hood\platform\windows\basicStart.bat"
-exit 0
+
+.hood/platform/windows/basicStart
+
+#exit 0
