@@ -26,7 +26,7 @@ Please have in mind that *flow* has some popular [requisites](https://github.com
 2. Execute: `mkdir newAppName`
 3. Execute: `cd newAppName`
 4. Execute: `git clone https://github.com/sebastianconcept/flow.git .` Note the dot at the end signalling that you want it cloned in that directory.
-5. Execute: `./cleanBuild.sh` and wait it until finishes installing all the frontend dependencies and backend Pharo image. It will take a while but is done only once.
+5. Execute: `./cleanBuild` and wait it until finishes installing all the frontend dependencies and backend Pharo image. It will take a while but is done only once.
 6. After the build completes, execute: `./flow.sh` and 
 
 *Happy `newAppName` coding!*
