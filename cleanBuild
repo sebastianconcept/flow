@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Starts a complete build.
+# Frontend and backend will be deleted and rebuilt.
+
+./cleanBuildFrontend
+./cleanBuildBackend

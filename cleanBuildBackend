@@ -2,10 +2,10 @@
 # Removes old backend build (if any) and builds a fresh one
 
 echo "Removing old backend image..."
-rm backend/Pharo.changes
-rm backend/Pharo.image
-rm backend/PharoDebug.log
-rm backend/crash.dmp
+rm -f backend/Pharo.changes
+rm -f backend/Pharo.image
+rm -f backend/PharoDebug.log
+rm -f backend/crash.dmp
 
 echo "Building backend..."
 cd $PWD/backend

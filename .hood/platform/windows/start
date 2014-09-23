@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Starts the services needed to have a developing session with a flow-based app
+
+
+echo "So it's Windows then..."
+exit 0
