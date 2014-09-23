@@ -13,7 +13,7 @@ echo "Loading fresh stable..."
 
 # Open image and start loading project
 echo "Opening Pharo and kick off loading project ..."
-./pharo-ui Pharo.image FlowLoader.st
+./pharo-ui worker.image FlowLoader.st
 
 echo
 echo "Done building the Pharo worker image"
