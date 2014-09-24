@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Starts the MongoDB server
+# Starts the MongoDB server so we can persist things
 
 DIR=/c/data
 
@@ -13,4 +13,9 @@ else
 	mkdir /c/data
 fi
 
-shell &gt; "C:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath "c:\data"
+# Previous miserably failed attempts:
+#shell &gt; "C:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath "c:\data" &
+#start sh --login && shell &gt; "C:\Program Files\MongoDB 2.6 Standard\bin\mongod.exe" --dbpath "c:\data"
+
+# Finally got it!
+start sh --login -c "/c/Program\ Files/MongoDB\ 2.6\ Standard/bin/mongod.exe --dbpath /c/data; bash"

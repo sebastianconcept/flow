@@ -4,3 +4,5 @@
 
 # Start the image with UI ready to a dev session...
 echo "Open Pharo..."
+cd backend
+start sh --login -c "pharo-ui Pharo.image; bash"

@@ -2,5 +2,6 @@
 #
 # Starts the grunt watch task
 
-# Start the database server...
 echo "Starts the watch task..."
+cd frontend
+start sh --login -c "grunt watch; bash"

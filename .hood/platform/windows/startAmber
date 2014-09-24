@@ -3,3 +3,6 @@
 # Starts Amber so we can have a frontend dev session
 
 echo "Starts Amber..."
+
+cd frontend
+start sh --login -c "amber serve --port 3000"

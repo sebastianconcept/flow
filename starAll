@@ -7,11 +7,11 @@
 platform='unknown'
 unamestr=`uname`
 if [[ "$unamestr" == OSX* ]]; then
-	.hood/platform/osx/start
+	.hood/platform/osx/startAll
 elif [[ "$unamestr" == Linux* ]]; then
-	.hood/platform/linux/start
+	.hood/platform/linux/startAll
 elif [[ "$unamestr" == MINGW* ]]; then
-	.hood/platform/windows/start
+	.hood/platform/windows/startAll
 	exit 0
 fi
 
