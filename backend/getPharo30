@@ -13,7 +13,7 @@ echo "    $IMAGE_URL"
 rm -rf fresh.zip
 rm -rf worker.*
 
-wget --output-document="fresh.zip" $IMAGE_URL
+curl $IMAGE_URL -o "fresh.zip" 
 
 unzip -q fresh.zip -d .
 rm -rf fresh fresh.zip
