@@ -2,5 +2,5 @@
 #
 # Starts the services needed to have a developing session with a flow-based app
 
-./basicStart.sh
+basicStart.sh
 exit 0
