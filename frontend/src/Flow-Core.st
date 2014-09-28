@@ -220,9 +220,12 @@ observeHash
 
 onHashChanged
 	
+	| controller |
 	self trigger: 'aboutToRoute'.
 	
-	(RouteableController routeFor: self route) new render.
+	controller := (RouteableController routeFor: self route) new.
+	window at: #current put: controller.
+	controller render.
 	
 	self trigger: 'afterRouting'
 ! !

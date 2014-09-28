@@ -26,7 +26,7 @@ view
 
 asBindArgument
 	"Answers the model and this controller as rivets like it for binding."
-	
+
 	^ #{
 	'model' -> self getModelAsArgument.
 	'controller' -> self
@@ -40,6 +40,20 @@ bind
 	self rivets
 		bind: self view 
 		to: self asBindArgument
+!
+
+configure
+	"Sets some configurations for rivets"
+	
+	self rivets configure: (HashedCollection new 
+		"at: #preloadData put: true; 
+		at: #handler put: self getHandler;"
+		yourself)
+!
+
+getHandler
+	<return function( target, event, binding ){
+		this.call( target, event, binding.view.models ) }>
 !
 
 getModelAsArgument
@@ -62,7 +76,7 @@ onTemplate: data
 
 	super onTemplate: data.	
 
-	self bind
+	self bind.
 ! !
 
 !BindingController class methodsFor: 'testing'!

@@ -410,16 +410,19 @@ selector: "onHashChanged",
 protocol: 'reactions',
 fn: function (){
 var self=this;
+var controller;
 function $RouteableController(){return globals.RouteableController||(typeof RouteableController=="undefined"?nil:RouteableController)}
 return smalltalk.withContext(function($ctx1) { 
 self._trigger_("aboutToRoute");
 $ctx1.sendIdx["trigger:"]=1;
-_st(_st(_st($RouteableController())._routeFor_(self._route()))._new())._render();
+controller=_st(_st($RouteableController())._routeFor_(self._route()))._new();
+_st(window)._at_put_("current",controller);
+_st(controller)._render();
 self._trigger_("afterRouting");
-return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{},globals.Router.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{controller:controller},globals.Router.klass)})},
 args: [],
-source: "onHashChanged\x0a\x09\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09(RouteableController routeFor: self route) new render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
-messageSends: ["trigger:", "render", "new", "routeFor:", "route"],
+source: "onHashChanged\x0a\x09\x0a\x09| controller |\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09controller := (RouteableController routeFor: self route) new.\x0a\x09window at: #current put: controller.\x0a\x09controller render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
+messageSends: ["trigger:", "new", "routeFor:", "route", "at:put:", "render"],
 referencedClasses: ["RouteableController"]
 }),
 globals.Router.klass);
