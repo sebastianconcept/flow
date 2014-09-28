@@ -789,6 +789,33 @@ globals.MaplessTest);
 
 
 smalltalk.addClass('Stuff', globals.MaplessModel, [], 'MiniMapless-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "things",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $OrderedCollection(){return globals.OrderedCollection||(typeof OrderedCollection=="undefined"?nil:OrderedCollection)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=($ctx1.supercall = true, globals.Stuff.superclass.fn.prototype._things.apply(_st(self), []));
+$ctx1.supercall = false;
+$ctx1.sendIdx["things"]=1;
+if(($receiver = $2) == null || $receiver.isNil){
+self._things_(_st($OrderedCollection())._new());
+$1=self._things();
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"things",{},globals.Stuff)})},
+args: [],
+source: "things\x0a\x0a\x09^ super things ifNil:[ \x0a\x09\x09self things: OrderedCollection new.\x0a\x09\x09self things ]",
+messageSends: ["ifNil:", "things", "things:", "new"],
+referencedClasses: ["OrderedCollection"]
+}),
+globals.Stuff);
+
 
 smalltalk.addMethod(
 smalltalk.method({

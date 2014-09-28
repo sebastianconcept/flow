@@ -14,7 +14,7 @@ rivets
 	"Answers the rivets accessor.
 	http://rivetsjs.com/docs/guide/"
 	
-	^ require value: 'bower/rivets/dist/rivets.min'
+	^ require value: 'bower/rivets/dist/rivets'
 !
 
 view

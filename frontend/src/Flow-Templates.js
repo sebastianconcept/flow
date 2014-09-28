@@ -17,7 +17,7 @@ $1=_st(_st(_st(self._jQueryElement())._find_(":first-child"))._at_((0)))._asJQue
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"getView",{},globals.TemplateController)})},
 args: [],
-source: "getView\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of this controller.\x22\x0a\x09\x0a\x09^ ((self jQueryElement find: ':first-child') at: 0) asJQuery",
+source: "getView\x0a\x09\x22Answers the root DOM element of this controller's view\x22\x0a\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of this controller.\x22\x0a\x09^ ((self jQueryElement find: ':first-child') at: 0) asJQuery",
 messageSends: ["asJQuery", "at:", "find:", "jQueryElement"],
 referencedClasses: []
 }),

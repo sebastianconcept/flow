@@ -12,11 +12,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1="#content"._asJQuery();
+$1=".content"._asJQuery();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"jQueryElement",{},globals.Controller)})},
 args: [],
-source: "jQueryElement\x0a\x0a\x09^ '#content' asJQuery",
+source: "jQueryElement\x0a\x09\x22Answers the DOM element who is the root of the controller's view\x22\x0a\x09^ '.content' asJQuery",
 messageSends: ["asJQuery"],
 referencedClasses: []
 }),
@@ -126,6 +126,24 @@ globals.Controller);
 
 smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow-Core');
 globals.RouteableController.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses know* if they are valid for a given URI so the app can be routed to them.\x0a\x0aA typical web app might have:\x0a1. home\x0a2. sign up\x0a3. sign in\x0a4. many other app-specific controllers";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jQueryElement",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1="#content"._asJQuery();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"jQueryElement",{},globals.RouteableController)})},
+args: [],
+source: "jQueryElement\x0a\x09\x22Answers the DOM element who is the root of the controller's view\x22\x0a\x09\x0a\x09\x22The convention is to have only one element with id='content' in index.html \x0a\x09and all the rest of the app goes from that controller\x22\x0a\x09^ '#content' asJQuery",
+messageSends: ["asJQuery"],
+referencedClasses: []
+}),
+globals.RouteableController);
+
 
 smalltalk.addMethod(
 smalltalk.method({

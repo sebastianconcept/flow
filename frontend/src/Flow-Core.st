@@ -6,8 +6,8 @@ Widget subclass: #Controller
 !Controller methodsFor: 'accessing'!
 
 jQueryElement
-
-	^ '#content' asJQuery
+	"Answers the DOM element who is the root of the controller's view"
+	^ '.content' asJQuery
 !
 
 model
@@ -61,6 +61,16 @@ A typical web app might have:
 2. sign up
 3. sign in
 4. many other app-specific controllers!
+
+!RouteableController methodsFor: 'accessing'!
+
+jQueryElement
+	"Answers the DOM element who is the root of the controller's view"
+	
+	"The convention is to have only one element with id='content' in index.html 
+	and all the rest of the app goes from that controller"
+	^ '#content' asJQuery
+! !
 
 !RouteableController class methodsFor: 'accessing'!
 

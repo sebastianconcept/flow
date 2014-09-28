@@ -10,9 +10,10 @@ This convention uses the keyword of the controller as the name of the template t
 !TemplateController methodsFor: 'accessing'!
 
 getView
+	"Answers the root DOM element of this controller's view"
+
 	"Gets and answer the element which is 
 	the parent html element of this controller."
-	
 	^ ((self jQueryElement find: ':first-child') at: 0) asJQuery
 ! !
 
