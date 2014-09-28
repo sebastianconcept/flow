@@ -3,7 +3,111 @@ var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-Core');
 smalltalk.packages["Flow-Core"].transport = {"type":"amd","amdNamespace":"app"};
 
-smalltalk.addClass('Controller', globals.Widget, ['model'], 'Flow-Core');
+smalltalk.addClass('Controller', globals.Widget, ['controllers', 'model'], 'Flow-Core');
+globals.Controller.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.\x0a\x0aA typical controller might have:\x0a\x0a1. a model\x0a2. some (sub)controllers\x0a3. minimal common behavior\x0a";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllers",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@controllers"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeControllers();
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllers",{},globals.Controller)})},
+args: [],
+source: "controllers\x0a\x09\x0a\x09^ controllers ifNil:[ self initializeControllers ]",
+messageSends: ["ifNil:", "initializeControllers"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllersAt:",
+protocol: 'accessing',
+fn: function (aKey){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_ifAbsent_(aKey,(function(){
+return smalltalk.withContext(function($ctx2) {
+return self._error_("Controller not found: ".__comma(_st(aKey)._asString()));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllersAt:",{aKey:aKey},globals.Controller)})},
+args: ["aKey"],
+source: "controllersAt: aKey \x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent:[ self error: 'Controller not found: ', aKey asString ]",
+messageSends: ["at:ifAbsent:", "controllers", "error:", ",", "asString"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllersAt:ifAbsentPut:",
+protocol: 'accessing',
+fn: function (aKey,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_ifAbsent_(aKey,(function(){
+return smalltalk.withContext(function($ctx2) {
+return self._controllersAt_put_(aKey,_st(aBlock)._value());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllersAt:ifAbsentPut:",{aKey:aKey,aBlock:aBlock},globals.Controller)})},
+args: ["aKey", "aBlock"],
+source: "controllersAt: aKey ifAbsentPut: aBlock\x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent:[ self controllersAt: aKey put: aBlock value ] ",
+messageSends: ["at:ifAbsent:", "controllers", "controllersAt:put:", "value"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllersAt:put:",
+protocol: 'accessing',
+fn: function (aKey,aController){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_put_(aKey,aController);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllersAt:put:",{aKey:aKey,aController:aController},globals.Controller)})},
+args: ["aKey", "aController"],
+source: "controllersAt: aKey put: aController\x0a\x0a\x09^ self controllers at: aKey put: aController",
+messageSends: ["at:put:", "controllers"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeControllers",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+function $Dictionary(){return globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@controllers"]=_st($Dictionary())._new();
+$1=self["@controllers"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"initializeControllers",{},globals.Controller)})},
+args: [],
+source: "initializeControllers\x0a\x09\x0a\x09^ controllers := Dictionary new",
+messageSends: ["new"],
+referencedClasses: ["Dictionary"]
+}),
+globals.Controller);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "jQueryElement",
@@ -87,6 +191,26 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "removeControllerAt:",
+protocol: 'accessing',
+fn: function (aKey){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._removeKey_ifAbsent_(aKey,(function(){
+return nil;
+}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"removeControllerAt:",{aKey:aKey},globals.Controller)})},
+args: ["aKey"],
+source: "removeControllerAt: aKey \x0a\x0a\x09^ self controllers \x0a\x09\x09removeKey: aKey \x0a\x09\x09ifAbsent:[ nil ]",
+messageSends: ["removeKey:ifAbsent:", "controllers"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "render",
 protocol: 'actions',
 fn: function (){
@@ -122,6 +246,27 @@ referencedClasses: []
 }),
 globals.Controller);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "for:",
+protocol: 'actions',
+fn: function (aModel){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=self._new();
+_st($2)._model_(aModel);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:",{aModel:aModel},globals.Controller.klass)})},
+args: ["aModel"],
+source: "for: aModel\x0a\x09\x22Answers a new instance of this controller dedicated to aModel.\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09yourself\x0a\x09",
+messageSends: ["model:", "new", "yourself"],
+referencedClasses: []
+}),
+globals.Controller.klass);
 
 
 smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow-Core');

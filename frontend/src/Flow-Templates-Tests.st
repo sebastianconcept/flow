@@ -29,7 +29,8 @@ inspiration
 
 addThing
 	
-	self model things add: self newThing
+	self model things add: self newThing.
+	self model trigger: #changed
 !
 
 newStuff
@@ -44,6 +45,28 @@ newThing
 	^ Thing new
 		name: self inspiration atRandom;
 		yourself
+!
+
+refreshList
+	"Makes sure all the Things in the model have its own controller.
+	Nothing less and nothing more."
+	
+	| items |
+	
+	"Remove absences"
+	self controllers keys 
+		with: self model things 
+		do:[ :e | (self model things includes: e) ifFalse:[
+					self removeControllerAt: e ] ].
+	
+	self model things do:[ :e |
+		self controllersAt: e ifAbsentPut:[ ThingController for: e ] ]
+!
+
+removeThing
+	
+	self model things removeLast.
+	self model trigger: #changed
 ! !
 
 !StuffController methodsFor: 'initialization'!
@@ -52,8 +75,26 @@ initialize
 
 	super initialize.
 	
+	"Set model (in this case that can be decided here)"
 	self model: self newStuff.
-	self addThing; addThing
+	
+	"Add something so by default it isn't empty."
+	self addThing; addThing.
+! !
+
+!StuffController methodsFor: 'reactions'!
+
+onAfterModel
+	"The model of this controller just have been set."
+
+	super onAfterModel.
+	
+	self model when: #changed do:[ self onStuffChanged ].
+!
+
+onStuffChanged
+
+	self refreshList
 ! !
 
 !StuffController class methodsFor: 'accessing'!

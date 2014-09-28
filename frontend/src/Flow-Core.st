@@ -1,9 +1,43 @@
 Smalltalk createPackage: 'Flow-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'model'
+	instanceVariableNames: 'controllers model'
 	package: 'Flow-Core'!
+!Controller commentStamp!
+## This is an abstraction. 
+
+*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.
+
+A typical controller might have:
+
+1. a model
+2. some (sub)controllers
+3. minimal common behavior!
 
 !Controller methodsFor: 'accessing'!
+
+controllers
+	
+	^ controllers ifNil:[ self initializeControllers ]
+!
+
+controllersAt: aKey 
+
+	^ self controllers 
+		at: aKey 
+		ifAbsent:[ self error: 'Controller not found: ', aKey asString ]
+!
+
+controllersAt: aKey ifAbsentPut: aBlock
+
+	^ self controllers 
+		at: aKey 
+		ifAbsent:[ self controllersAt: aKey put: aBlock value ]
+!
+
+controllersAt: aKey put: aController
+
+	^ self controllers at: aKey put: aController
+!
 
 jQueryElement
 	"Answers the DOM element who is the root of the controller's view"
@@ -22,6 +56,13 @@ model: aModel
 	model := aModel.
 	
 	self onAfterModel
+!
+
+removeControllerAt: aKey 
+
+	^ self controllers 
+		removeKey: aKey 
+		ifAbsent:[ nil ]
 ! !
 
 !Controller methodsFor: 'actions'!
@@ -38,6 +79,13 @@ renderOn: html
 	html h1: self class name
 ! !
 
+!Controller methodsFor: 'initialization'!
+
+initializeControllers
+	
+	^ controllers := Dictionary new
+! !
+
 !Controller methodsFor: 'reactions'!
 
 onAfterModel
@@ -46,6 +94,16 @@ onAfterModel
 
 onBeforeModel
 	"The model of this controller is about to be set."
+! !
+
+!Controller class methodsFor: 'actions'!
+
+for: aModel
+	"Answers a new instance of this controller dedicated to aModel."
+	
+	^ self new
+		model: aModel;
+		yourself
 ! !
 
 Controller subclass: #RouteableController
