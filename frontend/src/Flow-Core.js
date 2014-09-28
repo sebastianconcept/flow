@@ -3,7 +3,7 @@ var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-Core');
 smalltalk.packages["Flow-Core"].transport = {"type":"amd","amdNamespace":"app"};
 
-smalltalk.addClass('Controller', globals.Widget, ['controllers', 'model'], 'Flow-Core');
+smalltalk.addClass('Controller', globals.Widget, ['controllers', 'model', 'parent', 'jQueryElement'], 'Flow-Core');
 globals.Controller.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.\x0a\x0aA typical controller might have:\x0a\x0a1. a model\x0a2. some (sub)controllers\x0a3. minimal common behavior\x0a";
 smalltalk.addMethod(
 smalltalk.method({
@@ -110,6 +110,43 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeParentElement",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@parentElement"]=".content"._asJQuery();
+$1=self["@parentElement"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"initializeParentElement",{},globals.Controller)})},
+args: [],
+source: "initializeParentElement\x0a\x0a\x09^ parentElement := '.content' asJQuery",
+messageSends: ["asJQuery"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRendered",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self._jQueryElement())._children())._length()).__gt((0));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isRendered",{},globals.Controller)})},
+args: [],
+source: "isRendered\x0a\x09\x22Answers true if this controller is rendered.\x22\x0a\x09\x0a\x09^ self jQueryElement children length > 0\x0a\x09\x0a\x09",
+messageSends: [">", "length", "children", "jQueryElement"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "jQueryElement",
 protocol: 'accessing',
 fn: function (){
@@ -120,7 +157,7 @@ $1=".content"._asJQuery();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"jQueryElement",{},globals.Controller)})},
 args: [],
-source: "jQueryElement\x0a\x09\x22Answers the DOM element who is the root of the controller's view\x22\x0a\x09^ '.content' asJQuery",
+source: "jQueryElement\x0a\x09\x22Answers the DOM element who is the root of this controller's view\x22\x0a\x09^ '.content' asJQuery",
 messageSends: ["asJQuery"],
 referencedClasses: []
 }),
@@ -191,6 +228,44 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "parentElement",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@parentElement"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeParentElement();
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"parentElement",{},globals.Controller)})},
+args: [],
+source: "parentElement\x0a\x09\x22Answers the parent html element to which \x0a\x09the view of this controller is meant to be appended.\x22\x0a\x09^ parentElement ifNil:[ self initializeParentElement ]",
+messageSends: ["ifNil:", "initializeParentElement"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "parentElement:",
+protocol: 'accessing',
+fn: function (aHtmlElement){
+var self=this;
+self["@parentElement"]=aHtmlElement;
+return self},
+args: ["aHtmlElement"],
+source: "parentElement: aHtmlElement\x0a\x0a\x09parentElement := aHtmlElement",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "removeControllerAt:",
 protocol: 'accessing',
 fn: function (aKey){
@@ -249,21 +324,22 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "for:",
+selector: "for:on:",
 protocol: 'actions',
-fn: function (aModel){
+fn: function (aModel,aHtmlElement){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$1;
 $2=self._new();
 _st($2)._model_(aModel);
+_st($2)._parentElement_(aHtmlElement);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"for:",{aModel:aModel},globals.Controller.klass)})},
-args: ["aModel"],
-source: "for: aModel\x0a\x09\x22Answers a new instance of this controller dedicated to aModel.\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09yourself\x0a\x09",
-messageSends: ["model:", "new", "yourself"],
+}, function($ctx1) {$ctx1.fill(self,"for:on:",{aModel:aModel,aHtmlElement:aHtmlElement},globals.Controller.klass)})},
+args: ["aModel", "aHtmlElement"],
+source: "for: aModel on: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel\x0a\x09and meant to be appended to aHtmlElement.\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself\x0a\x09",
+messageSends: ["model:", "new", "parentElement:", "yourself"],
 referencedClasses: []
 }),
 globals.Controller.klass);

@@ -89,7 +89,7 @@ return function( target, event, binding ){
 	};
 return self}, function($ctx1) {$ctx1.fill(self,"getHandler",{},globals.BindingController)})},
 args: [],
-source: "getHandler\x0a\x09<return function( target, event, binding ){\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
+source: "getHandler\x0a\x09\x22Answers the custom handler of flow controllers for rivets.\x0a\x09We need it to be call on binding.model otherwhise \x0a\x09rivets would send the html element (target of the event)\x0a\x09screwing the self instance of this controller\x22\x0a\x0a\x09<return function( target, event, binding ){\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -119,16 +119,20 @@ selector: "onTemplate:",
 protocol: 'reactions',
 fn: function (data){
 var self=this;
+function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
+var $1;
 ($ctx1.supercall = true, globals.BindingController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
 $ctx1.supercall = false;
+_st($Transcript())._cr();
+$1=_st($Transcript())._show_("onTemplate");
 self._configure();
 self._bind();
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.BindingController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x0a\x09self configure.\x0a\x09self bind.",
-messageSends: ["onTemplate:", "configure", "bind"],
-referencedClasses: []
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x0a\x09Transcript cr; show: 'onTemplate'.\x0a\x09\x0a\x09self configure.\x0a\x09self bind.",
+messageSends: ["onTemplate:", "cr", "show:", "configure", "bind"],
+referencedClasses: ["Transcript"]
 }),
 globals.BindingController);
 

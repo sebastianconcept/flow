@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'Flow-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model'
+	instanceVariableNames: 'controllers model parent jQueryElement'
 	package: 'Flow-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -40,7 +40,7 @@ controllersAt: aKey put: aController
 !
 
 jQueryElement
-	"Answers the DOM element who is the root of the controller's view"
+	"Answers the DOM element who is the root of this controller's view"
 	^ '.content' asJQuery
 !
 
@@ -58,6 +58,17 @@ model: aModel
 	self onAfterModel
 !
 
+parentElement
+	"Answers the parent html element to which 
+	the view of this controller is meant to be appended."
+	^ parentElement ifNil:[ self initializeParentElement ]
+!
+
+parentElement: aHtmlElement
+
+	parentElement := aHtmlElement
+!
+
 removeControllerAt: aKey 
 
 	^ self controllers 
@@ -66,6 +77,12 @@ removeControllerAt: aKey
 ! !
 
 !Controller methodsFor: 'actions'!
+
+isRendered
+	"Answers true if this controller is rendered."
+	
+	^ self jQueryElement children length > 0
+!
 
 render
 	
@@ -84,6 +101,11 @@ renderOn: html
 initializeControllers
 	
 	^ controllers := Dictionary new
+!
+
+initializeParentElement
+
+	^ parentElement := '.content' asJQuery
 ! !
 
 !Controller methodsFor: 'reactions'!
@@ -98,11 +120,13 @@ onBeforeModel
 
 !Controller class methodsFor: 'actions'!
 
-for: aModel
-	"Answers a new instance of this controller dedicated to aModel."
+for: aModel on: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel
+	and meant to be appended to aHtmlElement."
 	
 	^ self new
 		model: aModel;
+		parentElement: aHtmlElement;
 		yourself
 ! !
 

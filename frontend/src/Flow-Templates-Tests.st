@@ -60,7 +60,8 @@ refreshList
 					self removeControllerAt: e ] ].
 	
 	self model things do:[ :e |
-		self controllersAt: e ifAbsentPut:[ ThingController for: e ] ]
+		self controllersAt: e ifAbsentPut:[ 
+			ThingController for: e on: '.things' asJQuery ] ]
 !
 
 removeThing
