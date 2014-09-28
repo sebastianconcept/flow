@@ -6,7 +6,7 @@
 
 platform='unknown'
 unamestr=`uname`
-if [[ "$unamestr" == OSX* ]]; then
+if [[ "$unamestr" == Darwin ]]; then
 	.hood/platform/osx/startAll
 elif [[ "$unamestr" == Linux* ]]; then
 	.hood/platform/linux/startAll
