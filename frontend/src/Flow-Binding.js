@@ -140,11 +140,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(require)._value_("bower/rivets/dist/rivets.min");
+$1=_st(require)._value_("bower/rivets/dist/rivets");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"rivets",{},globals.BindingController)})},
 args: [],
-source: "rivets\x0a\x09\x22Answers the rivets accessor.\x0a\x09http://rivetsjs.com/docs/guide/\x22\x0a\x09\x0a\x09^ require value: 'bower/rivets/dist/rivets.min'",
+source: "rivets\x0a\x09\x22Answers the rivets accessor.\x0a\x09http://rivetsjs.com/docs/guide/\x22\x0a\x09\x0a\x09\x22^ require value: 'bower/rivets/dist/rivets.min'.\x22\x0a\x09^ require value: 'bower/rivets/dist/rivets'",
 messageSends: ["value:"],
 referencedClasses: []
 }),
