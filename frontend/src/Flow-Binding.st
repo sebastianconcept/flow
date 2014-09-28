@@ -20,7 +20,7 @@ rivets
 	"Answers the rivets accessor.
 	http://rivetsjs.com/docs/guide/"
 	
-	^ require value: 'bower/rivets/dist/rivets'
+	^ require value: 'bower/rivets/dist/rivets.min'
 !
 
 view
@@ -57,7 +57,7 @@ configure
 getConfiguration
 
 	^ HashedCollection new 
-		at: 'handler' put: self getHandlerY;
+		at: 'handler' put: self getHandler;
 		yourself
 !
 

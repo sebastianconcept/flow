@@ -28,18 +28,8 @@ inspiration
 !StuffController methodsFor: 'actions'!
 
 addThing
-
-	window console log: self.
 	
 	Transcript cr; show: self inspiration atRandom.
-	self inspiration atRandom inspect.
-	
-	"self inspiration atRandom inspect."
-	
-	"Transcript cr; show: self model things"
-	
-	"Transcript cr; show: 6+5+11."
-	"Transcript cr; show: self inspiration atRandom"
 !
 
 newStuff

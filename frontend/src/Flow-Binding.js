@@ -65,14 +65,14 @@ function $HashedCollection(){return globals.HashedCollection||(typeof HashedColl
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$1;
 $2=_st($HashedCollection())._new();
-_st($2)._at_put_("handler",self._getHandlerY());
+_st($2)._at_put_("handler",self._getHandler());
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"getConfiguration",{},globals.BindingController)})},
 args: [],
-source: "getConfiguration\x0a\x0a\x09^ HashedCollection new \x0a\x09\x09at: 'handler' put: self getHandlerY;\x0a\x09\x09yourself",
-messageSends: ["at:put:", "new", "getHandlerY", "yourself"],
+source: "getConfiguration\x0a\x0a\x09^ HashedCollection new \x0a\x09\x09at: 'handler' put: self getHandler;\x0a\x09\x09yourself",
+messageSends: ["at:put:", "new", "getHandler", "yourself"],
 referencedClasses: ["HashedCollection"]
 }),
 globals.BindingController);
@@ -140,11 +140,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(require)._value_("bower/rivets/dist/rivets");
+$1=_st(require)._value_("bower/rivets/dist/rivets.min");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"rivets",{},globals.BindingController)})},
 args: [],
-source: "rivets\x0a\x09\x22Answers the rivets accessor.\x0a\x09http://rivetsjs.com/docs/guide/\x22\x0a\x09\x0a\x09^ require value: 'bower/rivets/dist/rivets'",
+source: "rivets\x0a\x09\x22Answers the rivets accessor.\x0a\x09http://rivetsjs.com/docs/guide/\x22\x0a\x09\x0a\x09^ require value: 'bower/rivets/dist/rivets.min'",
 messageSends: ["value:"],
 referencedClasses: []
 }),
