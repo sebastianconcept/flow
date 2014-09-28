@@ -14,6 +14,7 @@ var self=this;
 function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
 var $3,$2,$1;
+_st(_st(window)._console())._log_(self);
 _st($Transcript())._cr();
 $3=self._inspiration();
 $ctx1.sendIdx["inspiration"]=1;
@@ -23,8 +24,8 @@ $1=_st($Transcript())._show_($2);
 _st(_st(self._inspiration())._atRandom())._inspect();
 return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffController)})},
 args: [],
-source: "addThing\x0a\x0a\x09Transcript cr; show: self inspiration atRandom.\x0a\x09self inspiration atRandom inspect.\x0a\x09\x0a\x09\x22self inspiration atRandom inspect.\x22\x0a\x09\x0a\x09\x22Transcript cr; show: self model things\x22\x0a\x09\x0a\x09\x22Transcript cr; show: 6+5+11.\x22\x0a\x09\x22Transcript cr; show: self inspiration atRandom\x22",
-messageSends: ["cr", "show:", "atRandom", "inspiration", "inspect"],
+source: "addThing\x0a\x0a\x09window console log: self.\x0a\x09\x0a\x09Transcript cr; show: self inspiration atRandom.\x0a\x09self inspiration atRandom inspect.\x0a\x09\x0a\x09\x22self inspiration atRandom inspect.\x22\x0a\x09\x0a\x09\x22Transcript cr; show: self model things\x22\x0a\x09\x0a\x09\x22Transcript cr; show: 6+5+11.\x22\x0a\x09\x22Transcript cr; show: self inspiration atRandom\x22",
+messageSends: ["log:", "console", "cr", "show:", "atRandom", "inspiration", "inspect"],
 referencedClasses: ["Transcript"]
 }),
 globals.StuffController);

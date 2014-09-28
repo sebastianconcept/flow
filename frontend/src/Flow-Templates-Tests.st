@@ -29,6 +29,8 @@ inspiration
 
 addThing
 
+	window console log: self.
+	
 	Transcript cr; show: self inspiration atRandom.
 	self inspiration atRandom inspect.
 	

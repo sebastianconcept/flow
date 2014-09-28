@@ -45,13 +45,34 @@ selector: "configure",
 protocol: 'actions',
 fn: function (){
 var self=this;
-function $HashedCollection(){return globals.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self._rivets())._configure_(_st(_st($HashedCollection())._new())._yourself());
+_st(self._rivets())._configure_(self._getConfiguration());
 return self}, function($ctx1) {$ctx1.fill(self,"configure",{},globals.BindingController)})},
 args: [],
-source: "configure\x0a\x09\x22Sets some configurations for rivets\x22\x0a\x09\x0a\x09self rivets configure: (HashedCollection new \x0a\x09\x09\x22at: #preloadData put: true; \x0a\x09\x09at: #handler put: self getHandler;\x22\x0a\x09\x09yourself)",
-messageSends: ["configure:", "rivets", "yourself", "new"],
+source: "configure\x0a\x09\x22Sets some configurations for rivets\x22\x0a\x0a\x09self rivets configure: self getConfiguration",
+messageSends: ["configure:", "rivets", "getConfiguration"],
+referencedClasses: []
+}),
+globals.BindingController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getConfiguration",
+protocol: 'actions',
+fn: function (){
+var self=this;
+function $HashedCollection(){return globals.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st($HashedCollection())._new();
+_st($2)._at_put_("handler",self._getHandlerY());
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"getConfiguration",{},globals.BindingController)})},
+args: [],
+source: "getConfiguration\x0a\x0a\x09^ HashedCollection new \x0a\x09\x09at: 'handler' put: self getHandlerY;\x0a\x09\x09yourself",
+messageSends: ["at:put:", "new", "getHandlerY", "yourself"],
 referencedClasses: ["HashedCollection"]
 }),
 globals.BindingController);
@@ -59,15 +80,16 @@ globals.BindingController);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "getHandler",
-protocol: 'actions',
+protocol: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return function( target, event, binding ){
-		this.call( target, event, binding.view.models ) };
+		this.call(binding.model);
+	};
 return self}, function($ctx1) {$ctx1.fill(self,"getHandler",{},globals.BindingController)})},
 args: [],
-source: "getHandler\x0a\x09<return function( target, event, binding ){\x0a\x09\x09this.call( target, event, binding.view.models ) }>",
+source: "getHandler\x0a\x09<return function( target, event, binding ){\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -100,11 +122,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.BindingController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
 $ctx1.supercall = false;
+self._configure();
 self._bind();
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.BindingController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x0a\x09self bind.\x0a\x09",
-messageSends: ["onTemplate:", "bind"],
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x0a\x09self configure.\x0a\x09self bind.",
+messageSends: ["onTemplate:", "configure", "bind"],
 referencedClasses: []
 }),
 globals.BindingController);

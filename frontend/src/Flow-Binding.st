@@ -10,6 +10,12 @@ Note that BindingController is a subclass of TemplateController so all subclasse
 
 !BindingController methodsFor: 'accessing'!
 
+getHandler
+	<return function( target, event, binding ){
+		this.call(binding.model);
+	}>
+!
+
 rivets
 	"Answers the rivets accessor.
 	http://rivetsjs.com/docs/guide/"
@@ -44,16 +50,15 @@ bind
 
 configure
 	"Sets some configurations for rivets"
-	
-	self rivets configure: (HashedCollection new 
-		"at: #preloadData put: true; 
-		at: #handler put: self getHandler;"
-		yourself)
+
+	self rivets configure: self getConfiguration
 !
 
-getHandler
-	<return function( target, event, binding ){
-		this.call( target, event, binding.view.models ) }>
+getConfiguration
+
+	^ HashedCollection new 
+		at: 'handler' put: self getHandlerY;
+		yourself
 !
 
 getModelAsArgument
@@ -76,6 +81,7 @@ onTemplate: data
 
 	super onTemplate: data.	
 
+	self configure.
 	self bind.
 ! !
 
