@@ -50,7 +50,6 @@ refreshList
 	self controllers keys 
 		with: self model things 
 		do:[ :e | (self model things includes: e) ifFalse:[
-			Transcript cr; show: 'Removing: ', e name.
 					self removeControllerAt: e ] ].
 	
 	self model things do:[ :e | | added |
@@ -60,7 +59,6 @@ refreshList
 				on: self 
 				appendingTo: '.things' asJQuery ].
 		added ifNotNil:[ 
-					Transcript cr; show: 'Rendering: ', e name.
 			added render ] ]
 !
 

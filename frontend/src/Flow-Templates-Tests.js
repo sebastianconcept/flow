@@ -162,10 +162,9 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 var items;
-function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $ThingController(){return globals.ThingController||(typeof ThingController=="undefined"?nil:ThingController)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$2,$6,$5,$4,$9,$8,$7,$10,$11,$receiver;
+var $1,$3,$2,$6,$5,$4,$7,$receiver;
 $1=_st(self._controllers())._keys();
 $3=self._model();
 $ctx1.sendIdx["model"]=1;
@@ -179,15 +178,6 @@ $5=_st($6)._things();
 $ctx2.sendIdx["things"]=2;
 $4=_st($5)._includes_(e);
 if(! smalltalk.assert($4)){
-_st($Transcript())._cr();
-$ctx2.sendIdx["cr"]=1;
-$9=_st(e)._name();
-$ctx2.sendIdx["name"]=1;
-$8="Removing: ".__comma($9);
-$ctx2.sendIdx[","]=1;
-$7=_st($Transcript())._show_($8);
-$ctx2.sendIdx["show:"]=1;
-$7;
 return self._removeControllerAt_(e);
 };
 }, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,1)})}));
@@ -199,21 +189,18 @@ return smalltalk.withContext(function($ctx3) {
 added=_st($ThingController())._for_on_appendingTo_(e,self,".things"._asJQuery());
 return added;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
-$10=added;
-if(($receiver = $10) == null || $receiver.isNil){
-return $10;
+$7=added;
+if(($receiver = $7) == null || $receiver.isNil){
+return $7;
 } else {
-_st($Transcript())._cr();
-$11=_st($Transcript())._show_("Rendering: ".__comma(_st(e)._name()));
-$11;
 return _st(added)._render();
 };
 }, function($ctx2) {$ctx2.fillBlock({e:e,added:added},$ctx1,3)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"refreshList",{items:items},globals.StuffController)})},
 args: [],
-source: "refreshList\x0a\x09\x22Makes sure all the Things in the model have its own controller.\x0a\x09Nothing less and nothing more.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self model things \x0a\x09\x09do:[ :e | (self model things includes: e) ifFalse:[\x0a\x09\x09\x09Transcript cr; show: 'Removing: ', e name.\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09self model things do:[ :e | | added |\x0a\x09\x09self controllersAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := ThingController \x0a\x09\x09\x09\x09for: e \x0a\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09appendingTo: '.things' asJQuery ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09\x09\x09Transcript cr; show: 'Rendering: ', e name.\x0a\x09\x09\x09added render ] ]\x0a\x09",
-messageSends: ["with:do:", "keys", "controllers", "things", "model", "ifFalse:", "includes:", "cr", "show:", ",", "name", "removeControllerAt:", "do:", "controllersAt:ifAbsentPut:", "for:on:appendingTo:", "asJQuery", "ifNotNil:", "render"],
-referencedClasses: ["Transcript", "ThingController"]
+source: "refreshList\x0a\x09\x22Makes sure all the Things in the model have its own controller.\x0a\x09Nothing less and nothing more.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self model things \x0a\x09\x09do:[ :e | (self model things includes: e) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09self model things do:[ :e | | added |\x0a\x09\x09self controllersAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := ThingController \x0a\x09\x09\x09\x09for: e \x0a\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09appendingTo: '.things' asJQuery ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
+messageSends: ["with:do:", "keys", "controllers", "things", "model", "ifFalse:", "includes:", "removeControllerAt:", "do:", "controllersAt:ifAbsentPut:", "for:on:appendingTo:", "asJQuery", "ifNotNil:", "render"],
+referencedClasses: ["ThingController"]
 }),
 globals.StuffController);
 

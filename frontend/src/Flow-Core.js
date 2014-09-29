@@ -737,15 +737,14 @@ var self=this;
 function $Router(){return globals.Router||(typeof Router=="undefined"?nil:Router)}
 return smalltalk.withContext(function($ctx1) { 
 self._hideLoader();
-self._render();
 _st(_st(window)._document())._title_(_st(self._class())._name());
 _st($Router())._observeHash();
 _st(self._session())._open();
 _st(window)._at_put_("app",self);
 return self}, function($ctx1) {$ctx1.fill(self,"onOpen",{},globals.FlowAppController)})},
 args: [],
-source: "onOpen\x0a\x09\x22All is loaded.\x22\x0a\x0a\x09self hideLoader.\x0a\x0a\x09self render.\x0a\x09\x0a\x09window document title: self class name.\x0a\x09\x0a\x09Router observeHash.\x0a\x09\x0a\x09self session open.\x0a\x09\x0a\x09\x22Handy reference\x22\x0a\x09window at: 'app' put: self\x09",
-messageSends: ["hideLoader", "render", "title:", "document", "name", "class", "observeHash", "open", "session", "at:put:"],
+source: "onOpen\x0a\x09\x22All is loaded.\x22\x0a\x0a\x09self hideLoader.\x0a\x09\x0a\x09window document title: self class name.\x0a\x09\x0a\x09Router observeHash.\x0a\x09\x0a\x09self session open.\x0a\x09\x0a\x09\x22Handy reference\x22\x0a\x09window at: 'app' put: self\x09",
+messageSends: ["hideLoader", "title:", "document", "name", "class", "observeHash", "open", "session", "at:put:"],
 referencedClasses: ["Router"]
 }),
 globals.FlowAppController);

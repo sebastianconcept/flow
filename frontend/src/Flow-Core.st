@@ -322,8 +322,6 @@ onOpen
 	"All is loaded."
 
 	self hideLoader.
-
-	self render.
 	
 	window document title: self class name.
 	
