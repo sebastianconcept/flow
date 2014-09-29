@@ -1,13 +1,49 @@
 Smalltalk createPackage: 'Flow-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'model'
+	instanceVariableNames: 'controllers model view parent parentElement'
 	package: 'Flow-Core'!
+!Controller commentStamp!
+## This is an abstraction. 
+
+*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.
+
+A typical controller might have:
+
+1. a model
+2. some (sub)controllers
+3. minimal common behavior!
 
 !Controller methodsFor: 'accessing'!
 
-jQueryElement
+controllers
+	
+	^ controllers ifNil:[ self initializeControllers ]
+!
 
-	^ '#content' asJQuery
+controllersAt: aKey 
+
+	^ self controllers 
+		at: aKey 
+		ifAbsent:[ self error: 'Controller not found: ', aKey asString ]
+!
+
+controllersAt: aKey ifAbsent: aBlock
+
+	^ self controllers 
+		at: aKey 
+		ifAbsent: aBlock
+!
+
+controllersAt: aKey ifAbsentPut: aBlock
+
+	^ self controllers 
+		at: aKey 
+		ifAbsent:[ self controllersAt: aKey put: aBlock value ]
+!
+
+controllersAt: aKey put: aController
+
+	^ self controllers at: aKey put: aController
 !
 
 model
@@ -22,23 +58,89 @@ model: aModel
 	model := aModel.
 	
 	self onAfterModel
+!
+
+parent
+	"Answers the parent controller of this controller."
+
+	^ parent
+!
+
+parent: aParentControllerOrNil
+
+	parent := aParentControllerOrNil
+!
+
+parentElement
+
+	^ parentElement
+!
+
+parentElement: aHtmlElement
+
+	parentElement := aHtmlElement
+!
+
+view
+	"Answers the DOM element who is the root of this controller's view"
+	^ view
+!
+
+view: aHtmlElement
+
+	view := aHtmlElement
 ! !
 
 !Controller methodsFor: 'actions'!
 
+remove
+	
+	self onAboutToRemove.
+	
+	self view remove.
+!
+
+removeControllerAt: aKey 
+
+	| controller |
+	
+	controller := self controllersAt: aKey ifAbsent:[ nil ].
+	
+	controller ifNotNil:[
+		controller remove ].
+		
+	self controllers removeKey: aKey ifAbsent: [ nil ]
+!
+
 render
 	
-	self jQueryElement empty.
+	self view ifNotNil:[
+		self view empty ].
 	
-	self renderOn: (HTMLCanvas onJQuery: self jQueryElement)
+	self renderOn: (HTMLCanvas onJQuery: self parentElement)
 !
 
 renderOn: html
+	"This is a silly default only useful to dev because provides quick feedback ans sets the view.
+	Subclasses do interesting thigns intead"
+	
+	view := (html h1: self class name) asJQuery
+! !
 
-	html h1: self class name
+!Controller methodsFor: 'initialization'!
+
+initializeControllers
+	
+	^ controllers := Dictionary new
 ! !
 
 !Controller methodsFor: 'reactions'!
+
+onAboutToRemove
+	"This controller is about to be removed."
+	
+	"no-op"
+!
 
 onAfterModel
 	"The model of this controller just have been set."
@@ -46,6 +148,68 @@ onAfterModel
 
 onBeforeModel
 	"The model of this controller is about to be set."
+! !
+
+!Controller methodsFor: 'testing'!
+
+hasView
+	"Answers true if this controller has a view"
+	
+	^ view notNil
+!
+
+isRendered
+	"Answers true if this controller is rendered."
+	
+	^ self view children length > 0
+! !
+
+!Controller class methodsFor: 'accessing'!
+
+defaultHtmlElement
+
+	^ '#content' asJQuery
+!
+
+defaultModel
+
+	^ nil
+! !
+
+!Controller class methodsFor: 'actions'!
+
+for: aModel 
+	"Answers a new instance of this controller dedicated to aModel,
+	with no parent and meant to be appended to the default html element,
+	expected to be <div id=#content></div>."
+	
+	^ self for: aModel on: nil appendingTo: self defaultHtmlElement
+!
+
+for: aModel on: aParentControllerOrNil
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to 
+	the default html element, expected to be <div id=#content></div>."
+	
+	^ self for: aModel on: aParentControllerOrNil appendingTo: self defaultHtmlElement
+!
+
+for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+	
+	^ self new
+		model: aModel;
+		parent: aParentControllerOrNil;
+		parentElement: aHtmlElement;
+		yourself
+!
+
+on: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller using the default model,
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+	
+	^ self for: self defaultModel on: aParentControllerOrNil appendingTo: aHtmlElement
 ! !
 
 Controller subclass: #RouteableController
@@ -62,7 +226,27 @@ A typical web app might have:
 3. sign in
 4. many other app-specific controllers!
 
+!RouteableController methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	"The convention for routeable controllers is 
+	to have only one element with id='content' in index.html 
+	and all the rest of the app goes from that controller"
+	parentElement := '#content' asJQuery
+! !
+
 !RouteableController class methodsFor: 'accessing'!
+
+controllerFor: anURI
+	"Answers the subclass that is a good fit to route anURI."
+	
+	^ self allSubclasses
+		detect:[ :each | each isValidFor: anURI ]
+		ifNone:[ NotFoundController ]
+!
 
 keyword
 	"Answers the name of the class in lowercase without 
@@ -75,12 +259,22 @@ keyword
 
 !RouteableController class methodsFor: 'actions'!
 
+forURI: anURI
+
+	^ self for: (self modelFor: anURI) on: nil appendingTo: self defaultHtmlElement
+!
+
+modelFor: anURI
+	"Answers the model that corresponds to anURI."
+
+	"The default is just to return the default model"
+	^ self defaultModel
+!
+
 routeFor: anURI
-	"Answers the subclass that is a good fit to route anURI."
+	"Answers a new controller suited to anURI."
 	
-	^ self allSubclasses
-		detect:[ :each | each isValidFor: anURI ]
-		ifNone:[ NotFoundController ]
+	^ (self controllerFor: anURI) forURI: anURI
 ! !
 
 !RouteableController class methodsFor: 'testing'!
@@ -128,8 +322,6 @@ onOpen
 	"All is loaded."
 
 	self hideLoader.
-
-	self render.
 	
 	window document title: self class name.
 	
@@ -146,7 +338,7 @@ onOpen
 open
 	"The foundation is ready, time to start this app!!"
 
-	^ self new onOpen
+	^ (self for: nil on: nil appendingTo: '#content' asJQuery) onOpen
 ! !
 
 !FlowAppController class methodsFor: 'testing'!
@@ -185,7 +377,14 @@ This router observes changes in the URI and reacts accordingly.
 The strategy is to ignore what should be rote where in advance by collaborating intensively with controllers that understands #isValidFor: 
 That way this router will flexibly route thigs with a pontentially complex URI!
 
+Router class instanceVariableNames: 'active'!
+
 !Router class methodsFor: 'accessing'!
+
+active
+
+	^ active
+!
 
 route
 	"Answers the current route."
@@ -212,7 +411,10 @@ onHashChanged
 	
 	self trigger: 'aboutToRoute'.
 	
-	(RouteableController routeFor: self route) new render.
+	active ifNotNil:[ active remove ].
+	active := RouteableController routeFor: self route.
+
+	active render.
 	
 	self trigger: 'afterRouting'
 ! !

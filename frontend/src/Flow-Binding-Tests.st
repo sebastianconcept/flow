@@ -7,29 +7,6 @@ BindingController subclass: #RivetsJSTestsController
 	instanceVariableNames: ''
 	package: 'Flow-Binding-Tests'!
 
-!RivetsJSTestsController methodsFor: 'actions'!
-
-newPerson
-	"Answers a new MockPerson to be used as model for the demo.
-	Note that its attributes are probably used from the template (read and write)"
-
-	^ MockPerson new
-		name: 'John Galt';
-		age: 42;
-		yourself
-! !
-
-!RivetsJSTestsController methodsFor: 'initialization'!
-
-initialize
-	"Initializes the controller of the rivets test view"
-	
-	super initialize.
-	
-	"As the controller's model we're using a new mapless"
-	self model: self newPerson.
-! !
-
 !RivetsJSTestsController methodsFor: 'reactions'!
 
 onAha
@@ -43,6 +20,15 @@ onMhm
 ! !
 
 !RivetsJSTestsController class methodsFor: 'accessing'!
+
+defaultModel
+	"Answers the default model that is going to be set in the instance of this controller."
+
+	^ MockPerson new
+		name: 'John Galt';
+		age: 42;
+		yourself
+!
 
 viewPath
 	"Returns the path where the template of the view should be found"
