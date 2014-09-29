@@ -13,12 +13,16 @@ onTemplate: data
 	"Receives the template's data after requirejs 
 	have received it from the server (or cache)."
 
-	"Make it to be the contents of this controllers parent element"
-	self parentElement html: data.
+	| appended |
 
+	"Make it to be the contents of this controllers parent element"
+	"self parentElement html: data."
+	appended := self parentElement append: data.
+	window console info: appended.
+	
 	"And follow the convention that all templates are wrapped
 	in one element which is the view of this controller."
-	self view: self parentElement children first
+	self view: self parentElement children last.
 ! !
 
 !TemplateController methodsFor: 'rendering'!

@@ -112,8 +112,8 @@ removeControllerAt: aKey
 
 render
 	
-	self view ifNotNil:[
-		self view empty ].
+	"self view ifNotNil:[
+		self view empty ]."
 	
 	self renderOn: (HTMLCanvas onJQuery: self parentElement)
 !

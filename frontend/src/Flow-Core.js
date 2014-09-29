@@ -342,19 +342,11 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return globals.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$receiver;
-$1=self._view();
-$ctx1.sendIdx["view"]=1;
-if(($receiver = $1) == null || $receiver.isNil){
-$1;
-} else {
-_st(self._view())._empty();
-};
 self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._parentElement()));
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Controller)})},
 args: [],
-source: "render\x0a\x09\x0a\x09self view ifNotNil:[\x0a\x09\x09self view empty ].\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
-messageSends: ["ifNotNil:", "view", "empty", "renderOn:", "onJQuery:", "parentElement"],
+source: "render\x0a\x09\x0a\x09\x22self view ifNotNil:[\x0a\x09\x09self view empty ].\x22\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
+messageSends: ["renderOn:", "onJQuery:", "parentElement"],
 referencedClasses: ["HTMLCanvas"]
 }),
 globals.Controller);

@@ -11,16 +11,18 @@ selector: "onTemplate:",
 protocol: 'reactions',
 fn: function (data){
 var self=this;
+var appended;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=self._parentElement();
 $ctx1.sendIdx["parentElement"]=1;
-_st($1)._html_(data);
-self._view_(_st(_st(self._parentElement())._children())._first());
-return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.TemplateController)})},
+appended=_st($1)._append_(data);
+_st(_st(window)._console())._info_(appended);
+self._view_(_st(_st(self._parentElement())._children())._last());
+return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data,appended:appended},globals.TemplateController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives the template's data after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09self parentElement html: data.\x0a\x0a\x09\x22And follow the convention that all templates are wrapped\x0a\x09in one element which is the view of this controller.\x22\x0a\x09self view: self parentElement children first",
-messageSends: ["html:", "parentElement", "view:", "first", "children"],
+source: "onTemplate: data\x0a\x09\x22Receives the template's data after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09| appended |\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09\x22self parentElement html: data.\x22\x0a\x09appended := self parentElement append: data.\x0a\x09window console info: appended.\x0a\x09\x0a\x09\x22And follow the convention that all templates are wrapped\x0a\x09in one element which is the view of this controller.\x22\x0a\x09self view: self parentElement children last.\x0a\x09",
+messageSends: ["append:", "parentElement", "info:", "console", "view:", "last", "children"],
 referencedClasses: []
 }),
 globals.TemplateController);

@@ -86,8 +86,8 @@ initialize
 	"Set model (in this case that can be decided here)"
 	self model: self newStuff.
 	
-	"Add something so by default it isn't empty."
-	self addThing; addThing.
+	"Silently add something so by default it isn't empty."
+	self model things add: self newThing; add: self newThing.
 ! !
 
 !StuffController methodsFor: 'reactions'!
@@ -98,12 +98,21 @@ onAfterModel
 	super onAfterModel.
 	
 	self model when: #changed do:[ self onStuffChanged ].
-	self onStuffChanged
+	"self hasView ifTrue:[
+		self onStuffChanged ]"
 !
 
 onStuffChanged
 
 	self refreshList
+!
+
+onTemplate: data
+
+	super onTemplate: data.
+	
+	
+	self onStuffChanged
 ! !
 
 !StuffController class methodsFor: 'accessing'!

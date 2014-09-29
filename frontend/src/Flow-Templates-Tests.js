@@ -33,17 +33,21 @@ protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2,$3,$4;
 ($ctx1.supercall = true, globals.StuffController.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
 self._model_(self._newStuff());
-self._addThing();
-$ctx1.sendIdx["addThing"]=1;
-$1=self._addThing();
+$1=_st(self._model())._things();
+$2=$1;
+$3=self._newThing();
+$ctx1.sendIdx["newThing"]=1;
+_st($2)._add_($3);
+$ctx1.sendIdx["add:"]=1;
+$4=_st($1)._add_(self._newThing());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.StuffController)})},
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09\x22Set model (in this case that can be decided here)\x22\x0a\x09self model: self newStuff.\x0a\x09\x0a\x09\x22Add something so by default it isn't empty.\x22\x0a\x09self addThing; addThing.\x0a\x09\x0a\x09",
-messageSends: ["initialize", "model:", "newStuff", "addThing"],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09\x22Set model (in this case that can be decided here)\x22\x0a\x09self model: self newStuff.\x0a\x09\x0a\x09\x22Silently add something so by default it isn't empty.\x22\x0a\x09self model things add: self newThing; add: self newThing.\x0a\x0a\x09",
+messageSends: ["initialize", "model:", "newStuff", "add:", "things", "model", "newThing"],
 referencedClasses: []
 }),
 globals.StuffController);
@@ -121,12 +125,10 @@ $ctx1.supercall = false;
 _st(self._model())._when_do_("changed",(function(){
 return smalltalk.withContext(function($ctx2) {
 return self._onStuffChanged();
-$ctx2.sendIdx["onStuffChanged"]=1;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-self._onStuffChanged();
 return self}, function($ctx1) {$ctx1.fill(self,"onAfterModel",{},globals.StuffController)})},
 args: [],
-source: "onAfterModel\x0a\x09\x22The model of this controller just have been set.\x22\x0a\x0a\x09super onAfterModel.\x0a\x09\x0a\x09self model when: #changed do:[ self onStuffChanged ].\x0a\x09self onStuffChanged\x0a\x09",
+source: "onAfterModel\x0a\x09\x22The model of this controller just have been set.\x22\x0a\x0a\x09super onAfterModel.\x0a\x09\x0a\x09self model when: #changed do:[ self onStuffChanged ].\x0a\x09\x22self hasView ifTrue:[\x0a\x09\x09self onStuffChanged ]\x22\x0a\x09",
 messageSends: ["onAfterModel", "when:do:", "model", "onStuffChanged"],
 referencedClasses: []
 }),
@@ -144,6 +146,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"onStuffChanged",{},globals.Stuff
 args: [],
 source: "onStuffChanged\x0a\x0a\x09self refreshList",
 messageSends: ["refreshList"],
+referencedClasses: []
+}),
+globals.StuffController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onTemplate:",
+protocol: 'reactions',
+fn: function (data){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.StuffController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
+$ctx1.supercall = false;
+self._onStuffChanged();
+return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.StuffController)})},
+args: ["data"],
+source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x0a\x09\x0a\x09self onStuffChanged",
+messageSends: ["onTemplate:", "onStuffChanged"],
 referencedClasses: []
 }),
 globals.StuffController);
