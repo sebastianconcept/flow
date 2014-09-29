@@ -15,11 +15,10 @@ var appended;
 return smalltalk.withContext(function($ctx1) { 
 appended=_st(self._parentElement())._append_(data);
 self._view_(_st(_st(appended)._children())._last());
-_st(_st(window)._console())._info_(self._view());
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data,appended:appended},globals.TemplateController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives the template's data after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09| appended |\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09\x22self parentElement html: data.\x22\x0a\x09appended := self parentElement append: data.\x0a\x09\x0a\x09\x22And follow the convention that all templates are wrapped\x0a\x09in one element which is the view of this controller.\x22\x0a\x09self view: appended children last.\x0a\x09window console info: self view.\x0a\x09",
-messageSends: ["append:", "parentElement", "view:", "last", "children", "info:", "console", "view"],
+source: "onTemplate: data\x0a\x09\x22Receives the template's data after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09| appended |\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09\x22self parentElement html: data.\x22\x0a\x09appended := self parentElement append: data.\x0a\x09\x0a\x09\x22And follow the convention that all templates are wrapped\x0a\x09in one element which is the view of this controller.\x22\x0a\x09self view: appended children last.\x0a\x09",
+messageSends: ["append:", "parentElement", "view:", "last", "children"],
 referencedClasses: []
 }),
 globals.TemplateController);

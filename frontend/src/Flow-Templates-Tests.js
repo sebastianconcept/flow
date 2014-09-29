@@ -33,21 +33,12 @@ protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
 ($ctx1.supercall = true, globals.StuffController.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
-self._model_(self._newStuff());
-$1=_st(self._model())._things();
-$2=$1;
-$3=self._newThing();
-$ctx1.sendIdx["newThing"]=1;
-_st($2)._add_($3);
-$ctx1.sendIdx["add:"]=1;
-$4=_st($1)._add_(self._newThing());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.StuffController)})},
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09\x22Set model (in this case that can be decided here)\x22\x0a\x09self model: self newStuff.\x0a\x09\x0a\x09\x22Silently add something so by default it isn't empty.\x22\x0a\x09self model things add: self newThing; add: self newThing.\x0a\x0a\x09",
-messageSends: ["initialize", "model:", "newStuff", "add:", "things", "model", "newThing"],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x0a\x09",
+messageSends: ["initialize"],
 referencedClasses: []
 }),
 globals.StuffController);
@@ -66,28 +57,6 @@ args: [],
 source: "inspiration\x0a\x09\x22Answers a collection to inspire a name for something.\x22\x0a\x09\x0a\x09^ #(\x0a\x09so \x0a\x09many \x0a\x09cool \x0a\x09things \x0a\x09here \x0a\x09wow \x0a\x09great \x0a \x09sweet \x0a\x09groovy \x0a\x09)\x0a\x09",
 messageSends: [],
 referencedClasses: []
-}),
-globals.StuffController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newStuff",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$1;
-$2=_st($Stuff())._new();
-_st($2)._name_("Hey... this stuff is new!");
-$3=_st($2)._yourself();
-$1=$3;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newStuff",{},globals.StuffController)})},
-args: [],
-source: "newStuff\x0a\x0a\x09^ Stuff new\x0a\x09\x09name: 'Hey... this stuff is new!';\x0a\x09\x09yourself",
-messageSends: ["name:", "new", "yourself"],
-referencedClasses: ["Stuff"]
 }),
 globals.StuffController);
 
@@ -120,16 +89,34 @@ protocol: 'reactions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4,$5,$6,$7;
 ($ctx1.supercall = true, globals.StuffController.superclass.fn.prototype._onAfterModel.apply(_st(self), []));
 $ctx1.supercall = false;
-_st(self._model())._when_do_("changed",(function(){
+$1=self._model();
+$ctx1.sendIdx["model"]=1;
+_st($1)._when_do_("changed",(function(){
 return smalltalk.withContext(function($ctx2) {
 return self._onStuffChanged();
+$ctx2.sendIdx["onStuffChanged"]=1;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+$2=self._hasView();
+if(smalltalk.assert($2)){
+self._onStuffChanged();
+};
+$3=self._model();
+$ctx1.sendIdx["model"]=2;
+_st($3)._name_("Hey... this stuff is new!");
+$4=_st(self._model())._things();
+$5=$4;
+$6=self._newThing();
+$ctx1.sendIdx["newThing"]=1;
+_st($5)._add_($6);
+$ctx1.sendIdx["add:"]=1;
+$7=_st($4)._add_(self._newThing());
 return self}, function($ctx1) {$ctx1.fill(self,"onAfterModel",{},globals.StuffController)})},
 args: [],
-source: "onAfterModel\x0a\x09\x22The model of this controller just have been set.\x22\x0a\x0a\x09super onAfterModel.\x0a\x09\x0a\x09self model when: #changed do:[ self onStuffChanged ].\x0a\x09\x22self hasView ifTrue:[\x0a\x09\x09self onStuffChanged ]\x22\x0a\x09",
-messageSends: ["onAfterModel", "when:do:", "model", "onStuffChanged"],
+source: "onAfterModel\x0a\x09\x22The model of this controller just have been set.\x22\x0a\x0a\x09super onAfterModel.\x0a\x09\x0a\x09self model when: #changed do:[ self onStuffChanged ].\x0a\x0a\x09self hasView ifTrue:[\x0a\x09\x09self onStuffChanged ].\x0a\x09\x09\x0a\x09\x22Customize the model\x22\x0a\x09self model name: 'Hey... this stuff is new!'.\x0a\x09\x22Silently add something so by default it isn't empty.\x22\x0a\x09self model things add: self newThing; add: self newThing.\x0a\x09\x09\x0a\x09",
+messageSends: ["onAfterModel", "when:do:", "model", "onStuffChanged", "ifTrue:", "hasView", "name:", "add:", "things", "newThing"],
 referencedClasses: []
 }),
 globals.StuffController);
@@ -162,7 +149,7 @@ $ctx1.supercall = false;
 self._onStuffChanged();
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.StuffController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x0a\x09\x0a\x09self onStuffChanged",
+source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x0a\x09self onStuffChanged",
 messageSends: ["onTemplate:", "onStuffChanged"],
 referencedClasses: []
 }),
@@ -251,6 +238,25 @@ referencedClasses: []
 }),
 globals.StuffController);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultModel",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($Stuff())._new();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultModel",{},globals.StuffController.klass)})},
+args: [],
+source: "defaultModel\x0a\x0a\x09^ Stuff new",
+messageSends: ["new"],
+referencedClasses: ["Stuff"]
+}),
+globals.StuffController.klass);
 
 smalltalk.addMethod(
 smalltalk.method({

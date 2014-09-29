@@ -22,7 +22,6 @@ onTemplate: data
 	"And follow the convention that all templates are wrapped
 	in one element which is the view of this controller."
 	self view: appended children last.
-	window console info: self view.
 ! !
 
 !TemplateController methodsFor: 'rendering'!

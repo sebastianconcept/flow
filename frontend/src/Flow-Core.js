@@ -199,6 +199,20 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "onAboutToRemove",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return self},
+args: [],
+source: "onAboutToRemove\x0a\x09\x22This controller is about to be removed.\x22\x0a\x09\x0a\x09\x22no-op\x22",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "onAfterModel",
 protocol: 'reactions',
 fn: function (){
@@ -296,11 +310,12 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+self._onAboutToRemove();
 _st(self._view())._remove();
 return self}, function($ctx1) {$ctx1.fill(self,"remove",{},globals.Controller)})},
 args: [],
-source: "remove\x0a\x09\x0a\x09self view remove.\x0a\x09",
-messageSends: ["remove", "view"],
+source: "remove\x0a\x09\x0a\x09self onAboutToRemove.\x0a\x09\x0a\x09self view remove.\x0a\x09",
+messageSends: ["onAboutToRemove", "remove", "view"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -410,18 +425,51 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "defaultHtmlElement",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1="#content"._asJQuery();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultHtmlElement",{},globals.Controller.klass)})},
+args: [],
+source: "defaultHtmlElement\x0a\x0a\x09^ '#content' asJQuery",
+messageSends: ["asJQuery"],
+referencedClasses: []
+}),
+globals.Controller.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultModel",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return nil;
+},
+args: [],
+source: "defaultModel\x0a\x0a\x09^ nil",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Controller.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "for:",
 protocol: 'actions',
 fn: function (aModel){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._for_on_appendingTo_(aModel,nil,nil);
+$1=self._for_on_appendingTo_(aModel,nil,self._defaultHtmlElement());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"for:",{aModel:aModel},globals.Controller.klass)})},
 args: ["aModel"],
-source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: nil",
-messageSends: ["for:on:appendingTo:"],
+source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: self defaultHtmlElement",
+messageSends: ["for:on:appendingTo:", "defaultHtmlElement"],
 referencedClasses: []
 }),
 globals.Controller.klass);
@@ -434,12 +482,12 @@ fn: function (aModel,aParentControllerOrNil){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self._for_on_appendingTo_(aModel,aParentControllerOrNil,nil);
+$1=self._for_on_appendingTo_(aModel,aParentControllerOrNil,self._defaultHtmlElement());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"for:on:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil},globals.Controller.klass)})},
 args: ["aModel", "aParentControllerOrNil"],
-source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: aParentControllerOrNil appendingTo: nil",
-messageSends: ["for:on:appendingTo:"],
+source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: aParentControllerOrNil appendingTo: self defaultHtmlElement",
+messageSends: ["for:on:appendingTo:", "defaultHtmlElement"],
 referencedClasses: []
 }),
 globals.Controller.klass);
@@ -467,6 +515,24 @@ referencedClasses: []
 }),
 globals.Controller.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "on:appendingTo:",
+protocol: 'actions',
+fn: function (aParentControllerOrNil,aHtmlElement){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._for_on_appendingTo_(self._defaultModel(),aParentControllerOrNil,aHtmlElement);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"on:appendingTo:",{aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},globals.Controller.klass)})},
+args: ["aParentControllerOrNil", "aHtmlElement"],
+source: "on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller using the default model,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x09\x0a\x09^ self for: self defaultModel on: aParentControllerOrNil appendingTo: aHtmlElement",
+messageSends: ["for:on:appendingTo:", "defaultModel"],
+referencedClasses: []
+}),
+globals.Controller.klass);
+
 
 smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow-Core');
 globals.RouteableController.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses know* if they are valid for a given URI so the app can be routed to them.\x0a\x0aA typical web app might have:\x0a1. home\x0a2. sign up\x0a3. sign in\x0a4. many other app-specific controllers";
@@ -488,6 +554,48 @@ referencedClasses: []
 }),
 globals.RouteableController);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllerFor:",
+protocol: 'accessing',
+fn: function (anURI){
+var self=this;
+function $NotFoundController(){return globals.NotFoundController||(typeof NotFoundController=="undefined"?nil:NotFoundController)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._allSubclasses())._detect_ifNone_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._isValidFor_(anURI);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}),(function(){
+return $NotFoundController();
+}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllerFor:",{anURI:anURI},globals.RouteableController.klass)})},
+args: ["anURI"],
+source: "controllerFor: anURI\x0a\x09\x22Answers the subclass that is a good fit to route anURI.\x22\x0a\x09\x0a\x09^ self allSubclasses\x0a\x09\x09detect:[ :each | each isValidFor: anURI ]\x0a\x09\x09ifNone:[ NotFoundController ]",
+messageSends: ["detect:ifNone:", "allSubclasses", "isValidFor:"],
+referencedClasses: ["NotFoundController"]
+}),
+globals.RouteableController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "forURI:",
+protocol: 'actions',
+fn: function (anURI){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._for_on_appendingTo_(self._modelFor_(anURI),nil,self._defaultHtmlElement());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"forURI:",{anURI:anURI},globals.RouteableController.klass)})},
+args: ["anURI"],
+source: "forURI: anURI\x0a\x0a\x09^ self for: (self modelFor: anURI) on: nil appendingTo: self defaultHtmlElement",
+messageSends: ["for:on:appendingTo:", "modelFor:", "defaultHtmlElement"],
+referencedClasses: []
+}),
+globals.RouteableController.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -551,25 +659,37 @@ globals.RouteableController.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "modelFor:",
+protocol: 'actions',
+fn: function (anURI){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._defaultModel();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"modelFor:",{anURI:anURI},globals.RouteableController.klass)})},
+args: ["anURI"],
+source: "modelFor: anURI\x0a\x09\x22Answers the model that corresponds to anURI.\x22\x0a\x0a\x09\x22The default is just to return the default model\x22\x0a\x09^ self defaultModel",
+messageSends: ["defaultModel"],
+referencedClasses: []
+}),
+globals.RouteableController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "routeFor:",
 protocol: 'actions',
 fn: function (anURI){
 var self=this;
-function $NotFoundController(){return globals.NotFoundController||(typeof NotFoundController=="undefined"?nil:NotFoundController)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._allSubclasses())._detect_ifNone_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(each)._isValidFor_(anURI);
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)})}),(function(){
-return $NotFoundController();
-}));
+$1=_st(self._controllerFor_(anURI))._forURI_(anURI);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"routeFor:",{anURI:anURI},globals.RouteableController.klass)})},
 args: ["anURI"],
-source: "routeFor: anURI\x0a\x09\x22Answers the subclass that is a good fit to route anURI.\x22\x0a\x09\x0a\x09^ self allSubclasses\x0a\x09\x09detect:[ :each | each isValidFor: anURI ]\x0a\x09\x09ifNone:[ NotFoundController ]",
-messageSends: ["detect:ifNone:", "allSubclasses", "isValidFor:"],
-referencedClasses: ["NotFoundController"]
+source: "routeFor: anURI\x0a\x09\x22Answers a new controller suited to anURI.\x22\x0a\x09\x0a\x09^ (self controllerFor: anURI) forURI: anURI",
+messageSends: ["forURI:", "controllerFor:"],
+referencedClasses: []
 }),
 globals.RouteableController.klass);
 
@@ -727,6 +847,24 @@ smalltalk.addClass('User', globals.Model, [], 'Flow-Core');
 smalltalk.addClass('Router', globals.Object, [], 'Flow-Core');
 globals.Router.comment="This router observes changes in the URI and reacts accordingly.\x0a\x0aThe strategy is to ignore what should be rote where in advance by collaborating intensively with controllers that understands #isValidFor: \x0aThat way this router will flexibly route thigs with a pontentially complex URI";
 
+globals.Router.klass.iVarNames = ['active'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "active",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@active"];
+return $1;
+},
+args: [],
+source: "active\x0a\x0a\x09^ active",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Router.klass);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "observeHash",
@@ -754,19 +892,24 @@ selector: "onHashChanged",
 protocol: 'reactions',
 fn: function (){
 var self=this;
-var controller;
 function $RouteableController(){return globals.RouteableController||(typeof RouteableController=="undefined"?nil:RouteableController)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$receiver;
 self._trigger_("aboutToRoute");
 $ctx1.sendIdx["trigger:"]=1;
-controller=_st(_st($RouteableController())._routeFor_(self._route()))._new();
-_st(window)._at_put_("current",controller);
-_st(controller)._render();
+$1=self["@active"];
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
+_st(self["@active"])._remove();
+};
+self["@active"]=_st($RouteableController())._routeFor_(self._route());
+_st(self["@active"])._render();
 self._trigger_("afterRouting");
-return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{controller:controller},globals.Router.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{},globals.Router.klass)})},
 args: [],
-source: "onHashChanged\x0a\x09\x0a\x09| controller |\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09controller := (RouteableController routeFor: self route) new.\x0a\x09window at: #current put: controller.\x0a\x09controller render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
-messageSends: ["trigger:", "new", "routeFor:", "route", "at:put:", "render"],
+source: "onHashChanged\x0a\x09\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09active ifNotNil:[ active remove ].\x0a\x09active := RouteableController routeFor: self route.\x0a\x0a\x09active render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
+messageSends: ["trigger:", "ifNotNil:", "remove", "routeFor:", "route", "render"],
 referencedClasses: ["RouteableController"]
 }),
 globals.Router.klass);

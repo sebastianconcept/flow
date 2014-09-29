@@ -45,8 +45,8 @@ bind
 	the model of this controller to its view."
 	
 	self rivets
-		bind: self view 
-		to: self asBindArgument
+			bind: self view 
+			to: self asBindArgument
 !
 
 configure
@@ -76,6 +76,13 @@ unbind
 ! !
 
 !BindingController methodsFor: 'reactions'!
+
+onAboutToRemove
+
+	super onAboutToRemove.
+	
+	self unbind
+!
 
 onTemplate: data
 	"Receives data once requirejs have received it from the server."

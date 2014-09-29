@@ -33,13 +33,6 @@ addThing
 	self model trigger: #changed
 !
 
-newStuff
-
-	^ Stuff new
-		name: 'Hey... this stuff is new!!';
-		yourself
-!
-
 newThing
 
 	^ Thing new
@@ -82,12 +75,6 @@ removeThing
 initialize
 
 	super initialize.
-	
-	"Set model (in this case that can be decided here)"
-	self model: self newStuff.
-	
-	"Silently add something so by default it isn't empty."
-	self model things add: self newThing; add: self newThing.
 ! !
 
 !StuffController methodsFor: 'reactions'!
@@ -98,8 +85,14 @@ onAfterModel
 	super onAfterModel.
 	
 	self model when: #changed do:[ self onStuffChanged ].
-	"self hasView ifTrue:[
-		self onStuffChanged ]"
+
+	self hasView ifTrue:[
+		self onStuffChanged ].
+		
+	"Customize the model"
+	self model name: 'Hey... this stuff is new!!'.
+	"Silently add something so by default it isn't empty."
+	self model things add: self newThing; add: self newThing.
 !
 
 onStuffChanged
@@ -111,11 +104,15 @@ onTemplate: data
 
 	super onTemplate: data.
 	
-	
 	self onStuffChanged
 ! !
 
 !StuffController class methodsFor: 'accessing'!
+
+defaultModel
+
+	^ Stuff new
+!
 
 viewPath
 	"Returns the path where the template of the view should be found"
