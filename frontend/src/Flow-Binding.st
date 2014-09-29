@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'Flow-Binding'!
 TemplateController subclass: #BindingController
-	instanceVariableNames: 'view'
+	instanceVariableNames: ''
 	package: 'Flow-Binding'!
 !BindingController commentStamp!
 ## BindingController is an abstraction
@@ -10,23 +10,30 @@ Note that BindingController is a subclass of TemplateController so all subclasse
 
 !BindingController methodsFor: 'accessing'!
 
+getHandler
+	"Answers the custom handler of flow controllers for rivets.
+	We need it to be call on binding.model otherwhise 
+	rivets would send the html element (target of the event)
+	screwing the self instance of this controller"
+
+	<return function( target, event, binding ){
+		this.call(binding.model);
+	}>
+!
+
 rivets
 	"Answers the rivets accessor.
 	http://rivetsjs.com/docs/guide/"
 	
-	^ require value: 'bower/rivets/dist/rivets.min'
-!
-
-view
-	"Answers the view (element) of this controller"
-	^ view ifNil:[ view := self getView ]
+	"^ require value: 'bower/rivets/dist/rivets.min'."
+	^ require value: 'bower/rivets/dist/rivets'
 ! !
 
 !BindingController methodsFor: 'actions'!
 
 asBindArgument
 	"Answers the model and this controller as rivets like it for binding."
-	
+
 	^ #{
 	'model' -> self getModelAsArgument.
 	'controller' -> self
@@ -38,8 +45,21 @@ bind
 	the model of this controller to its view."
 	
 	self rivets
-		bind: self view 
-		to: self asBindArgument
+			bind: self view 
+			to: self asBindArgument
+!
+
+configure
+	"Sets some configurations for rivets"
+
+	self rivets configure: self getConfiguration
+!
+
+getConfiguration
+
+	^ HashedCollection new 
+		at: 'handler' put: self getHandler;
+		yourself
 !
 
 getModelAsArgument
@@ -57,12 +77,20 @@ unbind
 
 !BindingController methodsFor: 'reactions'!
 
+onAboutToRemove
+
+	super onAboutToRemove.
+	
+	self unbind
+!
+
 onTemplate: data
 	"Receives data once requirejs have received it from the server."
 
 	super onTemplate: data.	
-
-	self bind
+	
+	self configure.
+	self bind.
 ! !
 
 !BindingController class methodsFor: 'testing'!

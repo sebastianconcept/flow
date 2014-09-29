@@ -322,6 +322,15 @@ MaplessModel subclass: #Stuff
 	instanceVariableNames: ''
 	package: 'MiniMapless-Tests'!
 
+!Stuff methodsFor: 'accessing'!
+
+things
+
+	^ super things ifNil:[ 
+		self things: OrderedCollection new.
+		self things ]
+! !
+
 !Stuff class methodsFor: 'accessing'!
 
 pluralName

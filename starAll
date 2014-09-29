@@ -8,8 +8,10 @@ platform='unknown'
 unamestr=`uname`
 if [[ "$unamestr" == Darwin ]]; then
 	.hood/platform/osx/startAll
+	exit 0
 elif [[ "$unamestr" == Linux* ]]; then
 	.hood/platform/linux/startAll
+	exit 0
 elif [[ "$unamestr" == MINGW* ]]; then
 	.hood/platform/windows/startAll
 	exit 0

@@ -1,0 +1,13 @@
+<section>
+	<h1>Stuff</h1>
+	<h2>{model.name}</h2>
+
+	<ul class="things">
+		<li class="thing" rv-each-thing="model.things">
+			<p>{ thing }</p>
+		</li>
+	</ul>
+
+	<button rv-on-click="controller._addThing">Add thing</button>
+
+</section>
