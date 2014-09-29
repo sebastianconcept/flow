@@ -10,10 +10,15 @@ This convention uses the keyword of the controller as the name of the template t
 !TemplateController methodsFor: 'reactions'!
 
 onTemplate: data
-	"Receives data once requirejs have received it from the server."
+	"Receives the template's data after requirejs 
+	have received it from the server (or cache)."
 
-	"Make it to be the contents of this controllers element"
-	self view html: data.
+	"Make it to be the contents of this controllers parent element"
+	self parentElement html: data.
+
+	"And follow the convention that all templates are wrapped
+	in one element which is the view of this controller."
+	self view: self parentElement children first
 ! !
 
 !TemplateController methodsFor: 'rendering'!

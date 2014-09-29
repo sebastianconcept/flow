@@ -108,6 +108,24 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hasView",
+protocol: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@view"])._notNil();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hasView",{},globals.Controller)})},
+args: [],
+source: "hasView\x0a\x09\x22Answers true if this controller has a view\x22\x0a\x09\x0a\x09^ view notNil\x0a\x09\x0a\x09",
+messageSends: ["notNil"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeControllers",
 protocol: 'initialization',
 fn: function (){
@@ -123,44 +141,6 @@ args: [],
 source: "initializeControllers\x0a\x09\x0a\x09^ controllers := Dictionary new",
 messageSends: ["new"],
 referencedClasses: ["Dictionary"]
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeParentElement",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-self["@parentElement"]=".content"._asJQuery();
-$1=self["@parentElement"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"initializeParentElement",{},globals.Controller)})},
-args: [],
-source: "initializeParentElement\x0a\x0a\x09^ parentElement := '.content' asJQuery",
-messageSends: ["asJQuery"],
-referencedClasses: []
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeView",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-self["@view"]=".content"._asJQuery();
-$1=self["@view"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"initializeView",{},globals.Controller)})},
-args: [],
-source: "initializeView\x0a\x09^ view := '.content' asJQuery",
-messageSends: ["asJQuery"],
-referencedClasses: []
 }),
 globals.Controller);
 
@@ -362,12 +342,19 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return globals.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$receiver;
+$1=self._view();
+$ctx1.sendIdx["view"]=1;
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
 _st(self._view())._empty();
+};
 self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._parentElement()));
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Controller)})},
 args: [],
-source: "render\x0a\x09\x0a\x09self view empty.\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
-messageSends: ["empty", "view", "renderOn:", "onJQuery:", "parentElement"],
+source: "render\x0a\x09\x0a\x09self view ifNotNil:[\x0a\x09\x09self view empty ].\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
+messageSends: ["ifNotNil:", "view", "empty", "renderOn:", "onJQuery:", "parentElement"],
 referencedClasses: ["HTMLCanvas"]
 }),
 globals.Controller);
@@ -394,19 +381,13 @@ selector: "view",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@view"];
-if(($receiver = $2) == null || $receiver.isNil){
-$1=self._initializeView();
-} else {
-$1=$2;
-};
+var $1;
+$1=self["@view"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"view",{},globals.Controller)})},
+},
 args: [],
-source: "view\x0a\x09\x22Answers the DOM element who is the root of this controller's view\x22\x0a\x09^ view ifNil:[ self initializeView ]",
-messageSends: ["ifNil:", "initializeView"],
+source: "view\x0a\x09\x22Answers the DOM element who is the root of this controller's view\x22\x0a\x09^ view ",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Controller);
@@ -426,6 +407,42 @@ referencedClasses: []
 }),
 globals.Controller);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "for:",
+protocol: 'actions',
+fn: function (aModel){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._for_on_appendingTo_(aModel,nil,nil);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:",{aModel:aModel},globals.Controller.klass)})},
+args: ["aModel"],
+source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: nil",
+messageSends: ["for:on:appendingTo:"],
+referencedClasses: []
+}),
+globals.Controller.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "for:on:",
+protocol: 'actions',
+fn: function (aModel,aParentControllerOrNil){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._for_on_appendingTo_(aModel,aParentControllerOrNil,nil);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:on:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil},globals.Controller.klass)})},
+args: ["aModel", "aParentControllerOrNil"],
+source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: aParentControllerOrNil appendingTo: nil",
+messageSends: ["for:on:appendingTo:"],
+referencedClasses: []
+}),
+globals.Controller.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -467,24 +484,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Routeable
 args: [],
 source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09\x22The convention for routeable controllers is \x0a\x09to have only one element with id='content' in index.html \x0a\x09and all the rest of the app goes from that controller\x22\x0a\x09parentElement := '#content' asJQuery",
 messageSends: ["initialize", "asJQuery"],
-referencedClasses: []
-}),
-globals.RouteableController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeView",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-var $1;
-self["@view"]=self["@parentElement"];
-$1=self["@view"];
-return $1;
-},
-args: [],
-source: "initializeView\x0a\x09\x22Initializes who is the DOM element that will be the root of this controller's view\x22\x0a\x09\x0a\x09\x22The convention for routeable controllers is \x0a\x09to have only one element with id='content' in index.html \x0a\x09and all the rest of the app goes from that controller.\x0a\x09So in this case is same as the parentElement\x22\x0a\x09^ view := parentElement",
-messageSends: [],
 referencedClasses: []
 }),
 globals.RouteableController);

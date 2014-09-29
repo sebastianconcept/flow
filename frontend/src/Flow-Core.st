@@ -83,7 +83,7 @@ parentElement: aHtmlElement
 
 view
 	"Answers the DOM element who is the root of this controller's view"
-	^ view ifNil:[ self initializeView ]
+	^ view
 !
 
 view: aHtmlElement
@@ -112,7 +112,8 @@ removeControllerAt: aKey
 
 render
 	
-	self view empty.
+	self view ifNotNil:[
+		self view empty ].
 	
 	self renderOn: (HTMLCanvas onJQuery: self parentElement)
 !
@@ -127,15 +128,6 @@ renderOn: html
 initializeControllers
 	
 	^ controllers := Dictionary new
-!
-
-initializeParentElement
-
-	^ parentElement := '.content' asJQuery
-!
-
-initializeView
-	^ view := '.content' asJQuery
 ! !
 
 !Controller methodsFor: 'reactions'!
@@ -150,6 +142,12 @@ onBeforeModel
 
 !Controller methodsFor: 'testing'!
 
+hasView
+	"Answers true if this controller has a view"
+	
+	^ view notNil
+!
+
 isRendered
 	"Answers true if this controller is rendered."
 	
@@ -157,6 +155,22 @@ isRendered
 ! !
 
 !Controller class methodsFor: 'actions'!
+
+for: aModel 
+	"Answers a new instance of this controller dedicated to aModel,
+	with no parent and meant to be appended to the default html element,
+	expected to be <div id=#content></div>."
+	
+	^ self for: aModel on: nil appendingTo: nil
+!
+
+for: aModel on: aParentControllerOrNil
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to 
+	the default html element, expected to be <div id=#content></div>."
+	
+	^ self for: aModel on: aParentControllerOrNil appendingTo: nil
+!
 
 for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
@@ -193,16 +207,6 @@ initialize
 	to have only one element with id='content' in index.html 
 	and all the rest of the app goes from that controller"
 	parentElement := '#content' asJQuery
-!
-
-initializeView
-	"Initializes who is the DOM element that will be the root of this controller's view"
-	
-	"The convention for routeable controllers is 
-	to have only one element with id='content' in index.html 
-	and all the rest of the app goes from that controller.
-	So in this case is same as the parentElement"
-	^ view := parentElement
 ! !
 
 !RouteableController class methodsFor: 'accessing'!
