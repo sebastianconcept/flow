@@ -95,7 +95,7 @@ view: aHtmlElement
 
 remove
 	
-	self view empty.
+	self view remove.
 !
 
 removeControllerAt: aKey 
@@ -112,15 +112,17 @@ removeControllerAt: aKey
 
 render
 	
-	"self view ifNotNil:[
-		self view empty ]."
+	self view ifNotNil:[
+		self view empty ].
 	
 	self renderOn: (HTMLCanvas onJQuery: self parentElement)
 !
 
 renderOn: html
-
-	html h1: self class name
+	"This is a silly default only useful to dev because provides quick feedback ans sets the view.
+	Subclasses do interesting thigns intead"
+	
+	view := (html h1: self class name) asJQuery
 ! !
 
 !Controller methodsFor: 'initialization'!
@@ -293,7 +295,7 @@ onOpen
 open
 	"The foundation is ready, time to start this app!!"
 
-	^ self new onOpen
+	^ (self for: nil on: nil appendingTo: '#content' asJQuery) onOpen
 ! !
 
 !FlowAppController class methodsFor: 'testing'!

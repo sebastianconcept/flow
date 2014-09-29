@@ -296,11 +296,11 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self._view())._empty();
+_st(self._view())._remove();
 return self}, function($ctx1) {$ctx1.fill(self,"remove",{},globals.Controller)})},
 args: [],
-source: "remove\x0a\x09\x0a\x09self view empty.\x0a\x09",
-messageSends: ["empty", "view"],
+source: "remove\x0a\x09\x0a\x09self view remove.\x0a\x09",
+messageSends: ["remove", "view"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -342,11 +342,19 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return globals.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$receiver;
+$1=self._view();
+$ctx1.sendIdx["view"]=1;
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
+_st(self._view())._empty();
+};
 self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._parentElement()));
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Controller)})},
 args: [],
-source: "render\x0a\x09\x0a\x09\x22self view ifNotNil:[\x0a\x09\x09self view empty ].\x22\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
-messageSends: ["renderOn:", "onJQuery:", "parentElement"],
+source: "render\x0a\x09\x0a\x09self view ifNotNil:[\x0a\x09\x09self view empty ].\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
+messageSends: ["ifNotNil:", "view", "empty", "renderOn:", "onJQuery:", "parentElement"],
 referencedClasses: ["HTMLCanvas"]
 }),
 globals.Controller);
@@ -358,11 +366,11 @@ protocol: 'actions',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(html)._h1_(_st(self._class())._name());
+self["@view"]=_st(_st(html)._h1_(_st(self._class())._name()))._asJQuery();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.Controller)})},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09html h1: self class name",
-messageSends: ["h1:", "name", "class"],
+source: "renderOn: html\x0a\x09\x22This is a silly default only useful to dev because provides quick feedback ans sets the view.\x0a\x09Subclasses do interesting thigns intead\x22\x0a\x09\x0a\x09view := (html h1: self class name) asJQuery",
+messageSends: ["asJQuery", "h1:", "name", "class"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -696,12 +704,12 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._new())._onOpen();
+$1=_st(self._for_on_appendingTo_(nil,nil,"#content"._asJQuery()))._onOpen();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"open",{},globals.FlowAppController.klass)})},
 args: [],
-source: "open\x0a\x09\x22The foundation is ready, time to start this app!\x22\x0a\x0a\x09^ self new onOpen",
-messageSends: ["onOpen", "new"],
+source: "open\x0a\x09\x22The foundation is ready, time to start this app!\x22\x0a\x0a\x09^ (self for: nil on: nil appendingTo: '#content' asJQuery) onOpen",
+messageSends: ["onOpen", "for:on:appendingTo:", "asJQuery"],
 referencedClasses: []
 }),
 globals.FlowAppController.klass);
