@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'Flow-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model parent jQueryElement'
+	instanceVariableNames: 'controllers model jQueryElement parent parentElement'
 	package: 'Flow-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -41,7 +41,12 @@ controllersAt: aKey put: aController
 
 jQueryElement
 	"Answers the DOM element who is the root of this controller's view"
-	^ '.content' asJQuery
+	^ jQueryElement ifNil:[ self initializeJQueryElement ]
+!
+
+jQueryElement: aHtmlElement
+
+	jQueryElement := aHtmlElement
 !
 
 model
@@ -58,10 +63,20 @@ model: aModel
 	self onAfterModel
 !
 
+parent
+	"Answers the parent controller of this controller."
+
+	^ parent
+!
+
+parent: aParentControllerOrNil
+
+	parent := aParentControllerOrNil
+!
+
 parentElement
-	"Answers the parent html element to which 
-	the view of this controller is meant to be appended."
-	^ parentElement ifNil:[ self initializeParentElement ]
+
+	^ parentElement
 !
 
 parentElement: aHtmlElement
@@ -103,6 +118,10 @@ initializeControllers
 	^ controllers := Dictionary new
 !
 
+initializeJQueryElement
+	^ jQueryElement := '.content' asJQuery
+!
+
 initializeParentElement
 
 	^ parentElement := '.content' asJQuery
@@ -120,12 +139,13 @@ onBeforeModel
 
 !Controller class methodsFor: 'actions'!
 
-for: aModel on: aHtmlElement
-	"Answers a new instance of this controller dedicated to aModel
-	and meant to be appended to aHtmlElement."
+for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 	
 	^ self new
 		model: aModel;
+		parent: aParentControllerOrNil;
 		parentElement: aHtmlElement;
 		yourself
 ! !
@@ -144,14 +164,15 @@ A typical web app might have:
 3. sign in
 4. many other app-specific controllers!
 
-!RouteableController methodsFor: 'accessing'!
+!RouteableController methodsFor: 'initialization'!
 
-jQueryElement
-	"Answers the DOM element who is the root of the controller's view"
+initializeJQueryElement
+	"Initializes who is the DOM element that will be the root of this controller's view"
 	
-	"The convention is to have only one element with id='content' in index.html 
+	"The convention for routeable controllers is 
+	to have only one element with id='content' in index.html 
 	and all the rest of the app goes from that controller"
-	^ '#content' asJQuery
+	^ jQueryElement := '#content' asJQuery
 ! !
 
 !RouteableController class methodsFor: 'accessing'!
