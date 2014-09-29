@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'Flow-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model jQueryElement parent parentElement'
+	instanceVariableNames: 'controllers model view parent parentElement'
 	package: 'Flow-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -27,6 +27,13 @@ controllersAt: aKey
 		ifAbsent:[ self error: 'Controller not found: ', aKey asString ]
 !
 
+controllersAt: aKey ifAbsent: aBlock
+
+	^ self controllers 
+		at: aKey 
+		ifAbsent: aBlock
+!
+
 controllersAt: aKey ifAbsentPut: aBlock
 
 	^ self controllers 
@@ -37,16 +44,6 @@ controllersAt: aKey ifAbsentPut: aBlock
 controllersAt: aKey put: aController
 
 	^ self controllers at: aKey put: aController
-!
-
-jQueryElement
-	"Answers the DOM element who is the root of this controller's view"
-	^ jQueryElement ifNil:[ self initializeJQueryElement ]
-!
-
-jQueryElement: aHtmlElement
-
-	jQueryElement := aHtmlElement
 !
 
 model
@@ -84,26 +81,40 @@ parentElement: aHtmlElement
 	parentElement := aHtmlElement
 !
 
-removeControllerAt: aKey 
+view
+	"Answers the DOM element who is the root of this controller's view"
+	^ view ifNil:[ self initializeView ]
+!
 
-	^ self controllers 
-		removeKey: aKey 
-		ifAbsent:[ nil ]
+view: aHtmlElement
+
+	view := aHtmlElement
 ! !
 
 !Controller methodsFor: 'actions'!
 
-isRendered
-	"Answers true if this controller is rendered."
+remove
 	
-	^ self jQueryElement children length > 0
+	self view empty.
+!
+
+removeControllerAt: aKey 
+
+	| controller |
+	
+	controller := self controllersAt: aKey ifAbsent:[ nil ].
+	
+	controller ifNotNil:[
+		controller remove ].
+		
+	self controllers removeKey: aKey ifAbsent: [ nil ]
 !
 
 render
 	
-	self jQueryElement empty.
+	self view empty.
 	
-	self renderOn: (HTMLCanvas onJQuery: self jQueryElement)
+	self renderOn: (HTMLCanvas onJQuery: self parentElement)
 !
 
 renderOn: html
@@ -118,13 +129,13 @@ initializeControllers
 	^ controllers := Dictionary new
 !
 
-initializeJQueryElement
-	^ jQueryElement := '.content' asJQuery
-!
-
 initializeParentElement
 
 	^ parentElement := '.content' asJQuery
+!
+
+initializeView
+	^ view := '.content' asJQuery
 ! !
 
 !Controller methodsFor: 'reactions'!
@@ -135,6 +146,14 @@ onAfterModel
 
 onBeforeModel
 	"The model of this controller is about to be set."
+! !
+
+!Controller methodsFor: 'testing'!
+
+isRendered
+	"Answers true if this controller is rendered."
+	
+	^ self view children length > 0
 ! !
 
 !Controller class methodsFor: 'actions'!
@@ -166,13 +185,24 @@ A typical web app might have:
 
 !RouteableController methodsFor: 'initialization'!
 
-initializeJQueryElement
-	"Initializes who is the DOM element that will be the root of this controller's view"
+initialize
+
+	super initialize.
 	
 	"The convention for routeable controllers is 
 	to have only one element with id='content' in index.html 
 	and all the rest of the app goes from that controller"
-	^ jQueryElement := '#content' asJQuery
+	parentElement := '#content' asJQuery
+!
+
+initializeView
+	"Initializes who is the DOM element that will be the root of this controller's view"
+	
+	"The convention for routeable controllers is 
+	to have only one element with id='content' in index.html 
+	and all the rest of the app goes from that controller.
+	So in this case is same as the parentElement"
+	^ view := parentElement
 ! !
 
 !RouteableController class methodsFor: 'accessing'!

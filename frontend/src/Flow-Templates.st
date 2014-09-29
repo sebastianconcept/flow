@@ -7,23 +7,13 @@ RouteableController subclass: #TemplateController
 The concrete subclasses of TemplateController follow the convention of loading html from the server.
 This convention uses the keyword of the controller as the name of the template to be found at views/!
 
-!TemplateController methodsFor: 'accessing'!
-
-getView
-	"Answers the root DOM element of this controller's view"
-
-	"Gets and answer the element which is 
-	the parent html element of this controller."
-	^ ((self jQueryElement find: ':first-child') at: 0) asJQuery
-! !
-
 !TemplateController methodsFor: 'reactions'!
 
 onTemplate: data
 	"Receives data once requirejs have received it from the server."
 
 	"Make it to be the contents of this controllers element"
-	self jQueryElement html: data.
+	self view html: data.
 ! !
 
 !TemplateController methodsFor: 'rendering'!

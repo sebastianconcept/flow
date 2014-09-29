@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'Flow-Binding'!
 TemplateController subclass: #BindingController
-	instanceVariableNames: 'view'
+	instanceVariableNames: ''
 	package: 'Flow-Binding'!
 !BindingController commentStamp!
 ## BindingController is an abstraction
@@ -27,11 +27,6 @@ rivets
 	
 	"^ require value: 'bower/rivets/dist/rivets.min'."
 	^ require value: 'bower/rivets/dist/rivets'
-!
-
-view
-	"Answers the view (element) of this controller"
-	^ view ifNil:[ view := self getView ]
 ! !
 
 !BindingController methodsFor: 'actions'!
@@ -86,8 +81,6 @@ onTemplate: data
 	"Receives data once requirejs have received it from the server."
 
 	super onTemplate: data.	
-
-	Transcript cr; show: 'onTemplate'.
 	
 	self configure.
 	self bind.

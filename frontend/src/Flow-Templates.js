@@ -7,34 +7,16 @@ smalltalk.addClass('TemplateController', globals.RouteableController, [], 'Flow-
 globals.TemplateController.comment="## TemplateController is an abstraction\x0aThe concrete subclasses of TemplateController follow the convention of loading html from the server.\x0aThis convention uses the keyword of the controller as the name of the template to be found at views/";
 smalltalk.addMethod(
 smalltalk.method({
-selector: "getView",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(_st(self._jQueryElement())._find_(":first-child"))._at_((0)))._asJQuery();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"getView",{},globals.TemplateController)})},
-args: [],
-source: "getView\x0a\x09\x22Answers the root DOM element of this controller's view\x22\x0a\x0a\x09\x22Gets and answer the element which is \x0a\x09the parent html element of this controller.\x22\x0a\x09^ ((self jQueryElement find: ':first-child') at: 0) asJQuery",
-messageSends: ["asJQuery", "at:", "find:", "jQueryElement"],
-referencedClasses: []
-}),
-globals.TemplateController);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "onTemplate:",
 protocol: 'reactions',
 fn: function (data){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self._jQueryElement())._html_(data);
+_st(self._view())._html_(data);
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.TemplateController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09\x22Make it to be the contents of this controllers element\x22\x0a\x09self jQueryElement html: data.",
-messageSends: ["html:", "jQueryElement"],
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09\x22Make it to be the contents of this controllers element\x22\x0a\x09self view html: data.",
+messageSends: ["html:", "view"],
 referencedClasses: []
 }),
 globals.TemplateController);

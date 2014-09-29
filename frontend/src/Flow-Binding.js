@@ -3,7 +3,7 @@ var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-Binding');
 smalltalk.packages["Flow-Binding"].transport = {"type":"amd","amdNamespace":"app"};
 
-smalltalk.addClass('BindingController', globals.TemplateController, ['view'], 'Flow-Binding');
+smalltalk.addClass('BindingController', globals.TemplateController, [], 'Flow-Binding');
 globals.BindingController.comment="## BindingController is an abstraction\x0aThe concrete subclasses of BindingController are users of the two-way data binding mechanism loaded by flow.\x0a\x0aNote that BindingController is a subclass of TemplateController so all subclasses of it follow the convention of loading a html template from the server using the keyword of the controller as the name of the template to be found at views/";
 smalltalk.addMethod(
 smalltalk.method({
@@ -119,20 +119,16 @@ selector: "onTemplate:",
 protocol: 'reactions',
 fn: function (data){
 var self=this;
-function $Transcript(){return globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
 ($ctx1.supercall = true, globals.BindingController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
 $ctx1.supercall = false;
-_st($Transcript())._cr();
-$1=_st($Transcript())._show_("onTemplate");
 self._configure();
 self._bind();
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.BindingController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x0a\x09Transcript cr; show: 'onTemplate'.\x0a\x09\x0a\x09self configure.\x0a\x09self bind.",
-messageSends: ["onTemplate:", "cr", "show:", "configure", "bind"],
-referencedClasses: ["Transcript"]
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x09\x0a\x09self configure.\x0a\x09self bind.",
+messageSends: ["onTemplate:", "configure", "bind"],
+referencedClasses: []
 }),
 globals.BindingController);
 
@@ -172,30 +168,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"unbind",{},globals.BindingContro
 args: [],
 source: "unbind\x0a\x09\x22Tells rivets.js to unbind the view.\x22\x0a\x09\x0a\x09view ifNotNil:[ view unbind ]",
 messageSends: ["ifNotNil:", "unbind"],
-referencedClasses: []
-}),
-globals.BindingController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "view",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@view"];
-if(($receiver = $2) == null || $receiver.isNil){
-self["@view"]=self._getView();
-$1=self["@view"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"view",{},globals.BindingController)})},
-args: [],
-source: "view\x0a\x09\x22Answers the view (element) of this controller\x22\x0a\x09^ view ifNil:[ view := self getView ]",
-messageSends: ["ifNil:", "getView"],
 referencedClasses: []
 }),
 globals.BindingController);

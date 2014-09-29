@@ -3,7 +3,7 @@ var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-Core');
 smalltalk.packages["Flow-Core"].transport = {"type":"amd","amdNamespace":"app"};
 
-smalltalk.addClass('Controller', globals.Widget, ['controllers', 'model', 'jQueryElement', 'parent', 'parentElement'], 'Flow-Core');
+smalltalk.addClass('Controller', globals.Widget, ['controllers', 'model', 'view', 'parent', 'parentElement'], 'Flow-Core');
 globals.Controller.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.\x0a\x0aA typical controller might have:\x0a\x0a1. a model\x0a2. some (sub)controllers\x0a3. minimal common behavior\x0a";
 smalltalk.addMethod(
 smalltalk.method({
@@ -45,6 +45,24 @@ return $1;
 args: ["aKey"],
 source: "controllersAt: aKey \x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent:[ self error: 'Controller not found: ', aKey asString ]",
 messageSends: ["at:ifAbsent:", "controllers", "error:", ",", "asString"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllersAt:ifAbsent:",
+protocol: 'accessing',
+fn: function (aKey,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_ifAbsent_(aKey,aBlock);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllersAt:ifAbsent:",{aKey:aKey,aBlock:aBlock},globals.Controller)})},
+args: ["aKey", "aBlock"],
+source: "controllersAt: aKey ifAbsent: aBlock\x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent: aBlock",
+messageSends: ["at:ifAbsent:", "controllers"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -110,25 +128,6 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initializeJQueryElement",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-self["@jQueryElement"]=".content"._asJQuery();
-$1=self["@jQueryElement"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"initializeJQueryElement",{},globals.Controller)})},
-args: [],
-source: "initializeJQueryElement\x0a\x09^ jQueryElement := '.content' asJQuery",
-messageSends: ["asJQuery"],
-referencedClasses: []
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initializeParentElement",
 protocol: 'initialization',
 fn: function (){
@@ -148,56 +147,37 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "isRendered",
-protocol: 'actions',
+selector: "initializeView",
+protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(_st(self._jQueryElement())._children())._length()).__gt((0));
+self["@view"]=".content"._asJQuery();
+$1=self["@view"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"isRendered",{},globals.Controller)})},
+}, function($ctx1) {$ctx1.fill(self,"initializeView",{},globals.Controller)})},
 args: [],
-source: "isRendered\x0a\x09\x22Answers true if this controller is rendered.\x22\x0a\x09\x0a\x09^ self jQueryElement children length > 0\x0a\x09\x0a\x09",
-messageSends: [">", "length", "children", "jQueryElement"],
+source: "initializeView\x0a\x09^ view := '.content' asJQuery",
+messageSends: ["asJQuery"],
 referencedClasses: []
 }),
 globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "jQueryElement",
-protocol: 'accessing',
+selector: "isRendered",
+protocol: 'testing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@jQueryElement"];
-if(($receiver = $2) == null || $receiver.isNil){
-$1=self._initializeJQueryElement();
-} else {
-$1=$2;
-};
+var $1;
+$1=_st(_st(_st(self._view())._children())._length()).__gt((0));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"jQueryElement",{},globals.Controller)})},
+}, function($ctx1) {$ctx1.fill(self,"isRendered",{},globals.Controller)})},
 args: [],
-source: "jQueryElement\x0a\x09\x22Answers the DOM element who is the root of this controller's view\x22\x0a\x09^ jQueryElement ifNil:[ self initializeJQueryElement ]",
-messageSends: ["ifNil:", "initializeJQueryElement"],
-referencedClasses: []
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jQueryElement:",
-protocol: 'accessing',
-fn: function (aHtmlElement){
-var self=this;
-self["@jQueryElement"]=aHtmlElement;
-return self},
-args: ["aHtmlElement"],
-source: "jQueryElement: aHtmlElement\x0a\x0a\x09jQueryElement := aHtmlElement",
-messageSends: [],
+source: "isRendered\x0a\x09\x22Answers true if this controller is rendered.\x22\x0a\x09\x0a\x09^ self view children length > 0\x0a\x09\x0a\x09",
+messageSends: [">", "length", "children", "view"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -331,20 +311,45 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "removeControllerAt:",
-protocol: 'accessing',
-fn: function (aKey){
+selector: "remove",
+protocol: 'actions',
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self._controllers())._removeKey_ifAbsent_(aKey,(function(){
+_st(self._view())._empty();
+return self}, function($ctx1) {$ctx1.fill(self,"remove",{},globals.Controller)})},
+args: [],
+source: "remove\x0a\x09\x0a\x09self view empty.\x0a\x09",
+messageSends: ["empty", "view"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeControllerAt:",
+protocol: 'actions',
+fn: function (aKey){
+var self=this;
+var controller;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$receiver;
+controller=self._controllersAt_ifAbsent_(aKey,(function(){
 return nil;
 }));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"removeControllerAt:",{aKey:aKey},globals.Controller)})},
+$1=controller;
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
+_st(controller)._remove();
+};
+_st(self._controllers())._removeKey_ifAbsent_(aKey,(function(){
+return nil;
+}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeControllerAt:",{aKey:aKey,controller:controller},globals.Controller)})},
 args: ["aKey"],
-source: "removeControllerAt: aKey \x0a\x0a\x09^ self controllers \x0a\x09\x09removeKey: aKey \x0a\x09\x09ifAbsent:[ nil ]",
-messageSends: ["removeKey:ifAbsent:", "controllers"],
+source: "removeControllerAt: aKey \x0a\x0a\x09| controller |\x0a\x09\x0a\x09controller := self controllersAt: aKey ifAbsent:[ nil ].\x0a\x09\x0a\x09controller ifNotNil:[\x0a\x09\x09controller remove ].\x0a\x09\x09\x0a\x09self controllers removeKey: aKey ifAbsent: [ nil ]",
+messageSends: ["controllersAt:ifAbsent:", "ifNotNil:", "remove", "removeKey:ifAbsent:", "controllers"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -357,15 +362,12 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return globals.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self._jQueryElement();
-$ctx1.sendIdx["jQueryElement"]=1;
-_st($1)._empty();
-self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._jQueryElement()));
+_st(self._view())._empty();
+self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._parentElement()));
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Controller)})},
 args: [],
-source: "render\x0a\x09\x0a\x09self jQueryElement empty.\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self jQueryElement)",
-messageSends: ["empty", "jQueryElement", "renderOn:", "onJQuery:"],
+source: "render\x0a\x09\x0a\x09self view empty.\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
+messageSends: ["empty", "view", "renderOn:", "onJQuery:", "parentElement"],
 referencedClasses: ["HTMLCanvas"]
 }),
 globals.Controller);
@@ -382,6 +384,44 @@ return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.C
 args: ["html"],
 source: "renderOn: html\x0a\x0a\x09html h1: self class name",
 messageSends: ["h1:", "name", "class"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "view",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@view"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeView();
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"view",{},globals.Controller)})},
+args: [],
+source: "view\x0a\x09\x22Answers the DOM element who is the root of this controller's view\x22\x0a\x09^ view ifNil:[ self initializeView ]",
+messageSends: ["ifNil:", "initializeView"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "view:",
+protocol: 'accessing',
+fn: function (aHtmlElement){
+var self=this;
+self["@view"]=aHtmlElement;
+return self},
+args: ["aHtmlElement"],
+source: "view: aHtmlElement\x0a\x0a\x09view := aHtmlElement",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Controller);
@@ -415,19 +455,36 @@ smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow-Core');
 globals.RouteableController.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses know* if they are valid for a given URI so the app can be routed to them.\x0a\x0aA typical web app might have:\x0a1. home\x0a2. sign up\x0a3. sign in\x0a4. many other app-specific controllers";
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initializeJQueryElement",
+selector: "initialize",
 protocol: 'initialization',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-self["@jQueryElement"]="#content"._asJQuery();
-$1=self["@jQueryElement"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"initializeJQueryElement",{},globals.RouteableController)})},
+($ctx1.supercall = true, globals.RouteableController.superclass.fn.prototype._initialize.apply(_st(self), []));
+$ctx1.supercall = false;
+self["@parentElement"]="#content"._asJQuery();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.RouteableController)})},
 args: [],
-source: "initializeJQueryElement\x0a\x09\x22Initializes who is the DOM element that will be the root of this controller's view\x22\x0a\x09\x0a\x09\x22The convention for routeable controllers is \x0a\x09to have only one element with id='content' in index.html \x0a\x09and all the rest of the app goes from that controller\x22\x0a\x09^ jQueryElement := '#content' asJQuery",
-messageSends: ["asJQuery"],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09\x22The convention for routeable controllers is \x0a\x09to have only one element with id='content' in index.html \x0a\x09and all the rest of the app goes from that controller\x22\x0a\x09parentElement := '#content' asJQuery",
+messageSends: ["initialize", "asJQuery"],
+referencedClasses: []
+}),
+globals.RouteableController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeView",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+var $1;
+self["@view"]=self["@parentElement"];
+$1=self["@view"];
+return $1;
+},
+args: [],
+source: "initializeView\x0a\x09\x22Initializes who is the DOM element that will be the root of this controller's view\x22\x0a\x09\x0a\x09\x22The convention for routeable controllers is \x0a\x09to have only one element with id='content' in index.html \x0a\x09and all the rest of the app goes from that controller.\x0a\x09So in this case is same as the parentElement\x22\x0a\x09^ view := parentElement",
+messageSends: [],
 referencedClasses: []
 }),
 globals.RouteableController);

@@ -64,7 +64,8 @@ refreshList
 			ThingController 
 				for: e 
 				on: self 
-				appendingTo: '.things' asJQuery ] ]
+				appendingTo: '.things' asJQuery ].
+		(self controllersAt: e) render ]
 !
 
 removeThing
@@ -94,6 +95,7 @@ onAfterModel
 	super onAfterModel.
 	
 	self model when: #changed do:[ self onStuffChanged ].
+	self onStuffChanged
 !
 
 onStuffChanged
