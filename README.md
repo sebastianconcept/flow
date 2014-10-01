@@ -1,16 +1,16 @@
-flow
+*flow*
 ====
 
 A living full-stack framework for the web. 
 
-## Why flow?
+## Why *flow*?
 
 There are plenty of stacks available for the web -- and yet there is none that really sticks to *intuition*, *discovery* and *personal mastery* for the modern web. 
 
 There is technology that was [designed with those principles](http://www.cs.virginia.edu/~evans/cs655/readings/smalltalk.html) as premises and that's why flow embraces [Smalltalk](http://en.wikipedia.org/wiki/Smalltalk). With [Amber](http://amber-lang.net/) taking care of html5 and doing everything in the browser, and [Pharo](http://pharo.org/) being incredibly productive in the backend, this stack is an answer to that call. 
 
 
-## What is flow?
+## What is *flow*?
 
 Flow is an open-source project with a *mission*. 
 
@@ -43,18 +43,18 @@ Flow is a full stack framework, and thus has two important directories:  `backen
 ##Development workflow
 Once your backend is built (see how-to below), the typical development workflow in flow  apps goes like this:
 
-1. Start things going to the `flow/` directory 
-2. Execute `./flow.sh`. That command will open some terminal tabs. One with Amber listening in 3000, another with the Pharo image listening in 3333, other starting MongoDB* and finally another with `grunt watch`.
-2. Point your browser to `http://flow.dev`
+1. Start things going to the `git/yourAppName/` directory 
+2. Execute `./startAll`. That command will open some terminal tabs. One with Amber listening in 3000, another with the Pharo image listening in 3333, other starting MongoDB* and finally another with `grunt watch`.
+2. Point your browser to `http://yourappname.dev`
 3. Open Amber's IDE and start coding your Controllers, Models and any other thing there.
 4. Commit the packages you changed.
-5. Reload `http://flow.dev` and enjoy your new code.
+5. Reload `http://yourappname.dev` and you'll see your recent code.
 6. Discover new things, review, code more, repeat from 4 all you need until you're ready for staging or production (more on that below).
 
-*`flow.sh` is for OS X only and it assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you're interested in doing a similar script for Linux or Windows, you're welcome to do so (see the 'Contributing' section below).
+`.startAll` is currently implemented for OS X and Windows.  It assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you're interested in doing a similar script for Linux, you're welcome to do so (see the 'Contributing' section below).
 
 ## How-to build a backend?
-The backend of a flow app is a Pharo image. Is out of scope here, but please note that the way flow works, actually allows you to scale the app horizontally using many Pharo worker images. Here is how you build one.
+The backend of a flow app is a Pharo image. Here is how you build one.
 
 1. In your terminal, go to `app/`
 2. Execute: `./cleanBuildBackend`
@@ -71,24 +71,26 @@ To put the frontend app in production (or staging) all you'll need is in the `pu
 ### Backend
 The backend is the Pharo image you were working on. The suggested strategy for setting a **prototypical backend** that you'll typically need for a first demo of your app goes like this:
 
-1. Upload all (`flow/`) to your server. 
-2. Use your favorite supervisor script to start and stop the worker image as a service ([this](http://supervisord.org/) one is quite good).
+1. Upload all (`git/yourAppName/`) to your server. 
+2. Use `upstart` or your favorite supervisor script to start and stop the worker image as a service ([this](http://supervisord.org/) one is quite good).
 3. Install [MongoDB](http://www.mongodb.org/) in that server.
 4. Start the service of that worker image.
 5. Setup [nginx](http://en.wikipedia.org/wiki/Nginx) so everything points where it should (we can't recommend Apache for flow since it doesn't officially support [WebSockets](http://en.wikipedia.org/wiki/WebSocket)).
 
 **Note** that optionally, if your server has a GUI, you can manually open the worker image with the GUI and have an environment with the full living debugging and inspection power that Smalltalk gives to you.
 
-Setting up a **serious production backend** will require additional work and that varies quite a lot depending on the app's architecture and business demands, so is out of scope here. 
-
-But here you have the suggested strategy for setting that up: 
+Have in mind that setting up a **serious production backend** will require additional work and that varies quite a lot depending on the app's architecture and business demands, so is out of scope here. But to get you started, here you have the suggested strategy for setting that up: 
 
 1. A [CI](http://en.wikipedia.org/wiki/Continuous_integration) (like [this one](http://jenkins-ci.org/)). 
 2. A git server like [gitlab](https://about.gitlab.com/) or [this](https://github.com/) or [this](https://bitbucket.org/) or any other you like (should have the commit hook feature).
 3. Setup hooks in your CI so the CI can react by building a new version of your app every time you commit code.
 3. Setup your CI to do all the necessary moves for stopping things, installing the new version and starting things with the new version.
 
-**Note** load balancing of the backend can be achieved in several worker images and/or servers. How to do that is out of scope here but totally doable.
+##Does it scale?
+
+Please note that *flow* works in a way that allows you to scale the app horizontally using many Pharo worker images. 
+
+So load balancing of the backend can be achieved in several worker images and/or servers. How to do that is out of scope here but you can be sure that *flow*'s design allows it.
 
 ## Contributing
 
