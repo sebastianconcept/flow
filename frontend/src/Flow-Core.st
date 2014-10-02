@@ -93,6 +93,13 @@ view: aHtmlElement
 
 !Controller methodsFor: 'actions'!
 
+refresh
+
+	self isRendered 
+		ifFalse:[ self render ]
+		ifTrue:[ self empty render ]
+!
+
 remove
 	
 	self onAboutToRemove.
@@ -161,7 +168,8 @@ hasView
 isRendered
 	"Answers true if this controller is rendered."
 	
-	^ self view children length > 0
+	^ self hasView and:[
+	self view children length > 0 ]
 ! !
 
 !Controller class methodsFor: 'accessing'!
@@ -197,7 +205,7 @@ for: aModel on: aParentControllerOrNil
 for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
-	
+
 	^ self new
 		model: aModel;
 		parent: aParentControllerOrNil;
@@ -211,6 +219,14 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 	
 	^ self for: self defaultModel on: aParentControllerOrNil appendingTo: aHtmlElement
 ! !
+
+Controller subclass: #ListController
+	instanceVariableNames: ''
+	package: 'Flow-Core'!
+!ListController commentStamp!
+## ListController
+
+ListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.!
 
 Controller subclass: #RouteableController
 	instanceVariableNames: ''
@@ -402,7 +418,6 @@ uri
 observeHash
 
 	window onhashchange:[ self onHashChanged ].
-	self onHashChanged
 ! !
 
 !Router class methodsFor: 'reactions'!

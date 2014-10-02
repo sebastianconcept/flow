@@ -152,12 +152,15 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(_st(self._view())._children())._length()).__gt((0));
+$1=_st(self._hasView())._and_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self._view())._children())._length()).__gt((0));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"isRendered",{},globals.Controller)})},
 args: [],
-source: "isRendered\x0a\x09\x22Answers true if this controller is rendered.\x22\x0a\x09\x0a\x09^ self view children length > 0\x0a\x09\x0a\x09",
-messageSends: [">", "length", "children", "view"],
+source: "isRendered\x0a\x09\x22Answers true if this controller is rendered.\x22\x0a\x09\x0a\x09^ self hasView and:[\x0a\x09self view children length > 0 ]\x0a\x09\x0a\x09",
+messageSends: ["and:", "hasView", ">", "length", "children", "view"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -299,6 +302,29 @@ return self},
 args: ["aHtmlElement"],
 source: "parentElement: aHtmlElement\x0a\x0a\x09parentElement := aHtmlElement",
 messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "refresh",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._isRendered();
+if(smalltalk.assert($1)){
+_st(self._empty())._render();
+} else {
+self._render();
+$ctx1.sendIdx["render"]=1;
+};
+return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.Controller)})},
+args: [],
+source: "refresh\x0a\x0a\x09self isRendered \x0a\x09\x09ifFalse:[ self render ]\x0a\x09\x09ifTrue:[ self empty render ]",
+messageSends: ["ifFalse:ifTrue:", "isRendered", "render", "empty"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -509,7 +535,7 @@ $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"for:on:appendingTo:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},globals.Controller.klass)})},
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself\x0a\x09",
+source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself\x0a\x09",
 messageSends: ["model:", "new", "parent:", "parentElement:", "yourself"],
 referencedClasses: []
 }),
@@ -532,6 +558,10 @@ messageSends: ["for:on:appendingTo:", "defaultModel"],
 referencedClasses: []
 }),
 globals.Controller.klass);
+
+
+smalltalk.addClass('ListController', globals.Controller, [], 'Flow-Core');
+globals.ListController.comment="## ListController\x0a\x0aListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.";
 
 
 smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow-Core');
@@ -874,12 +904,10 @@ return smalltalk.withContext(function($ctx1) {
 _st(window)._onhashchange_((function(){
 return smalltalk.withContext(function($ctx2) {
 return self._onHashChanged();
-$ctx2.sendIdx["onHashChanged"]=1;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-self._onHashChanged();
 return self}, function($ctx1) {$ctx1.fill(self,"observeHash",{},globals.Router.klass)})},
 args: [],
-source: "observeHash\x0a\x0a\x09window onhashchange:[ self onHashChanged ].\x0a\x09self onHashChanged",
+source: "observeHash\x0a\x0a\x09window onhashchange:[ self onHashChanged ].",
 messageSends: ["onhashchange:", "onHashChanged"],
 referencedClasses: []
 }),
