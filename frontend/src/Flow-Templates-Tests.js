@@ -184,7 +184,7 @@ return self._removeControllerAt_(e);
 _st(_st(self._model())._things())._do_((function(e){
 var added;
 return smalltalk.withContext(function($ctx2) {
-self._controllersAt_ifAbsentPut_(e,(function(){
+self._controllerAt_ifAbsentPut_(e,(function(){
 return smalltalk.withContext(function($ctx3) {
 added=_st($ThingController())._for_on_appendingTo_(e,self,".things"._asJQuery());
 return added;
@@ -198,8 +198,8 @@ return _st(added)._render();
 }, function($ctx2) {$ctx2.fillBlock({e:e,added:added},$ctx1,3)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"refreshList",{items:items},globals.StuffController)})},
 args: [],
-source: "refreshList\x0a\x09\x22Makes sure all the Things in the model have its own controller.\x0a\x09Nothing less and nothing more.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self model things \x0a\x09\x09do:[ :e | (self model things includes: e) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09self model things do:[ :e | | added |\x0a\x09\x09self controllersAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := ThingController \x0a\x09\x09\x09\x09for: e \x0a\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09appendingTo: '.things' asJQuery ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
-messageSends: ["with:do:", "keys", "controllers", "things", "model", "ifFalse:", "includes:", "removeControllerAt:", "do:", "controllersAt:ifAbsentPut:", "for:on:appendingTo:", "asJQuery", "ifNotNil:", "render"],
+source: "refreshList\x0a\x09\x22Makes sure all the Things in the model have its own controller.\x0a\x09Nothing less and nothing more.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self model things \x0a\x09\x09do:[ :e | (self model things includes: e) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09self model things do:[ :e | | added |\x0a\x09\x09self controllerAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := ThingController \x0a\x09\x09\x09\x09for: e \x0a\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09appendingTo: '.things' asJQuery ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
+messageSends: ["with:do:", "keys", "controllers", "things", "model", "ifFalse:", "includes:", "removeControllerAt:", "do:", "controllerAt:ifAbsentPut:", "for:on:appendingTo:", "asJQuery", "ifNotNil:", "render"],
 referencedClasses: ["ThingController"]
 }),
 globals.StuffController);
