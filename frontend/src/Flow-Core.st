@@ -15,35 +15,35 @@ A typical controller might have:
 
 !Controller methodsFor: 'accessing'!
 
-controllers
-	
-	^ controllers ifNil:[ self initializeControllers ]
-!
-
-controllersAt: aKey 
+controllerAt: aKey 
 
 	^ self controllers 
 		at: aKey 
 		ifAbsent:[ self error: 'Controller not found: ', aKey asString ]
 !
 
-controllersAt: aKey ifAbsent: aBlock
+controllerAt: aKey ifAbsent: aBlock
 
 	^ self controllers 
 		at: aKey 
 		ifAbsent: aBlock
 !
 
-controllersAt: aKey ifAbsentPut: aBlock
+controllerAt: aKey ifAbsentPut: aBlock
 
 	^ self controllers 
 		at: aKey 
-		ifAbsent:[ self controllersAt: aKey put: aBlock value ]
+		ifAbsent:[ self controllerAt: aKey put: aBlock value ]
 !
 
-controllersAt: aKey put: aController
+controllerAt: aKey put: aController
 
 	^ self controllers at: aKey put: aController
+!
+
+controllers
+	
+	^ controllers ifNil:[ self initializeControllers ]
 !
 
 model
@@ -93,6 +93,13 @@ view: aHtmlElement
 
 !Controller methodsFor: 'actions'!
 
+ifAbsentAt: aKey put: aBlock
+	"Answers the controller already present at aKey or,
+	if absent, puts the one expected to be created during aBlock and returns it."
+	
+	^ self controllerAt: aKey ifAbsentPut: aBlock
+!
+
 refresh
 
 	self isRendered 
@@ -111,7 +118,7 @@ removeControllerAt: aKey
 
 	| controller |
 	
-	controller := self controllersAt: aKey ifAbsent:[ nil ].
+	controller := self controllerAt: aKey ifAbsent:[ nil ].
 	
 	controller ifNotNil:[
 		controller remove ].
@@ -231,8 +238,9 @@ ListControllers know how to deal with lists of things. It needs to know how you 
 !ListController methodsFor: 'accessing'!
 
 getItems
-
-	^ self getItemsBlock value
+	"Answers the items using the custom getItemsBlock on its model"
+	
+	^ self getItemsBlock value: model
 !
 
 getItemsBlock
@@ -284,13 +292,21 @@ newItemControllerFor: anItem
 					on: self 
 					appendingTo: self view ] 
 		ifTrue:[ self newItemControllerBlock value: anItem ]
+!
+
+parentElement: anHtmlElement
+	"Sets the parent elment for the list.
+	It can be anything but, in the case of lists, the parent element usually is a <ul>
+	The thing is to treat it like an <ul> full of <li> children."
+	parentElement := view := anHtmlElement
 ! !
 
 !ListController methodsFor: 'actions'!
 
-refreshList
-	"Makes sure all the Things in the model have its own controller.
-	Nothing less and nothing more."
+refresh
+	"Makes sure all the items in the model have its own controller.
+	Nothing less and nothing more. So it will add lazily 
+	the missing controllers and remove those who's model isn't present."
 	
 	| items |
 	
@@ -300,8 +316,9 @@ refreshList
 		do:[ :e | (self getItems includes: e) ifFalse:[
 					self removeControllerAt: e ] ].
 	
+	"Add novelties"
 	self getItems do:[ :e | | added |
-		self controllersAt: e ifAbsentPut:[ 
+		self controllerAt: e ifAbsentPut:[ 
 			added := self newItemControllerFor: e ].
 		added ifNotNil:[ 
 			added render ] ]
