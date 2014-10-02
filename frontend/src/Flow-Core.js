@@ -560,8 +560,221 @@ referencedClasses: []
 globals.Controller.klass);
 
 
-smalltalk.addClass('ListController', globals.Controller, [], 'Flow-Core');
+smalltalk.addClass('ListController', globals.Controller, ['getItemsBlock', 'itemControllerClass', 'newItemControllerBlock', 'listView'], 'Flow-Core');
 globals.ListController.comment="## ListController\x0a\x0aListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getItems",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._getItemsBlock())._value();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"getItems",{},globals.ListController)})},
+args: [],
+source: "getItems\x0a\x0a\x09^ self getItemsBlock value",
+messageSends: ["value", "getItemsBlock"],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getItemsBlock",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@getItemsBlock"];
+return $1;
+},
+args: [],
+source: "getItemsBlock\x0a\x0a\x09^ getItemsBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getItemsBlock:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@getItemsBlock"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "getItemsBlock: aBlock\x0a\x0a\x09getItemsBlock := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "itemControllerClass",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@itemControllerClass"];
+return $1;
+},
+args: [],
+source: "itemControllerClass\x0a\x0a\x09^ itemControllerClass",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "itemControllerClass:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@itemControllerClass"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "itemControllerClass: aBlock\x0a\x0a\x09itemControllerClass := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "listView",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@listView"];
+return $1;
+},
+args: [],
+source: "listView\x0a\x09\x22Answers the html element from where the item controllers are going to be appended.\x0a\x09Usually a <ul>\x22\x0a\x09^ listView\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "listView:",
+protocol: 'accessing',
+fn: function (aHtmlElement){
+var self=this;
+self["@listView"]=aHtmlElement;
+return self},
+args: ["aHtmlElement"],
+source: "listView: aHtmlElement\x0a\x0a\x09listView := aHtmlElement\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newItemControllerBlock",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@newItemControllerBlock"];
+return $1;
+},
+args: [],
+source: "newItemControllerBlock\x0a\x0a\x09^ newItemControllerBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newItemControllerBlock:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@newItemControllerBlock"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "newItemControllerBlock: aBlock\x0a\x0a\x09newItemControllerBlock := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newItemControllerFor:",
+protocol: 'accessing',
+fn: function (anItem){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=_st(self["@itemControllerClass"])._isNil();
+if(smalltalk.assert($2)){
+$1=_st(self._newItemControllerBlock())._value_(anItem);
+} else {
+$1=_st(self["@itemControllerClass"])._for_on_appendingTo_(anItem,self,self._view());
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newItemControllerFor:",{anItem:anItem},globals.ListController)})},
+args: ["anItem"],
+source: "newItemControllerFor: anItem\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse:[ itemControllerClass \x0a\x09\x09\x09\x09\x09for: anItem \x0a\x09\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09\x09appendingTo: self view ] \x0a\x09\x09ifTrue:[ self newItemControllerBlock value: anItem ]\x0a\x0a\x09 ",
+messageSends: ["ifFalse:ifTrue:", "isNil", "for:on:appendingTo:", "view", "value:", "newItemControllerBlock"],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "refreshList",
+protocol: 'actions',
+fn: function (){
+var self=this;
+var items;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$4,$3,$5,$receiver;
+$1=_st(self._controllers())._keys();
+$2=self._getItems();
+$ctx1.sendIdx["getItems"]=1;
+_st($1)._with_do_($2,(function(e){
+return smalltalk.withContext(function($ctx2) {
+$4=self._getItems();
+$ctx2.sendIdx["getItems"]=2;
+$3=_st($4)._includes_(e);
+if(! smalltalk.assert($3)){
+return self._removeControllerAt_(e);
+};
+}, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,1)})}));
+_st(self._getItems())._do_((function(e){
+var added;
+return smalltalk.withContext(function($ctx2) {
+self._controllersAt_ifAbsentPut_(e,(function(){
+return smalltalk.withContext(function($ctx3) {
+added=self._newItemControllerFor_(e);
+return added;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+$5=added;
+if(($receiver = $5) == null || $receiver.isNil){
+return $5;
+} else {
+return _st(added)._render();
+};
+}, function($ctx2) {$ctx2.fillBlock({e:e,added:added},$ctx1,3)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"refreshList",{items:items},globals.ListController)})},
+args: [],
+source: "refreshList\x0a\x09\x22Makes sure all the Things in the model have its own controller.\x0a\x09Nothing less and nothing more.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self getItems \x0a\x09\x09do:[ :e | (self getItems includes: e) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09self getItems do:[ :e | | added |\x0a\x09\x09self controllersAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := self newItemControllerFor: e ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
+messageSends: ["with:do:", "keys", "controllers", "getItems", "ifFalse:", "includes:", "removeControllerAt:", "do:", "controllersAt:ifAbsentPut:", "newItemControllerFor:", "ifNotNil:", "render"],
+referencedClasses: []
+}),
+globals.ListController);
+
 
 
 smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow-Core');

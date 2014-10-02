@@ -221,12 +221,91 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 ! !
 
 Controller subclass: #ListController
-	instanceVariableNames: ''
+	instanceVariableNames: 'getItemsBlock itemControllerClass newItemControllerBlock listView'
 	package: 'Flow-Core'!
 !ListController commentStamp!
 ## ListController
 
 ListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.!
+
+!ListController methodsFor: 'accessing'!
+
+getItems
+
+	^ self getItemsBlock value
+!
+
+getItemsBlock
+
+	^ getItemsBlock
+!
+
+getItemsBlock: aBlock
+
+	getItemsBlock := aBlock
+!
+
+itemControllerClass
+
+	^ itemControllerClass
+!
+
+itemControllerClass: aBlock
+
+	itemControllerClass := aBlock
+!
+
+listView
+	"Answers the html element from where the item controllers are going to be appended.
+	Usually a <ul>"
+	^ listView
+!
+
+listView: aHtmlElement
+
+	listView := aHtmlElement
+!
+
+newItemControllerBlock
+
+	^ newItemControllerBlock
+!
+
+newItemControllerBlock: aBlock
+
+	newItemControllerBlock := aBlock
+!
+
+newItemControllerFor: anItem
+
+	^ itemControllerClass isNil
+		ifFalse:[ itemControllerClass 
+					for: anItem 
+					on: self 
+					appendingTo: self view ] 
+		ifTrue:[ self newItemControllerBlock value: anItem ]
+! !
+
+!ListController methodsFor: 'actions'!
+
+refreshList
+	"Makes sure all the Things in the model have its own controller.
+	Nothing less and nothing more."
+	
+	| items |
+	
+	"Remove absences"
+	self controllers keys 
+		with: self getItems 
+		do:[ :e | (self getItems includes: e) ifFalse:[
+					self removeControllerAt: e ] ].
+	
+	self getItems do:[ :e | | added |
+		self controllersAt: e ifAbsentPut:[ 
+			added := self newItemControllerFor: e ].
+		added ifNotNil:[ 
+			added render ] ]
+! !
 
 Controller subclass: #RouteableController
 	instanceVariableNames: ''
