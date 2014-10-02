@@ -100,11 +100,23 @@ ifAbsentAt: aKey put: aBlock
 	^ self controllerAt: aKey ifAbsentPut: aBlock
 !
 
+ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
+	"Answers the controller already present at aKey or,
+	if absent, puts the one expected to be created during aBlock,
+	evaluates aPostAddingBlock using it and finally returns it"
+	
+	^ self 
+		controllerAt: aKey 
+		ifAbsent: [ | newController |
+			newController := aBlock value.
+			self controllerAt: aKey put: newController.
+			aPostAddingBlock value: newController.
+			newController ]
+!
+
 refresh
 
-	self isRendered 
-		ifFalse:[ self render ]
-		ifTrue:[ self empty render ]
+	self render
 !
 
 remove
@@ -128,8 +140,7 @@ removeControllerAt: aKey
 
 render
 	
-	self view ifNotNil:[
-		self view empty ].
+	self onAboutToRender.
 	
 	self renderOn: (HTMLCanvas onJQuery: self parentElement)
 !
@@ -154,6 +165,16 @@ onAboutToRemove
 	"This controller is about to be removed."
 	
 	"no-op"
+!
+
+onAboutToRender
+	"This controller is just about to be rendered."
+
+	"Empty the contents of the root element of this controller.
+	This would work as long as the view of this controller is the
+	only thing supossed to be child in that element"
+	self parentElement ifNotNil:[
+		self parentElement empty ].
 !
 
 onAfterModel

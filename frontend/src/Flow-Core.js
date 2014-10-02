@@ -144,6 +144,32 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "ifAbsentAt:put:andDo:",
+protocol: 'actions',
+fn: function (aKey,aBlock,aPostAddingBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._controllerAt_ifAbsent_(aKey,(function(){
+var newController;
+return smalltalk.withContext(function($ctx2) {
+newController=_st(aBlock)._value();
+newController;
+self._controllerAt_put_(aKey,newController);
+_st(aPostAddingBlock)._value_(newController);
+return newController;
+}, function($ctx2) {$ctx2.fillBlock({newController:newController},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"ifAbsentAt:put:andDo:",{aKey:aKey,aBlock:aBlock,aPostAddingBlock:aPostAddingBlock},globals.Controller)})},
+args: ["aKey", "aBlock", "aPostAddingBlock"],
+source: "ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock\x0a\x09\x22Answers the controller already present at aKey or,\x0a\x09if absent, puts the one expected to be created during aBlock,\x0a\x09evaluates aPostAddingBlock using it and finally returns it\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09controllerAt: aKey \x0a\x09\x09ifAbsent: [ | newController |\x0a\x09\x09\x09newController := aBlock value.\x0a\x09\x09\x09self controllerAt: aKey put: newController.\x0a\x09\x09\x09aPostAddingBlock value: newController.\x0a\x09\x09\x09newController ]",
+messageSends: ["controllerAt:ifAbsent:", "value", "controllerAt:put:", "value:"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeControllers",
 protocol: 'initialization',
 fn: function (){
@@ -228,6 +254,29 @@ return self},
 args: [],
 source: "onAboutToRemove\x0a\x09\x22This controller is about to be removed.\x22\x0a\x09\x0a\x09\x22no-op\x22",
 messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAboutToRender",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$receiver;
+$1=self._parentElement();
+$ctx1.sendIdx["parentElement"]=1;
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
+_st(self._parentElement())._empty();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"onAboutToRender",{},globals.Controller)})},
+args: [],
+source: "onAboutToRender\x0a\x09\x22This controller is just about to be rendered.\x22\x0a\x0a\x09\x22Empty the contents of the root element of this controller.\x0a\x09This would work as long as the view of this controller is the\x0a\x09only thing supossed to be child in that element\x22\x0a\x09self parentElement ifNotNil:[\x0a\x09\x09self parentElement empty ].",
+messageSends: ["ifNotNil:", "parentElement", "empty"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -331,18 +380,11 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self._isRendered();
-if(smalltalk.assert($1)){
-_st(self._empty())._render();
-} else {
 self._render();
-$ctx1.sendIdx["render"]=1;
-};
 return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.Controller)})},
 args: [],
-source: "refresh\x0a\x0a\x09self isRendered \x0a\x09\x09ifFalse:[ self render ]\x0a\x09\x09ifTrue:[ self empty render ]",
-messageSends: ["ifFalse:ifTrue:", "isRendered", "render", "empty"],
+source: "refresh\x0a\x0a\x09self render\x0a\x09",
+messageSends: ["render"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -401,19 +443,12 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return globals.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$receiver;
-$1=self._view();
-$ctx1.sendIdx["view"]=1;
-if(($receiver = $1) == null || $receiver.isNil){
-$1;
-} else {
-_st(self._view())._empty();
-};
+self._onAboutToRender();
 self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._parentElement()));
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Controller)})},
 args: [],
-source: "render\x0a\x09\x0a\x09self view ifNotNil:[\x0a\x09\x09self view empty ].\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
-messageSends: ["ifNotNil:", "view", "empty", "renderOn:", "onJQuery:", "parentElement"],
+source: "render\x0a\x09\x0a\x09self onAboutToRender.\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
+messageSends: ["onAboutToRender", "renderOn:", "onJQuery:", "parentElement"],
 referencedClasses: ["HTMLCanvas"]
 }),
 globals.Controller);
