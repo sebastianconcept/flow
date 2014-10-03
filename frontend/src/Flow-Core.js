@@ -1149,7 +1149,7 @@ globals.FlowAppController.klass);
 smalltalk.addClass('NotFoundController', globals.RouteableController, [], 'Flow-Core');
 
 
-smalltalk.addClass('Model', globals.Mapless, [], 'Flow-Core');
+smalltalk.addClass('Model', globals.MaplessModel, [], 'Flow-Core');
 
 
 smalltalk.addClass('User', globals.Model, [], 'Flow-Core');
