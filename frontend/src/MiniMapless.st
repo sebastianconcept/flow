@@ -346,15 +346,20 @@ onAboutToJSON
 	obj := JSObjectProxy on: obj.
 	keys := obj keys: data. 
 
-	keys do:[:key| |value|
+	keys do:[ :key | | value |
 		value := data at: key.
 		value := self perform: key asSymbol.
 
-		(value class ~= JSObjectProxy and:[
-		value isKindOf: Mapless]) ifTrue:[
+		( value class ~= JSObjectProxy and:[
+		value isKindOf: Mapless ]) ifTrue:[
 			value onAboutToJSON.
-			value := value data].
-		data at: key put: value].
+			value := value data ].
+
+		( value class = Array and:[
+		value notEmpty and:[
+		value anySatisfy:[ :e | e isKindOf: Mapless ] ] ] ) ifTrue:[
+			data at: key put: (value collect:[ :e | e onAboutToJSON data ] ) ]
+		]
 !
 
 onAboutToSave

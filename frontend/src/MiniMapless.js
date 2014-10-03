@@ -718,8 +718,9 @@ var self=this;
 var obj,keys;
 function $JSObjectProxy(){return globals.JSObjectProxy||(typeof JSObjectProxy=="undefined"?nil:JSObjectProxy)}
 function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $3,$2,$1,$4;
 obj=self._newJSObject();
 obj=_st($JSObjectProxy())._on_(obj);
 keys=_st(obj)._keys_(self["@data"]);
@@ -730,22 +731,45 @@ value=_st(self["@data"])._at_(key);
 value;
 value=self._perform_(_st(key)._asSymbol());
 value;
-$1=_st(_st(_st(value)._class()).__tild_eq($JSObjectProxy()))._and_((function(){
+$3=_st(value)._class();
+$ctx2.sendIdx["class"]=1;
+$2=_st($3).__tild_eq($JSObjectProxy());
+$1=_st($2)._and_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(value)._isKindOf_($Mapless());
+$ctx3.sendIdx["isKindOf:"]=1;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+$ctx2.sendIdx["and:"]=1;
 if(smalltalk.assert($1)){
 _st(value)._onAboutToJSON();
+$ctx2.sendIdx["onAboutToJSON"]=1;
 value=_st(value)._data();
+$ctx2.sendIdx["data"]=1;
 value;
 };
-return _st(self["@data"])._at_put_(key,value);
+$4=_st(_st(_st(value)._class()).__eq($Array()))._and_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(value)._notEmpty())._and_((function(){
+return smalltalk.withContext(function($ctx4) {
+return _st(value)._anySatisfy_((function(e){
+return smalltalk.withContext(function($ctx5) {
+return _st(e)._isKindOf_($Mapless());
+}, function($ctx5) {$ctx5.fillBlock({e:e},$ctx4,6)})}));
+}, function($ctx4) {$ctx4.fillBlock({},$ctx3,5)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+$ctx2.sendIdx["and:"]=2;
+if(smalltalk.assert($4)){
+return _st(self["@data"])._at_put_(key,_st(value)._collect_((function(e){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(e)._onAboutToJSON())._data();
+}, function($ctx3) {$ctx3.fillBlock({e:e},$ctx2,8)})})));
+};
 }, function($ctx2) {$ctx2.fillBlock({key:key,value:value},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"onAboutToJSON",{obj:obj,keys:keys},globals.Mapless)})},
 args: [],
-source: "onAboutToJSON\x0a\x09\x22This mapless is about to be stringified as JSON.\x0a\x09All inst var with mapless objects will be stringify-friendly after this.\x22\x0a\x09\x0a\x09| obj keys |\x0a\x0a\x09obj := self newJSObject.\x0a\x09obj := JSObjectProxy on: obj.\x0a\x09keys := obj keys: data. \x0a\x0a\x09keys do:[:key| |value|\x0a\x09\x09value := data at: key.\x0a\x09\x09value := self perform: key asSymbol.\x0a\x0a\x09\x09(value class ~= JSObjectProxy and:[\x0a\x09\x09value isKindOf: Mapless]) ifTrue:[\x0a\x09\x09\x09value onAboutToJSON.\x0a\x09\x09\x09value := value data].\x0a\x09\x09data at: key put: value].",
-messageSends: ["newJSObject", "on:", "keys:", "do:", "at:", "perform:", "asSymbol", "ifTrue:", "and:", "~=", "class", "isKindOf:", "onAboutToJSON", "data", "at:put:"],
-referencedClasses: ["JSObjectProxy", "Mapless"]
+source: "onAboutToJSON\x0a\x09\x22This mapless is about to be stringified as JSON.\x0a\x09All inst var with mapless objects will be stringify-friendly after this.\x22\x0a\x09\x0a\x09| obj keys |\x0a\x0a\x09obj := self newJSObject.\x0a\x09obj := JSObjectProxy on: obj.\x0a\x09keys := obj keys: data. \x0a\x0a\x09keys do:[ :key | | value |\x0a\x09\x09value := data at: key.\x0a\x09\x09value := self perform: key asSymbol.\x0a\x0a\x09\x09( value class ~= JSObjectProxy and:[\x0a\x09\x09value isKindOf: Mapless ]) ifTrue:[\x0a\x09\x09\x09value onAboutToJSON.\x0a\x09\x09\x09value := value data ].\x0a\x0a\x09\x09( value class = Array and:[\x0a\x09\x09value notEmpty and:[\x0a\x09\x09value anySatisfy:[ :e | e isKindOf: Mapless ] ] ] ) ifTrue:[\x0a\x09\x09\x09data at: key put: (value collect:[ :e | e onAboutToJSON data ] ) ]\x0a\x09\x09]",
+messageSends: ["newJSObject", "on:", "keys:", "do:", "at:", "perform:", "asSymbol", "ifTrue:", "and:", "~=", "class", "isKindOf:", "onAboutToJSON", "data", "=", "notEmpty", "anySatisfy:", "at:put:", "collect:"],
+referencedClasses: ["JSObjectProxy", "Mapless", "Array"]
 }),
 globals.Mapless);
 
