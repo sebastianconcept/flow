@@ -113,7 +113,29 @@ Object subclass: #Flow
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+Flow class instanceVariableNames: 'app session currentController'!
+
 !Flow class methodsFor: 'accessing'!
+
+app 
+
+	^ app
+!
+
+app: anApplication 
+
+	app := anApplication
+!
+
+currentController 
+
+	^ currentController
+!
+
+currentController: aController
+
+	currentController := aController
+!
 
 scaffold
 
@@ -123,6 +145,27 @@ scaffold
 scaffolder
 
 	^ Scaffolder
+!
+
+session
+
+	^ session
+!
+
+session: aSession
+
+	session := aSession
+! !
+
+!Flow class methodsFor: 'actions'!
+
+start
+	"Makes the foundation  be ready for action."
+
+	window at: 'flow' put: self.
+
+	"Make the router be sensible to URI changes"
+	Router observeHash.
 ! !
 
 Object subclass: #Scaffolder

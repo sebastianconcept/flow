@@ -249,6 +249,71 @@ globals.ModelScaffolder.klass);
 
 smalltalk.addClass('Flow', globals.Object, [], 'Flow');
 
+globals.Flow.klass.iVarNames = ['app','session','currentController'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "app",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@app"];
+return $1;
+},
+args: [],
+source: "app \x0a\x0a\x09^ app",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Flow.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "app:",
+protocol: 'accessing',
+fn: function (anApplication){
+var self=this;
+self["@app"]=anApplication;
+return self},
+args: ["anApplication"],
+source: "app: anApplication \x0a\x0a\x09app := anApplication",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Flow.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentController",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@currentController"];
+return $1;
+},
+args: [],
+source: "currentController \x0a\x0a\x09^ currentController",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Flow.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentController:",
+protocol: 'accessing',
+fn: function (aController){
+var self=this;
+self["@currentController"]=aController;
+return self},
+args: ["aController"],
+source: "currentController: aController\x0a\x0a\x09currentController := aController",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Flow.klass);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "scaffold",
@@ -280,6 +345,56 @@ args: [],
 source: "scaffolder\x0a\x0a\x09^ Scaffolder",
 messageSends: [],
 referencedClasses: ["Scaffolder"]
+}),
+globals.Flow.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "session",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@session"];
+return $1;
+},
+args: [],
+source: "session\x0a\x0a\x09^ session",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Flow.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "session:",
+protocol: 'accessing',
+fn: function (aSession){
+var self=this;
+self["@session"]=aSession;
+return self},
+args: ["aSession"],
+source: "session: aSession\x0a\x0a\x09session := aSession",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Flow.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "start",
+protocol: 'actions',
+fn: function (){
+var self=this;
+function $Router(){return globals.Router||(typeof Router=="undefined"?nil:Router)}
+return smalltalk.withContext(function($ctx1) { 
+_st(window)._at_put_("flow",self);
+_st($Router())._observeHash();
+return self}, function($ctx1) {$ctx1.fill(self,"start",{},globals.Flow.klass)})},
+args: [],
+source: "start\x0a\x09\x22Makes the foundation  be ready for action.\x22\x0a\x0a\x09window at: 'flow' put: self.\x0a\x0a\x09\x22Make the router be sensible to URI changes\x22\x0a\x09Router observeHash.\x0a\x09\x0a\x09",
+messageSends: ["at:put:", "observeHash"],
+referencedClasses: ["Router"]
 }),
 globals.Flow.klass);
 
