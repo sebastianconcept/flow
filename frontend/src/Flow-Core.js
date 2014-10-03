@@ -1189,7 +1189,7 @@ return self._onHashChanged();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"observeHash",{},globals.Router.klass)})},
 args: [],
-source: "observeHash\x0a\x0a\x09window onhashchange:[ self onHashChanged ].",
+source: "observeHash\x0a\x0a\x09window onhashchange:[ self onHashChanged ]",
 messageSends: ["onhashchange:", "onHashChanged"],
 referencedClasses: []
 }),
@@ -1198,6 +1198,22 @@ globals.Router.klass);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "onHashChanged",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._refresh();
+return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{},globals.Router.klass)})},
+args: [],
+source: "onHashChanged\x0a\x09\x0a\x09self refresh\x0a\x09",
+messageSends: ["refresh"],
+referencedClasses: []
+}),
+globals.Router.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "refresh",
 protocol: 'reactions',
 fn: function (){
 var self=this;
@@ -1215,9 +1231,9 @@ _st(self["@active"])._remove();
 self["@active"]=_st($RouteableController())._routeFor_(self._route());
 _st(self["@active"])._render();
 self._trigger_("afterRouting");
-return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{},globals.Router.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.Router.klass)})},
 args: [],
-source: "onHashChanged\x0a\x09\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09active ifNotNil:[ active remove ].\x0a\x09active := RouteableController routeFor: self route.\x0a\x0a\x09active render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
+source: "refresh\x0a\x09\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09active ifNotNil:[ active remove ].\x0a\x09active := RouteableController routeFor: self route.\x0a\x0a\x09active render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
 messageSends: ["trigger:", "ifNotNil:", "remove", "routeFor:", "route", "render"],
 referencedClasses: ["RouteableController"]
 }),
@@ -1260,7 +1276,7 @@ referencedClasses: []
 globals.Router.klass);
 
 
-smalltalk.addClass('Session', globals.Object, ['id', 'user', 'social', 'api'], 'Flow-Core');
+smalltalk.addClass('Session', globals.Mapless, [], 'Flow-Core');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "api",
@@ -1269,47 +1285,23 @@ fn: function (){
 var self=this;
 function $APIClient(){return globals.APIClient||(typeof APIClient=="undefined"?nil:APIClient)}
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@api"];
-if(($receiver = $2) == null || $receiver.isNil){
-self["@api"]=_st($APIClient())._new();
-$1=self["@api"];
+var $1,$2,$receiver;
+$1=($ctx1.supercall = true, globals.Session.superclass.fn.prototype._api.apply(_st(self), []));
+$ctx1.supercall = false;
+$ctx1.sendIdx["api"]=1;
+if(($receiver = $1) == null || $receiver.isNil){
+self._api_(_st($APIClient())._new());
 } else {
-$1=$2;
+$1;
 };
-return $1;
+$2=($ctx1.supercall = true, globals.Session.superclass.fn.prototype._api.apply(_st(self), []));
+$ctx1.supercall = false;
+return $2;
 }, function($ctx1) {$ctx1.fill(self,"api",{},globals.Session)})},
 args: [],
-source: "api\x0a\x0a\x09^ api ifNil:[ api := APIClient new ]",
-messageSends: ["ifNil:", "new"],
+source: "api\x0a\x0a\x09super api ifNil:[ \x0a\x09\x09self api: APIClient new ].\x0a\x09\x09\x0a\x09^ super api",
+messageSends: ["ifNil:", "api", "api:", "new"],
 referencedClasses: ["APIClient"]
-}),
-globals.Session);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "asJSONString",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $HasedCollection(){return globals.HasedCollection||(typeof HasedCollection=="undefined"?nil:HasedCollection)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$4,$5,$1;
-$2=_st($HasedCollection())._new();
-$3=$2;
-$4=self._id();
-$ctx1.sendIdx["id"]=1;
-_st($3)._at_put_("id",$4);
-$ctx1.sendIdx["at:put:"]=1;
-_st($2)._at_put_("userId",_st(self._user())._id());
-$5=_st($2)._asJSONString();
-$1=$5;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"asJSONString",{},globals.Session)})},
-args: [],
-source: "asJSONString\x0a\x0a\x09^ HasedCollection new\x0a\x09\x09at: 'id' put: self id;\x0a\x09\x09at: 'userId' put: self user id;\x0a\x09\x09asJSONString",
-messageSends: ["at:put:", "new", "id", "user", "asJSONString"],
-referencedClasses: ["HasedCollection"]
 }),
 globals.Session);
 

@@ -534,12 +534,17 @@ uri
 
 observeHash
 
-	window onhashchange:[ self onHashChanged ].
+	window onhashchange:[ self onHashChanged ]
 ! !
 
 !Router class methodsFor: 'reactions'!
 
 onHashChanged
+	
+	self refresh
+!
+
+refresh
 	
 	self trigger: 'aboutToRoute'.
 	
@@ -551,23 +556,18 @@ onHashChanged
 	self trigger: 'afterRouting'
 ! !
 
-Object subclass: #Session
-	instanceVariableNames: 'id user social api'
+Mapless subclass: #Session
+	instanceVariableNames: ''
 	package: 'Flow-Core'!
 
 !Session methodsFor: 'accessing'!
 
 api
 
-	^ api ifNil:[ api := APIClient new ]
-!
-
-asJSONString
-
-	^ HasedCollection new
-		at: 'id' put: self id;
-		at: 'userId' put: self user id;
-		asJSONString
+	super api ifNil:[ 
+		self api: APIClient new ].
+		
+	^ super api
 ! !
 
 !Session methodsFor: 'actions'!
