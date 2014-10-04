@@ -398,8 +398,10 @@ onAboutToJSON
 		"In case the value is a collection of (sub)Mapless"
 		( value class = Array and:[
 		value notEmpty and:[
-		value anySatisfy:[ :e | e isKindOf: Mapless ] ] ] ) ifTrue:[
-			value := (value collect:[ :e | e onAboutToJSON data ] ) ].
+		value anySatisfy:[ :e | 
+			e class ~= JSObjectProxy and:[
+			e isKindOf: Mapless ] ] ] ] ) ifTrue:[
+				value := (value collect:[ :e | e onAboutToJSON data ] ) ].
 		
 		data at: key put: value ]
 !

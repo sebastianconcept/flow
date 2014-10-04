@@ -866,13 +866,11 @@ protocol: '*Flow',
 fn: function (anEventName){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(jQuery)._value_(self))._trigger_(anEventName);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"trigger:",{anEventName:anEventName},globals.Object)})},
+return $(self._jsObject).trigger(anEventName);
+return self}, function($ctx1) {$ctx1.fill(self,"trigger:",{anEventName:anEventName},globals.Object)})},
 args: ["anEventName"],
-source: "trigger: anEventName \x0a\x09\x22Triggers anEventName in this object.\x0a\x09There you have it, it happened. \x0a\x09Hey World, do something about this!\x22\x0a\x09\x0a\x09^ (jQuery value: self) trigger: anEventName ",
-messageSends: ["trigger:", "value:"],
+source: "trigger: anEventName \x0a\x09\x22Triggers anEventName in this object.\x0a\x09There you have it, it happened. \x0a\x09Hey World, do something about this!\x22\x0a\x09\x0a\x09<return $(self._jsObject).trigger(anEventName)>",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Object);
@@ -903,13 +901,11 @@ protocol: '*Flow',
 fn: function (anEventName,someArguments){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(jQuery)._value_(self))._trigger_withAll_(anEventName,someArguments);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"trigger:withAll:",{anEventName:anEventName,someArguments:someArguments},globals.Object)})},
+return $(self._jsObject).trigger(anEventName, someArguments);
+return self}, function($ctx1) {$ctx1.fill(self,"trigger:withAll:",{anEventName:anEventName,someArguments:someArguments},globals.Object)})},
 args: ["anEventName", "someArguments"],
-source: "trigger: anEventName withAll: someArguments\x0a\x09\x22Triggers anEventName in this object.\x0a\x09There you have it, it happened. \x0a\x09Hey World, do something about this!\x22\x0a\x09\x0a\x09^ (jQuery value: self) \x0a\x09\x09\x09trigger: anEventName \x0a\x09\x09\x09withAll: someArguments",
-messageSends: ["trigger:withAll:", "value:"],
+source: "trigger: anEventName withAll: someArguments\x0a\x09\x22Triggers anEventName in this object.\x0a\x09There you have it, it happened. \x0a\x09Hey World, do something about this!\x22\x0a\x0a\x09<return $(self._jsObject).trigger(anEventName, someArguments)>",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Object);
@@ -921,13 +917,11 @@ protocol: '*Flow',
 fn: function (anEventName,aReactionBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(jQuery)._value_(self))._on_do_(anEventName,aReactionBlock);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"when:do:",{anEventName:anEventName,aReactionBlock:aReactionBlock},globals.Object)})},
+return $(self._jsObject).bind(anEventName, aReactionBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"when:do:",{anEventName:anEventName,aReactionBlock:aReactionBlock},globals.Object)})},
 args: ["anEventName", "aReactionBlock"],
-source: "when: anEventName do: aReactionBlock\x0a\x09\x22Wires the observation of this object to the occurrence of anEventName.\x0a\x09When (and if) anEventName happens, aReactionBlock will take place. \x0a\x09Godspeed!\x22\x0a\x09\x0a\x09^ (jQuery value: self) \x0a\x09\x09on: anEventName \x0a\x09\x09do: aReactionBlock",
-messageSends: ["on:do:", "value:"],
+source: "when: anEventName do: aReactionBlock\x0a\x09\x22Wires the observation of this object to the occurrence of anEventName.\x0a\x09When (and if) anEventName happens, aReactionBlock will take place. \x0a\x09Based on this feature: http://forum.jquery.com/topic/triggering-custom-events-on-js-objects\x0a\x09Beware some objects wont fire (anArray for example).\x0a\x09Godspeed!\x22\x0a\x0a\x09<return $(self._jsObject).bind(anEventName, aReactionBlock)>",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Object);

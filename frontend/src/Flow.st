@@ -373,7 +373,7 @@ trigger: anEventName
 	There you have it, it happened. 
 	Hey World, do something about this!!"
 	
-	^ (jQuery value: self) trigger: anEventName
+	<return $(self._jsObject).trigger(anEventName)>
 !
 
 trigger: anEventName with: anArgument
@@ -388,20 +388,18 @@ trigger: anEventName withAll: someArguments
 	"Triggers anEventName in this object.
 	There you have it, it happened. 
 	Hey World, do something about this!!"
-	
-	^ (jQuery value: self) 
-			trigger: anEventName 
-			withAll: someArguments
+
+	<return $(self._jsObject).trigger(anEventName, someArguments)>
 !
 
 when: anEventName do: aReactionBlock
 	"Wires the observation of this object to the occurrence of anEventName.
 	When (and if) anEventName happens, aReactionBlock will take place. 
+	Based on this feature: http://forum.jquery.com/topic/triggering-custom-events-on-js-objects
+	Beware some objects wont fire (anArray for example).
 	Godspeed!!"
-	
-	^ (jQuery value: self) 
-		on: anEventName 
-		do: aReactionBlock
+
+	<return $(self._jsObject).bind(anEventName, aReactionBlock)>
 ! !
 
 !Object class methodsFor: '*Flow'!
