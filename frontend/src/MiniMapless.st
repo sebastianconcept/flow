@@ -166,6 +166,13 @@ doesNotUnderstand: aMessage
 		part ifNil:[^nil].
 		isUndefined := self isUndefinedPart: part.
 		isUndefined ifTrue:[^nil].
+
+		"Is array of (sub)Mapless?"
+		(part class = Array and:[
+		part notEmpty and:[
+		part anySatisfy:[ :e | (e at: 'modelClass') notNil ]]]) ifTrue:[ 
+			^ part collect:[ :each | Mapless fromReified: each ] ].
+
 		isObject := self isObjectPart: part.
 		isObject ifTrue:[
 			"is part an empty js object? (would be nil for JSON eyes)"
@@ -179,7 +186,7 @@ doesNotUnderstand: aMessage
 		"If there is no modelClass in it, then is a direct value in the property"
 		subModel ifNil:[ ^part].
 
-		subModel := Smalltalk current at: subModel.
+		subModel := Smalltalk globals at: subModel.
 		subModel ifNil:[part inspect. self error: 'this should have a ',subModel,' modelClass no?'].
 		subModel := subModel fromReified: part.
 		data at: key asString put: subModel.
@@ -338,7 +345,8 @@ onAboutToDelete
 
 onAboutToJSON
 	"This mapless is about to be stringified as JSON.
-	All inst var with mapless objects will be stringify-friendly after this."
+	All inst var with mapless objects will be stringify-friendly after this.
+	Note: Mapless currently support composition of Mapless and composition with many Mapless"
 	
 	| obj keys |
 
@@ -347,19 +355,24 @@ onAboutToJSON
 	keys := obj keys: data. 
 
 	keys do:[ :key | | value |
+	
+		"In case the value is the usual stringifiable object"
 		value := data at: key.
 		value := self perform: key asSymbol.
 
+		"In case the value is a (sub)Mapless"
 		( value class ~= JSObjectProxy and:[
-		value isKindOf: Mapless ]) ifTrue:[
+		value isKindOf: Mapless ] ) ifTrue:[
 			value onAboutToJSON.
 			value := value data ].
 
+		"In case the value is a collection of (sub)Mapless"
 		( value class = Array and:[
 		value notEmpty and:[
 		value anySatisfy:[ :e | e isKindOf: Mapless ] ] ] ) ifTrue:[
-			data at: key put: (value collect:[ :e | e onAboutToJSON data ] ) ]
-		]
+			value := (value collect:[ :e | e onAboutToJSON data ] ) ].
+		
+		data at: key put: value ]
 !
 
 onAboutToSave
@@ -574,6 +587,8 @@ fromJSONString: someJSONStringOrNil
 	json := self reify: someJSONStringOrNil.
 	json ifNil:[ ^nil ].
 	
+	json class = Array ifTrue:[ ^ self fromManyJSON: json].
+	
 	modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].
 	
 	modelClass := Smalltalk globals at: modelClass ifAbsent:[  ].
@@ -583,11 +598,25 @@ fromJSONString: someJSONStringOrNil
 		ifFalse:[ self error: 'The class "', modelClass,'" was not found' ]
 !
 
+fromManyJSON: anArrayOfJSONObjects
+	"Answers a new instance of this mapless
+	based on anArrayOfJSONObjects."
+
+	^ anArrayOfJSONObjects collect:[ :someJSON |
+		self fromReified: someJSON ]
+!
+
 fromReified: aReifiedJSON
 	"Answers a new instance of this mapless and returns it
 	in sync with aReifiedJSON."
 
-	^ self new syncWith: aReifiedJSON
+	| modelClass |
+
+	modelClass := aReifiedJSON at: 'modelClass' ifAbsent:[ ^nil ].
+	
+	modelClass := Smalltalk globals at: modelClass ifAbsent:[ nil ].
+	
+	^ modelClass new syncWith: aReifiedJSON
 !
 
 localDelete: aMapless
