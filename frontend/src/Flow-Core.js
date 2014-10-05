@@ -7,6 +7,84 @@ smalltalk.addClass('Controller', globals.Widget, ['controllers', 'model', 'view'
 globals.Controller.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.\x0a\x0aA typical controller might have:\x0a\x0a1. a model\x0a2. some (sub)controllers\x0a3. minimal common behavior\x0a";
 smalltalk.addMethod(
 smalltalk.method({
+selector: "controllerAt:",
+protocol: 'accessing',
+fn: function (aKey){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_ifAbsent_(aKey,(function(){
+return smalltalk.withContext(function($ctx2) {
+return self._error_("Controller not found: ".__comma(_st(aKey)._asString()));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllerAt:",{aKey:aKey},globals.Controller)})},
+args: ["aKey"],
+source: "controllerAt: aKey \x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent:[ self error: 'Controller not found: ', aKey asString ]",
+messageSends: ["at:ifAbsent:", "controllers", "error:", ",", "asString"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllerAt:ifAbsent:",
+protocol: 'accessing',
+fn: function (aKey,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_ifAbsent_(aKey,aBlock);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllerAt:ifAbsent:",{aKey:aKey,aBlock:aBlock},globals.Controller)})},
+args: ["aKey", "aBlock"],
+source: "controllerAt: aKey ifAbsent: aBlock\x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent: aBlock",
+messageSends: ["at:ifAbsent:", "controllers"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllerAt:ifAbsentPut:",
+protocol: 'accessing',
+fn: function (aKey,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_ifAbsent_(aKey,(function(){
+return smalltalk.withContext(function($ctx2) {
+return self._controllerAt_put_(aKey,_st(aBlock)._value());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllerAt:ifAbsentPut:",{aKey:aKey,aBlock:aBlock},globals.Controller)})},
+args: ["aKey", "aBlock"],
+source: "controllerAt: aKey ifAbsentPut: aBlock\x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent:[ self controllerAt: aKey put: aBlock value ] ",
+messageSends: ["at:ifAbsent:", "controllers", "controllerAt:put:", "value"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "controllerAt:put:",
+protocol: 'accessing',
+fn: function (aKey,aController){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._controllers())._at_put_(aKey,aController);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"controllerAt:put:",{aKey:aKey,aController:aController},globals.Controller)})},
+args: ["aKey", "aController"],
+source: "controllerAt: aKey put: aController\x0a\x0a\x09^ self controllers at: aKey put: aController",
+messageSends: ["at:put:", "controllers"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "controllers",
 protocol: 'accessing',
 fn: function (){
@@ -30,84 +108,6 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "controllersAt:",
-protocol: 'accessing',
-fn: function (aKey){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self._controllers())._at_ifAbsent_(aKey,(function(){
-return smalltalk.withContext(function($ctx2) {
-return self._error_("Controller not found: ".__comma(_st(aKey)._asString()));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"controllersAt:",{aKey:aKey},globals.Controller)})},
-args: ["aKey"],
-source: "controllersAt: aKey \x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent:[ self error: 'Controller not found: ', aKey asString ]",
-messageSends: ["at:ifAbsent:", "controllers", "error:", ",", "asString"],
-referencedClasses: []
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "controllersAt:ifAbsent:",
-protocol: 'accessing',
-fn: function (aKey,aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self._controllers())._at_ifAbsent_(aKey,aBlock);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"controllersAt:ifAbsent:",{aKey:aKey,aBlock:aBlock},globals.Controller)})},
-args: ["aKey", "aBlock"],
-source: "controllersAt: aKey ifAbsent: aBlock\x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent: aBlock",
-messageSends: ["at:ifAbsent:", "controllers"],
-referencedClasses: []
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "controllersAt:ifAbsentPut:",
-protocol: 'accessing',
-fn: function (aKey,aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self._controllers())._at_ifAbsent_(aKey,(function(){
-return smalltalk.withContext(function($ctx2) {
-return self._controllersAt_put_(aKey,_st(aBlock)._value());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"controllersAt:ifAbsentPut:",{aKey:aKey,aBlock:aBlock},globals.Controller)})},
-args: ["aKey", "aBlock"],
-source: "controllersAt: aKey ifAbsentPut: aBlock\x0a\x0a\x09^ self controllers \x0a\x09\x09at: aKey \x0a\x09\x09ifAbsent:[ self controllersAt: aKey put: aBlock value ] ",
-messageSends: ["at:ifAbsent:", "controllers", "controllersAt:put:", "value"],
-referencedClasses: []
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "controllersAt:put:",
-protocol: 'accessing',
-fn: function (aKey,aController){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self._controllers())._at_put_(aKey,aController);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"controllersAt:put:",{aKey:aKey,aController:aController},globals.Controller)})},
-args: ["aKey", "aController"],
-source: "controllersAt: aKey put: aController\x0a\x0a\x09^ self controllers at: aKey put: aController",
-messageSends: ["at:put:", "controllers"],
-referencedClasses: []
-}),
-globals.Controller);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "hasView",
 protocol: 'testing',
 fn: function (){
@@ -120,6 +120,50 @@ return $1;
 args: [],
 source: "hasView\x0a\x09\x22Answers true if this controller has a view\x22\x0a\x09\x0a\x09^ view notNil\x0a\x09\x0a\x09",
 messageSends: ["notNil"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "ifAbsentAt:put:",
+protocol: 'actions',
+fn: function (aKey,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._controllerAt_ifAbsentPut_(aKey,aBlock);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"ifAbsentAt:put:",{aKey:aKey,aBlock:aBlock},globals.Controller)})},
+args: ["aKey", "aBlock"],
+source: "ifAbsentAt: aKey put: aBlock\x0a\x09\x22Answers the controller already present at aKey or,\x0a\x09if absent, puts the one expected to be created during aBlock and returns it.\x22\x0a\x09\x0a\x09^ self controllerAt: aKey ifAbsentPut: aBlock",
+messageSends: ["controllerAt:ifAbsentPut:"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "ifAbsentAt:put:andDo:",
+protocol: 'actions',
+fn: function (aKey,aBlock,aPostAddingBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self._controllerAt_ifAbsent_(aKey,(function(){
+var newController;
+return smalltalk.withContext(function($ctx2) {
+newController=_st(aBlock)._value();
+newController;
+self._controllerAt_put_(aKey,newController);
+_st(aPostAddingBlock)._value_(newController);
+return newController;
+}, function($ctx2) {$ctx2.fillBlock({newController:newController},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"ifAbsentAt:put:andDo:",{aKey:aKey,aBlock:aBlock,aPostAddingBlock:aPostAddingBlock},globals.Controller)})},
+args: ["aKey", "aBlock", "aPostAddingBlock"],
+source: "ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock\x0a\x09\x22Answers the controller already present at aKey or,\x0a\x09if absent, puts the one expected to be created during aBlock,\x0a\x09evaluates aPostAddingBlock using it and finally returns it\x22\x0a\x09\x0a\x09^ self \x0a\x09\x09controllerAt: aKey \x0a\x09\x09ifAbsent: [ | newController |\x0a\x09\x09\x09newController := aBlock value.\x0a\x09\x09\x09self controllerAt: aKey put: newController.\x0a\x09\x09\x09aPostAddingBlock value: newController.\x0a\x09\x09\x09newController ]",
+messageSends: ["controllerAt:ifAbsent:", "value", "controllerAt:put:", "value:"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -152,12 +196,15 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(_st(self._view())._children())._length()).__gt((0));
+$1=_st(self._hasView())._and_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self._view())._children())._length()).__gt((0));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"isRendered",{},globals.Controller)})},
 args: [],
-source: "isRendered\x0a\x09\x22Answers true if this controller is rendered.\x22\x0a\x09\x0a\x09^ self view children length > 0\x0a\x09\x0a\x09",
-messageSends: [">", "length", "children", "view"],
+source: "isRendered\x0a\x09\x22Answers true if this controller is rendered.\x22\x0a\x09\x0a\x09^ self hasView and:[\x0a\x09self view children length > 0 ]\x0a\x09\x0a\x09",
+messageSends: ["and:", "hasView", ">", "length", "children", "view"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -207,6 +254,29 @@ return self},
 args: [],
 source: "onAboutToRemove\x0a\x09\x22This controller is about to be removed.\x22\x0a\x09\x0a\x09\x22no-op\x22",
 messageSends: [],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onAboutToRender",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$receiver;
+$1=self._parentElement();
+$ctx1.sendIdx["parentElement"]=1;
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
+_st(self._parentElement())._empty();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"onAboutToRender",{},globals.Controller)})},
+args: [],
+source: "onAboutToRender\x0a\x09\x22This controller is just about to be rendered.\x22\x0a\x0a\x09\x22Empty the contents of the root element of this controller.\x0a\x09This would work as long as the view of this controller is the\x0a\x09only thing supossed to be child in that element\x22\x0a\x09self parentElement ifNotNil:[\x0a\x09\x09self parentElement empty ].",
+messageSends: ["ifNotNil:", "parentElement", "empty"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -305,6 +375,22 @@ globals.Controller);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "refresh",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._render();
+return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.Controller)})},
+args: [],
+source: "refresh\x0a\x0a\x09self render\x0a\x09",
+messageSends: ["render"],
+referencedClasses: []
+}),
+globals.Controller);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "remove",
 protocol: 'actions',
 fn: function (){
@@ -329,7 +415,7 @@ var self=this;
 var controller;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$receiver;
-controller=self._controllersAt_ifAbsent_(aKey,(function(){
+controller=self._controllerAt_ifAbsent_(aKey,(function(){
 return nil;
 }));
 $1=controller;
@@ -343,8 +429,8 @@ return nil;
 }));
 return self}, function($ctx1) {$ctx1.fill(self,"removeControllerAt:",{aKey:aKey,controller:controller},globals.Controller)})},
 args: ["aKey"],
-source: "removeControllerAt: aKey \x0a\x0a\x09| controller |\x0a\x09\x0a\x09controller := self controllersAt: aKey ifAbsent:[ nil ].\x0a\x09\x0a\x09controller ifNotNil:[\x0a\x09\x09controller remove ].\x0a\x09\x09\x0a\x09self controllers removeKey: aKey ifAbsent: [ nil ]",
-messageSends: ["controllersAt:ifAbsent:", "ifNotNil:", "remove", "removeKey:ifAbsent:", "controllers"],
+source: "removeControllerAt: aKey \x0a\x0a\x09| controller |\x0a\x09\x0a\x09controller := self controllerAt: aKey ifAbsent:[ nil ].\x0a\x09\x0a\x09controller ifNotNil:[\x0a\x09\x09controller remove ].\x0a\x09\x09\x0a\x09self controllers removeKey: aKey ifAbsent: [ nil ]",
+messageSends: ["controllerAt:ifAbsent:", "ifNotNil:", "remove", "removeKey:ifAbsent:", "controllers"],
 referencedClasses: []
 }),
 globals.Controller);
@@ -357,19 +443,12 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return globals.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$receiver;
-$1=self._view();
-$ctx1.sendIdx["view"]=1;
-if(($receiver = $1) == null || $receiver.isNil){
-$1;
-} else {
-_st(self._view())._empty();
-};
+self._onAboutToRender();
 self._renderOn_(_st($HTMLCanvas())._onJQuery_(self._parentElement()));
 return self}, function($ctx1) {$ctx1.fill(self,"render",{},globals.Controller)})},
 args: [],
-source: "render\x0a\x09\x0a\x09self view ifNotNil:[\x0a\x09\x09self view empty ].\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
-messageSends: ["ifNotNil:", "view", "empty", "renderOn:", "onJQuery:", "parentElement"],
+source: "render\x0a\x09\x0a\x09self onAboutToRender.\x0a\x09\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement)",
+messageSends: ["onAboutToRender", "renderOn:", "onJQuery:", "parentElement"],
 referencedClasses: ["HTMLCanvas"]
 }),
 globals.Controller);
@@ -509,7 +588,7 @@ $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"for:on:appendingTo:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},globals.Controller.klass)})},
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself\x0a\x09",
+source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself\x0a\x09",
 messageSends: ["model:", "new", "parent:", "parentElement:", "yourself"],
 referencedClasses: []
 }),
@@ -532,6 +611,239 @@ messageSends: ["for:on:appendingTo:", "defaultModel"],
 referencedClasses: []
 }),
 globals.Controller.klass);
+
+
+smalltalk.addClass('ListController', globals.Controller, ['getItemsBlock', 'itemControllerClass', 'newItemControllerBlock', 'listView'], 'Flow-Core');
+globals.ListController.comment="## ListController\x0a\x0aListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getItems",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self._getItemsBlock())._value_(self["@model"]);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"getItems",{},globals.ListController)})},
+args: [],
+source: "getItems\x0a\x09\x22Answers the items using the custom getItemsBlock on its model\x22\x0a\x09\x0a\x09^ self getItemsBlock value: model",
+messageSends: ["value:", "getItemsBlock"],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getItemsBlock",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@getItemsBlock"];
+return $1;
+},
+args: [],
+source: "getItemsBlock\x0a\x0a\x09^ getItemsBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getItemsBlock:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@getItemsBlock"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "getItemsBlock: aBlock\x0a\x0a\x09getItemsBlock := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "itemControllerClass",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@itemControllerClass"];
+return $1;
+},
+args: [],
+source: "itemControllerClass\x0a\x0a\x09^ itemControllerClass",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "itemControllerClass:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@itemControllerClass"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "itemControllerClass: aBlock\x0a\x0a\x09itemControllerClass := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "listView",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@listView"];
+return $1;
+},
+args: [],
+source: "listView\x0a\x09\x22Answers the html element from where the item controllers are going to be appended.\x0a\x09Usually a <ul>\x22\x0a\x09^ listView\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "listView:",
+protocol: 'accessing',
+fn: function (aHtmlElement){
+var self=this;
+self["@listView"]=aHtmlElement;
+return self},
+args: ["aHtmlElement"],
+source: "listView: aHtmlElement\x0a\x0a\x09listView := aHtmlElement\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newItemControllerBlock",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@newItemControllerBlock"];
+return $1;
+},
+args: [],
+source: "newItemControllerBlock\x0a\x0a\x09^ newItemControllerBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newItemControllerBlock:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@newItemControllerBlock"]=aBlock;
+return self},
+args: ["aBlock"],
+source: "newItemControllerBlock: aBlock\x0a\x0a\x09newItemControllerBlock := aBlock",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newItemControllerFor:",
+protocol: 'accessing',
+fn: function (anItem){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=_st(self["@itemControllerClass"])._isNil();
+if(smalltalk.assert($2)){
+$1=_st(self._newItemControllerBlock())._value_(anItem);
+} else {
+$1=_st(self["@itemControllerClass"])._for_on_appendingTo_(anItem,self,self._view());
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newItemControllerFor:",{anItem:anItem},globals.ListController)})},
+args: ["anItem"],
+source: "newItemControllerFor: anItem\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse:[ itemControllerClass \x0a\x09\x09\x09\x09\x09for: anItem \x0a\x09\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09\x09appendingTo: self view ] \x0a\x09\x09ifTrue:[ self newItemControllerBlock value: anItem ]\x0a\x0a\x09 ",
+messageSends: ["ifFalse:ifTrue:", "isNil", "for:on:appendingTo:", "view", "value:", "newItemControllerBlock"],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "parentElement:",
+protocol: 'accessing',
+fn: function (anHtmlElement){
+var self=this;
+self["@view"]=anHtmlElement;
+self["@parentElement"]=self["@view"];
+return self},
+args: ["anHtmlElement"],
+source: "parentElement: anHtmlElement\x0a\x09\x22Sets the parent elment for the list.\x0a\x09It can be anything but, in the case of lists, the parent element usually is a <ul>\x0a\x09The thing is to treat it like an <ul> full of <li> children.\x22\x0a\x09parentElement := view := anHtmlElement",
+messageSends: [],
+referencedClasses: []
+}),
+globals.ListController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "refresh",
+protocol: 'actions',
+fn: function (){
+var self=this;
+var items;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$4,$3,$5,$receiver;
+$1=_st(self._controllers())._keys();
+$2=self._getItems();
+$ctx1.sendIdx["getItems"]=1;
+_st($1)._with_do_($2,(function(e){
+return smalltalk.withContext(function($ctx2) {
+$4=self._getItems();
+$ctx2.sendIdx["getItems"]=2;
+$3=_st($4)._includes_(e);
+if(! smalltalk.assert($3)){
+return self._removeControllerAt_(e);
+};
+}, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,1)})}));
+_st(self._getItems())._do_((function(e){
+var added;
+return smalltalk.withContext(function($ctx2) {
+self._controllerAt_ifAbsentPut_(e,(function(){
+return smalltalk.withContext(function($ctx3) {
+added=self._newItemControllerFor_(e);
+return added;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+$5=added;
+if(($receiver = $5) == null || $receiver.isNil){
+return $5;
+} else {
+return _st(added)._render();
+};
+}, function($ctx2) {$ctx2.fillBlock({e:e,added:added},$ctx1,3)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"refresh",{items:items},globals.ListController)})},
+args: [],
+source: "refresh\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self getItems \x0a\x09\x09do:[ :e | (self getItems includes: e) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09\x22Add novelties\x22\x0a\x09self getItems do:[ :e | | added |\x0a\x09\x09self controllerAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := self newItemControllerFor: e ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
+messageSends: ["with:do:", "keys", "controllers", "getItems", "ifFalse:", "includes:", "removeControllerAt:", "do:", "controllerAt:ifAbsentPut:", "newItemControllerFor:", "ifNotNil:", "render"],
+referencedClasses: []
+}),
+globals.ListController);
+
 
 
 smalltalk.addClass('RouteableController', globals.Controller, [], 'Flow-Core');
@@ -837,7 +1149,7 @@ globals.FlowAppController.klass);
 smalltalk.addClass('NotFoundController', globals.RouteableController, [], 'Flow-Core');
 
 
-smalltalk.addClass('Model', globals.Mapless, [], 'Flow-Core');
+smalltalk.addClass('Model', globals.MaplessModel, [], 'Flow-Core');
 
 
 smalltalk.addClass('User', globals.Model, [], 'Flow-Core');
@@ -874,12 +1186,10 @@ return smalltalk.withContext(function($ctx1) {
 _st(window)._onhashchange_((function(){
 return smalltalk.withContext(function($ctx2) {
 return self._onHashChanged();
-$ctx2.sendIdx["onHashChanged"]=1;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
-self._onHashChanged();
 return self}, function($ctx1) {$ctx1.fill(self,"observeHash",{},globals.Router.klass)})},
 args: [],
-source: "observeHash\x0a\x0a\x09window onhashchange:[ self onHashChanged ].\x0a\x09self onHashChanged",
+source: "observeHash\x0a\x0a\x09window onhashchange:[ self onHashChanged ]",
 messageSends: ["onhashchange:", "onHashChanged"],
 referencedClasses: []
 }),
@@ -888,6 +1198,22 @@ globals.Router.klass);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "onHashChanged",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self._refresh();
+return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{},globals.Router.klass)})},
+args: [],
+source: "onHashChanged\x0a\x09\x0a\x09self refresh\x0a\x09",
+messageSends: ["refresh"],
+referencedClasses: []
+}),
+globals.Router.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "refresh",
 protocol: 'reactions',
 fn: function (){
 var self=this;
@@ -905,9 +1231,9 @@ _st(self["@active"])._remove();
 self["@active"]=_st($RouteableController())._routeFor_(self._route());
 _st(self["@active"])._render();
 self._trigger_("afterRouting");
-return self}, function($ctx1) {$ctx1.fill(self,"onHashChanged",{},globals.Router.klass)})},
+return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.Router.klass)})},
 args: [],
-source: "onHashChanged\x0a\x09\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09active ifNotNil:[ active remove ].\x0a\x09active := RouteableController routeFor: self route.\x0a\x0a\x09active render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
+source: "refresh\x0a\x09\x0a\x09self trigger: 'aboutToRoute'.\x0a\x09\x0a\x09active ifNotNil:[ active remove ].\x0a\x09active := RouteableController routeFor: self route.\x0a\x0a\x09active render.\x0a\x09\x0a\x09self trigger: 'afterRouting'\x0a\x09",
 messageSends: ["trigger:", "ifNotNil:", "remove", "routeFor:", "route", "render"],
 referencedClasses: ["RouteableController"]
 }),
@@ -950,7 +1276,7 @@ referencedClasses: []
 globals.Router.klass);
 
 
-smalltalk.addClass('Session', globals.Object, ['id', 'user', 'social', 'api'], 'Flow-Core');
+smalltalk.addClass('Session', globals.Mapless, [], 'Flow-Core');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "api",
@@ -959,47 +1285,23 @@ fn: function (){
 var self=this;
 function $APIClient(){return globals.APIClient||(typeof APIClient=="undefined"?nil:APIClient)}
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1,$receiver;
-$2=self["@api"];
-if(($receiver = $2) == null || $receiver.isNil){
-self["@api"]=_st($APIClient())._new();
-$1=self["@api"];
+var $1,$2,$receiver;
+$1=($ctx1.supercall = true, globals.Session.superclass.fn.prototype._api.apply(_st(self), []));
+$ctx1.supercall = false;
+$ctx1.sendIdx["api"]=1;
+if(($receiver = $1) == null || $receiver.isNil){
+self._api_(_st($APIClient())._new());
 } else {
-$1=$2;
+$1;
 };
-return $1;
+$2=($ctx1.supercall = true, globals.Session.superclass.fn.prototype._api.apply(_st(self), []));
+$ctx1.supercall = false;
+return $2;
 }, function($ctx1) {$ctx1.fill(self,"api",{},globals.Session)})},
 args: [],
-source: "api\x0a\x0a\x09^ api ifNil:[ api := APIClient new ]",
-messageSends: ["ifNil:", "new"],
+source: "api\x0a\x0a\x09super api ifNil:[ \x0a\x09\x09self api: APIClient new ].\x0a\x09\x09\x0a\x09^ super api",
+messageSends: ["ifNil:", "api", "api:", "new"],
 referencedClasses: ["APIClient"]
-}),
-globals.Session);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "asJSONString",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $HasedCollection(){return globals.HasedCollection||(typeof HasedCollection=="undefined"?nil:HasedCollection)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$4,$5,$1;
-$2=_st($HasedCollection())._new();
-$3=$2;
-$4=self._id();
-$ctx1.sendIdx["id"]=1;
-_st($3)._at_put_("id",$4);
-$ctx1.sendIdx["at:put:"]=1;
-_st($2)._at_put_("userId",_st(self._user())._id());
-$5=_st($2)._asJSONString();
-$1=$5;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"asJSONString",{},globals.Session)})},
-args: [],
-source: "asJSONString\x0a\x0a\x09^ HasedCollection new\x0a\x09\x09at: 'id' put: self id;\x0a\x09\x09at: 'userId' put: self user id;\x0a\x09\x09asJSONString",
-messageSends: ["at:put:", "new", "id", "user", "asJSONString"],
-referencedClasses: ["HasedCollection"]
 }),
 globals.Session);
 

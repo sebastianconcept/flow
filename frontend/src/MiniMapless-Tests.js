@@ -167,6 +167,323 @@ globals.MaplessTest);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testLocalSaveComposedMany",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var createdOne,composed1,composed2,loadedOne,part1,part2;
+function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
+function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
+function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
+return smalltalk.withContext(function($ctx1) { 
+var $3,$4,$2,$1,$5,$6,$8,$9,$7,$10,$13,$14,$12,$11,$15,$16,$17,$18,$22,$21,$20,$23,$19,$27,$26,$25,$28,$24,$32,$31,$30,$33,$29,$37,$36,$35,$38,$34,$42,$41,$40,$39,$44,$45,$43,$48,$49,$47,$46,$52,$53,$51,$50,$56,$57,$55,$54,$60,$59,$58,$63,$62,$61;
+createdOne=_st($Thing())._new();
+$ctx1.sendIdx["new"]=1;
+composed1=_st($Stuff())._new();
+$ctx1.sendIdx["new"]=2;
+composed2=_st($Thing())._new();
+$ctx1.sendIdx["new"]=3;
+_st(createdOne)._remember_("something");
+$3=_st(window)._localStorage();
+$ctx1.sendIdx["localStorage"]=1;
+$4=_st(createdOne)._id();
+$ctx1.sendIdx["id"]=1;
+$2=_st($3)._getItem_($4);
+$ctx1.sendIdx["getItem:"]=1;
+$1=_st($2)._notNil();
+$ctx1.sendIdx["notNil"]=1;
+self._deny_($1);
+_st(composed1)._localSave();
+$ctx1.sendIdx["localSave"]=1;
+_st(composed2)._localSave();
+$ctx1.sendIdx["localSave"]=2;
+$5=createdOne;
+$6=$5;
+$8=_st($Array())._new();
+_st($8)._add_(composed1);
+$ctx1.sendIdx["add:"]=1;
+_st($8)._add_(composed2);
+$9=_st($8)._yourself();
+$7=$9;
+_st($6)._parts_($7);
+$10=_st($5)._localSave();
+self._shouldnt_raise_((function(){
+return smalltalk.withContext(function($ctx2) {
+$13=_st(window)._localStorage();
+$ctx2.sendIdx["localStorage"]=2;
+$14=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=2;
+$12=_st($13)._getItem_($14);
+$ctx2.sendIdx["getItem:"]=2;
+$11=_st($12)._notNil();
+self._assert_($11);
+$ctx2.sendIdx["assert:"]=1;
+$15=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=3;
+loadedOne=_st($Mapless())._localFindId_($15);
+$ctx2.sendIdx["localFindId:"]=1;
+loadedOne;
+$16=_st(composed1)._id();
+$ctx2.sendIdx["id"]=4;
+part1=_st($Mapless())._localFindId_($16);
+$ctx2.sendIdx["localFindId:"]=2;
+part1;
+$17=_st(composed2)._id();
+$ctx2.sendIdx["id"]=5;
+part2=_st($Mapless())._localFindId_($17);
+$ctx2.sendIdx["localFindId:"]=3;
+part2;
+$18=_st(_st(loadedOne)._remember()).__eq("something");
+$ctx2.sendIdx["="]=1;
+self._assert_($18);
+$ctx2.sendIdx["assert:"]=2;
+$22=_st(loadedOne)._parts();
+$ctx2.sendIdx["parts"]=1;
+$21=_st($22)._first();
+$ctx2.sendIdx["first"]=1;
+$20=_st($21)._class();
+$ctx2.sendIdx["class"]=1;
+$23=_st(composed1)._class();
+$ctx2.sendIdx["class"]=2;
+$19=_st($20).__eq($23);
+$ctx2.sendIdx["="]=2;
+self._assert_($19);
+$ctx2.sendIdx["assert:"]=3;
+$27=_st(loadedOne)._parts();
+$ctx2.sendIdx["parts"]=2;
+$26=_st($27)._first();
+$ctx2.sendIdx["first"]=2;
+$25=_st($26)._class();
+$ctx2.sendIdx["class"]=3;
+$28=_st(part1)._class();
+$ctx2.sendIdx["class"]=4;
+$24=_st($25).__eq($28);
+$ctx2.sendIdx["="]=3;
+self._assert_($24);
+$ctx2.sendIdx["assert:"]=4;
+$32=_st(loadedOne)._parts();
+$ctx2.sendIdx["parts"]=3;
+$31=_st($32)._first();
+$30=_st($31)._id();
+$ctx2.sendIdx["id"]=6;
+$33=_st(part1)._id();
+$ctx2.sendIdx["id"]=7;
+$29=_st($30).__eq($33);
+$ctx2.sendIdx["="]=4;
+self._assert_($29);
+$ctx2.sendIdx["assert:"]=5;
+$37=_st(loadedOne)._parts();
+$ctx2.sendIdx["parts"]=4;
+$36=_st($37)._second();
+$ctx2.sendIdx["second"]=1;
+$35=_st($36)._class();
+$ctx2.sendIdx["class"]=5;
+$38=_st(composed2)._class();
+$ctx2.sendIdx["class"]=6;
+$34=_st($35).__eq($38);
+$ctx2.sendIdx["="]=5;
+self._assert_($34);
+$ctx2.sendIdx["assert:"]=6;
+$42=_st(loadedOne)._parts();
+$ctx2.sendIdx["parts"]=5;
+$41=_st($42)._second();
+$ctx2.sendIdx["second"]=2;
+$40=_st($41)._class();
+$ctx2.sendIdx["class"]=7;
+$39=_st($40).__eq(_st(part2)._class());
+$ctx2.sendIdx["="]=6;
+self._assert_($39);
+$ctx2.sendIdx["assert:"]=7;
+$44=_st(_st(_st(loadedOne)._parts())._second())._id();
+$ctx2.sendIdx["id"]=8;
+$45=_st(part2)._id();
+$ctx2.sendIdx["id"]=9;
+$43=_st($44).__eq($45);
+self._assert_($43);
+$ctx2.sendIdx["assert:"]=8;
+_st(loadedOne)._localDelete();
+$ctx2.sendIdx["localDelete"]=1;
+_st(composed1)._localDelete();
+$ctx2.sendIdx["localDelete"]=2;
+_st(composed2)._localDelete();
+$48=_st(window)._localStorage();
+$ctx2.sendIdx["localStorage"]=3;
+$49=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=10;
+$47=_st($48)._getItem_($49);
+$ctx2.sendIdx["getItem:"]=3;
+$46=_st($47)._isNil();
+$ctx2.sendIdx["isNil"]=1;
+self._assert_($46);
+$ctx2.sendIdx["assert:"]=9;
+$52=_st(window)._localStorage();
+$ctx2.sendIdx["localStorage"]=4;
+$53=_st(composed1)._id();
+$ctx2.sendIdx["id"]=11;
+$51=_st($52)._getItem_($53);
+$ctx2.sendIdx["getItem:"]=4;
+$50=_st($51)._isNil();
+$ctx2.sendIdx["isNil"]=2;
+self._assert_($50);
+$ctx2.sendIdx["assert:"]=10;
+$56=_st(window)._localStorage();
+$57=_st(composed2)._id();
+$ctx2.sendIdx["id"]=12;
+$55=_st($56)._getItem_($57);
+$54=_st($55)._isNil();
+$ctx2.sendIdx["isNil"]=3;
+self._assert_($54);
+$ctx2.sendIdx["assert:"]=11;
+$60=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=13;
+$59=_st($Mapless())._localFindId_($60);
+$ctx2.sendIdx["localFindId:"]=4;
+$58=_st($59)._isNil();
+$ctx2.sendIdx["isNil"]=4;
+self._assert_($58);
+$ctx2.sendIdx["assert:"]=12;
+$63=_st(composed1)._id();
+$ctx2.sendIdx["id"]=14;
+$62=_st($Mapless())._localFindId_($63);
+$ctx2.sendIdx["localFindId:"]=5;
+$61=_st($62)._isNil();
+$ctx2.sendIdx["isNil"]=5;
+self._assert_($61);
+$ctx2.sendIdx["assert:"]=13;
+return self._assert_(_st(_st($Mapless())._localFindId_(_st(composed2)._id()))._isNil());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}),$Error());
+return self}, function($ctx1) {$ctx1.fill(self,"testLocalSaveComposedMany",{createdOne:createdOne,composed1:composed1,composed2:composed2,loadedOne:loadedOne,part1:part1,part2:part2},globals.MaplessTest)})},
+args: [],
+source: "testLocalSaveComposedMany\x0a\x0a\x09| createdOne composed1 composed2 loadedOne part1 part2 |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09composed1 := Stuff new.\x0a\x09composed2 := Thing new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x0a\x09self deny: (window localStorage getItem: createdOne id) notNil.\x0a\x09\x0a\x09composed1 localSave.\x0a\x09composed2 localSave.\x0a\x09createdOne\x0a\x09\x09parts: (Array new\x0a\x09\x09\x09\x09\x09add: composed1;\x0a\x09\x09\x09\x09\x09add: composed2;\x0a\x09\x09\x09\x09\x09yourself);\x0a\x09\x09localSave.\x0a\x0a\x09self shouldnt: [\x0a\x09\x09self assert: (window localStorage getItem: createdOne id) notNil.\x0a\x09\x09loadedOne := Mapless localFindId: createdOne id.\x0a\x09\x09part1 := Mapless localFindId: composed1 id.\x0a\x09\x09part2 := Mapless localFindId: composed2 id.\x0a\x09\x09self assert: loadedOne remember = 'something'.\x0a\x09\x09self assert: loadedOne parts first class = composed1 class.\x0a\x09\x09self assert: loadedOne parts first class = part1 class.\x0a\x09\x09self assert: loadedOne parts first id = part1 id.\x0a\x0a\x09\x09self assert: loadedOne parts second class = composed2 class.\x0a\x09\x09self assert: loadedOne parts second class = part2 class.\x0a\x09\x09self assert: loadedOne parts second id = part2 id.\x0a\x0a\x09\x09loadedOne localDelete.\x0a\x09\x09composed1 localDelete.\x0a\x09\x09composed2 localDelete.\x0a\x09\x09self assert: (window localStorage getItem: createdOne id) isNil.\x0a\x09\x09self assert: (window localStorage getItem: composed1 id) isNil.\x0a\x09\x09self assert: (window localStorage getItem: composed2 id) isNil.\x0a\x09\x09self assert: (Mapless localFindId: createdOne id) isNil.\x0a\x09\x09self assert: (Mapless localFindId: composed1 id) isNil.\x0a\x09\x09self assert: (Mapless localFindId: composed2 id) isNil.\x0a\x09\x09] raise: Error\x0a\x0a\x09",
+messageSends: ["new", "remember:", "deny:", "notNil", "getItem:", "localStorage", "id", "localSave", "parts:", "add:", "yourself", "shouldnt:raise:", "assert:", "localFindId:", "=", "remember", "class", "first", "parts", "second", "localDelete", "isNil"],
+referencedClasses: ["Thing", "Stuff", "Array", "Mapless", "Error"]
+}),
+globals.MaplessTest);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "testLocalSaveComposedOne",
+protocol: 'tests',
+fn: function (){
+var self=this;
+var createdOne,composedOne,loadedOne,part;
+function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
+function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
+function $Error(){return globals.Error||(typeof Error=="undefined"?nil:Error)}
+return smalltalk.withContext(function($ctx1) { 
+var $3,$4,$2,$1,$5,$6,$9,$10,$8,$7,$11,$12,$13,$16,$15,$17,$14,$20,$19,$18,$22,$23,$21,$26,$27,$25,$24,$30,$31,$29,$28,$34,$33,$32;
+createdOne=_st($Thing())._new();
+$ctx1.sendIdx["new"]=1;
+composedOne=_st($Stuff())._new();
+_st(createdOne)._remember_("something");
+$3=_st(window)._localStorage();
+$ctx1.sendIdx["localStorage"]=1;
+$4=_st(createdOne)._id();
+$ctx1.sendIdx["id"]=1;
+$2=_st($3)._getItem_($4);
+$ctx1.sendIdx["getItem:"]=1;
+$1=_st($2)._notNil();
+$ctx1.sendIdx["notNil"]=1;
+self._deny_($1);
+_st(composedOne)._localSave();
+$ctx1.sendIdx["localSave"]=1;
+$5=createdOne;
+_st($5)._hasOneOf_(composedOne);
+$6=_st($5)._localSave();
+self._shouldnt_raise_((function(){
+return smalltalk.withContext(function($ctx2) {
+$9=_st(window)._localStorage();
+$ctx2.sendIdx["localStorage"]=2;
+$10=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=2;
+$8=_st($9)._getItem_($10);
+$ctx2.sendIdx["getItem:"]=2;
+$7=_st($8)._notNil();
+self._assert_($7);
+$ctx2.sendIdx["assert:"]=1;
+$11=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=3;
+loadedOne=_st($Mapless())._localFindId_($11);
+$ctx2.sendIdx["localFindId:"]=1;
+loadedOne;
+$12=_st(composedOne)._id();
+$ctx2.sendIdx["id"]=4;
+part=_st($Mapless())._localFindId_($12);
+$ctx2.sendIdx["localFindId:"]=2;
+part;
+$13=_st(_st(loadedOne)._remember()).__eq("something");
+$ctx2.sendIdx["="]=1;
+self._assert_($13);
+$ctx2.sendIdx["assert:"]=2;
+$16=_st(loadedOne)._hasOneOf();
+$ctx2.sendIdx["hasOneOf"]=1;
+$15=_st($16)._class();
+$ctx2.sendIdx["class"]=1;
+$17=_st(composedOne)._class();
+$ctx2.sendIdx["class"]=2;
+$14=_st($15).__eq($17);
+$ctx2.sendIdx["="]=2;
+self._assert_($14);
+$ctx2.sendIdx["assert:"]=3;
+$20=_st(loadedOne)._hasOneOf();
+$ctx2.sendIdx["hasOneOf"]=2;
+$19=_st($20)._class();
+$ctx2.sendIdx["class"]=3;
+$18=_st($19).__eq(_st(part)._class());
+$ctx2.sendIdx["="]=3;
+self._assert_($18);
+$ctx2.sendIdx["assert:"]=4;
+$22=_st(_st(loadedOne)._hasOneOf())._id();
+$ctx2.sendIdx["id"]=5;
+$23=_st(part)._id();
+$ctx2.sendIdx["id"]=6;
+$21=_st($22).__eq($23);
+self._assert_($21);
+$ctx2.sendIdx["assert:"]=5;
+_st(loadedOne)._localDelete();
+$ctx2.sendIdx["localDelete"]=1;
+_st(composedOne)._localDelete();
+$26=_st(window)._localStorage();
+$ctx2.sendIdx["localStorage"]=3;
+$27=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=7;
+$25=_st($26)._getItem_($27);
+$ctx2.sendIdx["getItem:"]=3;
+$24=_st($25)._isNil();
+$ctx2.sendIdx["isNil"]=1;
+self._assert_($24);
+$ctx2.sendIdx["assert:"]=6;
+$30=_st(window)._localStorage();
+$31=_st(composedOne)._id();
+$ctx2.sendIdx["id"]=8;
+$29=_st($30)._getItem_($31);
+$28=_st($29)._isNil();
+$ctx2.sendIdx["isNil"]=2;
+self._assert_($28);
+$ctx2.sendIdx["assert:"]=7;
+$34=_st(createdOne)._id();
+$ctx2.sendIdx["id"]=9;
+$33=_st($Mapless())._localFindId_($34);
+$ctx2.sendIdx["localFindId:"]=3;
+$32=_st($33)._isNil();
+$ctx2.sendIdx["isNil"]=3;
+self._assert_($32);
+$ctx2.sendIdx["assert:"]=8;
+return self._assert_(_st(_st($Mapless())._localFindId_(_st(composedOne)._id()))._isNil());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}),$Error());
+return self}, function($ctx1) {$ctx1.fill(self,"testLocalSaveComposedOne",{createdOne:createdOne,composedOne:composedOne,loadedOne:loadedOne,part:part},globals.MaplessTest)})},
+args: [],
+source: "testLocalSaveComposedOne\x0a\x0a\x09| createdOne composedOne loadedOne part |\x0a\x09\x0a\x09createdOne := Thing new.\x0a\x09composedOne := Stuff new.\x0a\x09\x0a\x09createdOne remember: 'something'.\x0a\x09\x0a\x09self deny: (window localStorage getItem: createdOne id) notNil.\x0a\x09\x0a\x09composedOne localSave.\x0a\x09createdOne \x0a\x09\x09hasOneOf: composedOne;\x0a\x09\x09localSave.\x0a\x0a\x09self shouldnt: [\x0a\x09\x09self assert: (window localStorage getItem: createdOne id) notNil.\x0a\x09\x09loadedOne := Mapless localFindId: createdOne id.\x0a\x09\x09part := Mapless localFindId: composedOne id.\x0a\x09\x09self assert: loadedOne remember = 'something'.\x0a\x09\x09self assert: loadedOne hasOneOf class = composedOne class.\x0a\x09\x09self assert: loadedOne hasOneOf class = part class.\x0a\x09\x09self assert: loadedOne hasOneOf id = part id.\x0a\x09\x09\x0a\x09\x09loadedOne localDelete.\x0a\x09\x09composedOne localDelete.\x0a\x09\x09self assert: (window localStorage getItem: createdOne id) isNil.\x0a\x09\x09self assert: (window localStorage getItem: composedOne id) isNil.\x0a\x09\x09self assert: (Mapless localFindId: createdOne id) isNil.\x0a\x09\x09self assert: (Mapless localFindId: composedOne id) isNil.\x0a\x09\x09] raise: Error\x0a\x0a\x09",
+messageSends: ["new", "remember:", "deny:", "notNil", "getItem:", "localStorage", "id", "localSave", "hasOneOf:", "shouldnt:raise:", "assert:", "localFindId:", "=", "remember", "class", "hasOneOf", "localDelete", "isNil"],
+referencedClasses: ["Thing", "Stuff", "Mapless", "Error"]
+}),
+globals.MaplessTest);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testLocalUpdate",
 protocol: 'tests',
 fn: function (){

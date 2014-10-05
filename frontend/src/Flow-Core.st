@@ -15,35 +15,35 @@ A typical controller might have:
 
 !Controller methodsFor: 'accessing'!
 
-controllers
-	
-	^ controllers ifNil:[ self initializeControllers ]
-!
-
-controllersAt: aKey 
+controllerAt: aKey 
 
 	^ self controllers 
 		at: aKey 
 		ifAbsent:[ self error: 'Controller not found: ', aKey asString ]
 !
 
-controllersAt: aKey ifAbsent: aBlock
+controllerAt: aKey ifAbsent: aBlock
 
 	^ self controllers 
 		at: aKey 
 		ifAbsent: aBlock
 !
 
-controllersAt: aKey ifAbsentPut: aBlock
+controllerAt: aKey ifAbsentPut: aBlock
 
 	^ self controllers 
 		at: aKey 
-		ifAbsent:[ self controllersAt: aKey put: aBlock value ]
+		ifAbsent:[ self controllerAt: aKey put: aBlock value ]
 !
 
-controllersAt: aKey put: aController
+controllerAt: aKey put: aController
 
 	^ self controllers at: aKey put: aController
+!
+
+controllers
+	
+	^ controllers ifNil:[ self initializeControllers ]
 !
 
 model
@@ -93,6 +93,32 @@ view: aHtmlElement
 
 !Controller methodsFor: 'actions'!
 
+ifAbsentAt: aKey put: aBlock
+	"Answers the controller already present at aKey or,
+	if absent, puts the one expected to be created during aBlock and returns it."
+	
+	^ self controllerAt: aKey ifAbsentPut: aBlock
+!
+
+ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
+	"Answers the controller already present at aKey or,
+	if absent, puts the one expected to be created during aBlock,
+	evaluates aPostAddingBlock using it and finally returns it"
+	
+	^ self 
+		controllerAt: aKey 
+		ifAbsent: [ | newController |
+			newController := aBlock value.
+			self controllerAt: aKey put: newController.
+			aPostAddingBlock value: newController.
+			newController ]
+!
+
+refresh
+
+	self render
+!
+
 remove
 	
 	self onAboutToRemove.
@@ -104,7 +130,7 @@ removeControllerAt: aKey
 
 	| controller |
 	
-	controller := self controllersAt: aKey ifAbsent:[ nil ].
+	controller := self controllerAt: aKey ifAbsent:[ nil ].
 	
 	controller ifNotNil:[
 		controller remove ].
@@ -114,8 +140,7 @@ removeControllerAt: aKey
 
 render
 	
-	self view ifNotNil:[
-		self view empty ].
+	self onAboutToRender.
 	
 	self renderOn: (HTMLCanvas onJQuery: self parentElement)
 !
@@ -142,6 +167,16 @@ onAboutToRemove
 	"no-op"
 !
 
+onAboutToRender
+	"This controller is just about to be rendered."
+
+	"Empty the contents of the root element of this controller.
+	This would work as long as the view of this controller is the
+	only thing supossed to be child in that element"
+	self parentElement ifNotNil:[
+		self parentElement empty ].
+!
+
 onAfterModel
 	"The model of this controller just have been set."
 !
@@ -161,7 +196,8 @@ hasView
 isRendered
 	"Answers true if this controller is rendered."
 	
-	^ self view children length > 0
+	^ self hasView and:[
+	self view children length > 0 ]
 ! !
 
 !Controller class methodsFor: 'accessing'!
@@ -197,7 +233,7 @@ for: aModel on: aParentControllerOrNil
 for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
-	
+
 	^ self new
 		model: aModel;
 		parent: aParentControllerOrNil;
@@ -210,6 +246,103 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 	
 	^ self for: self defaultModel on: aParentControllerOrNil appendingTo: aHtmlElement
+! !
+
+Controller subclass: #ListController
+	instanceVariableNames: 'getItemsBlock itemControllerClass newItemControllerBlock listView'
+	package: 'Flow-Core'!
+!ListController commentStamp!
+## ListController
+
+ListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.!
+
+!ListController methodsFor: 'accessing'!
+
+getItems
+	"Answers the items using the custom getItemsBlock on its model"
+	
+	^ self getItemsBlock value: model
+!
+
+getItemsBlock
+
+	^ getItemsBlock
+!
+
+getItemsBlock: aBlock
+
+	getItemsBlock := aBlock
+!
+
+itemControllerClass
+
+	^ itemControllerClass
+!
+
+itemControllerClass: aBlock
+
+	itemControllerClass := aBlock
+!
+
+listView
+	"Answers the html element from where the item controllers are going to be appended.
+	Usually a <ul>"
+	^ listView
+!
+
+listView: aHtmlElement
+
+	listView := aHtmlElement
+!
+
+newItemControllerBlock
+
+	^ newItemControllerBlock
+!
+
+newItemControllerBlock: aBlock
+
+	newItemControllerBlock := aBlock
+!
+
+newItemControllerFor: anItem
+
+	^ itemControllerClass isNil
+		ifFalse:[ itemControllerClass 
+					for: anItem 
+					on: self 
+					appendingTo: self view ] 
+		ifTrue:[ self newItemControllerBlock value: anItem ]
+!
+
+parentElement: anHtmlElement
+	"Sets the parent elment for the list.
+	It can be anything but, in the case of lists, the parent element usually is a <ul>
+	The thing is to treat it like an <ul> full of <li> children."
+	parentElement := view := anHtmlElement
+! !
+
+!ListController methodsFor: 'actions'!
+
+refresh
+	"Makes sure all the items in the model have its own controller.
+	Nothing less and nothing more. So it will add lazily 
+	the missing controllers and remove those who's model isn't present."
+	
+	| items |
+	
+	"Remove absences"
+	self controllers keys 
+		with: self getItems 
+		do:[ :e | (self getItems includes: e) ifFalse:[
+					self removeControllerAt: e ] ].
+	
+	"Add novelties"
+	self getItems do:[ :e | | added |
+		self controllerAt: e ifAbsentPut:[ 
+			added := self newItemControllerFor: e ].
+		added ifNotNil:[ 
+			added render ] ]
 ! !
 
 Controller subclass: #RouteableController
@@ -360,7 +493,7 @@ RouteableController subclass: #NotFoundController
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
 
-Mapless subclass: #Model
+MaplessModel subclass: #Model
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
 
@@ -401,13 +534,17 @@ uri
 
 observeHash
 
-	window onhashchange:[ self onHashChanged ].
-	self onHashChanged
+	window onhashchange:[ self onHashChanged ]
 ! !
 
 !Router class methodsFor: 'reactions'!
 
 onHashChanged
+	
+	self refresh
+!
+
+refresh
 	
 	self trigger: 'aboutToRoute'.
 	
@@ -419,23 +556,18 @@ onHashChanged
 	self trigger: 'afterRouting'
 ! !
 
-Object subclass: #Session
-	instanceVariableNames: 'id user social api'
+Mapless subclass: #Session
+	instanceVariableNames: ''
 	package: 'Flow-Core'!
 
 !Session methodsFor: 'accessing'!
 
 api
 
-	^ api ifNil:[ api := APIClient new ]
-!
-
-asJSONString
-
-	^ HasedCollection new
-		at: 'id' put: self id;
-		at: 'userId' put: self user id;
-		asJSONString
+	super api ifNil:[ 
+		self api: APIClient new ].
+		
+	^ super api
 ! !
 
 !Session methodsFor: 'actions'!

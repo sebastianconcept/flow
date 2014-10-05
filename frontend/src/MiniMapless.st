@@ -164,22 +164,32 @@ doesNotUnderstand: aMessage
 			ifTrue:[part := data at: key asString ifAbsent:[nil]]
 			ifFalse:[part := data at: key asString].
 		part ifNil:[^nil].
-		isUndefined := self isUndefinedPart: part.
+		isUndefined := self isJavaScriptUndefined: part.
 		isUndefined ifTrue:[^nil].
-		isObject := self isObjectPart: part.
-		isObject ifTrue:[
-			"is part an empty js object? (would be nil for JSON eyes)"
+
+		"Is accessing an array of (sub)Mapless?"
+		(self isSubMaplessArrayFor: key on: part) ifTrue:[
+			^ data 
+				at: key
+				put: (self getSubMaplessAt: key from: part) ].
+
+		isObject := self isJavaScriptObject: part.
+		"console log: 'is object'.
+		console log: part."
+		
+		"is part an empty js object? (would be nil for JSON eyes)"
+		"isObject ifTrue:[	
 			obj := self newJSObject.
 			obj := JSObjectProxy on: obj.
 			(obj keys: part) isEmpty ifTrue:[
 				data at: key asString put: nil.
-				^nil]].
+				^nil]]."
 
 		subModel := self get: 'modelClass' from: part.
 		"If there is no modelClass in it, then is a direct value in the property"
 		subModel ifNil:[ ^part].
 
-		subModel := Smalltalk current at: subModel.
+		subModel := Smalltalk globals at: subModel.
 		subModel ifNil:[part inspect. self error: 'this should have a ',subModel,' modelClass no?'].
 		subModel := subModel fromReified: part.
 		data at: key asString put: subModel.
@@ -213,6 +223,30 @@ freshDo: aBlock
 get: anAttribute from: aPart
 	"Answers what aPart has at anAttribute."
 	<return aPart[anAttribute]>
+!
+
+getSubMaplessAt: aKey from: someObjects
+	"Returns the submapless on aKey for this mapless based on someObjects."
+	
+	"Are they already mapless?"
+	(someObjects anySatisfy:[ :e | 
+		(self isJavaScriptUndefined: e class) not and:[
+		e class ~= JSObjectProxy and:[
+		e isKindOf: Mapless ] ] ]) ifTrue:[ ^ someObjects ].
+		
+	"So they are probably reified JSON.."
+	
+	"Do they have @data?"
+	(someObjects anySatisfy:[ :e | 
+		(e at: 'data') notNil ]) ifTrue:[
+			^ someObjects collect:[ :each | Mapless fromReified: each data ] ].
+
+	"Do they have modelClass directly in it?"
+	(someObjects anySatisfy:[ :e | 
+		(e at: 'modelClass') notNil ]) ifTrue:[
+			^ someObjects collect:[ :each | Mapless fromReified: each ] ].
+	
+	self error: 'Unknown case :('
 !
 
 localDelete
@@ -338,7 +372,8 @@ onAboutToDelete
 
 onAboutToJSON
 	"This mapless is about to be stringified as JSON.
-	All inst var with mapless objects will be stringify-friendly after this."
+	All inst var with mapless objects will be stringify-friendly after this.
+	Note: Mapless currently support composition of Mapless and composition with many Mapless"
 	
 	| obj keys |
 
@@ -346,15 +381,29 @@ onAboutToJSON
 	obj := JSObjectProxy on: obj.
 	keys := obj keys: data. 
 
-	keys do:[:key| |value|
+	keys do:[ :key | | value |
+	
+		"In case the value is the usual stringifiable object"
 		value := data at: key.
-		value := self perform: key asSymbol.
+		(value class ~= Array and:[
+		value class ~= JSObjectProxy ] ) ifTrue:[
+			value := self perform: key asSymbol ].
 
-		(value class ~= JSObjectProxy and:[
-		value isKindOf: Mapless]) ifTrue:[
+		"In case the value is a (sub)Mapless"
+		( value class ~= JSObjectProxy and:[
+		value isKindOf: Mapless ] ) ifTrue:[
 			value onAboutToJSON.
-			value := value data].
-		data at: key put: value].
+			value := value data ].
+
+		"In case the value is a collection of (sub)Mapless"
+		( value class = Array and:[
+		value notEmpty and:[
+		value anySatisfy:[ :e | 
+			e class ~= JSObjectProxy and:[
+			e isKindOf: Mapless ] ] ] ] ) ifTrue:[
+				value := (value collect:[ :e | e onAboutToJSON data ] ) ].
+		
+		data at: key put: value ]
 !
 
 onAboutToSave
@@ -449,24 +498,34 @@ onAfterUpdate: aResponse
 	self id = anObject id]
 !
 
+isJavaScriptObject: anObject
+	"Answers true if aPart is a javascript object (as opposed to javascript 'other types')"
+	<return typeof anObject=='object'>
+!
+
+isJavaScriptUndefined: anObject
+	"Answers true if anObject is javascript's undefined"
+	<return anObject=='undefined'>
+!
+
 isKeyword: aSelector
 	"Answers true if aSelector is for a keyword kind of message"
 	^ aSelector asString includes: ':'
 !
 
-isObjectPart: aPart
-	"Answers true if aPart is a javascript object (as opposed to javascript 'other types')"
-	<return typeof part=='object'>
+isSubMaplessArrayFor: aKey on: someObjects
+	"Answers true if someObjects are some case of submapless."
+	
+	^ (self isUnary: aKey) and:[
+	someObjects class = Array and:[
+	someObjects anySatisfy:[ :e |
+		(e at: 'modelClass') notNil or:[
+		(e data at: 'modelClass') notNil ] ] ] ]
 !
 
 isUnary: aSelector
 	"Answers true if aSelector is for an unary kind of message."
 	^ (aSelector asString includes: ':') not
-!
-
-isUndefinedPart: aPart
-	"Answers true if aPart is javascript's undefined"
-	<return aPart=='undefined'>
 ! !
 
 !Mapless class methodsFor: 'accessing'!
@@ -569,6 +628,8 @@ fromJSONString: someJSONStringOrNil
 	json := self reify: someJSONStringOrNil.
 	json ifNil:[ ^nil ].
 	
+	json class = Array ifTrue:[ ^ self fromManyJSON: json].
+	
 	modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].
 	
 	modelClass := Smalltalk globals at: modelClass ifAbsent:[  ].
@@ -578,11 +639,25 @@ fromJSONString: someJSONStringOrNil
 		ifFalse:[ self error: 'The class "', modelClass,'" was not found' ]
 !
 
+fromManyJSON: anArrayOfJSONObjects
+	"Answers a new instance of this mapless
+	based on anArrayOfJSONObjects."
+
+	^ anArrayOfJSONObjects collect:[ :someJSON |
+		self fromReified: someJSON ]
+!
+
 fromReified: aReifiedJSON
 	"Answers a new instance of this mapless and returns it
 	in sync with aReifiedJSON."
 
-	^ self new syncWith: aReifiedJSON
+	| modelClass |
+
+	modelClass := aReifiedJSON at: 'modelClass' ifAbsent:[ ^nil ].
+	
+	modelClass := Smalltalk globals at: modelClass ifAbsent:[ nil ].
+	
+	^ modelClass new syncWith: aReifiedJSON
 !
 
 localDelete: aMapless

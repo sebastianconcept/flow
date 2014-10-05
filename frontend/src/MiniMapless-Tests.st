@@ -69,6 +69,87 @@ testLocalSaveAndFindOne
 		] raise: Error
 !
 
+testLocalSaveComposedMany
+
+	| createdOne composed1 composed2 loadedOne part1 part2 |
+	
+	createdOne := Thing new.
+	composed1 := Stuff new.
+	composed2 := Thing new.
+	
+	createdOne remember: 'something'.
+	
+	self deny: (window localStorage getItem: createdOne id) notNil.
+	
+	composed1 localSave.
+	composed2 localSave.
+	createdOne
+		parts: (Array new
+					add: composed1;
+					add: composed2;
+					yourself);
+		localSave.
+
+	self shouldnt: [
+		self assert: (window localStorage getItem: createdOne id) notNil.
+		loadedOne := Mapless localFindId: createdOne id.
+		part1 := Mapless localFindId: composed1 id.
+		part2 := Mapless localFindId: composed2 id.
+		self assert: loadedOne remember = 'something'.
+		self assert: loadedOne parts first class = composed1 class.
+		self assert: loadedOne parts first class = part1 class.
+		self assert: loadedOne parts first id = part1 id.
+
+		self assert: loadedOne parts second class = composed2 class.
+		self assert: loadedOne parts second class = part2 class.
+		self assert: loadedOne parts second id = part2 id.
+
+		loadedOne localDelete.
+		composed1 localDelete.
+		composed2 localDelete.
+		self assert: (window localStorage getItem: createdOne id) isNil.
+		self assert: (window localStorage getItem: composed1 id) isNil.
+		self assert: (window localStorage getItem: composed2 id) isNil.
+		self assert: (Mapless localFindId: createdOne id) isNil.
+		self assert: (Mapless localFindId: composed1 id) isNil.
+		self assert: (Mapless localFindId: composed2 id) isNil.
+		] raise: Error
+!
+
+testLocalSaveComposedOne
+
+	| createdOne composedOne loadedOne part |
+	
+	createdOne := Thing new.
+	composedOne := Stuff new.
+	
+	createdOne remember: 'something'.
+	
+	self deny: (window localStorage getItem: createdOne id) notNil.
+	
+	composedOne localSave.
+	createdOne 
+		hasOneOf: composedOne;
+		localSave.
+
+	self shouldnt: [
+		self assert: (window localStorage getItem: createdOne id) notNil.
+		loadedOne := Mapless localFindId: createdOne id.
+		part := Mapless localFindId: composedOne id.
+		self assert: loadedOne remember = 'something'.
+		self assert: loadedOne hasOneOf class = composedOne class.
+		self assert: loadedOne hasOneOf class = part class.
+		self assert: loadedOne hasOneOf id = part id.
+		
+		loadedOne localDelete.
+		composedOne localDelete.
+		self assert: (window localStorage getItem: createdOne id) isNil.
+		self assert: (window localStorage getItem: composedOne id) isNil.
+		self assert: (Mapless localFindId: createdOne id) isNil.
+		self assert: (Mapless localFindId: composedOne id) isNil.
+		] raise: Error
+!
+
 testLocalUpdate
 
 	| createdOne loadedOne |

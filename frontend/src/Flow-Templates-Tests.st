@@ -53,7 +53,7 @@ refreshList
 					self removeControllerAt: e ] ].
 	
 	self model things do:[ :e | | added |
-		self controllersAt: e ifAbsentPut:[ 
+		self controllerAt: e ifAbsentPut:[ 
 			added := ThingController 
 				for: e 
 				on: self 

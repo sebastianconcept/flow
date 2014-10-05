@@ -277,10 +277,9 @@ fn: function (aMessage){
 var self=this;
 var key,part,subModel,isUndefined,isObject,obj,keys;
 function $HashedCollection(){return globals.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
-function $JSObjectProxy(){return globals.JSObjectProxy||(typeof JSObjectProxy=="undefined"?nil:JSObjectProxy)}
 function $Smalltalk(){return globals.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$23,$22,$21,$20,$receiver;
+var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$21,$20,$19,$18,$receiver;
 key=_st(_st(aMessage)._selector())._asSymbol();
 $1=self._isUnary_(key);
 if(smalltalk.assert($1)){
@@ -307,81 +306,71 @@ return nil;
 } else {
 $7;
 };
-isUndefined=self._isUndefinedPart_(part);
+isUndefined=self._isJavaScriptUndefined_(part);
 isUndefined;
 $8=isUndefined;
 if(smalltalk.assert($8)){
 return nil;
 };
-isObject=self._isObjectPart_(part);
-isObject;
-$9=isObject;
+$9=self._isSubMaplessArrayFor_on_(key,part);
 if(smalltalk.assert($9)){
-obj=self._newJSObject();
-obj;
-obj=_st($JSObjectProxy())._on_(obj);
-obj;
-$10=_st(_st(obj)._keys_(part))._isEmpty();
-if(smalltalk.assert($10)){
-$11=self["@data"];
-$12=_st(key)._asString();
-$ctx1.sendIdx["asString"]=3;
-_st($11)._at_put_($12,nil);
+$10=_st(self["@data"])._at_put_(key,self._getSubMaplessAt_from_(key,part));
 $ctx1.sendIdx["at:put:"]=1;
-return nil;
+return $10;
 };
-};
+isObject=self._isJavaScriptObject_(part);
+isObject;
 subModel=self._get_from_("modelClass",part);
+subModel;
+$11=subModel;
+if(($receiver = $11) == null || $receiver.isNil){
+$12=part;
+return $12;
+} else {
+$11;
+};
+subModel=_st(_st($Smalltalk())._globals())._at_(subModel);
 subModel;
 $13=subModel;
 if(($receiver = $13) == null || $receiver.isNil){
-$14=part;
-return $14;
+_st(part)._inspect();
+$14=_st("this should have a ".__comma(subModel)).__comma(" modelClass no?");
+$ctx1.sendIdx[","]=1;
+self._error_($14);
 } else {
 $13;
 };
-subModel=_st(_st($Smalltalk())._current())._at_(subModel);
-subModel;
-$15=subModel;
-if(($receiver = $15) == null || $receiver.isNil){
-_st(part)._inspect();
-$16=_st("this should have a ".__comma(subModel)).__comma(" modelClass no?");
-$ctx1.sendIdx[","]=1;
-self._error_($16);
-} else {
-$15;
-};
 subModel=_st(subModel)._fromReified_(part);
 subModel;
-$17=self["@data"];
-$18=_st(key)._asString();
-$ctx1.sendIdx["asString"]=4;
-_st($17)._at_put_($18,subModel);
+$15=self["@data"];
+$16=_st(key)._asString();
+$ctx1.sendIdx["asString"]=3;
+_st($15)._at_put_($16,subModel);
 $ctx1.sendIdx["at:put:"]=2;
-$19=subModel;
-return $19;
+$17=subModel;
+return $17;
 };
-$21=_st(self._isKeyword_(key))._and_((function(){
+$19=_st(self._isKeyword_(key))._and_((function(){
 return smalltalk.withContext(function($ctx2) {
-$23=_st(key)._asString();
-$ctx2.sendIdx["asString"]=5;
-$22=_st($23)._occurrencesOf_(":");
-return _st($22).__eq((1));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,11)})}));
-if(smalltalk.assert($21)){
+$21=_st(key)._asString();
+$ctx2.sendIdx["asString"]=4;
+$20=_st($21)._occurrencesOf_(":");
+return _st($20).__eq((1));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,10)})}));
+if(smalltalk.assert($19)){
 key=_st(key)._allButLast();
 key;
-$20=_st(self["@data"])._at_put_(_st(key)._asString(),_st(_st(aMessage)._arguments())._first());
+$18=_st(self["@data"])._at_put_(_st(key)._asString(),_st(_st(aMessage)._arguments())._first());
 } else {
-$20=($ctx1.supercall = true, globals.Mapless.superclass.fn.prototype._doesNotUnderstand_.apply(_st(self), [aMessage]));
+$18=($ctx1.supercall = true, globals.Mapless.superclass.fn.prototype._doesNotUnderstand_.apply(_st(self), [aMessage]));
 $ctx1.supercall = false;
 };
-return $20;
+return $18;
 }, function($ctx1) {$ctx1.fill(self,"doesNotUnderstand:",{aMessage:aMessage,key:key,part:part,subModel:subModel,isUndefined:isUndefined,isObject:isObject,obj:obj,keys:keys},globals.Mapless)})},
 args: ["aMessage"],
-source: "doesNotUnderstand: aMessage\x0a\x09\x22The idea behind this DNU is to use the selector as setters or getter \x0a\x09delegating to data (aJsonObject)\x22\x0a\x09\x0a\x09| key part subModel isUndefined isObject obj keys |\x0a\x0a\x09key := aMessage selector asSymbol.\x0a\x0a\x09(self isUnary: key) ifTrue: [\x0a\x09\x09(data class == HashedCollection)\x0a\x09\x09\x09ifTrue:[part := data at: key asString ifAbsent:[nil]]\x0a\x09\x09\x09ifFalse:[part := data at: key asString].\x0a\x09\x09part ifNil:[^nil].\x0a\x09\x09isUndefined := self isUndefinedPart: part.\x0a\x09\x09isUndefined ifTrue:[^nil].\x0a\x09\x09isObject := self isObjectPart: part.\x0a\x09\x09isObject ifTrue:[\x0a\x09\x09\x09\x22is part an empty js object? (would be nil for JSON eyes)\x22\x0a\x09\x09\x09obj := self newJSObject.\x0a\x09\x09\x09obj := JSObjectProxy on: obj.\x0a\x09\x09\x09(obj keys: part) isEmpty ifTrue:[\x0a\x09\x09\x09\x09data at: key asString put: nil.\x0a\x09\x09\x09\x09^nil]].\x0a\x0a\x09\x09subModel := self get: 'modelClass' from: part.\x0a\x09\x09\x22If there is no modelClass in it, then is a direct value in the property\x22\x0a\x09\x09subModel ifNil:[ ^part].\x0a\x0a\x09\x09subModel := Smalltalk current at: subModel.\x0a\x09\x09subModel ifNil:[part inspect. self error: 'this should have a ',subModel,' modelClass no?'].\x0a\x09\x09subModel := subModel fromReified: part.\x0a\x09\x09data at: key asString put: subModel.\x0a\x09\x09^ subModel].\x0a \x0a\x09^ ((self isKeyword: key) and: [\x0a\x09(key asString occurrencesOf: ':') = 1])\x0a\x09\x09ifTrue: [key := key allButLast.\x0a\x09\x09\x09\x09data at: key asString put: aMessage arguments first]\x0a\x09\x09ifFalse: [super doesNotUnderstand: aMessage]",
-messageSends: ["asSymbol", "selector", "ifTrue:", "isUnary:", "ifTrue:ifFalse:", "==", "class", "at:ifAbsent:", "asString", "at:", "ifNil:", "isUndefinedPart:", "isObjectPart:", "newJSObject", "on:", "isEmpty", "keys:", "at:put:", "get:from:", "current", "inspect", "error:", ",", "fromReified:", "and:", "isKeyword:", "=", "occurrencesOf:", "allButLast", "first", "arguments", "doesNotUnderstand:"],
-referencedClasses: ["HashedCollection", "JSObjectProxy", "Smalltalk"]
+source: "doesNotUnderstand: aMessage\x0a\x09\x22The idea behind this DNU is to use the selector as setters or getter \x0a\x09delegating to data (aJsonObject)\x22\x0a\x09\x0a\x09| key part subModel isUndefined isObject obj keys |\x0a\x0a\x09key := aMessage selector asSymbol.\x0a\x0a\x09(self isUnary: key) ifTrue: [\x0a\x09\x09(data class == HashedCollection)\x0a\x09\x09\x09ifTrue:[part := data at: key asString ifAbsent:[nil]]\x0a\x09\x09\x09ifFalse:[part := data at: key asString].\x0a\x09\x09part ifNil:[^nil].\x0a\x09\x09isUndefined := self isJavaScriptUndefined: part.\x0a\x09\x09isUndefined ifTrue:[^nil].\x0a\x0a\x09\x09\x22Is accessing an array of (sub)Mapless?\x22\x0a\x09\x09(self isSubMaplessArrayFor: key on: part) ifTrue:[\x0a\x09\x09\x09^ data \x0a\x09\x09\x09\x09at: key\x0a\x09\x09\x09\x09put: (self getSubMaplessAt: key from: part) ].\x0a\x0a\x09\x09isObject := self isJavaScriptObject: part.\x0a\x09\x09\x22console log: 'is object'.\x0a\x09\x09console log: part.\x22\x0a\x09\x09\x0a\x09\x09\x22is part an empty js object? (would be nil for JSON eyes)\x22\x0a\x09\x09\x22isObject ifTrue:[\x09\x0a\x09\x09\x09obj := self newJSObject.\x0a\x09\x09\x09obj := JSObjectProxy on: obj.\x0a\x09\x09\x09(obj keys: part) isEmpty ifTrue:[\x0a\x09\x09\x09\x09data at: key asString put: nil.\x0a\x09\x09\x09\x09^nil]].\x22\x0a\x0a\x09\x09subModel := self get: 'modelClass' from: part.\x0a\x09\x09\x22If there is no modelClass in it, then is a direct value in the property\x22\x0a\x09\x09subModel ifNil:[ ^part].\x0a\x0a\x09\x09subModel := Smalltalk globals at: subModel.\x0a\x09\x09subModel ifNil:[part inspect. self error: 'this should have a ',subModel,' modelClass no?'].\x0a\x09\x09subModel := subModel fromReified: part.\x0a\x09\x09data at: key asString put: subModel.\x0a\x09\x09^ subModel].\x0a \x0a\x09^ ((self isKeyword: key) and: [\x0a\x09(key asString occurrencesOf: ':') = 1])\x0a\x09\x09ifTrue: [key := key allButLast.\x0a\x09\x09\x09\x09data at: key asString put: aMessage arguments first]\x0a\x09\x09ifFalse: [super doesNotUnderstand: aMessage]",
+messageSends: ["asSymbol", "selector", "ifTrue:", "isUnary:", "ifTrue:ifFalse:", "==", "class", "at:ifAbsent:", "asString", "at:", "ifNil:", "isJavaScriptUndefined:", "isSubMaplessArrayFor:on:", "at:put:", "getSubMaplessAt:from:", "isJavaScriptObject:", "get:from:", "globals", "inspect", "error:", ",", "fromReified:", "and:", "isKeyword:", "=", "occurrencesOf:", "allButLast", "first", "arguments", "doesNotUnderstand:"],
+referencedClasses: ["HashedCollection", "Smalltalk"]
 }),
 globals.Mapless);
 
@@ -437,6 +426,72 @@ args: ["anAttribute", "aPart"],
 source: "get: anAttribute from: aPart\x0a\x09\x22Answers what aPart has at anAttribute.\x22\x0a\x09<return aPart[anAttribute]>",
 messageSends: [],
 referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getSubMaplessAt:from:",
+protocol: 'actions',
+fn: function (aKey,someObjects){
+var self=this;
+function $JSObjectProxy(){return globals.JSObjectProxy||(typeof JSObjectProxy=="undefined"?nil:JSObjectProxy)}
+function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
+return smalltalk.withContext(function($ctx1) { 
+var $4,$3,$2,$1,$6,$5,$7,$8,$9;
+$1=_st(someObjects)._anySatisfy_((function(e){
+return smalltalk.withContext(function($ctx2) {
+$4=_st(e)._class();
+$ctx2.sendIdx["class"]=1;
+$3=self._isJavaScriptUndefined_($4);
+$2=_st($3)._not();
+return _st($2)._and_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(_st(e)._class()).__tild_eq($JSObjectProxy()))._and_((function(){
+return smalltalk.withContext(function($ctx4) {
+return _st(e)._isKindOf_($Mapless());
+}, function($ctx4) {$ctx4.fillBlock({},$ctx3,3)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+$ctx2.sendIdx["and:"]=1;
+}, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,1)})}));
+$ctx1.sendIdx["anySatisfy:"]=1;
+if(smalltalk.assert($1)){
+return someObjects;
+};
+$5=_st(someObjects)._anySatisfy_((function(e){
+return smalltalk.withContext(function($ctx2) {
+$6=_st(e)._at_("data");
+$ctx2.sendIdx["at:"]=1;
+return _st($6)._notNil();
+$ctx2.sendIdx["notNil"]=1;
+}, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,5)})}));
+$ctx1.sendIdx["anySatisfy:"]=2;
+if(smalltalk.assert($5)){
+$7=_st(someObjects)._collect_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st($Mapless())._fromReified_(_st(each)._data());
+$ctx2.sendIdx["fromReified:"]=1;
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,7)})}));
+$ctx1.sendIdx["collect:"]=1;
+return $7;
+};
+$8=_st(someObjects)._anySatisfy_((function(e){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(e)._at_("modelClass"))._notNil();
+}, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,8)})}));
+if(smalltalk.assert($8)){
+$9=_st(someObjects)._collect_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st($Mapless())._fromReified_(each);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,10)})}));
+return $9;
+};
+self._error_("Unknown case :(");
+return self}, function($ctx1) {$ctx1.fill(self,"getSubMaplessAt:from:",{aKey:aKey,someObjects:someObjects},globals.Mapless)})},
+args: ["aKey", "someObjects"],
+source: "getSubMaplessAt: aKey from: someObjects\x0a\x09\x22Returns the submapless on aKey for this mapless based on someObjects.\x22\x0a\x09\x0a\x09\x22Are they already mapless?\x22\x0a\x09(someObjects anySatisfy:[ :e | \x0a\x09\x09(self isJavaScriptUndefined: e class) not and:[\x0a\x09\x09e class ~= JSObjectProxy and:[\x0a\x09\x09e isKindOf: Mapless ] ] ]) ifTrue:[ ^ someObjects ].\x0a\x09\x09\x0a\x09\x22So they are probably reified JSON..\x22\x0a\x09\x0a\x09\x22Do they have @data?\x22\x0a\x09(someObjects anySatisfy:[ :e | \x0a\x09\x09(e at: 'data') notNil ]) ifTrue:[\x0a\x09\x09\x09^ someObjects collect:[ :each | Mapless fromReified: each data ] ].\x0a\x0a\x09\x22Do they have modelClass directly in it?\x22\x0a\x09(someObjects anySatisfy:[ :e | \x0a\x09\x09(e at: 'modelClass') notNil ]) ifTrue:[\x0a\x09\x09\x09^ someObjects collect:[ :each | Mapless fromReified: each ] ].\x0a\x09\x0a\x09self error: 'Unknown case :('",
+messageSends: ["ifTrue:", "anySatisfy:", "and:", "not", "isJavaScriptUndefined:", "class", "~=", "isKindOf:", "notNil", "at:", "collect:", "fromReified:", "data", "error:"],
+referencedClasses: ["JSObjectProxy", "Mapless"]
 }),
 globals.Mapless);
 
@@ -529,6 +584,38 @@ globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isJavaScriptObject:",
+protocol: 'testing',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return typeof anObject=='object';
+return self}, function($ctx1) {$ctx1.fill(self,"isJavaScriptObject:",{anObject:anObject},globals.Mapless)})},
+args: ["anObject"],
+source: "isJavaScriptObject: anObject\x0a\x09\x22Answers true if aPart is a javascript object (as opposed to javascript 'other types')\x22\x0a\x09<return typeof anObject=='object'>",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isJavaScriptUndefined:",
+protocol: 'testing',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return anObject=='undefined';
+return self}, function($ctx1) {$ctx1.fill(self,"isJavaScriptUndefined:",{anObject:anObject},globals.Mapless)})},
+args: ["anObject"],
+source: "isJavaScriptUndefined: anObject\x0a\x09\x22Answers true if anObject is javascript's undefined\x22\x0a\x09<return anObject=='undefined'>",
+messageSends: [],
+referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isKeyword:",
 protocol: 'testing',
 fn: function (aSelector){
@@ -547,17 +634,37 @@ globals.Mapless);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "isObjectPart:",
+selector: "isSubMaplessArrayFor:on:",
 protocol: 'testing',
-fn: function (aPart){
+fn: function (aKey,someObjects){
 var self=this;
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-return typeof part=='object';
-return self}, function($ctx1) {$ctx1.fill(self,"isObjectPart:",{aPart:aPart},globals.Mapless)})},
-args: ["aPart"],
-source: "isObjectPart: aPart\x0a\x09\x22Answers true if aPart is a javascript object (as opposed to javascript 'other types')\x22\x0a\x09<return typeof part=='object'>",
-messageSends: [],
-referencedClasses: []
+var $3,$2,$1;
+$1=_st(self._isUnary_(aKey))._and_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(someObjects)._class()).__eq($Array()))._and_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(someObjects)._anySatisfy_((function(e){
+return smalltalk.withContext(function($ctx4) {
+$3=_st(e)._at_("modelClass");
+$ctx4.sendIdx["at:"]=1;
+$2=_st($3)._notNil();
+$ctx4.sendIdx["notNil"]=1;
+return _st($2)._or_((function(){
+return smalltalk.withContext(function($ctx5) {
+return _st(_st(_st(e)._data())._at_("modelClass"))._notNil();
+}, function($ctx5) {$ctx5.fillBlock({},$ctx4,4)})}));
+}, function($ctx4) {$ctx4.fillBlock({e:e},$ctx3,3)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+$ctx1.sendIdx["and:"]=1;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isSubMaplessArrayFor:on:",{aKey:aKey,someObjects:someObjects},globals.Mapless)})},
+args: ["aKey", "someObjects"],
+source: "isSubMaplessArrayFor: aKey on: someObjects\x0a\x09\x22Answers true if someObjects are some case of submapless.\x22\x0a\x09\x0a\x09^ (self isUnary: aKey) and:[\x0a\x09someObjects class = Array and:[\x0a\x09someObjects anySatisfy:[ :e |\x0a\x09\x09(e at: 'modelClass') notNil or:[\x0a\x09\x09(e data at: 'modelClass') notNil ] ] ] ]",
+messageSends: ["and:", "isUnary:", "=", "class", "anySatisfy:", "or:", "notNil", "at:", "data"],
+referencedClasses: ["Array"]
 }),
 globals.Mapless);
 
@@ -575,22 +682,6 @@ return $1;
 args: ["aSelector"],
 source: "isUnary: aSelector\x0a\x09\x22Answers true if aSelector is for an unary kind of message.\x22\x0a\x09^ (aSelector asString includes: ':') not",
 messageSends: ["not", "includes:", "asString"],
-referencedClasses: []
-}),
-globals.Mapless);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isUndefinedPart:",
-protocol: 'testing',
-fn: function (aPart){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return aPart=='undefined';
-return self}, function($ctx1) {$ctx1.fill(self,"isUndefinedPart:",{aPart:aPart},globals.Mapless)})},
-args: ["aPart"],
-source: "isUndefinedPart: aPart\x0a\x09\x22Answers true if aPart is javascript's undefined\x22\x0a\x09<return aPart=='undefined'>",
-messageSends: [],
 referencedClasses: []
 }),
 globals.Mapless);
@@ -717,9 +808,10 @@ fn: function (){
 var self=this;
 var obj,keys;
 function $JSObjectProxy(){return globals.JSObjectProxy||(typeof JSObjectProxy=="undefined"?nil:JSObjectProxy)}
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 function $Mapless(){return globals.Mapless||(typeof Mapless=="undefined"?nil:Mapless)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $3,$2,$4,$1,$7,$6,$5,$10,$9,$8;
 obj=self._newJSObject();
 obj=_st($JSObjectProxy())._on_(obj);
 keys=_st(obj)._keys_(self["@data"]);
@@ -728,24 +820,71 @@ var value;
 return smalltalk.withContext(function($ctx2) {
 value=_st(self["@data"])._at_(key);
 value;
+$3=_st(value)._class();
+$ctx2.sendIdx["class"]=1;
+$2=_st($3).__tild_eq($Array());
+$ctx2.sendIdx["~="]=1;
+$1=_st($2)._and_((function(){
+return smalltalk.withContext(function($ctx3) {
+$4=_st(value)._class();
+$ctx3.sendIdx["class"]=2;
+return _st($4).__tild_eq($JSObjectProxy());
+$ctx3.sendIdx["~="]=2;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
+$ctx2.sendIdx["and:"]=1;
+if(smalltalk.assert($1)){
 value=self._perform_(_st(key)._asSymbol());
 value;
-$1=_st(_st(_st(value)._class()).__tild_eq($JSObjectProxy()))._and_((function(){
+};
+$7=_st(value)._class();
+$ctx2.sendIdx["class"]=3;
+$6=_st($7).__tild_eq($JSObjectProxy());
+$ctx2.sendIdx["~="]=3;
+$5=_st($6)._and_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(value)._isKindOf_($Mapless());
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)})}));
-if(smalltalk.assert($1)){
+$ctx3.sendIdx["isKindOf:"]=1;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+$ctx2.sendIdx["and:"]=2;
+if(smalltalk.assert($5)){
 _st(value)._onAboutToJSON();
+$ctx2.sendIdx["onAboutToJSON"]=1;
 value=_st(value)._data();
+$ctx2.sendIdx["data"]=1;
+value;
+};
+$10=_st(value)._class();
+$ctx2.sendIdx["class"]=4;
+$9=_st($10).__eq($Array());
+$8=_st($9)._and_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(value)._notEmpty())._and_((function(){
+return smalltalk.withContext(function($ctx4) {
+return _st(value)._anySatisfy_((function(e){
+return smalltalk.withContext(function($ctx5) {
+return _st(_st(_st(e)._class()).__tild_eq($JSObjectProxy()))._and_((function(){
+return smalltalk.withContext(function($ctx6) {
+return _st(e)._isKindOf_($Mapless());
+}, function($ctx6) {$ctx6.fillBlock({},$ctx5,9)})}));
+}, function($ctx5) {$ctx5.fillBlock({e:e},$ctx4,8)})}));
+}, function($ctx4) {$ctx4.fillBlock({},$ctx3,7)})}));
+$ctx3.sendIdx["and:"]=4;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,6)})}));
+$ctx2.sendIdx["and:"]=3;
+if(smalltalk.assert($8)){
+value=_st(value)._collect_((function(e){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(e)._onAboutToJSON())._data();
+}, function($ctx3) {$ctx3.fillBlock({e:e},$ctx2,11)})}));
 value;
 };
 return _st(self["@data"])._at_put_(key,value);
 }, function($ctx2) {$ctx2.fillBlock({key:key,value:value},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"onAboutToJSON",{obj:obj,keys:keys},globals.Mapless)})},
 args: [],
-source: "onAboutToJSON\x0a\x09\x22This mapless is about to be stringified as JSON.\x0a\x09All inst var with mapless objects will be stringify-friendly after this.\x22\x0a\x09\x0a\x09| obj keys |\x0a\x0a\x09obj := self newJSObject.\x0a\x09obj := JSObjectProxy on: obj.\x0a\x09keys := obj keys: data. \x0a\x0a\x09keys do:[:key| |value|\x0a\x09\x09value := data at: key.\x0a\x09\x09value := self perform: key asSymbol.\x0a\x0a\x09\x09(value class ~= JSObjectProxy and:[\x0a\x09\x09value isKindOf: Mapless]) ifTrue:[\x0a\x09\x09\x09value onAboutToJSON.\x0a\x09\x09\x09value := value data].\x0a\x09\x09data at: key put: value].",
-messageSends: ["newJSObject", "on:", "keys:", "do:", "at:", "perform:", "asSymbol", "ifTrue:", "and:", "~=", "class", "isKindOf:", "onAboutToJSON", "data", "at:put:"],
-referencedClasses: ["JSObjectProxy", "Mapless"]
+source: "onAboutToJSON\x0a\x09\x22This mapless is about to be stringified as JSON.\x0a\x09All inst var with mapless objects will be stringify-friendly after this.\x0a\x09Note: Mapless currently support composition of Mapless and composition with many Mapless\x22\x0a\x09\x0a\x09| obj keys |\x0a\x0a\x09obj := self newJSObject.\x0a\x09obj := JSObjectProxy on: obj.\x0a\x09keys := obj keys: data. \x0a\x0a\x09keys do:[ :key | | value |\x0a\x09\x0a\x09\x09\x22In case the value is the usual stringifiable object\x22\x0a\x09\x09value := data at: key.\x0a\x09\x09(value class ~= Array and:[\x0a\x09\x09value class ~= JSObjectProxy ] ) ifTrue:[\x0a\x09\x09\x09value := self perform: key asSymbol ].\x0a\x0a\x09\x09\x22In case the value is a (sub)Mapless\x22\x0a\x09\x09( value class ~= JSObjectProxy and:[\x0a\x09\x09value isKindOf: Mapless ] ) ifTrue:[\x0a\x09\x09\x09value onAboutToJSON.\x0a\x09\x09\x09value := value data ].\x0a\x0a\x09\x09\x22In case the value is a collection of (sub)Mapless\x22\x0a\x09\x09( value class = Array and:[\x0a\x09\x09value notEmpty and:[\x0a\x09\x09value anySatisfy:[ :e | \x0a\x09\x09\x09e class ~= JSObjectProxy and:[\x0a\x09\x09\x09e isKindOf: Mapless ] ] ] ] ) ifTrue:[\x0a\x09\x09\x09\x09value := (value collect:[ :e | e onAboutToJSON data ] ) ].\x0a\x09\x09\x0a\x09\x09data at: key put: value ]",
+messageSends: ["newJSObject", "on:", "keys:", "do:", "at:", "ifTrue:", "and:", "~=", "class", "perform:", "asSymbol", "isKindOf:", "onAboutToJSON", "data", "=", "notEmpty", "anySatisfy:", "collect:", "at:put:"],
+referencedClasses: ["JSObjectProxy", "Array", "Mapless"]
 }),
 globals.Mapless);
 
@@ -1323,9 +1462,10 @@ protocol: 'actions',
 fn: function (someJSONStringOrNil){
 var self=this;
 var json,modelClass;
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 function $Smalltalk(){return globals.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$2,$receiver;
+var $1,$2,$3,$5,$6,$4,$receiver;
 var $early={};
 try {
 if(($receiver = someJSONStringOrNil) == null || $receiver.isNil){
@@ -1340,28 +1480,54 @@ return nil;
 } else {
 $1;
 };
+$2=_st(_st(json)._class()).__eq($Array());
+if(smalltalk.assert($2)){
+$3=self._fromManyJSON_(json);
+return $3;
+};
 modelClass=_st(json)._at_ifAbsent_("modelClass",(function(){
 throw $early=[nil];
 }));
 $ctx1.sendIdx["at:ifAbsent:"]=1;
 modelClass=_st(_st($Smalltalk())._globals())._at_ifAbsent_(modelClass,(function(){
 }));
-$3=_st(modelClass)._notNil();
-if(smalltalk.assert($3)){
-$2=_st(_st(modelClass)._new())._syncWith_(json);
+$5=_st(modelClass)._notNil();
+if(smalltalk.assert($5)){
+$4=_st(_st(modelClass)._new())._syncWith_(json);
 } else {
-$4=_st("The class \x22".__comma(modelClass)).__comma("\x22 was not found");
+$6=_st("The class \x22".__comma(modelClass)).__comma("\x22 was not found");
 $ctx1.sendIdx[","]=1;
-$2=self._error_($4);
+$4=self._error_($6);
 };
-return $2;
+return $4;
 }
 catch(e) {if(e===$early)return e[0]; throw e}
 }, function($ctx1) {$ctx1.fill(self,"fromJSONString:",{someJSONStringOrNil:someJSONStringOrNil,json:json,modelClass:modelClass},globals.Mapless.klass)})},
 args: ["someJSONStringOrNil"],
-source: "fromJSONString: someJSONStringOrNil\x0a\x09\x22Answers a new instance of this mapless and returns it\x0a\x09in the state dictated by someJSONStringOrNil.\x0a\x09Returns nil when thigns do not fit.\x22\x0a\x0a\x09| json modelClass |\x0a\x09someJSONStringOrNil ifNil:[ ^nil ].\x0a\x09\x0a\x09json := self reify: someJSONStringOrNil.\x0a\x09json ifNil:[ ^nil ].\x0a\x09\x0a\x09modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].\x0a\x09\x0a\x09modelClass := Smalltalk globals at: modelClass ifAbsent:[  ].\x0a\x09\x0a\x09^ modelClass notNil\x0a\x09\x09ifTrue:[ modelClass new syncWith: json ]\x0a\x09\x09ifFalse:[ self error: 'The class \x22', modelClass,'\x22 was not found' ]\x0a\x09",
-messageSends: ["ifNil:", "reify:", "at:ifAbsent:", "globals", "ifTrue:ifFalse:", "notNil", "syncWith:", "new", "error:", ","],
-referencedClasses: ["Smalltalk"]
+source: "fromJSONString: someJSONStringOrNil\x0a\x09\x22Answers a new instance of this mapless and returns it\x0a\x09in the state dictated by someJSONStringOrNil.\x0a\x09Returns nil when thigns do not fit.\x22\x0a\x0a\x09| json modelClass |\x0a\x09someJSONStringOrNil ifNil:[ ^nil ].\x0a\x09\x0a\x09json := self reify: someJSONStringOrNil.\x0a\x09json ifNil:[ ^nil ].\x0a\x09\x0a\x09json class = Array ifTrue:[ ^ self fromManyJSON: json].\x0a\x09\x0a\x09modelClass := json at: 'modelClass' ifAbsent:[ ^nil ].\x0a\x09\x0a\x09modelClass := Smalltalk globals at: modelClass ifAbsent:[  ].\x0a\x09\x0a\x09^ modelClass notNil\x0a\x09\x09ifTrue:[ modelClass new syncWith: json ]\x0a\x09\x09ifFalse:[ self error: 'The class \x22', modelClass,'\x22 was not found' ]\x0a\x09",
+messageSends: ["ifNil:", "reify:", "ifTrue:", "=", "class", "fromManyJSON:", "at:ifAbsent:", "globals", "ifTrue:ifFalse:", "notNil", "syncWith:", "new", "error:", ","],
+referencedClasses: ["Array", "Smalltalk"]
+}),
+globals.Mapless.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "fromManyJSON:",
+protocol: 'actions',
+fn: function (anArrayOfJSONObjects){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(anArrayOfJSONObjects)._collect_((function(someJSON){
+return smalltalk.withContext(function($ctx2) {
+return self._fromReified_(someJSON);
+}, function($ctx2) {$ctx2.fillBlock({someJSON:someJSON},$ctx1,1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"fromManyJSON:",{anArrayOfJSONObjects:anArrayOfJSONObjects},globals.Mapless.klass)})},
+args: ["anArrayOfJSONObjects"],
+source: "fromManyJSON: anArrayOfJSONObjects\x0a\x09\x22Answers a new instance of this mapless\x0a\x09based on anArrayOfJSONObjects.\x22\x0a\x0a\x09^ anArrayOfJSONObjects collect:[ :someJSON |\x0a\x09\x09self fromReified: someJSON ]",
+messageSends: ["collect:", "fromReified:"],
+referencedClasses: []
 }),
 globals.Mapless.klass);
 
@@ -1371,15 +1537,28 @@ selector: "fromReified:",
 protocol: 'actions',
 fn: function (aReifiedJSON){
 var self=this;
+var modelClass;
+function $Smalltalk(){return globals.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self._new())._syncWith_(aReifiedJSON);
+var $early={};
+try {
+modelClass=_st(aReifiedJSON)._at_ifAbsent_("modelClass",(function(){
+throw $early=[nil];
+}));
+$ctx1.sendIdx["at:ifAbsent:"]=1;
+modelClass=_st(_st($Smalltalk())._globals())._at_ifAbsent_(modelClass,(function(){
+return nil;
+}));
+$1=_st(_st(modelClass)._new())._syncWith_(aReifiedJSON);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"fromReified:",{aReifiedJSON:aReifiedJSON},globals.Mapless.klass)})},
+}
+catch(e) {if(e===$early)return e[0]; throw e}
+}, function($ctx1) {$ctx1.fill(self,"fromReified:",{aReifiedJSON:aReifiedJSON,modelClass:modelClass},globals.Mapless.klass)})},
 args: ["aReifiedJSON"],
-source: " fromReified: aReifiedJSON\x0a\x09\x22Answers a new instance of this mapless and returns it\x0a\x09in sync with aReifiedJSON.\x22\x0a\x0a\x09^ self new syncWith: aReifiedJSON",
-messageSends: ["syncWith:", "new"],
-referencedClasses: []
+source: " fromReified: aReifiedJSON\x0a\x09\x22Answers a new instance of this mapless and returns it\x0a\x09in sync with aReifiedJSON.\x22\x0a\x0a\x09| modelClass |\x0a\x0a\x09modelClass := aReifiedJSON at: 'modelClass' ifAbsent:[ ^nil ].\x0a\x09\x0a\x09modelClass := Smalltalk globals at: modelClass ifAbsent:[ nil ].\x0a\x09\x0a\x09^ modelClass new syncWith: aReifiedJSON",
+messageSends: ["at:ifAbsent:", "globals", "syncWith:", "new"],
+referencedClasses: ["Smalltalk"]
 }),
 globals.Mapless.klass);
 

@@ -113,7 +113,25 @@ Object subclass: #Flow
 	instanceVariableNames: ''
 	package: 'Flow'!
 
+Flow class instanceVariableNames: 'app session'!
+
 !Flow class methodsFor: 'accessing'!
+
+activeController 
+	"Returns the controller that is currently active"
+	
+	^ Router active
+!
+
+app 
+
+	^ app
+!
+
+app: anApplication 
+
+	app := anApplication
+!
 
 scaffold
 
@@ -123,6 +141,34 @@ scaffold
 scaffolder
 
 	^ Scaffolder
+!
+
+session
+
+	^ session ifNil:[ self initializeSession ]
+!
+
+session: aSession
+
+	session := aSession
+! !
+
+!Flow class methodsFor: 'actions'!
+
+start
+	"Makes the foundation of a flow app to be ready for action."
+
+	window at: 'flow' put: self.
+
+	"Make the router be sensible to URI changes"
+	Router observeHash
+! !
+
+!Flow class methodsFor: 'initialization'!
+
+initializeSession
+	
+	^ session := Session new
 ! !
 
 Object subclass: #Scaffolder
@@ -327,7 +373,7 @@ trigger: anEventName
 	There you have it, it happened. 
 	Hey World, do something about this!!"
 	
-	^ (jQuery value: self) trigger: anEventName
+	<return $(self._jsObject).trigger(anEventName)>
 !
 
 trigger: anEventName with: anArgument
@@ -342,20 +388,18 @@ trigger: anEventName withAll: someArguments
 	"Triggers anEventName in this object.
 	There you have it, it happened. 
 	Hey World, do something about this!!"
-	
-	^ (jQuery value: self) 
-			trigger: anEventName 
-			withAll: someArguments
+
+	<return $(self._jsObject).trigger(anEventName, someArguments)>
 !
 
 when: anEventName do: aReactionBlock
 	"Wires the observation of this object to the occurrence of anEventName.
 	When (and if) anEventName happens, aReactionBlock will take place. 
+	Based on this feature: http://forum.jquery.com/topic/triggering-custom-events-on-js-objects
+	Beware some objects wont fire (anArray for example).
 	Godspeed!!"
-	
-	^ (jQuery value: self) 
-		on: anEventName 
-		do: aReactionBlock
+
+	<return $(self._jsObject).bind(anEventName, aReactionBlock)>
 ! !
 
 !Object class methodsFor: '*Flow'!
