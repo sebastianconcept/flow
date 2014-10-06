@@ -151,17 +151,6 @@ addThing
 	self model things add: self newThing
 !
 
-getConfiguration
-
-	^ super getConfiguration
-		"at: 'adapter' put: ( #{
-    		#subscribe -> [ :obj :keypath :callback | obj on: 'change:',keypath do: callback].
-    		#unsubscribe -> [ :obj :keypath :callback | obj off: 'change:',keypath do: callback].
-    		#read -> [ :obj :keypath | obj get keypath ].
-    		#publish -> [ :obj :keypath :value | obj set: keypath val: value ]});"
-		yourself
-!
-
 newStuff
 
 	^ Stuff new

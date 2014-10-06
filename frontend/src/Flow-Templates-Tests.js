@@ -281,26 +281,6 @@ globals.StuffUsingEachController);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "getConfiguration",
-protocol: 'actions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=($ctx1.supercall = true, globals.StuffUsingEachController.superclass.fn.prototype._getConfiguration.apply(_st(self), []));
-$ctx1.supercall = false;
-$1=_st($2)._yourself();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"getConfiguration",{},globals.StuffUsingEachController)})},
-args: [],
-source: "getConfiguration\x0a\x0a\x09^ super getConfiguration\x0a\x09\x09\x22at: 'adapter' put: ( #{\x0a    \x09\x09#subscribe -> [ :obj :keypath :callback | obj on: 'change:',keypath do: callback].\x0a    \x09\x09#unsubscribe -> [ :obj :keypath :callback | obj off: 'change:',keypath do: callback].\x0a    \x09\x09#read -> [ :obj :keypath | obj get keypath ].\x0a    \x09\x09#publish -> [ :obj :keypath :value | obj set: keypath val: value ]});\x22\x0a\x09\x09yourself\x0a\x09\x09\x09",
-messageSends: ["yourself", "getConfiguration"],
-referencedClasses: []
-}),
-globals.StuffUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initialize",
 protocol: 'initialization',
 fn: function (){
