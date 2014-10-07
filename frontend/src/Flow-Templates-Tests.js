@@ -273,7 +273,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(self._model())._things())._add_(self._newThing());
 return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffUsingEachController)})},
 args: [],
-source: "addThing\x0a\x09\x0a\x09self model things add: self newThing",
+source: "addThing\x0a\x09\x0a\x09self model things add: self newThing\x0a\x09",
 messageSends: ["add:", "things", "model", "newThing"],
 referencedClasses: []
 }),
@@ -362,6 +362,41 @@ referencedClasses: ["Thing"]
 }),
 globals.StuffUsingEachController);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeThing",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self._model())._things())._removeLast();
+return self}, function($ctx1) {$ctx1.fill(self,"removeThing",{},globals.StuffUsingEachController)})},
+args: [],
+source: "removeThing\x0a\x09\x0a\x09self model things removeLast",
+messageSends: ["removeLast", "things", "model"],
+referencedClasses: []
+}),
+globals.StuffUsingEachController);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultModel",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($Stuff())._new();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultModel",{},globals.StuffUsingEachController.klass)})},
+args: [],
+source: "defaultModel\x0a\x0a\x09^ Stuff new",
+messageSends: ["new"],
+referencedClasses: ["Stuff"]
+}),
+globals.StuffUsingEachController.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -377,6 +412,45 @@ messageSends: [],
 referencedClasses: []
 }),
 globals.StuffUsingEachController.klass);
+
+
+smalltalk.addClass('StuffComposedUsingEachController', globals.StuffUsingEachController, [], 'Flow-Templates-Tests');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getConfiguration",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$4,$1;
+$2=($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._getConfiguration.apply(_st(self), []));
+$ctx1.supercall = false;
+_st($2)._at_put_("adapter",globals.HashedCollection._newFromPairs_(["subscribe",(function(obj,keypath,callback){
+return smalltalk.withContext(function($ctx2) {
+$3="change:".__comma(keypath);
+$ctx2.sendIdx[","]=1;
+return _st(obj)._on_do_($3,callback);
+}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,callback:callback},$ctx1,1)})}),"unsubscribe",(function(obj,keypath,callback){
+return smalltalk.withContext(function($ctx2) {
+return _st(obj)._off_do_("change:".__comma(keypath),callback);
+}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,callback:callback},$ctx1,2)})}),"read",(function(obj,keypath){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(obj)._get())._keypath();
+}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath},$ctx1,3)})}),"publish",(function(obj,keypath,value){
+return smalltalk.withContext(function($ctx2) {
+return _st(obj)._set_val_(keypath,value);
+}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,value:value},$ctx1,4)})})]));
+$4=_st($2)._yourself();
+$1=$4;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"getConfiguration",{},globals.StuffComposedUsingEachController)})},
+args: [],
+source: "getConfiguration\x0a\x0a\x09^ super getConfiguration\x0a\x09\x09at: #adapter put: ( #{\x0a \x09\x09   \x09\x09#subscribe -> [ :obj :keypath :callback | \x0a\x09\x09\x09\x09\x09obj on: 'change:',keypath do: callback].\x0a    \x09\x09\x09#unsubscribe -> [ :obj :keypath :callback | obj off: 'change:',keypath do: callback].\x0a    \x09\x09\x09#read -> [ :obj :keypath | \x0a\x09\x09\x09\x09\x09obj get keypath ].\x0a    \x09\x09\x09#publish -> [ :obj :keypath :value | obj set: keypath val: value ]});\x0a\x09\x09yourself",
+messageSends: ["at:put:", "getConfiguration", "on:do:", ",", "off:do:", "keypath", "get", "set:val:", "yourself"],
+referencedClasses: []
+}),
+globals.StuffComposedUsingEachController);
+
 
 
 smalltalk.addClass('ThingController', globals.BindingController, [], 'Flow-Templates-Tests');
