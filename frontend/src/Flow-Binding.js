@@ -80,16 +80,17 @@ globals.BindingController);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "getHandler",
-protocol: 'accessing',
+protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return function( target, event, binding ){
+		self._onBinded_event_view_( target, event, binding );
 		this.call(binding.model);
 	};
 return self}, function($ctx1) {$ctx1.fill(self,"getHandler",{},globals.BindingController)})},
 args: [],
-source: "getHandler\x0a\x09\x22Answers the custom handler of flow controllers for rivets.\x0a\x09We need it to be call on binding.model otherwhise \x0a\x09rivets would send the html element (target of the event)\x0a\x09screwing the self instance of this controller\x22\x0a\x0a\x09<return function( target, event, binding ){\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
+source: "getHandler\x0a\x09\x22Answers the custom handler of flow controllers for rivets.\x0a\x09We need it to be call on binding.model otherwhise \x0a\x09rivets would send the html element (target of the event)\x0a\x09screwing the self instance of this controller\x22\x0a\x0a\x09<return function( target, event, binding ){\x0a\x09\x09self._onBinded_event_view_( target, event, binding );\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -133,6 +134,22 @@ globals.BindingController);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "onBinded:event:view:",
+protocol: 'reactions',
+fn: function (target,anEvent,aBindedView){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(console)._log_w_v_(target,anEvent,aBindedView);
+return self}, function($ctx1) {$ctx1.fill(self,"onBinded:event:view:",{target:target,anEvent:anEvent,aBindedView:aBindedView},globals.BindingController)})},
+args: ["target", "anEvent", "aBindedView"],
+source: "onBinded: target event: anEvent view: aBindedView\x0a\x09\x22The view of this controller has just been created by rivetjs\x22\x0a\x0a\x09console log: target w: anEvent v: aBindedView",
+messageSends: ["log:w:v:"],
+referencedClasses: []
+}),
+globals.BindingController);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "onTemplate:",
 protocol: 'reactions',
 fn: function (data){
@@ -144,7 +161,7 @@ self._configure();
 self._bind();
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.BindingController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x09\x0a\x09self configure.\x0a\x09self bind.",
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x09\x0a\x09self configure.\x0a\x0a\x09self bind.",
 messageSends: ["onTemplate:", "configure", "bind"],
 referencedClasses: []
 }),

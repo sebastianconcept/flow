@@ -2,8 +2,8 @@
 # Gets a fresh Pharo 3.0 image and loads the project
 
 echo "Removing old backend image and stuff..."
-rm -f worker.changes
-rm -f worker.image
+rm -f Pharo.changes
+rm -f Pharo.image
 rm -f PharoDebug.log
 rm -f crash.dmp
 
@@ -13,7 +13,7 @@ echo "Loading fresh stable..."
 
 # Open image and start loading project
 echo "Opening Pharo and kick off loading project ..."
-./pharo-ui worker.image FlowLoader.st
+./pharo-ui Pharo.image FlowLoader.st
 
 echo
 echo "Done building the Pharo worker image"
