@@ -30,7 +30,7 @@ inspiration
 addThing
 	
 	self model things add: self newThing.
-	self model trigger: #changed
+	self refresh.
 !
 
 newThing
@@ -40,39 +40,15 @@ newThing
 		yourself
 !
 
-refreshList
-	"Makes sure all the Things in the model have its own controller.
-	Nothing less and nothing more."
-	
-	| items |
-	
-	"Remove absences"
-	self controllers keys 
-		with: self model things 
-		do:[ :e | (self model things includes: e) ifFalse:[
-					self removeControllerAt: e ] ].
-	
-	self model things do:[ :e | | added |
-		self controllerAt: e ifAbsentPut:[ 
-			added := ThingController 
-				for: e 
-				on: self 
-				appendingTo: '.things' asJQuery ].
-		added ifNotNil:[ 
-			added render ] ]
+refresh
+
+	(self controllerAt: 'things') refresh
 !
 
 removeThing
 	
 	self model things removeLast.
-	self model trigger: #changed
-! !
-
-!StuffController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
+	self refresh
 ! !
 
 !StuffController methodsFor: 'reactions'!
@@ -94,8 +70,18 @@ onAfterModel
 !
 
 onStuffChanged
-
-	self refreshList
+		
+	self ifAbsentAt: 'things' 
+		put: [
+			"Lazy creation of the list controller for the thumbnails"
+			(ListController 
+				for: model 
+				on: self 
+				appendingTo: '.things' asJQuery)
+					getItemsBlock: [:m| m things ];
+					itemControllerClass: ThingController;
+					yourself].
+	self refresh
 !
 
 onTemplate: data
@@ -197,19 +183,36 @@ StuffUsingEachController subclass: #StuffComposedUsingEachController
 	instanceVariableNames: ''
 	package: 'Flow-Templates-Tests'!
 
-!StuffComposedUsingEachController methodsFor: 'actions'!
+!StuffComposedUsingEachController methodsFor: 'reactions'!
 
-getConfiguration
+onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
+	"The custom handler to bind on this controller is reacting"
 
-	^ super getConfiguration
-		at: #adapter put: ( #{
- 		   		#subscribe -> [ :obj :keypath :callback | 
-					obj on: 'change:',keypath do: callback].
-    			#unsubscribe -> [ :obj :keypath :callback | obj off: 'change:',keypath do: callback].
-    			#read -> [ :obj :keypath | 
-					obj get keypath ].
-    			#publish -> [ :obj :keypath :value | obj set: keypath val: value ]});
-		yourself
+	console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.
+	console info: aHandler.
+	console log: aBindedView.
+
+	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
+	
+	
+	"self ifAbsentAt: "
+!
+
+onTemplate: data
+
+	super onTemplate: data.
+		
+	self ifAbsentAt: 'things' 
+		put: [
+			"Lazy creation of the iterated controller for the things in stuff"
+			(IteratedController 
+				for: model 
+				on: self
+				appendingTo: '.things' asJQuery)
+					itemControllerClass: ThingController;
+					yourself].
+
+	(self controllerAt: 'things') render
 ! !
 
 BindingController subclass: #ThingController

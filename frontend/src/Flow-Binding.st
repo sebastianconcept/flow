@@ -57,8 +57,9 @@ getHandler
 	rivets would send the html element (target of the event)
 	screwing the self instance of this controller"
 
-	<return function( target, event, binding ){
-		self._onBinded_event_view_( target, event, binding );
+	<return function( target, event, binding, view ){
+
+		self._onBinded_event_handler_view_( target, event, binding, view );
 		this.call(binding.model);
 	}>
 !
@@ -85,10 +86,10 @@ onAboutToRemove
 	self unbind
 !
 
-onBinded: target event: anEvent view: aBindedView
-	"The view of this controller has just been created by rivetjs"
-
-	console log: target w: anEvent v: aBindedView
+onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
+	"The custom handler to bind on this controller is reacting"
+	
+	"no-op"
 !
 
 onTemplate: data
@@ -107,5 +108,100 @@ isAbstract
 	"Answers true if the receiver is abstract."
 	
 	^ self = BindingController
+! !
+
+BindingController subclass: #IteratedController
+	instanceVariableNames: 'itemControllerClass newItemControllerBlock'
+	package: 'Flow-Binding'!
+!IteratedController commentStamp!
+##IteratedController
+Like ListController except it relies on rivets.js to iterate  models' presentation.
+
+It's rivets who triggers the creation, maintenance and destruction of the (sub)controllers of this controller.
+
+[This is how you use it in the template/view](http://rivetsjs.com/docs/reference/#each-[item])!
+
+!IteratedController methodsFor: 'accessing'!
+
+itemControllerClass
+
+	^ itemControllerClass
+!
+
+itemControllerClass: aBlock
+
+	itemControllerClass := aBlock
+!
+
+newItemControllerBlock
+
+	^ newItemControllerBlock
+!
+
+newItemControllerBlock: aBlock
+
+	newItemControllerBlock := aBlock
+!
+
+parentElement: anHtmlElement
+	"Sets the parent elment for the list.
+	It can be anything but, in the case of lists, the parent element usually is a <ul>
+	The thing is to treat it like an <ul> full of <li> children."
+	parentElement := view := anHtmlElement
+! !
+
+!IteratedController methodsFor: 'actions'!
+
+configure
+"Transcript open.
+	self getConfiguration inspect."
+	
+	super configure.
+!
+
+getConfiguration
+
+	^ super getConfiguration
+		at: 'adapter' put: ( #{
+    		#subscribe -> [ :obj :keypath :callback | 
+				console log: 'subscribed and observing on change:'.
+				console log: obj.
+				obj on: 'change:',keypath do: callback ].
+    		#unsubscribe -> [ :obj :keypath :callback | 
+				obj off: 'change:',keypath do: callback ].
+    		#read -> [ :obj :keypath | 
+				console log: 'on read'.
+				obj get keypath ].
+    		#publish -> [ :obj :keypath :value | 
+				console log: 'on publish'.
+				obj set: keypath val: value ]});
+		yourself
+!
+
+newItemControllerFor: anItem
+self halt.
+	^ itemControllerClass isNil
+		ifFalse:[ itemControllerClass 
+					for: anItem 
+					on: self 
+					appendingTo: self view ] 
+		ifTrue:[ self newItemControllerBlock value: anItem ]
+!
+
+renderOn: html
+
+	console log: 'rendering Iterated..'.
+
+	self configure.
+
+	self bind.
+! !
+
+!IteratedController methodsFor: 'reactions'!
+
+onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
+	"The custom handler to bind on this controller is reacting"
+
+	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
 ! !
 
