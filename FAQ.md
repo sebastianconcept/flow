@@ -50,7 +50,7 @@ Yes. Amber uses [requirejs](http://requirejs.org/) for loading frontend parts of
 1. prepare the requisites of the frontend
 2. tell your app to use it
 
-For the requisites, you do it via [npm](https://www.npmjs.org) or [bower](http://bower.io/). So you do it in its usual way. For this example, to install minimongo you'll follow the instructions found in [npm's site](https://www.npmjs.org/package/minimongo) and do: `yourapp/frontend/$ npm install minimongo`. That command will edit your `package.json` file adding the latest minimongo as requisite of (re)building the frontend of your app.
+For the requisites, you do it via [npm](https://www.npmjs.org) or [bower](http://bower.io/). So you do it in its usual way. For this example, to install minimongo you'll follow the instructions found in [npm's site](https://www.npmjs.org/package/minimongo) and do: `yourapp/frontend/$ npm install minimongo --save`. That command will edit your `package.json` file adding the latest minimongo as requisite of (re)building the frontend of your app.
 
 To tell your app to actually load it, you do that in `index.html` in the script section like this:
 
