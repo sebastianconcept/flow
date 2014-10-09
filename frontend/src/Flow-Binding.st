@@ -157,25 +157,33 @@ configure
 	self getConfiguration inspect."
 	
 	super configure.
+
+	console log: self rivets binders.
+	
+	(self rivets binders 
+		at: 'each-*')
+			at: #routine put: self getRoutine;
+			yourself
 !
 
-getConfiguration
+getRoutine
+	"Answers the custom routine for the 'each-*' binder so we
+	get the newly created views."
 
-	^ super getConfiguration
-		at: 'adapter' put: ( #{
-    		#subscribe -> [ :obj :keypath :callback | 
-				console log: 'subscribed and observing on change:'.
-				console log: obj.
-				obj on: 'change:',keypath do: callback ].
-    		#unsubscribe -> [ :obj :keypath :callback | 
-				obj off: 'change:',keypath do: callback ].
-    		#read -> [ :obj :keypath | 
-				console log: 'on read'.
-				obj get keypath ].
-    		#publish -> [ :obj :keypath :value | 
-				console log: 'on publish'.
-				obj set: keypath val: value ]});
-		yourself
+	<return function(el, value){
+		console.info('on getRoutine!!');
+		console.log(el, value);
+		require('bower/rivets/dist/rivets').binders['each-*'].routine.call( 
+			this
+			,el
+			,function(e){
+				console.info('inside the callback');
+				debugger
+				e.preventDefault();
+				console.info(this,e);
+				value.call( this, e );
+			});
+		}>
 !
 
 newItemControllerFor: anItem

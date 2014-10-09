@@ -236,55 +236,51 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$2,$4,$5;
 ($ctx1.supercall = true, globals.IteratedController.superclass.fn.prototype._configure.apply(_st(self), []));
 $ctx1.supercall = false;
+$1=console;
+$3=self._rivets();
+$ctx1.sendIdx["rivets"]=1;
+$2=_st($3)._binders();
+$ctx1.sendIdx["binders"]=1;
+_st($1)._log_($2);
+$4=_st(_st(self._rivets())._binders())._at_("each-*");
+_st($4)._at_put_("routine",self._getRoutine());
+$5=_st($4)._yourself();
 return self}, function($ctx1) {$ctx1.fill(self,"configure",{},globals.IteratedController)})},
 args: [],
-source: "configure\x0a\x22Transcript open.\x0a\x09self getConfiguration inspect.\x22\x0a\x09\x0a\x09super configure.",
-messageSends: ["configure"],
+source: "configure\x0a\x22Transcript open.\x0a\x09self getConfiguration inspect.\x22\x0a\x09\x0a\x09super configure.\x0a\x0a\x09console log: self rivets binders.\x0a\x09\x0a\x09(self rivets binders \x0a\x09\x09at: 'each-*')\x0a\x09\x09\x09at: #routine put: self getRoutine;\x0a\x09\x09\x09yourself",
+messageSends: ["configure", "log:", "binders", "rivets", "at:put:", "at:", "getRoutine", "yourself"],
 referencedClasses: []
 }),
 globals.IteratedController);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "getConfiguration",
+selector: "getRoutine",
 protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$4,$1;
-$2=($ctx1.supercall = true, globals.IteratedController.superclass.fn.prototype._getConfiguration.apply(_st(self), []));
-$ctx1.supercall = false;
-_st($2)._at_put_("adapter",globals.HashedCollection._newFromPairs_(["subscribe",(function(obj,keypath,callback){
-return smalltalk.withContext(function($ctx2) {
-_st(console)._log_("subscribed and observing on change:");
-$ctx2.sendIdx["log:"]=1;
-_st(console)._log_(obj);
-$ctx2.sendIdx["log:"]=2;
-$3="change:".__comma(keypath);
-$ctx2.sendIdx[","]=1;
-return _st(obj)._on_do_($3,callback);
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,callback:callback},$ctx1,1)})}),"unsubscribe",(function(obj,keypath,callback){
-return smalltalk.withContext(function($ctx2) {
-return _st(obj)._off_do_("change:".__comma(keypath),callback);
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,callback:callback},$ctx1,2)})}),"read",(function(obj,keypath){
-return smalltalk.withContext(function($ctx2) {
-_st(console)._log_("on read");
-$ctx2.sendIdx["log:"]=3;
-return _st(_st(obj)._get())._keypath();
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath},$ctx1,3)})}),"publish",(function(obj,keypath,value){
-return smalltalk.withContext(function($ctx2) {
-_st(console)._log_("on publish");
-return _st(obj)._set_val_(keypath,value);
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,value:value},$ctx1,4)})})]));
-$4=_st($2)._yourself();
-$1=$4;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"getConfiguration",{},globals.IteratedController)})},
+return function(el, value){
+		console.info('on getRoutine!');
+		console.log(el, value);
+		require('bower/rivets/dist/rivets').binders['each-*'].routine.call( 
+			this
+			,el
+			,function(e){
+				console.info('inside the callback');
+				debugger
+				e.preventDefault();
+				console.info(this,e);
+				value.call( this, e );
+			});
+		};
+return self}, function($ctx1) {$ctx1.fill(self,"getRoutine",{},globals.IteratedController)})},
 args: [],
-source: "getConfiguration\x0a\x0a\x09^ super getConfiguration\x0a\x09\x09at: 'adapter' put: ( #{\x0a    \x09\x09#subscribe -> [ :obj :keypath :callback | \x0a\x09\x09\x09\x09console log: 'subscribed and observing on change:'.\x0a\x09\x09\x09\x09console log: obj.\x0a\x09\x09\x09\x09obj on: 'change:',keypath do: callback ].\x0a    \x09\x09#unsubscribe -> [ :obj :keypath :callback | \x0a\x09\x09\x09\x09obj off: 'change:',keypath do: callback ].\x0a    \x09\x09#read -> [ :obj :keypath | \x0a\x09\x09\x09\x09console log: 'on read'.\x0a\x09\x09\x09\x09obj get keypath ].\x0a    \x09\x09#publish -> [ :obj :keypath :value | \x0a\x09\x09\x09\x09console log: 'on publish'.\x0a\x09\x09\x09\x09obj set: keypath val: value ]});\x0a\x09\x09yourself",
-messageSends: ["at:put:", "getConfiguration", "log:", "on:do:", ",", "off:do:", "keypath", "get", "set:val:", "yourself"],
+source: "getRoutine\x0a\x09\x22Answers the custom routine for the 'each-*' binder so we\x0a\x09get the newly created views.\x22\x0a\x0a\x09<return function(el, value){\x0a\x09\x09console.info('on getRoutine!');\x0a\x09\x09console.log(el, value);\x0a\x09\x09require('bower/rivets/dist/rivets').binders['each-*'].routine.call( \x0a\x09\x09\x09this\x0a\x09\x09\x09,el\x0a\x09\x09\x09,function(e){\x0a\x09\x09\x09\x09console.info('inside the callback');\x0a\x09\x09\x09\x09debugger\x0a\x09\x09\x09\x09e.preventDefault();\x0a\x09\x09\x09\x09console.info(this,e);\x0a\x09\x09\x09\x09value.call( this, e );\x0a\x09\x09\x09});\x0a\x09\x09}>",
+messageSends: [],
 referencedClasses: []
 }),
 globals.IteratedController);

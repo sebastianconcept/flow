@@ -378,16 +378,12 @@ protocol: 'reactions',
 fn: function (aTarget,anEvent,aHandler,aBindedView){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_("onBinded: aTarget event: anEvent handler: aHandler view: aBindedView");
-$ctx1.sendIdx["log:"]=1;
-_st(console)._info_(aHandler);
-_st(console)._log_(aBindedView);
 ($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._onBinded_event_handler_view_.apply(_st(self), [aTarget,anEvent,aHandler,aBindedView]));
 $ctx1.supercall = false;
 return self}, function($ctx1) {$ctx1.fill(self,"onBinded:event:handler:view:",{aTarget:aTarget,anEvent:anEvent,aHandler:aHandler,aBindedView:aBindedView},globals.StuffComposedUsingEachController)})},
 args: ["aTarget", "anEvent", "aHandler", "aBindedView"],
-source: "onBinded: aTarget event: anEvent handler: aHandler view: aBindedView\x0a\x09\x22The custom handler to bind on this controller is reacting\x22\x0a\x0a\x09console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.\x0a\x09console info: aHandler.\x0a\x09console log: aBindedView.\x0a\x0a\x09super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.\x0a\x09\x0a\x09\x0a\x09\x22self ifAbsentAt: \x22",
-messageSends: ["log:", "info:", "onBinded:event:handler:view:"],
+source: "onBinded: aTarget event: anEvent handler: aHandler view: aBindedView\x0a\x09\x22The custom handler to bind on this controller is reacting\x22\x0a\x0a\x09\x22console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.\x0a\x09console info: aHandler.\x0a\x09console log: aBindedView.\x22\x0a\x0a\x09super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.\x0a\x09\x0a\x09\x0a\x09\x22self ifAbsentAt: \x22",
+messageSends: ["onBinded:event:handler:view:"],
 referencedClasses: []
 }),
 globals.StuffComposedUsingEachController);

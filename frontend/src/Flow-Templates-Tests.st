@@ -188,9 +188,9 @@ StuffUsingEachController subclass: #StuffComposedUsingEachController
 onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
 	"The custom handler to bind on this controller is reacting"
 
-	console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.
+	"console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.
 	console info: aHandler.
-	console log: aBindedView.
+	console log: aBindedView."
 
 	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
 	
