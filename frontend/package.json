@@ -40,6 +40,5 @@
   ],
   "dependencies": {
     "grunt-run": "^0.2.4",
-    "minimongo": "^2.7.0"
   }
 }
