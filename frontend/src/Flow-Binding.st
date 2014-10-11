@@ -41,13 +41,15 @@ bind
 configure
 	"Sets some configurations for rivets"
 
+	"console log: self getConfiguration."
+	
 	self rivets configure: self getConfiguration
 !
 
 getConfiguration
 
 	^ HashedCollection new 
-		at: 'handler' put: self getHandler;
+		at: #handler put: self getHandler;
 		yourself
 !
 
@@ -57,9 +59,8 @@ getHandler
 	rivets would send the html element (target of the event)
 	screwing the self instance of this controller"
 
-	<return function( target, event, binding, view ){
-
-		self._onBinded_event_handler_view_( target, event, binding, view );
+	<return function( target, event, binding ){
+		self._onBinded_event_handler_view_( target, event, binding );
 		this.call(binding.model);
 	}>
 !
@@ -156,34 +157,41 @@ configure
 "Transcript open.
 	self getConfiguration inspect."
 	
-	super configure.
-
-	console log: self rivets binders.
+	| previousBinder |
 	
-	(self rivets binders 
-		at: 'each-*')
-			at: #routine put: self getRoutine;
-			yourself
+	super configure.
+	
+	previousBinder := (self rivets binders at: 'each-*') at: #bind.
+	
+	(self rivets binders at: 'each-*')
+		at: #bind
+		put: (self getBinderUsing: previousBinder)
+!
+
+getBinder
+	| previous |
+	
+	previous := (self rivets binders at: 'each-*') at: #bind.
+	^ self getBinderUsing: previous
+!
+
+getBinderUsing: aBinder
+
+	<return function (el){
+		console.info(el);
+		aBinder.call( this, el );
+		}>
 !
 
 getRoutine
 	"Answers the custom routine for the 'each-*' binder so we
 	get the newly created views."
 
-	<return function(el, value){
-		console.info('on getRoutine!!');
-		console.log(el, value);
-		require('bower/rivets/dist/rivets').binders['each-*'].routine.call( 
-			this
-			,el
-			,function(e){
-				console.info('inside the callback');
-				debugger
-				e.preventDefault();
-				console.info(this,e);
-				value.call( this, e );
-			});
-		}>
+	<return function(el, collection){
+		console.info('on geRoutine');
+		console.log( el, collection );
+		require('bower/rivets/dist/rivets').binders['each-*'].routine
+	}>
 !
 
 newItemControllerFor: anItem
@@ -198,8 +206,6 @@ self halt.
 
 renderOn: html
 
-	console log: 'rendering Iterated..'.
-
 	self configure.
 
 	self bind.
@@ -211,5 +217,14 @@ onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
 	"The custom handler to bind on this controller is reacting"
 
 	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
+!
+
+onRoutine: anElement value: aValue
+
+	<console.log( anElement, aValue );
+	require('bower/rivets/dist/rivets').binders['iterated-controller'].routine.call( 
+		this 
+		, anElement
+		, function(e){ aValue.call( this, e ) } )>
 ! !
 

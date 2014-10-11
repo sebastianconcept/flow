@@ -49,7 +49,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(self._rivets())._configure_(self._getConfiguration());
 return self}, function($ctx1) {$ctx1.fill(self,"configure",{},globals.BindingController)})},
 args: [],
-source: "configure\x0a\x09\x22Sets some configurations for rivets\x22\x0a\x0a\x09self rivets configure: self getConfiguration",
+source: "configure\x0a\x09\x22Sets some configurations for rivets\x22\x0a\x0a\x09\x22console log: self getConfiguration.\x22\x0a\x09\x0a\x09self rivets configure: self getConfiguration",
 messageSends: ["configure:", "rivets", "getConfiguration"],
 referencedClasses: []
 }),
@@ -71,7 +71,7 @@ $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"getConfiguration",{},globals.BindingController)})},
 args: [],
-source: "getConfiguration\x0a\x0a\x09^ HashedCollection new \x0a\x09\x09at: 'handler' put: self getHandler;\x0a\x09\x09yourself",
+source: "getConfiguration\x0a\x0a\x09^ HashedCollection new \x0a\x09\x09at: #handler put: self getHandler;\x0a\x09\x09yourself",
 messageSends: ["at:put:", "new", "getHandler", "yourself"],
 referencedClasses: ["HashedCollection"]
 }),
@@ -84,14 +84,13 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return function( target, event, binding, view ){
-
-		self._onBinded_event_handler_view_( target, event, binding, view );
+return function( target, event, binding ){
+		self._onBinded_event_handler_view_( target, event, binding );
 		this.call(binding.model);
 	};
 return self}, function($ctx1) {$ctx1.fill(self,"getHandler",{},globals.BindingController)})},
 args: [],
-source: "getHandler\x0a\x09\x22Answers the custom handler of flow controllers for rivets.\x0a\x09We need it to be call on binding.model otherwhise \x0a\x09rivets would send the html element (target of the event)\x0a\x09screwing the self instance of this controller\x22\x0a\x0a\x09<return function( target, event, binding, view ){\x0a\x0a\x09\x09self._onBinded_event_handler_view_( target, event, binding, view );\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
+source: "getHandler\x0a\x09\x22Answers the custom handler of flow controllers for rivets.\x0a\x09We need it to be call on binding.model otherwhise \x0a\x09rivets would send the html element (target of the event)\x0a\x09screwing the self instance of this controller\x22\x0a\x0a\x09<return function( target, event, binding ){\x0a\x09\x09self._onBinded_event_handler_view_( target, event, binding );\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -235,23 +234,64 @@ selector: "configure",
 protocol: 'actions',
 fn: function (){
 var self=this;
+var previousBinder;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$2,$4,$5;
+var $3,$2,$1;
 ($ctx1.supercall = true, globals.IteratedController.superclass.fn.prototype._configure.apply(_st(self), []));
 $ctx1.supercall = false;
-$1=console;
 $3=self._rivets();
 $ctx1.sendIdx["rivets"]=1;
 $2=_st($3)._binders();
 $ctx1.sendIdx["binders"]=1;
-_st($1)._log_($2);
-$4=_st(_st(self._rivets())._binders())._at_("each-*");
-_st($4)._at_put_("routine",self._getRoutine());
-$5=_st($4)._yourself();
-return self}, function($ctx1) {$ctx1.fill(self,"configure",{},globals.IteratedController)})},
+$1=_st($2)._at_("each-*");
+$ctx1.sendIdx["at:"]=2;
+previousBinder=_st($1)._at_("bind");
+$ctx1.sendIdx["at:"]=1;
+_st(_st(_st(self._rivets())._binders())._at_("each-*"))._at_put_("bind",self._getBinderUsing_(previousBinder));
+return self}, function($ctx1) {$ctx1.fill(self,"configure",{previousBinder:previousBinder},globals.IteratedController)})},
 args: [],
-source: "configure\x0a\x22Transcript open.\x0a\x09self getConfiguration inspect.\x22\x0a\x09\x0a\x09super configure.\x0a\x0a\x09console log: self rivets binders.\x0a\x09\x0a\x09(self rivets binders \x0a\x09\x09at: 'each-*')\x0a\x09\x09\x09at: #routine put: self getRoutine;\x0a\x09\x09\x09yourself",
-messageSends: ["configure", "log:", "binders", "rivets", "at:put:", "at:", "getRoutine", "yourself"],
+source: "configure\x0a\x22Transcript open.\x0a\x09self getConfiguration inspect.\x22\x0a\x09\x0a\x09| previousBinder |\x0a\x09\x0a\x09super configure.\x0a\x09\x0a\x09previousBinder := (self rivets binders at: 'each-*') at: #bind.\x0a\x09\x0a\x09(self rivets binders at: 'each-*')\x0a\x09\x09at: #bind\x0a\x09\x09put: (self getBinderUsing: previousBinder)",
+messageSends: ["configure", "at:", "binders", "rivets", "at:put:", "getBinderUsing:"],
+referencedClasses: []
+}),
+globals.IteratedController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getBinder",
+protocol: 'actions',
+fn: function (){
+var self=this;
+var previous;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+previous=_st(_st(_st(self._rivets())._binders())._at_("each-*"))._at_("bind");
+$ctx1.sendIdx["at:"]=1;
+$1=self._getBinderUsing_(previous);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"getBinder",{previous:previous},globals.IteratedController)})},
+args: [],
+source: "getBinder\x0a\x09| previous |\x0a\x09\x0a\x09previous := (self rivets binders at: 'each-*') at: #bind.\x0a\x09^ self getBinderUsing: previous\x0a\x09",
+messageSends: ["at:", "binders", "rivets", "getBinderUsing:"],
+referencedClasses: []
+}),
+globals.IteratedController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "getBinderUsing:",
+protocol: 'actions',
+fn: function (aBinder){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return function (el){
+		console.info(el);
+		aBinder.call( this, el );
+		};
+return self}, function($ctx1) {$ctx1.fill(self,"getBinderUsing:",{aBinder:aBinder},globals.IteratedController)})},
+args: ["aBinder"],
+source: "getBinderUsing: aBinder\x0a\x0a\x09<return function (el){\x0a\x09\x09console.info(el);\x0a\x09\x09aBinder.call( this, el );\x0a\x09\x09}>",
+messageSends: [],
 referencedClasses: []
 }),
 globals.IteratedController);
@@ -263,23 +303,14 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return function(el, value){
-		console.info('on getRoutine!');
-		console.log(el, value);
-		require('bower/rivets/dist/rivets').binders['each-*'].routine.call( 
-			this
-			,el
-			,function(e){
-				console.info('inside the callback');
-				debugger
-				e.preventDefault();
-				console.info(this,e);
-				value.call( this, e );
-			});
-		};
+return function(el, collection){
+		console.info('on geRoutine');
+		console.log( el, collection );
+		require('bower/rivets/dist/rivets').binders['each-*'].routine
+	};
 return self}, function($ctx1) {$ctx1.fill(self,"getRoutine",{},globals.IteratedController)})},
 args: [],
-source: "getRoutine\x0a\x09\x22Answers the custom routine for the 'each-*' binder so we\x0a\x09get the newly created views.\x22\x0a\x0a\x09<return function(el, value){\x0a\x09\x09console.info('on getRoutine!');\x0a\x09\x09console.log(el, value);\x0a\x09\x09require('bower/rivets/dist/rivets').binders['each-*'].routine.call( \x0a\x09\x09\x09this\x0a\x09\x09\x09,el\x0a\x09\x09\x09,function(e){\x0a\x09\x09\x09\x09console.info('inside the callback');\x0a\x09\x09\x09\x09debugger\x0a\x09\x09\x09\x09e.preventDefault();\x0a\x09\x09\x09\x09console.info(this,e);\x0a\x09\x09\x09\x09value.call( this, e );\x0a\x09\x09\x09});\x0a\x09\x09}>",
+source: "getRoutine\x0a\x09\x22Answers the custom routine for the 'each-*' binder so we\x0a\x09get the newly created views.\x22\x0a\x0a\x09<return function(el, collection){\x0a\x09\x09console.info('on geRoutine');\x0a\x09\x09console.log( el, collection );\x0a\x09\x09require('bower/rivets/dist/rivets').binders['each-*'].routine\x0a\x09}>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -392,6 +423,26 @@ globals.IteratedController);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "onRoutine:value:",
+protocol: 'reactions',
+fn: function (anElement,aValue){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+console.log( anElement, aValue );
+	require('bower/rivets/dist/rivets').binders['iterated-controller'].routine.call( 
+		this 
+		, anElement
+		, function(e){ aValue.call( this, e ) } );
+return self}, function($ctx1) {$ctx1.fill(self,"onRoutine:value:",{anElement:anElement,aValue:aValue},globals.IteratedController)})},
+args: ["anElement", "aValue"],
+source: "onRoutine: anElement value: aValue\x0a\x0a\x09<console.log( anElement, aValue );\x0a\x09require('bower/rivets/dist/rivets').binders['iterated-controller'].routine.call( \x0a\x09\x09this \x0a\x09\x09, anElement\x0a\x09\x09, function(e){ aValue.call( this, e ) } )>",
+messageSends: [],
+referencedClasses: []
+}),
+globals.IteratedController);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "parentElement:",
 protocol: 'accessing',
 fn: function (anHtmlElement){
@@ -413,13 +464,12 @@ protocol: 'actions',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_("rendering Iterated..");
 self._configure();
 self._bind();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.IteratedController)})},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09console log: 'rendering Iterated..'.\x0a\x0a\x09self configure.\x0a\x0a\x09self bind.",
-messageSends: ["log:", "configure", "bind"],
+source: "renderOn: html\x0a\x0a\x09self configure.\x0a\x0a\x09self bind.",
+messageSends: ["configure", "bind"],
 referencedClasses: []
 }),
 globals.IteratedController);
