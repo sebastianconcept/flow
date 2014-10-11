@@ -408,7 +408,7 @@ MaplessModel subclass: #Stuff
 things
 
 	^ super things ifNil:[ 
-		self things: OrderedCollection new.
+		self data at: 'things' put: Array new.
 		self things ]
 ! !
 

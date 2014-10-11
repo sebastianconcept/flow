@@ -34,16 +34,17 @@ bind
 	the model of this controller to its view."
 	
 	self rivets
-			bind: self view 
-			to: self asBindArgument
+		bind: self view 
+		to: self asBindArgument
 !
 
 configure
 	"Sets some configurations for rivets"
-
-	"console log: self getConfiguration."
+	| conf |
 	
-	self rivets configure: self getConfiguration
+	conf := self getConfiguration.
+	
+	self rivets configure: conf
 !
 
 getConfiguration
@@ -153,45 +154,36 @@ parentElement: anHtmlElement
 
 !IteratedController methodsFor: 'actions'!
 
-configure
-"Transcript open.
-	self getConfiguration inspect."
-	
-	| previousBinder |
-	
-	super configure.
-	
-	previousBinder := (self rivets binders at: 'each-*') at: #bind.
-	
-	(self rivets binders at: 'each-*')
-		at: #bind
-		put: (self getBinderUsing: previousBinder)
-!
+getCustomBindFor: theEachBind
 
-getBinder
-	| previous |
-	
-	previous := (self rivets binders at: 'each-*') at: #bind.
-	^ self getBinderUsing: previous
-!
-
-getBinderUsing: aBinder
-
-	<return function (el){
-		console.info(el);
-		aBinder.call( this, el );
+	<return function(el){
+		console.log('custom bind',el);
+		this.view.onViewCreated = function(v){ self._onViewCreated(v) };
+		this.view.onViewDestroyed = function(v){ self._onViewDestroyed(v) };
+		theEachBind.call(this,el);
 		}>
 !
 
-getRoutine
-	"Answers the custom routine for the 'each-*' binder so we
-	get the newly created views."
+getCustomRoutineFor: theEachRoutine
 
-	<return function(el, collection){
-		console.info('on geRoutine');
-		console.log( el, collection );
-		require('bower/rivets/dist/rivets').binders['each-*'].routine
-	}>
+	<return function(el){
+ 		console.log('custom routine',el);
+		var results = theEachRoutine.call(this, el, collection);
+		return results;
+		}>
+!
+
+makeCustomBinder
+	"Answers the rivetjs configuration needed for this controller to maintain subcontrollers
+	in sync with the lifecicly of the elements maintained by rivets via the each-* directive"
+	
+	| theEachBind theEachRoutine |
+	
+	theEachBind := (self rivets binders at: 'each-*') at: #bind.
+	theEachRoutine := (self rivets binders at: 'each-*') at: #routine.
+	
+	(self rivets binders at: 'each-*') at: #bind put: (self getCustomBindFor: theEachBind).
+	(self rivets binders at: 'each-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)
 !
 
 newItemControllerFor: anItem
@@ -208,6 +200,8 @@ renderOn: html
 
 	self configure.
 
+	self makeCustomBinder.
+	
 	self bind.
 ! !
 
@@ -226,5 +220,15 @@ onRoutine: anElement value: aValue
 		this 
 		, anElement
 		, function(e){ aValue.call( this, e ) } )>
+!
+
+onViewCreated: aView
+
+	console warn: aView
+!
+
+onViewDestroyed: aView
+
+	console info: aView
 ! !
 

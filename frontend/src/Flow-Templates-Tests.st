@@ -185,6 +185,13 @@ StuffUsingEachController subclass: #StuffComposedUsingEachController
 
 !StuffComposedUsingEachController methodsFor: 'reactions'!
 
+addThing
+
+	super addThing.
+	
+	console log: model
+!
+
 onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
 	"The custom handler to bind on this controller is reacting"
 
@@ -213,6 +220,13 @@ onTemplate: data
 					yourself].
 
 	(self controllerAt: 'things') render
+!
+
+removeThing
+
+	super removeThing.
+	
+	console log: model
 ! !
 
 BindingController subclass: #ThingController

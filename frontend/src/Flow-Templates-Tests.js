@@ -373,6 +373,24 @@ globals.StuffUsingEachController.klass);
 smalltalk.addClass('StuffComposedUsingEachController', globals.StuffUsingEachController, [], 'Flow-Templates-Tests');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "addThing",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._addThing.apply(_st(self), []));
+$ctx1.supercall = false;
+_st(console)._log_(self["@model"]);
+return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffComposedUsingEachController)})},
+args: [],
+source: "addThing\x0a\x0a\x09super addThing.\x0a\x09\x0a\x09console log: model",
+messageSends: ["addThing", "log:"],
+referencedClasses: []
+}),
+globals.StuffComposedUsingEachController);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "onBinded:event:handler:view:",
 protocol: 'reactions',
 fn: function (aTarget,anEvent,aHandler,aBindedView){
@@ -413,6 +431,24 @@ args: ["data"],
 source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x09\x0a\x09self ifAbsentAt: 'things' \x0a\x09\x09put: [\x0a\x09\x09\x09\x22Lazy creation of the iterated controller for the things in stuff\x22\x0a\x09\x09\x09(IteratedController \x0a\x09\x09\x09\x09for: model \x0a\x09\x09\x09\x09on: self\x0a\x09\x09\x09\x09appendingTo: '.things' asJQuery)\x0a\x09\x09\x09\x09\x09itemControllerClass: ThingController;\x0a\x09\x09\x09\x09\x09yourself].\x0a\x0a\x09(self controllerAt: 'things') render\x0a\x09",
 messageSends: ["onTemplate:", "ifAbsentAt:put:", "itemControllerClass:", "for:on:appendingTo:", "asJQuery", "yourself", "render", "controllerAt:"],
 referencedClasses: ["IteratedController", "ThingController"]
+}),
+globals.StuffComposedUsingEachController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeThing",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._removeThing.apply(_st(self), []));
+$ctx1.supercall = false;
+_st(console)._log_(self["@model"]);
+return self}, function($ctx1) {$ctx1.fill(self,"removeThing",{},globals.StuffComposedUsingEachController)})},
+args: [],
+source: "removeThing\x0a\x0a\x09super removeThing.\x0a\x09\x0a\x09console log: model",
+messageSends: ["removeThing", "log:"],
+referencedClasses: []
 }),
 globals.StuffComposedUsingEachController);
 
