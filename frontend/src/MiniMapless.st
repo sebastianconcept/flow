@@ -265,6 +265,10 @@ localSave
 	self class localSave: self
 !
 
+newData
+	<return new Object>
+!
+
 newJSObject
 	<return Object>
 !
@@ -344,7 +348,7 @@ initialize
 
 	super initialize.
 
-	data := HashedCollection new.
+	data := self newData.
 	self modelClass: self class name.
 !
 

@@ -258,14 +258,14 @@ protocol: 'actions',
 fn: function (theEachRoutine){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return function(el){
+return function(el, collection){
  		console.log('custom routine',el);
 		var results = theEachRoutine.call(this, el, collection);
 		return results;
 		};
 return self}, function($ctx1) {$ctx1.fill(self,"getCustomRoutineFor:",{theEachRoutine:theEachRoutine},globals.IteratedController)})},
 args: ["theEachRoutine"],
-source: "getCustomRoutineFor: theEachRoutine\x0a\x0a\x09<return function(el){\x0a \x09\x09console.log('custom routine',el);\x0a\x09\x09var results = theEachRoutine.call(this, el, collection);\x0a\x09\x09return results;\x0a\x09\x09}>",
+source: "getCustomRoutineFor: theEachRoutine\x0a\x0a\x09<return function(el, collection){\x0a \x09\x09console.log('custom routine',el);\x0a\x09\x09var results = theEachRoutine.call(this, el, collection);\x0a\x09\x09return results;\x0a\x09\x09}>",
 messageSends: [],
 referencedClasses: []
 }),

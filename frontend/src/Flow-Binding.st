@@ -166,7 +166,7 @@ getCustomBindFor: theEachBind
 
 getCustomRoutineFor: theEachRoutine
 
-	<return function(el){
+	<return function(el, collection){
  		console.log('custom routine',el);
 		var results = theEachRoutine.call(this, el, collection);
 		return results;
