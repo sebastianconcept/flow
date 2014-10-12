@@ -238,14 +238,14 @@ fn: function (theEachBind){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return function(el){
-		console.log('custom bind',el);
+		console.log('custom biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiind',el);
 		this.view.onViewCreated = function(v){ self._onViewCreated(v) };
 		this.view.onViewDestroyed = function(v){ self._onViewDestroyed(v) };
 		theEachBind.call(this,el);
 		};
 return self}, function($ctx1) {$ctx1.fill(self,"getCustomBindFor:",{theEachBind:theEachBind},globals.IteratedController)})},
 args: ["theEachBind"],
-source: "getCustomBindFor: theEachBind\x0a\x0a\x09<return function(el){\x0a\x09\x09console.log('custom bind',el);\x0a\x09\x09this.view.onViewCreated = function(v){ self._onViewCreated(v) };\x0a\x09\x09this.view.onViewDestroyed = function(v){ self._onViewDestroyed(v) };\x0a\x09\x09theEachBind.call(this,el);\x0a\x09\x09}>",
+source: "getCustomBindFor: theEachBind\x0a\x0a\x09<return function(el){\x0a\x09\x09console.log('custom biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiind',el);\x0a\x09\x09this.view.onViewCreated = function(v){ self._onViewCreated(v) };\x0a\x09\x09this.view.onViewDestroyed = function(v){ self._onViewDestroyed(v) };\x0a\x09\x09theEachBind.call(this,el);\x0a\x09\x09}>",
 messageSends: [],
 referencedClasses: []
 }),

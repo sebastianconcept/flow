@@ -157,7 +157,7 @@ parentElement: anHtmlElement
 getCustomBindFor: theEachBind
 
 	<return function(el){
-		console.log('custom bind',el);
+		console.log('custom biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiind',el);
 		this.view.onViewCreated = function(v){ self._onViewCreated(v) };
 		this.view.onViewDestroyed = function(v){ self._onViewDestroyed(v) };
 		theEachBind.call(this,el);
