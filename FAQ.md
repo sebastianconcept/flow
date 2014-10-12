@@ -44,6 +44,32 @@ The only meta-generation of views available in *flow* is scaffolding.
 
 ...
 
+### If I want to add a js package to flow's frontend, do I simply place it in `frontend/src/`? How would I tell system to always grab the latest version of (say) minimongo from the meteor repo? Is there a way to do that in Amber?
+Yes. Amber uses [requirejs](http://requirejs.org/) for loading frontend parts of your app. So you need to do two things:
+
+1. prepare the requisites of the frontend
+2. tell your app to use it
+
+For the requisites, you do it via [npm](https://www.npmjs.org) or [bower](http://bower.io/). So you do it in its usual way. For this example, to install minimongo you'll follow the instructions found in [npm's site](https://www.npmjs.org/package/minimongo) and do: 
+
+`yourapp/frontend/$ npm install minimongo --save`
+
+That command will edit your `package.json` file adding the latest minimongo as requisite of (re)building the frontend of your app.
+
+To tell your app to actually load it, you do that in `index.html` in the script section like this:
+
+```
+<script type='text/javascript'>
+      require.config({ paths: {
+          'app': 'src', //mapping compiled .js files and smalltalk source files
+          'bower': 'bower_components'
+      }});
+      require([
+          'amber/devel',
+          ...,
+          'minimongo',  // telling your app to actually load it
+          ... rest of your app's frontend packages
+```
 ###How do a *flow*-based app gets deployed?
 
 In *flow* we have a `grunt watch` task that rebuilds the `public/` directory every time you change any of the frontend's source files. It takes care of `css/`, `img/` and `src` where Amber stores its `.js` and `.st`. 

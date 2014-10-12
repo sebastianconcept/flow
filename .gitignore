@@ -29,6 +29,8 @@ package-cache/
 logs
 *.log
 
+mime.types
+
 # Runtime data
 pids
 *.pid
