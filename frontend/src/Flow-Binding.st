@@ -158,6 +158,9 @@ configureAndBind
 
 	self makeCustomBinder.
 	
+	console log: 'asBindArgument'.
+	console log: self asBindArgument.
+	
 	self bind
 !
 
@@ -165,8 +168,8 @@ getCustomBindFor: theEachBind
 
 	<return function(el){
 		console.log('custom biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiind',el);
-		this.view.onViewCreated = function(v){ self._onViewCreated(v) };
-		this.view.onViewDestroyed = function(v){ self._onViewDestroyed(v) };
+		this.view.onViewCreated = function(v){ self._onViewCreated_(v) };
+		this.view.onViewDestroyed = function(v){ self._onViewDestroyed_(v) };
 		theEachBind.call(this,el);
 		}>
 !
@@ -213,15 +216,17 @@ onRoutine: anElement value: aValue
 	"Rivetjs has executed the routing of the each-* binder."
 
 	"no-op"
-	console log: 'onRoutine: anElement value: aValue'
+	console log: 'onRoutine: anElement value: aValue'.
+	console log: anElement.
+	console log: aValue.
 !
 
 onTemplate: data
 	"Receives data once requirejs have received it from the server."
 
-	super onTemplate: data.	
+	console log: self class name,'>>onTemplate:'.
 	
-	console log: self class name,'>>onTemplate:'
+	super onTemplate: data.
 !
 
 onViewCreated: aView

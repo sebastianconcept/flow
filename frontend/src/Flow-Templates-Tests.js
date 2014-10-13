@@ -226,73 +226,12 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self._model())._things())._add_(self._newThing());
+_st(_st(self._model())._things())._add_(_st(self._class())._newThing());
 return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffUsingEachController)})},
 args: [],
-source: "addThing\x0a\x09\x0a\x09self model things add: self newThing\x0a\x09",
-messageSends: ["add:", "things", "model", "newThing"],
+source: "addThing\x0a\x09\x0a\x09self model things add: self class newThing\x0a\x09",
+messageSends: ["add:", "things", "model", "newThing", "class"],
 referencedClasses: []
-}),
-globals.StuffUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-($ctx1.supercall = true, globals.StuffUsingEachController.superclass.fn.prototype._initialize.apply(_st(self), []));
-$ctx1.supercall = false;
-self._model_(self._newStuff());
-self._addThing();
-$ctx1.sendIdx["addThing"]=1;
-$1=self._addThing();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.StuffUsingEachController)})},
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self model: self newStuff.\x0a\x09self addThing; addThing",
-messageSends: ["initialize", "model:", "newStuff", "addThing"],
-referencedClasses: []
-}),
-globals.StuffUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "inspiration",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-var $1;
-$1=["so", "many", "cool", "things", "here", "wow", "great", "sweet", "groovy"];
-return $1;
-},
-args: [],
-source: "inspiration\x0a\x09\x22Answers a collection to inspire a name for something.\x22\x0a\x09\x0a\x09^ #(\x0a\x09so \x0a\x09many \x0a\x09cool \x0a\x09things \x0a\x09here \x0a\x09wow \x0a\x09great \x0a \x09sweet \x0a\x09groovy \x0a\x09)\x0a\x09",
-messageSends: [],
-referencedClasses: []
-}),
-globals.StuffUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newStuff",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$1;
-$2=_st($Stuff())._new();
-_st($2)._name_("Hey... this stuff is new!");
-$3=_st($2)._yourself();
-$1=$3;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newStuff",{},globals.StuffUsingEachController)})},
-args: [],
-source: "newStuff\x0a\x0a\x09^ Stuff new\x0a\x09\x09name: 'Hey... this stuff is new!';\x0a\x09\x09yourself",
-messageSends: ["name:", "new", "yourself"],
-referencedClasses: ["Stuff"]
 }),
 globals.StuffUsingEachController);
 
@@ -341,16 +280,85 @@ selector: "defaultModel",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st($Stuff())._new();
+$1=self._newStuff();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"defaultModel",{},globals.StuffUsingEachController.klass)})},
 args: [],
-source: "defaultModel\x0a\x0a\x09^ Stuff new",
-messageSends: ["new"],
+source: "defaultModel\x0a\x0a\x09^ self newStuff",
+messageSends: ["newStuff"],
+referencedClasses: []
+}),
+globals.StuffUsingEachController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "inspiration",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=["so", "many", "cool", "things", "here", "wow", "great", "sweet", "groovy"];
+return $1;
+},
+args: [],
+source: "inspiration\x0a\x09\x22Answers a collection to inspire a name for something.\x22\x0a\x09\x0a\x09^ #(\x0a\x09so \x0a\x09many \x0a\x09cool \x0a\x09things \x0a\x09here \x0a\x09wow \x0a\x09great \x0a \x09sweet \x0a\x09groovy \x0a\x09)\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+globals.StuffUsingEachController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newStuff",
+protocol: 'actions',
+fn: function (){
+var self=this;
+var stuff;
+function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4,$5,$6,$7;
+$1=_st($Stuff())._new();
+_st($1)._name_("Hey... this stuff is new!");
+$2=_st($1)._yourself();
+stuff=$2;
+$3=_st(stuff)._things();
+$4=$3;
+$5=self._newThing();
+$ctx1.sendIdx["newThing"]=1;
+_st($4)._add_($5);
+$ctx1.sendIdx["add:"]=1;
+$6=_st($3)._add_(self._newThing());
+$7=stuff;
+return $7;
+}, function($ctx1) {$ctx1.fill(self,"newStuff",{stuff:stuff},globals.StuffUsingEachController.klass)})},
+args: [],
+source: "newStuff\x0a\x0a\x09| stuff |\x0a\x09\x0a\x09stuff := Stuff new\x0a\x09\x09\x09\x09name: 'Hey... this stuff is new!';\x0a\x09\x09\x09\x09yourself.\x0a\x09\x09\x09\x09\x0a\x09stuff things add: self newThing; add: self newThing.\x0a\x09^ stuff",
+messageSends: ["name:", "new", "yourself", "add:", "things", "newThing"],
 referencedClasses: ["Stuff"]
+}),
+globals.StuffUsingEachController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newThing",
+protocol: 'actions',
+fn: function (){
+var self=this;
+function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st($Thing())._new();
+_st($2)._name_(_st(self._inspiration())._atRandom());
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newThing",{},globals.StuffUsingEachController.klass)})},
+args: [],
+source: "newThing\x0a\x0a\x09^ Thing new\x0a\x09\x09name: self inspiration atRandom;\x0a\x09\x09yourself",
+messageSends: ["name:", "new", "atRandom", "inspiration", "yourself"],
+referencedClasses: ["Thing"]
 }),
 globals.StuffUsingEachController.klass);
 
@@ -371,23 +379,6 @@ globals.StuffUsingEachController.klass);
 
 
 smalltalk.addClass('StuffComposedUsingEachController', globals.StuffUsingEachController, [], 'Flow-Templates-Tests');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "addThing",
-protocol: 'reactions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._addThing.apply(_st(self), []));
-$ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffComposedUsingEachController)})},
-args: [],
-source: "addThing\x0a\x0a\x09super addThing",
-messageSends: ["addThing"],
-referencedClasses: []
-}),
-globals.StuffComposedUsingEachController);
-
 smalltalk.addMethod(
 smalltalk.method({
 selector: "configureAndBind",
@@ -436,23 +427,6 @@ args: ["data"],
 source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x09\x0a\x09console log: self class name,'>>onTemplate:'.\x0a\x0a\x09self ifAbsentAt: 'things' \x0a\x09\x09put: [\x0a\x09\x09\x09\x22Lazy creation of the iterated controller for the things in stuff\x22\x0a\x09\x09\x09(IteratedController \x0a\x09\x09\x09\x09for: model \x0a\x09\x09\x09\x09on: self\x0a\x09\x09\x09\x09appendingTo: '.listOfThings' asJQuery)\x0a\x09\x09\x09\x09\x09itemControllerClass: ThingController;\x0a\x09\x09\x09\x09\x09templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');\x0a\x09\x09\x09\x09\x09yourself].\x0a\x0a\x09(self controllerAt: 'things') render\x0a\x0a\x09",
 messageSends: ["onTemplate:", "log:", ",", "name", "class", "ifAbsentAt:put:", "itemControllerClass:", "for:on:appendingTo:", "asJQuery", "templateUri:", "viewPath", "yourself", "render", "controllerAt:"],
 referencedClasses: ["IteratedController", "ThingController", "TemplateController"]
-}),
-globals.StuffComposedUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "removeThing",
-protocol: 'reactions',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._removeThing.apply(_st(self), []));
-$ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"removeThing",{},globals.StuffComposedUsingEachController)})},
-args: [],
-source: "removeThing\x0a\x0a\x09super removeThing\x0a\x09",
-messageSends: ["removeThing"],
-referencedClasses: []
 }),
 globals.StuffComposedUsingEachController);
 
