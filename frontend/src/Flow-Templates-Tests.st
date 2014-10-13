@@ -187,22 +187,10 @@ StuffUsingEachController subclass: #StuffComposedUsingEachController
 
 addThing
 
-	super addThing.
-	
-	console log: model
+	super addThing
 !
 
-onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
-	"The custom handler to bind on this controller is reacting"
-
-	"console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.
-	console info: aHandler.
-	console log: aBindedView."
-
-	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
-	
-	
-	"self ifAbsentAt: "
+configureAndBind
 !
 
 onTemplate: data
@@ -224,9 +212,7 @@ onTemplate: data
 
 removeThing
 
-	super removeThing.
-	
-	console log: model
+	super removeThing
 ! !
 
 BindingController subclass: #ThingController

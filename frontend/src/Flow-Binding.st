@@ -47,6 +47,13 @@ configure
 	self rivets configure: conf
 !
 
+configureAndBind
+
+	self configure.
+	
+	self bind.
+!
+
 getConfiguration
 
 	^ HashedCollection new 
@@ -61,7 +68,6 @@ getHandler
 	screwing the self instance of this controller"
 
 	<return function( target, event, binding ){
-		self._onBinded_event_handler_view_( target, event, binding );
 		this.call(binding.model);
 	}>
 !
@@ -88,20 +94,12 @@ onAboutToRemove
 	self unbind
 !
 
-onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
-	"The custom handler to bind on this controller is reacting"
-	
-	"no-op"
-!
-
 onTemplate: data
 	"Receives data once requirejs have received it from the server."
 
 	super onTemplate: data.	
 	
-	self configure.
-
-	self bind.
+	self configureAndBind.
 ! !
 
 !BindingController class methodsFor: 'testing'!
@@ -154,6 +152,15 @@ parentElement: anHtmlElement
 
 !IteratedController methodsFor: 'actions'!
 
+configureAndBind
+
+	self configure.
+
+	self makeCustomBinder.
+	
+	self bind
+!
+
 getCustomBindFor: theEachBind
 
 	<return function(el){
@@ -167,8 +174,8 @@ getCustomBindFor: theEachBind
 getCustomRoutineFor: theEachRoutine
 
 	<return function(el, collection){
- 		console.log('custom routine',el);
 		var results = theEachRoutine.call(this, el, collection);
+		self._onRoutine_value_(el, collection);
 		return results;
 		}>
 !
@@ -198,28 +205,15 @@ self halt.
 
 renderOn: html
 
-	self configure.
-
-	self makeCustomBinder.
-	
-	self bind.
+	self configureAndBind
 ! !
 
 !IteratedController methodsFor: 'reactions'!
 
-onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
-	"The custom handler to bind on this controller is reacting"
-
-	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
-!
-
 onRoutine: anElement value: aValue
+	"Rivetjs has executed the routing of the each-* binder."
 
-	<console.log( anElement, aValue );
-	require('bower/rivets/dist/rivets').binders['iterated-controller'].routine.call( 
-		this 
-		, anElement
-		, function(e){ aValue.call( this, e ) } )>
+	"no-op"
 !
 
 onViewCreated: aView

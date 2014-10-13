@@ -380,28 +380,24 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._addThing.apply(_st(self), []));
 $ctx1.supercall = false;
-_st(console)._log_(self["@model"]);
 return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffComposedUsingEachController)})},
 args: [],
-source: "addThing\x0a\x0a\x09super addThing.\x0a\x09\x0a\x09console log: model",
-messageSends: ["addThing", "log:"],
+source: "addThing\x0a\x0a\x09super addThing",
+messageSends: ["addThing"],
 referencedClasses: []
 }),
 globals.StuffComposedUsingEachController);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onBinded:event:handler:view:",
+selector: "configureAndBind",
 protocol: 'reactions',
-fn: function (aTarget,anEvent,aHandler,aBindedView){
+fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._onBinded_event_handler_view_.apply(_st(self), [aTarget,anEvent,aHandler,aBindedView]));
-$ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"onBinded:event:handler:view:",{aTarget:aTarget,anEvent:anEvent,aHandler:aHandler,aBindedView:aBindedView},globals.StuffComposedUsingEachController)})},
-args: ["aTarget", "anEvent", "aHandler", "aBindedView"],
-source: "onBinded: aTarget event: anEvent handler: aHandler view: aBindedView\x0a\x09\x22The custom handler to bind on this controller is reacting\x22\x0a\x0a\x09\x22console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.\x0a\x09console info: aHandler.\x0a\x09console log: aBindedView.\x22\x0a\x0a\x09super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.\x0a\x09\x0a\x09\x0a\x09\x22self ifAbsentAt: \x22",
-messageSends: ["onBinded:event:handler:view:"],
+return self},
+args: [],
+source: "configureAndBind",
+messageSends: [],
 referencedClasses: []
 }),
 globals.StuffComposedUsingEachController);
@@ -443,11 +439,10 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._removeThing.apply(_st(self), []));
 $ctx1.supercall = false;
-_st(console)._log_(self["@model"]);
 return self}, function($ctx1) {$ctx1.fill(self,"removeThing",{},globals.StuffComposedUsingEachController)})},
 args: [],
-source: "removeThing\x0a\x0a\x09super removeThing.\x0a\x09\x0a\x09console log: model",
-messageSends: ["removeThing", "log:"],
+source: "removeThing\x0a\x0a\x09super removeThing\x0a\x09",
+messageSends: ["removeThing"],
 referencedClasses: []
 }),
 globals.StuffComposedUsingEachController);
