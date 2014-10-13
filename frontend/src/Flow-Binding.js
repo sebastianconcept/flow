@@ -240,14 +240,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self._configure();
 self._makeCustomBinder();
-_st(console)._log_("asBindArgument");
-$ctx1.sendIdx["log:"]=1;
-_st(console)._log_(self._asBindArgument());
 self._bind();
 return self}, function($ctx1) {$ctx1.fill(self,"configureAndBind",{},globals.IteratedController)})},
 args: [],
-source: "configureAndBind\x0a\x0a\x09self configure.\x0a\x0a\x09self makeCustomBinder.\x0a\x09\x0a\x09console log: 'asBindArgument'.\x0a\x09console log: self asBindArgument.\x0a\x09\x0a\x09self bind",
-messageSends: ["configure", "makeCustomBinder", "log:", "asBindArgument", "bind"],
+source: "configureAndBind\x0a\x0a\x09self configure.\x0a\x0a\x09self makeCustomBinder.\x0a\x09\x0a\x09self bind",
+messageSends: ["configure", "makeCustomBinder", "bind"],
 referencedClasses: []
 }),
 globals.IteratedController);
@@ -260,14 +257,13 @@ fn: function (theEachBind){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return function(el){
-		console.log('custom biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiind',el);
 		this.view.onViewCreated = function(v){ self._onViewCreated_(v) };
 		this.view.onViewDestroyed = function(v){ self._onViewDestroyed_(v) };
 		theEachBind.call(this,el);
 		};
 return self}, function($ctx1) {$ctx1.fill(self,"getCustomBindFor:",{theEachBind:theEachBind},globals.IteratedController)})},
 args: ["theEachBind"],
-source: "getCustomBindFor: theEachBind\x0a\x0a\x09<return function(el){\x0a\x09\x09console.log('custom biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiind',el);\x0a\x09\x09this.view.onViewCreated = function(v){ self._onViewCreated_(v) };\x0a\x09\x09this.view.onViewDestroyed = function(v){ self._onViewDestroyed_(v) };\x0a\x09\x09theEachBind.call(this,el);\x0a\x09\x09}>",
+source: "getCustomBindFor: theEachBind\x0a\x0a\x09<return function(el){\x0a\x09\x09this.view.onViewCreated = function(v){ self._onViewCreated_(v) };\x0a\x09\x09this.view.onViewDestroyed = function(v){ self._onViewDestroyed_(v) };\x0a\x09\x09theEachBind.call(this,el);\x0a\x09\x09}>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -441,34 +437,10 @@ selector: "onRoutine:value:",
 protocol: 'reactions',
 fn: function (anElement,aValue){
 var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_("onRoutine: anElement value: aValue");
-$ctx1.sendIdx["log:"]=1;
-_st(console)._log_(anElement);
-$ctx1.sendIdx["log:"]=2;
-_st(console)._log_(aValue);
-return self}, function($ctx1) {$ctx1.fill(self,"onRoutine:value:",{anElement:anElement,aValue:aValue},globals.IteratedController)})},
+return self},
 args: ["anElement", "aValue"],
-source: "onRoutine: anElement value: aValue\x0a\x09\x22Rivetjs has executed the routing of the each-* binder.\x22\x0a\x0a\x09\x22no-op\x22\x0a\x09console log: 'onRoutine: anElement value: aValue'.\x0a\x09console log: anElement.\x0a\x09console log: aValue.\x0a\x09",
-messageSends: ["log:"],
-referencedClasses: []
-}),
-globals.IteratedController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "onTemplate:",
-protocol: 'reactions',
-fn: function (data){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_(_st(_st(self._class())._name()).__comma(">>onTemplate:"));
-($ctx1.supercall = true, globals.IteratedController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
-$ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.IteratedController)})},
-args: ["data"],
-source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09console log: self class name,'>>onTemplate:'.\x0a\x09\x0a\x09super onTemplate: data.\x09\x0a\x09",
-messageSends: ["log:", ",", "name", "class", "onTemplate:"],
+source: "onRoutine: anElement value: aValue\x0a\x09\x22Rivetjs has executed the routing of the iterated-* binder.\x22\x0a\x0a\x09\x22no-op\x22\x0a\x09",
+messageSends: [],
 referencedClasses: []
 }),
 globals.IteratedController);
