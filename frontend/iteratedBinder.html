@@ -2,7 +2,7 @@
 <html>
 
   <head>
-    <title>Each</title>
+    <title>Iterated</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="Sebastian Sastre" />
     <script type='text/javascript' src='bower_components/amber/support/requirejs/require.min.js'></script>
@@ -14,7 +14,7 @@
 
     <div id="content"></div>
     <ul id="listView">
-      <li rv-each-model="models"> { model.content } </li>
+      <li rv-iterated-model="models"> { model.content } </li>
     </ul>
 
 
@@ -49,7 +49,9 @@
           var onViewCreated = function(child){console.log('on create child', child)};
           var onViewDestroyed = function(child){console.log('on destroy child', child)};
 
-          rivets.binders['each-*'].bind = function(el){
+          rivets.binders['iterated-*'] = rivets.binders['each-*'];
+
+          rivets.binders['iterated-*'].bind = function(el){
               console.info('nicely binded!');
               console.log(this);
               onBinded.call(this,el);
@@ -59,7 +61,7 @@
               theEachBind.call(this,el);
             };
 
-          rivets.binders['each-*'].routine = function(el,collection){
+          rivets.binders['iterated-*'].routine = function(el,collection){
             onRoutined.call(this,el);
             var results = theEachRoutine.call(this, el, collection);
             console.info('routing results',results);
