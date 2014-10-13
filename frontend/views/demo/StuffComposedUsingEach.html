@@ -2,12 +2,10 @@
 	<h1>Stuff Composed Using Each</h1>
 	<h2>{model.name}</h2>
 
-	<ul class="things">
-		<li class='thing' rv-each-thing="model.things">
-			<div >{ thing.@data.name }</div>
-		</li>
-	</ul>
+	<button class='btn' rv-on-click="controller._addList">Add list</button>
 
-	<button rv-on-click="controller._addThing">Add thing</button>
-	<button rv-on-click="controller._removeThing">Remove thing</button>
+	<div class="listOfThings"></div>
+
+	<button class='btn' rv-on-click="controller._addThing">Add thing</button>
+	<button class='btn' rv-on-click="controller._removeThing">Remove thing</button>
 </section>

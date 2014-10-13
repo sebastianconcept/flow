@@ -186,11 +186,15 @@ makeCustomBinder
 	
 	| theEachBind theEachRoutine |
 	
+	self rivets binders 
+		at: 'iterated-*'
+		put: (self rivets binders at: 'each-*').
+		
 	theEachBind := (self rivets binders at: 'each-*') at: #bind.
 	theEachRoutine := (self rivets binders at: 'each-*') at: #routine.
 	
-	(self rivets binders at: 'each-*') at: #bind put: (self getCustomBindFor: theEachBind).
-	(self rivets binders at: 'each-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)
+	(self rivets binders at: 'iterated-*') at: #bind put: (self getCustomBindFor: theEachBind).
+	(self rivets binders at: 'iterated-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)
 !
 
 newItemControllerFor: anItem
@@ -201,11 +205,6 @@ self halt.
 					on: self 
 					appendingTo: self view ] 
 		ifTrue:[ self newItemControllerBlock value: anItem ]
-!
-
-renderOn: html
-
-	self configureAndBind
 ! !
 
 !IteratedController methodsFor: 'reactions'!
@@ -214,6 +213,15 @@ onRoutine: anElement value: aValue
 	"Rivetjs has executed the routing of the each-* binder."
 
 	"no-op"
+	console log: 'onRoutine: anElement value: aValue'
+!
+
+onTemplate: data
+	"Receives data once requirejs have received it from the server."
+
+	super onTemplate: data.	
+	
+	console log: self class name,'>>onTemplate:'
 !
 
 onViewCreated: aView

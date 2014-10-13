@@ -330,36 +330,48 @@ fn: function (){
 var self=this;
 var theEachBind,theEachRoutine;
 return smalltalk.withContext(function($ctx1) { 
-var $3,$2,$1,$6,$5,$4,$9,$8,$7;
-$3=self._rivets();
+var $2,$1,$5,$4,$3,$8,$7,$6,$11,$10,$9,$14,$13,$12;
+$2=self._rivets();
 $ctx1.sendIdx["rivets"]=1;
-$2=_st($3)._binders();
+$1=_st($2)._binders();
 $ctx1.sendIdx["binders"]=1;
-$1=_st($2)._at_("each-*");
-$ctx1.sendIdx["at:"]=2;
-theEachBind=_st($1)._at_("bind");
-$ctx1.sendIdx["at:"]=1;
-$6=self._rivets();
+$5=self._rivets();
 $ctx1.sendIdx["rivets"]=2;
-$5=_st($6)._binders();
+$4=_st($5)._binders();
 $ctx1.sendIdx["binders"]=2;
-$4=_st($5)._at_("each-*");
-$ctx1.sendIdx["at:"]=4;
-theEachRoutine=_st($4)._at_("routine");
-$ctx1.sendIdx["at:"]=3;
-$9=self._rivets();
-$ctx1.sendIdx["rivets"]=3;
-$8=_st($9)._binders();
-$ctx1.sendIdx["binders"]=3;
-$7=_st($8)._at_("each-*");
-$ctx1.sendIdx["at:"]=5;
-_st($7)._at_put_("bind",self._getCustomBindFor_(theEachBind));
+$3=_st($4)._at_("each-*");
+$ctx1.sendIdx["at:"]=1;
+_st($1)._at_put_("iterated-*",$3);
 $ctx1.sendIdx["at:put:"]=1;
-_st(_st(_st(self._rivets())._binders())._at_("each-*"))._at_put_("routine",self._getCustomRoutineFor_(theEachRoutine));
+$8=self._rivets();
+$ctx1.sendIdx["rivets"]=3;
+$7=_st($8)._binders();
+$ctx1.sendIdx["binders"]=3;
+$6=_st($7)._at_("each-*");
+$ctx1.sendIdx["at:"]=3;
+theEachBind=_st($6)._at_("bind");
+$ctx1.sendIdx["at:"]=2;
+$11=self._rivets();
+$ctx1.sendIdx["rivets"]=4;
+$10=_st($11)._binders();
+$ctx1.sendIdx["binders"]=4;
+$9=_st($10)._at_("each-*");
+$ctx1.sendIdx["at:"]=5;
+theEachRoutine=_st($9)._at_("routine");
+$ctx1.sendIdx["at:"]=4;
+$14=self._rivets();
+$ctx1.sendIdx["rivets"]=5;
+$13=_st($14)._binders();
+$ctx1.sendIdx["binders"]=5;
+$12=_st($13)._at_("iterated-*");
+$ctx1.sendIdx["at:"]=6;
+_st($12)._at_put_("bind",self._getCustomBindFor_(theEachBind));
+$ctx1.sendIdx["at:put:"]=2;
+_st(_st(_st(self._rivets())._binders())._at_("iterated-*"))._at_put_("routine",self._getCustomRoutineFor_(theEachRoutine));
 return self}, function($ctx1) {$ctx1.fill(self,"makeCustomBinder",{theEachBind:theEachBind,theEachRoutine:theEachRoutine},globals.IteratedController)})},
 args: [],
-source: "makeCustomBinder\x0a\x09\x22Answers the rivetjs configuration needed for this controller to maintain subcontrollers\x0a\x09in sync with the lifecicly of the elements maintained by rivets via the each-* directive\x22\x0a\x09\x0a\x09| theEachBind theEachRoutine |\x0a\x09\x0a\x09theEachBind := (self rivets binders at: 'each-*') at: #bind.\x0a\x09theEachRoutine := (self rivets binders at: 'each-*') at: #routine.\x0a\x09\x0a\x09(self rivets binders at: 'each-*') at: #bind put: (self getCustomBindFor: theEachBind).\x0a\x09(self rivets binders at: 'each-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)\x0a\x09\x0a\x09",
-messageSends: ["at:", "binders", "rivets", "at:put:", "getCustomBindFor:", "getCustomRoutineFor:"],
+source: "makeCustomBinder\x0a\x09\x22Answers the rivetjs configuration needed for this controller to maintain subcontrollers\x0a\x09in sync with the lifecicly of the elements maintained by rivets via the each-* directive\x22\x0a\x09\x0a\x09| theEachBind theEachRoutine |\x0a\x09\x0a\x09self rivets binders \x0a\x09\x09at: 'iterated-*'\x0a\x09\x09put: (self rivets binders at: 'each-*').\x0a\x09\x09\x0a\x09theEachBind := (self rivets binders at: 'each-*') at: #bind.\x0a\x09theEachRoutine := (self rivets binders at: 'each-*') at: #routine.\x0a\x09\x0a\x09(self rivets binders at: 'iterated-*') at: #bind put: (self getCustomBindFor: theEachBind).\x0a\x09(self rivets binders at: 'iterated-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)\x0a\x09\x0a\x09",
+messageSends: ["at:put:", "binders", "rivets", "at:", "getCustomBindFor:", "getCustomRoutineFor:"],
 referencedClasses: []
 }),
 globals.IteratedController);
@@ -426,10 +438,30 @@ selector: "onRoutine:value:",
 protocol: 'reactions',
 fn: function (anElement,aValue){
 var self=this;
-return self},
+return smalltalk.withContext(function($ctx1) { 
+_st(console)._log_("onRoutine: anElement value: aValue");
+return self}, function($ctx1) {$ctx1.fill(self,"onRoutine:value:",{anElement:anElement,aValue:aValue},globals.IteratedController)})},
 args: ["anElement", "aValue"],
-source: "onRoutine: anElement value: aValue\x0a\x09\x22Rivetjs has executed the routing of the each-* binder.\x22\x0a\x0a\x09\x22no-op\x22",
-messageSends: [],
+source: "onRoutine: anElement value: aValue\x0a\x09\x22Rivetjs has executed the routing of the each-* binder.\x22\x0a\x0a\x09\x22no-op\x22\x0a\x09console log: 'onRoutine: anElement value: aValue'",
+messageSends: ["log:"],
+referencedClasses: []
+}),
+globals.IteratedController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onTemplate:",
+protocol: 'reactions',
+fn: function (data){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+($ctx1.supercall = true, globals.IteratedController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
+$ctx1.supercall = false;
+_st(console)._log_(_st(_st(self._class())._name()).__comma(">>onTemplate:"));
+return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.IteratedController)})},
+args: ["data"],
+source: "onTemplate: data\x0a\x09\x22Receives data once requirejs have received it from the server.\x22\x0a\x0a\x09super onTemplate: data.\x09\x0a\x09\x0a\x09console log: self class name,'>>onTemplate:'\x09",
+messageSends: ["onTemplate:", "log:", ",", "name", "class"],
 referencedClasses: []
 }),
 globals.IteratedController);
@@ -478,22 +510,6 @@ return self},
 args: ["anHtmlElement"],
 source: "parentElement: anHtmlElement\x0a\x09\x22Sets the parent elment for the list.\x0a\x09It can be anything but, in the case of lists, the parent element usually is a <ul>\x0a\x09The thing is to treat it like an <ul> full of <li> children.\x22\x0a\x09parentElement := view := anHtmlElement",
 messageSends: [],
-referencedClasses: []
-}),
-globals.IteratedController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "renderOn:",
-protocol: 'actions',
-fn: function (html){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self._configureAndBind();
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.IteratedController)})},
-args: ["html"],
-source: "renderOn: html\x0a\x0a\x09self configureAndBind\x0a\x09",
-messageSends: ["configureAndBind"],
 referencedClasses: []
 }),
 globals.IteratedController);

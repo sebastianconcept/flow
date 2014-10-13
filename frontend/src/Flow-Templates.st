@@ -1,11 +1,35 @@
 Smalltalk createPackage: 'Flow-Templates'!
 RouteableController subclass: #TemplateController
-	instanceVariableNames: ''
+	instanceVariableNames: 'templateUri'
 	package: 'Flow-Templates'!
 !TemplateController commentStamp!
 ## TemplateController is an abstraction
 The concrete subclasses of TemplateController follow the convention of loading html from the server.
 This convention uses the keyword of the controller as the name of the template to be found at views/!
+
+!TemplateController methodsFor: 'accessing'!
+
+templateName: aString
+
+	self templateUri: (self class viewPath, aString,'.html')
+!
+
+templateUri
+
+	^ templateUri ifNil:[ self initializeTemplateUri ]
+!
+
+templateUri: anUri
+
+	templateUri := anUri
+! !
+
+!TemplateController methodsFor: 'initialization'!
+
+initializeTemplateUri
+	"Initilizes the templateUri on the convention that uses the first part of the controller name."
+	^ templateUri := self class viewPath, self class keyword,'.html'
+! !
 
 !TemplateController methodsFor: 'reactions'!
 
@@ -29,7 +53,7 @@ onTemplate: data
 renderOn: html
 
 	require 
-		value:(Array with: self class viewPath, self class keyword,'.html')
+		value:(Array with: self templateUri)
 		value:[	:template | 
 			self onTemplate: template]
 ! !
