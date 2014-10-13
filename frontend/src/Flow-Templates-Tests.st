@@ -185,24 +185,6 @@ StuffUsingEachController subclass: #StuffComposedUsingEachController
 
 !StuffComposedUsingEachController methodsFor: 'reactions'!
 
-addList
-
-	console log: self class name,'>>addList:'.
-
-	self ifAbsentAt: 'things' 
-		put: [
-			"Lazy creation of the iterated controller for the things in stuff"
-			(IteratedController 
-				for: model 
-				on: self
-				appendingTo: '.listOfThings' asJQuery)
-					itemControllerClass: ThingController;
-					templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');
-					yourself].
-
-	(self controllerAt: 'things') render
-!
-
 addThing
 
 	super addThing
@@ -218,6 +200,19 @@ onTemplate: data
 	super onTemplate: data.
 		
 	console log: self class name,'>>onTemplate:'.
+
+	self ifAbsentAt: 'things' 
+		put: [
+			"Lazy creation of the iterated controller for the things in stuff"
+			(IteratedController 
+				for: model 
+				on: self
+				appendingTo: '.listOfThings' asJQuery)
+					itemControllerClass: ThingController;
+					templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');
+					yourself].
+
+	(self controllerAt: 'things') render
 !
 
 removeThing
