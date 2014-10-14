@@ -1,7 +1,29 @@
-define("app/App", ["amber/boot", "app/Flow-Core"], function($boot){
+define("app/App", ["amber/boot", "app/Flow-Core", "amber_core/Kernel-Objects"], function($boot){
 var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('App');
 smalltalk.packages["App"].transport = {"type":"amd","amdNamespace":"app"};
+
+smalltalk.addClass('App', globals.Object, [], 'App');
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "start",
+protocol: 'not yet classified',
+fn: function (){
+var self=this;
+function $Flow(){return globals.Flow||(typeof Flow=="undefined"?nil:Flow)}
+function $Router(){return globals.Router||(typeof Router=="undefined"?nil:Router)}
+return smalltalk.withContext(function($ctx1) { 
+_st($Flow())._start();
+_st($Router())._refresh();
+return self}, function($ctx1) {$ctx1.fill(self,"start",{},globals.App.klass)})},
+args: [],
+source: "start\x0a\x0a\x09Flow start.\x0a\x09\x0a\x09Router refresh\x0a\x09",
+messageSends: ["start", "refresh"],
+referencedClasses: ["Flow", "Router"]
+}),
+globals.App.klass);
+
 
 smalltalk.addClass('AppController', globals.FlowAppController, [], 'App');
 globals.AppController.comment="##AppController\x0a\x0aThe AppController is the main/root controller of your flow-based application.\x0a";

@@ -112,7 +112,31 @@ StuffController is a Controller composed by ThingControllers that are created ba
 
 Stuff has a collection of Thing(s)!
 
-!StuffUsingEachController methodsFor: 'accessing'!
+!StuffUsingEachController methodsFor: 'actions'!
+
+addThing
+	
+	self model things add: self class newThing
+!
+
+newThing
+
+	^ Thing new
+		name: self inspiration atRandom;
+		yourself
+!
+
+removeThing
+	
+	self model things removeLast
+! !
+
+!StuffUsingEachController class methodsFor: 'accessing'!
+
+defaultModel
+
+	^ self newStuff
+!
 
 inspiration
 	"Answers a collection to inspire a name for something."
@@ -128,49 +152,6 @@ inspiration
  	sweet 
 	groovy 
 	)
-! !
-
-!StuffUsingEachController methodsFor: 'actions'!
-
-addThing
-	
-	self model things add: self newThing
-!
-
-newStuff
-
-	^ Stuff new
-		name: 'Hey... this stuff is new!!';
-		yourself
-!
-
-newThing
-
-	^ Thing new
-		name: self inspiration atRandom;
-		yourself
-!
-
-removeThing
-	
-	self model things removeLast
-! !
-
-!StuffUsingEachController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self model: self newStuff.
-	self addThing; addThing
-! !
-
-!StuffUsingEachController class methodsFor: 'accessing'!
-
-defaultModel
-
-	^ Stuff new
 !
 
 viewPath
@@ -179,23 +160,36 @@ viewPath
 	^ 'bower_components/text/text!!views/demo/'
 ! !
 
+!StuffUsingEachController class methodsFor: 'actions'!
+
+newStuff
+
+	| stuff |
+	
+	stuff := Stuff new
+				name: 'Hey... this stuff is new!!';
+				yourself.
+				
+	stuff things add: self newThing; add: self newThing.
+	^ stuff
+!
+
+newThing
+
+	^ Thing new
+		name: self inspiration atRandom;
+		yourself
+! !
+
 StuffUsingEachController subclass: #StuffComposedUsingEachController
 	instanceVariableNames: ''
 	package: 'Flow-Templates-Tests'!
 
 !StuffComposedUsingEachController methodsFor: 'reactions'!
 
-onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
-	"The custom handler to bind on this controller is reacting"
+configureAndBind
 
-	console log: 'onBinded: aTarget event: anEvent handler: aHandler view: aBindedView'.
-	console info: aHandler.
-	console log: aBindedView.
-
-	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
-	
-	
-	"self ifAbsentAt: "
+	super configureAndBind
 !
 
 onTemplate: data
@@ -208,8 +202,9 @@ onTemplate: data
 			(IteratedController 
 				for: model 
 				on: self
-				appendingTo: '.things' asJQuery)
+				appendingTo: '.listOfThings' asJQuery)
 					itemControllerClass: ThingController;
+					templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');
 					yourself].
 
 	(self controllerAt: 'things') render

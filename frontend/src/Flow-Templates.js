@@ -3,8 +3,32 @@ var smalltalk=$boot.vm,nil=$boot.nil,_st=$boot.asReceiver,globals=$boot.globals;
 smalltalk.addPackage('Flow-Templates');
 smalltalk.packages["Flow-Templates"].transport = {"type":"amd","amdNamespace":"app"};
 
-smalltalk.addClass('TemplateController', globals.RouteableController, [], 'Flow-Templates');
+smalltalk.addClass('TemplateController', globals.RouteableController, ['templateUri'], 'Flow-Templates');
 globals.TemplateController.comment="## TemplateController is an abstraction\x0aThe concrete subclasses of TemplateController follow the convention of loading html from the server.\x0aThis convention uses the keyword of the controller as the name of the template to be found at views/";
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeTemplateUri",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $4,$3,$2,$1;
+$4=self._class();
+$ctx1.sendIdx["class"]=1;
+$3=_st($4)._viewPath();
+$2=_st($3).__comma(_st(self._class())._keyword());
+self["@templateUri"]=_st($2).__comma(".html");
+$ctx1.sendIdx[","]=1;
+$1=self["@templateUri"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"initializeTemplateUri",{},globals.TemplateController)})},
+args: [],
+source: "initializeTemplateUri\x0a\x09\x22Initilizes the templateUri on the convention that uses the first part of the controller name.\x22\x0a\x09^ templateUri := self class viewPath, self class keyword,'.html'",
+messageSends: [",", "viewPath", "class", "keyword"],
+referencedClasses: []
+}),
+globals.TemplateController);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "onTemplate:",
@@ -31,24 +55,72 @@ fn: function (html){
 var self=this;
 function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$6,$5,$4,$3,$2;
-$1=require;
-$6=self._class();
-$ctx1.sendIdx["class"]=1;
-$5=_st($6)._viewPath();
-$4=_st($5).__comma(_st(self._class())._keyword());
-$3=_st($4).__comma(".html");
-$ctx1.sendIdx[","]=1;
-$2=_st($Array())._with_($3);
-_st($1)._value_value_($2,(function(template){
+_st(require)._value_value_(_st($Array())._with_(self._templateUri()),(function(template){
 return smalltalk.withContext(function($ctx2) {
 return self._onTemplate_(template);
 }, function($ctx2) {$ctx2.fillBlock({template:template},$ctx1,1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},globals.TemplateController)})},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09require \x0a\x09\x09value:(Array with: self class viewPath, self class keyword,'.html')\x0a\x09\x09value:[\x09:template | \x0a\x09\x09\x09self onTemplate: template]\x09",
-messageSends: ["value:value:", "with:", ",", "viewPath", "class", "keyword", "onTemplate:"],
+source: "renderOn: html\x0a\x0a\x09require \x0a\x09\x09value:(Array with: self templateUri)\x0a\x09\x09value:[\x09:template | \x0a\x09\x09\x09self onTemplate: template]\x09",
+messageSends: ["value:value:", "with:", "templateUri", "onTemplate:"],
 referencedClasses: ["Array"]
+}),
+globals.TemplateController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "templateName:",
+protocol: 'accessing',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self._class())._viewPath()).__comma(aString)).__comma(".html");
+$ctx1.sendIdx[","]=1;
+self._templateUri_($1);
+return self}, function($ctx1) {$ctx1.fill(self,"templateName:",{aString:aString},globals.TemplateController)})},
+args: ["aString"],
+source: "templateName: aString\x0a\x0a\x09self templateUri: (self class viewPath, aString,'.html')",
+messageSends: ["templateUri:", ",", "viewPath", "class"],
+referencedClasses: []
+}),
+globals.TemplateController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "templateUri",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1,$receiver;
+$2=self["@templateUri"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeTemplateUri();
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"templateUri",{},globals.TemplateController)})},
+args: [],
+source: "templateUri\x0a\x0a\x09^ templateUri ifNil:[ self initializeTemplateUri ]",
+messageSends: ["ifNil:", "initializeTemplateUri"],
+referencedClasses: []
+}),
+globals.TemplateController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "templateUri:",
+protocol: 'accessing',
+fn: function (anUri){
+var self=this;
+self["@templateUri"]=anUri;
+return self},
+args: ["anUri"],
+source: "templateUri: anUri\x0a\x0a\x09templateUri := anUri",
+messageSends: [],
+referencedClasses: []
 }),
 globals.TemplateController);
 

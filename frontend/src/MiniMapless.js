@@ -535,17 +535,16 @@ selector: "initialize",
 protocol: 'initialization',
 fn: function (){
 var self=this;
-function $HashedCollection(){return globals.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 return smalltalk.withContext(function($ctx1) { 
 ($ctx1.supercall = true, globals.Mapless.superclass.fn.prototype._initialize.apply(_st(self), []));
 $ctx1.supercall = false;
-self["@data"]=_st($HashedCollection())._new();
+self["@data"]=self._newData();
 self._modelClass_(_st(self._class())._name());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.Mapless)})},
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x0a\x09data := HashedCollection new.\x0a\x09self modelClass: self class name.",
-messageSends: ["initialize", "new", "modelClass:", "name", "class"],
-referencedClasses: ["HashedCollection"]
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x0a\x09data := self newData.\x0a\x09self modelClass: self class name.",
+messageSends: ["initialize", "newData", "modelClass:", "name", "class"],
+referencedClasses: []
 }),
 globals.Mapless);
 
@@ -732,6 +731,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"localSave",{},globals.Mapless)})
 args: [],
 source: "localSave\x0a\x0a\x09self class localSave: self ",
 messageSends: ["localSave:", "class"],
+referencedClasses: []
+}),
+globals.Mapless);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newData",
+protocol: 'actions',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return new Object;
+return self}, function($ctx1) {$ctx1.fill(self,"newData",{},globals.Mapless)})},
+args: [],
+source: "newData\x0a\x09<return new Object>",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Mapless);

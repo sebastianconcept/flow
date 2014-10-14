@@ -34,20 +34,30 @@ bind
 	the model of this controller to its view."
 	
 	self rivets
-			bind: self view 
-			to: self asBindArgument
+		bind: self view 
+		to: self asBindArgument
 !
 
 configure
 	"Sets some configurations for rivets"
+	| conf |
+	
+	conf := self getConfiguration.
+	
+	self rivets configure: conf
+!
 
-	self rivets configure: self getConfiguration
+configureAndBind
+
+	self configure.
+	
+	self bind.
 !
 
 getConfiguration
 
 	^ HashedCollection new 
-		at: 'handler' put: self getHandler;
+		at: #handler put: self getHandler;
 		yourself
 !
 
@@ -57,9 +67,7 @@ getHandler
 	rivets would send the html element (target of the event)
 	screwing the self instance of this controller"
 
-	<return function( target, event, binding, view ){
-
-		self._onBinded_event_handler_view_( target, event, binding, view );
+	<return function( target, event, binding ){
 		this.call(binding.model);
 	}>
 !
@@ -86,20 +94,12 @@ onAboutToRemove
 	self unbind
 !
 
-onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
-	"The custom handler to bind on this controller is reacting"
-	
-	"no-op"
-!
-
 onTemplate: data
 	"Receives data once requirejs have received it from the server."
 
 	super onTemplate: data.	
 	
-	self configure.
-
-	self bind.
+	self configureAndBind.
 ! !
 
 !BindingController class methodsFor: 'testing'!
@@ -152,56 +152,84 @@ parentElement: anHtmlElement
 
 !IteratedController methodsFor: 'actions'!
 
-configure
-"Transcript open.
-	self getConfiguration inspect."
-	
-	super configure.
-!
-
-getConfiguration
-
-	^ super getConfiguration
-		at: 'adapter' put: ( #{
-    		#subscribe -> [ :obj :keypath :callback | 
-				console log: 'subscribed and observing on change:'.
-				console log: obj.
-				obj on: 'change:',keypath do: callback ].
-    		#unsubscribe -> [ :obj :keypath :callback | 
-				obj off: 'change:',keypath do: callback ].
-    		#read -> [ :obj :keypath | 
-				console log: 'on read'.
-				obj get keypath ].
-    		#publish -> [ :obj :keypath :value | 
-				console log: 'on publish'.
-				obj set: keypath val: value ]});
-		yourself
-!
-
-newItemControllerFor: anItem
-self halt.
-	^ itemControllerClass isNil
-		ifFalse:[ itemControllerClass 
-					for: anItem 
-					on: self 
-					appendingTo: self view ] 
-		ifTrue:[ self newItemControllerBlock value: anItem ]
-!
-
-renderOn: html
-
-	console log: 'rendering Iterated..'.
+configureAndBind
 
 	self configure.
 
-	self bind.
+	self makeCustomBinder.
+	
+	self bind
+!
+
+getCustomBindFor: theEachBind
+
+	<return function(el){
+		this.view.onViewCreated = function(view, model){ self._onViewCreated_for_(view, model) };
+		this.view.onViewDestroyed = function(view, model){ self._onViewDestroyed_for_(view, model) };
+		theEachBind.call(this,el);		
+		}>
+!
+
+getCustomRoutineFor: theEachRoutine
+
+	<return function(el, collection){
+		var results = theEachRoutine.call(this, el, collection);
+		self._onRoutine_value_(el, collection);
+		return results;
+		}>
+!
+
+makeCustomBinder
+	"Answers the rivetjs configuration needed for this controller to maintain subcontrollers
+	in sync with the lifecicly of the elements maintained by rivets via the each-* directive"
+	
+	| theEachBind theEachRoutine |
+	
+	self rivets binders 
+		at: 'iterated-*'
+		put: (self rivets binders at: 'each-*').
+		
+	theEachBind := (self rivets binders at: 'each-*') at: #bind.
+	theEachRoutine := (self rivets binders at: 'each-*') at: #routine.
+	
+	(self rivets binders at: 'iterated-*') at: #bind put: (self getCustomBindFor: theEachBind).
+	(self rivets binders at: 'iterated-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)
+!
+
+newItemControllerOn: aRivetJSView for: aModel
+console log: 'creating item controller'.
+console log: aRivetJSView.
+
+	^ itemControllerClass isNil
+		ifFalse:[ itemControllerClass 
+					for: aModel 
+					on: self 
+					appendingTo: (jQuery value: aRivetJSView els first) ] 
+		ifTrue:[ self newItemControllerBlock value: aRivetJSView value: aModel ]
 ! !
 
 !IteratedController methodsFor: 'reactions'!
 
-onBinded: aTarget event: anEvent handler: aHandler view: aBindedView
-	"The custom handler to bind on this controller is reacting"
+onRoutine: anElement value: aValue
+	"Rivetjs has executed the routing of the iterated-* binder."
 
-	super onBinded: aTarget event: anEvent handler: aHandler view: aBindedView.
+	"no-op"
+!
+
+onViewCreated: aRivetJSView for: aModel
+	"aRivetJSView was ceated for aModel by rivetsjs iterated-* and 
+	we make sure we have a controller for it."
+	
+	self ifAbsentAt: (aModel at: '_rv')
+		put:[ self newItemControllerOn: aRivetJSView for: aModel].
+		
+	(self controllerAt: (aModel at: '_rv')) render
+!
+
+onViewDestroyed: aView for: aModel
+	"The view for aModel was revoved by rivetjs, 
+	so we make sure we remove the controller as well"
+	
+	self removeControllerAt: (aModel at: '_rv')
 ! !
 

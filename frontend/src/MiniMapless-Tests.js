@@ -1112,14 +1112,14 @@ selector: "things",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $OrderedCollection(){return globals.OrderedCollection||(typeof OrderedCollection=="undefined"?nil:OrderedCollection)}
+function $Array(){return globals.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1,$receiver;
 $2=($ctx1.supercall = true, globals.Stuff.superclass.fn.prototype._things.apply(_st(self), []));
 $ctx1.supercall = false;
 $ctx1.sendIdx["things"]=1;
 if(($receiver = $2) == null || $receiver.isNil){
-self._things_(_st($OrderedCollection())._new());
+_st(self._data())._at_put_("things",_st($Array())._new());
 $1=self._things();
 } else {
 $1=$2;
@@ -1127,9 +1127,9 @@ $1=$2;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"things",{},globals.Stuff)})},
 args: [],
-source: "things\x0a\x0a\x09^ super things ifNil:[ \x0a\x09\x09self things: OrderedCollection new.\x0a\x09\x09self things ]",
-messageSends: ["ifNil:", "things", "things:", "new"],
-referencedClasses: ["OrderedCollection"]
+source: "things\x0a\x0a\x09^ super things ifNil:[ \x0a\x09\x09self data at: 'things' put: Array new.\x0a\x09\x09self things ]",
+messageSends: ["ifNil:", "things", "at:put:", "data", "new"],
+referencedClasses: ["Array"]
 }),
 globals.Stuff);
 
