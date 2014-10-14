@@ -164,9 +164,10 @@ configureAndBind
 getCustomBindFor: theEachBind
 
 	<return function(el){
-		this.view.onViewCreated = function(v){ self._onViewCreated_(v) };
-		this.view.onViewDestroyed = function(v){ self._onViewDestroyed_(v) };
-		theEachBind.call(this,el);
+		this.view.onViewCreated = function(view, model){ 
+			self._onViewCreated_for_(view, model) };
+		this.view.onViewDestroyed = function(view){ self._onViewDestroyed_(view) };
+		theEachBind.call(this,el);		
 		}>
 !
 
@@ -196,14 +197,14 @@ makeCustomBinder
 	(self rivets binders at: 'iterated-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)
 !
 
-newItemControllerFor: anItem
-self halt.
+newItemControllerOn: aRivetJSView for: aModel
+
 	^ itemControllerClass isNil
 		ifFalse:[ itemControllerClass 
-					for: anItem 
+					for: aModel 
 					on: self 
-					appendingTo: self view ] 
-		ifTrue:[ self newItemControllerBlock value: anItem ]
+					view: aRivetJSView els ] 
+		ifTrue:[ self newItemControllerBlock value: aRivetJSView value: aModel ]
 ! !
 
 !IteratedController methodsFor: 'reactions'!
@@ -214,13 +215,19 @@ onRoutine: anElement value: aValue
 	"no-op"
 !
 
-onViewCreated: aView
-
-	console warn: aView
+onViewCreated: aRivetJSView for: aModel
+	"aRivetJSView was ceated for aModel by rivetsjs iterated-* and 
+	we make sure we have a controller for it."
+	
+	self ifAbsentAt: (aModel at: '_rv')
+		put:[ self newItemControllerOn: aRivetJSView for: aModel].
+		
+	(self controllerAt: (aModel at: '_rv')) render
 !
 
 onViewDestroyed: aView
 
+	console log: 'onViewDestroyed'.
 	console info: aView
 ! !
 

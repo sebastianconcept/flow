@@ -587,6 +587,29 @@ globals.Controller.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "for:on:view:",
+protocol: 'actions',
+fn: function (aModel,aParentControllerOrNil,aHtmlElement){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=self._new();
+_st($2)._model_(aModel);
+_st($2)._parent_(aParentControllerOrNil);
+_st($2)._view_(aHtmlElement);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:on:view:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},globals.Controller.klass)})},
+args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
+source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself\x0a\x09",
+messageSends: ["model:", "new", "parent:", "view:", "yourself"],
+referencedClasses: []
+}),
+globals.Controller.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "on:appendingTo:",
 protocol: 'actions',
 fn: function (aParentControllerOrNil,aHtmlElement){

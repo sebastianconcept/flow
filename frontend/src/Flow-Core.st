@@ -242,6 +242,17 @@ for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 		yourself
 !
 
+for: aModel on: aParentControllerOrNil view: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
+
+	^ self new
+		model: aModel;
+		parent: aParentControllerOrNil;
+		view: aHtmlElement;
+		yourself
+!
+
 on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller using the default model,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
