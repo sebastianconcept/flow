@@ -196,8 +196,6 @@ onTemplate: data
 
 	super onTemplate: data.
 		
-	console log: self class name,'>>onTemplate:'.
-
 	self ifAbsentAt: 'things' 
 		put: [
 			"Lazy creation of the iterated controller for the things in stuff"

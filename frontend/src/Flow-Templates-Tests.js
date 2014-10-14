@@ -406,26 +406,22 @@ function $IteratedController(){return globals.IteratedController||(typeof Iterat
 function $ThingController(){return globals.ThingController||(typeof ThingController=="undefined"?nil:ThingController)}
 function $TemplateController(){return globals.TemplateController||(typeof TemplateController=="undefined"?nil:TemplateController)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2;
 ($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
 $ctx1.supercall = false;
-$1=console;
-$2=_st(_st(self._class())._name()).__comma(">>onTemplate:");
-$ctx1.sendIdx[","]=1;
-_st($1)._log_($2);
 self._ifAbsentAt_put_("things",(function(){
 return smalltalk.withContext(function($ctx2) {
-$3=_st($IteratedController())._for_on_appendingTo_(self["@model"],self,".listOfThings"._asJQuery());
-_st($3)._itemControllerClass_($ThingController());
-_st($3)._templateUri_(_st(_st($TemplateController())._viewPath()).__comma("demo/ListOfThings.html"));
-$4=_st($3)._yourself();
-return $4;
+$1=_st($IteratedController())._for_on_appendingTo_(self["@model"],self,".listOfThings"._asJQuery());
+_st($1)._itemControllerClass_($ThingController());
+_st($1)._templateUri_(_st(_st($TemplateController())._viewPath()).__comma("demo/ListOfThings.html"));
+$2=_st($1)._yourself();
+return $2;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
 _st(self._controllerAt_("things"))._render();
 return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.StuffComposedUsingEachController)})},
 args: ["data"],
-source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x09\x0a\x09console log: self class name,'>>onTemplate:'.\x0a\x0a\x09self ifAbsentAt: 'things' \x0a\x09\x09put: [\x0a\x09\x09\x09\x22Lazy creation of the iterated controller for the things in stuff\x22\x0a\x09\x09\x09(IteratedController \x0a\x09\x09\x09\x09for: model \x0a\x09\x09\x09\x09on: self\x0a\x09\x09\x09\x09appendingTo: '.listOfThings' asJQuery)\x0a\x09\x09\x09\x09\x09itemControllerClass: ThingController;\x0a\x09\x09\x09\x09\x09templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');\x0a\x09\x09\x09\x09\x09yourself].\x0a\x0a\x09(self controllerAt: 'things') render\x0a\x0a\x09",
-messageSends: ["onTemplate:", "log:", ",", "name", "class", "ifAbsentAt:put:", "itemControllerClass:", "for:on:appendingTo:", "asJQuery", "templateUri:", "viewPath", "yourself", "render", "controllerAt:"],
+source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x09\x0a\x09self ifAbsentAt: 'things' \x0a\x09\x09put: [\x0a\x09\x09\x09\x22Lazy creation of the iterated controller for the things in stuff\x22\x0a\x09\x09\x09(IteratedController \x0a\x09\x09\x09\x09for: model \x0a\x09\x09\x09\x09on: self\x0a\x09\x09\x09\x09appendingTo: '.listOfThings' asJQuery)\x0a\x09\x09\x09\x09\x09itemControllerClass: ThingController;\x0a\x09\x09\x09\x09\x09templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');\x0a\x09\x09\x09\x09\x09yourself].\x0a\x0a\x09(self controllerAt: 'things') render\x0a\x0a\x09",
+messageSends: ["onTemplate:", "ifAbsentAt:put:", "itemControllerClass:", "for:on:appendingTo:", "asJQuery", "templateUri:", ",", "viewPath", "yourself", "render", "controllerAt:"],
 referencedClasses: ["IteratedController", "ThingController", "TemplateController"]
 }),
 globals.StuffComposedUsingEachController);
