@@ -264,19 +264,10 @@ selector: "onAboutToRender",
 protocol: 'reactions',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$receiver;
-$1=self._parentElement();
-$ctx1.sendIdx["parentElement"]=1;
-if(($receiver = $1) == null || $receiver.isNil){
-$1;
-} else {
-_st(self._parentElement())._empty();
-};
-return self}, function($ctx1) {$ctx1.fill(self,"onAboutToRender",{},globals.Controller)})},
+return self},
 args: [],
-source: "onAboutToRender\x0a\x09\x22This controller is just about to be rendered.\x22\x0a\x0a\x09\x22Empty the contents of the root element of this controller.\x0a\x09This would work as long as the view of this controller is the\x0a\x09only thing supossed to be child in that element\x22\x0a\x09self parentElement ifNotNil:[\x0a\x09\x09self parentElement empty ].",
-messageSends: ["ifNotNil:", "parentElement", "empty"],
+source: "onAboutToRender\x0a\x09\x22This controller is just about to be rendered.\x22\x0a\x0a\x09\x22Empty the contents of the root element of this controller.\x0a\x09This would work as long as the view of this controller is the\x0a\x09only thing supossed to be child in that element\x22\x0a\x0a\x09\x22self parentElement ifNotNil:[\x0a\x09\x09self parentElement empty ].\x22",
+messageSends: [],
 referencedClasses: []
 }),
 globals.Controller);
@@ -596,6 +587,29 @@ globals.Controller.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "for:on:view:",
+protocol: 'actions',
+fn: function (aModel,aParentControllerOrNil,aHtmlElement){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=self._new();
+_st($2)._model_(aModel);
+_st($2)._parent_(aParentControllerOrNil);
+_st($2)._view_(aHtmlElement);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"for:on:view:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},globals.Controller.klass)})},
+args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
+source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself\x0a\x09",
+messageSends: ["model:", "new", "parent:", "view:", "yourself"],
+referencedClasses: []
+}),
+globals.Controller.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "on:appendingTo:",
 protocol: 'actions',
 fn: function (aParentControllerOrNil,aHtmlElement){
@@ -618,7 +632,7 @@ globals.ListController.comment="## ListController\x0a\x0aListControllers know ho
 smalltalk.addMethod(
 smalltalk.method({
 selector: "getItems",
-protocol: 'accessing',
+protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -764,7 +778,7 @@ globals.ListController);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "newItemControllerFor:",
-protocol: 'accessing',
+protocol: 'actions',
 fn: function (anItem){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -816,7 +830,10 @@ _st($1)._with_do_($2,(function(e){
 return smalltalk.withContext(function($ctx2) {
 $4=self._getItems();
 $ctx2.sendIdx["getItems"]=2;
-$3=_st($4)._includes_(e);
+$3=_st($4)._anySatisfy_((function(each){
+return smalltalk.withContext(function($ctx3) {
+return _st(each).__eq_eq(e);
+}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx2,2)})}));
 if(! smalltalk.assert($3)){
 return self._removeControllerAt_(e);
 };
@@ -828,18 +845,18 @@ self._controllerAt_ifAbsentPut_(e,(function(){
 return smalltalk.withContext(function($ctx3) {
 added=self._newItemControllerFor_(e);
 return added;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx2,5)})}));
 $5=added;
 if(($receiver = $5) == null || $receiver.isNil){
 return $5;
 } else {
 return _st(added)._render();
 };
-}, function($ctx2) {$ctx2.fillBlock({e:e,added:added},$ctx1,3)})}));
+}, function($ctx2) {$ctx2.fillBlock({e:e,added:added},$ctx1,4)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"refresh",{items:items},globals.ListController)})},
 args: [],
-source: "refresh\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self getItems \x0a\x09\x09do:[ :e | (self getItems includes: e) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09\x22Add novelties\x22\x0a\x09self getItems do:[ :e | | added |\x0a\x09\x09self controllerAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := self newItemControllerFor: e ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
-messageSends: ["with:do:", "keys", "controllers", "getItems", "ifFalse:", "includes:", "removeControllerAt:", "do:", "controllerAt:ifAbsentPut:", "newItemControllerFor:", "ifNotNil:", "render"],
+source: "refresh\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self getItems \x0a\x09\x09do:[ :e | (self getItems anySatisfy:[ :each | each == e]) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09\x22Add novelties\x22\x0a\x09self getItems do:[ :e | | added |\x0a\x09\x09self controllerAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := self newItemControllerFor: e ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
+messageSends: ["with:do:", "keys", "controllers", "getItems", "ifFalse:", "anySatisfy:", "==", "removeControllerAt:", "do:", "controllerAt:ifAbsentPut:", "newItemControllerFor:", "ifNotNil:", "render"],
 referencedClasses: []
 }),
 globals.ListController);

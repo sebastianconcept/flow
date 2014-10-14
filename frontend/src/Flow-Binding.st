@@ -34,20 +34,30 @@ bind
 	the model of this controller to its view."
 	
 	self rivets
-			bind: self view 
-			to: self asBindArgument
+		bind: self view 
+		to: self asBindArgument
 !
 
 configure
 	"Sets some configurations for rivets"
+	| conf |
+	
+	conf := self getConfiguration.
+	
+	self rivets configure: conf
+!
 
-	self rivets configure: self getConfiguration
+configureAndBind
+
+	self configure.
+	
+	self bind.
 !
 
 getConfiguration
 
 	^ HashedCollection new 
-		at: 'handler' put: self getHandler;
+		at: #handler put: self getHandler;
 		yourself
 !
 
@@ -58,7 +68,6 @@ getHandler
 	screwing the self instance of this controller"
 
 	<return function( target, event, binding ){
-		self._onBinded_event_view_( target, event, binding );
 		this.call(binding.model);
 	}>
 !
@@ -85,20 +94,12 @@ onAboutToRemove
 	self unbind
 !
 
-onBinded: target event: anEvent view: aBindedView
-	"The view of this controller has just been created by rivetjs"
-
-	console log: target w: anEvent v: aBindedView
-!
-
 onTemplate: data
 	"Receives data once requirejs have received it from the server."
 
 	super onTemplate: data.	
 	
-	self configure.
-
-	self bind.
+	self configureAndBind.
 ! !
 
 !BindingController class methodsFor: 'testing'!
@@ -107,5 +108,128 @@ isAbstract
 	"Answers true if the receiver is abstract."
 	
 	^ self = BindingController
+! !
+
+BindingController subclass: #IteratedController
+	instanceVariableNames: 'itemControllerClass newItemControllerBlock'
+	package: 'Flow-Binding'!
+!IteratedController commentStamp!
+##IteratedController
+Like ListController except it relies on rivets.js to iterate  models' presentation.
+
+It's rivets who triggers the creation, maintenance and destruction of the (sub)controllers of this controller.
+
+[This is how you use it in the template/view](http://rivetsjs.com/docs/reference/#each-[item])!
+
+!IteratedController methodsFor: 'accessing'!
+
+itemControllerClass
+
+	^ itemControllerClass
+!
+
+itemControllerClass: aBlock
+
+	itemControllerClass := aBlock
+!
+
+newItemControllerBlock
+
+	^ newItemControllerBlock
+!
+
+newItemControllerBlock: aBlock
+
+	newItemControllerBlock := aBlock
+!
+
+parentElement: anHtmlElement
+	"Sets the parent elment for the list.
+	It can be anything but, in the case of lists, the parent element usually is a <ul>
+	The thing is to treat it like an <ul> full of <li> children."
+	parentElement := view := anHtmlElement
+! !
+
+!IteratedController methodsFor: 'actions'!
+
+configureAndBind
+
+	self configure.
+
+	self makeCustomBinder.
+	
+	self bind
+!
+
+getCustomBindFor: theEachBind
+
+	<return function(el){
+		this.view.onViewCreated = function(view, model){ self._onViewCreated_for_(view, model) };
+		this.view.onViewDestroyed = function(view, model){ self._onViewDestroyed_for_(view, model) };
+		theEachBind.call(this,el);		
+		}>
+!
+
+getCustomRoutineFor: theEachRoutine
+
+	<return function(el, collection){
+		var results = theEachRoutine.call(this, el, collection);
+		self._onRoutine_value_(el, collection);
+		return results;
+		}>
+!
+
+makeCustomBinder
+	"Answers the rivetjs configuration needed for this controller to maintain subcontrollers
+	in sync with the lifecicly of the elements maintained by rivets via the each-* directive"
+	
+	| theEachBind theEachRoutine |
+	
+	self rivets binders 
+		at: 'iterated-*'
+		put: (self rivets binders at: 'each-*').
+		
+	theEachBind := (self rivets binders at: 'each-*') at: #bind.
+	theEachRoutine := (self rivets binders at: 'each-*') at: #routine.
+	
+	(self rivets binders at: 'iterated-*') at: #bind put: (self getCustomBindFor: theEachBind).
+	(self rivets binders at: 'iterated-*') at: #routine put: (self getCustomRoutineFor: theEachRoutine)
+!
+
+newItemControllerOn: aRivetJSView for: aModel
+console log: 'creating item controller'.
+console log: aRivetJSView.
+
+	^ itemControllerClass isNil
+		ifFalse:[ itemControllerClass 
+					for: aModel 
+					on: self 
+					appendingTo: (jQuery value: aRivetJSView els first) ] 
+		ifTrue:[ self newItemControllerBlock value: aRivetJSView value: aModel ]
+! !
+
+!IteratedController methodsFor: 'reactions'!
+
+onRoutine: anElement value: aValue
+	"Rivetjs has executed the routing of the iterated-* binder."
+
+	"no-op"
+!
+
+onViewCreated: aRivetJSView for: aModel
+	"aRivetJSView was ceated for aModel by rivetsjs iterated-* and 
+	we make sure we have a controller for it."
+	
+	self ifAbsentAt: (aModel at: '_rv')
+		put:[ self newItemControllerOn: aRivetJSView for: aModel].
+		
+	(self controllerAt: (aModel at: '_rv')) render
+!
+
+onViewDestroyed: aView for: aModel
+	"The view for aModel was revoved by rivetjs, 
+	so we make sure we remove the controller as well"
+	
+	self removeControllerAt: (aModel at: '_rv')
 ! !
 

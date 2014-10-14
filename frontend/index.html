@@ -35,15 +35,14 @@
           'app/Flow-Binding-Tests',
           'app/Flow-Tests',
           'app/App',
-          'app/App-Tests',
-          'minimongo'
+          'app/App-Tests'
       ], function (smalltalk) {
           //used for all new packages in IDE
           smalltalk.initialize({
             'transport.defaultAmdNamespace': "app"
           });
           require(['bower/bootstrap/dist/js/bootstrap.min']);
-          require('amber/helpers').globals.AppController._open();
+          require('amber/helpers').globals.App._start();
       });
     </script>
 

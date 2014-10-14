@@ -12,33 +12,12 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=self._model();
-$ctx1.sendIdx["model"]=1;
-$1=_st($2)._things();
-_st($1)._add_(self._newThing());
-_st(self._model())._trigger_("changed");
+_st(_st(self._model())._things())._add_(self._newThing());
+self._refresh();
 return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffController)})},
 args: [],
-source: "addThing\x0a\x09\x0a\x09self model things add: self newThing.\x0a\x09self model trigger: #changed",
-messageSends: ["add:", "things", "model", "newThing", "trigger:"],
-referencedClasses: []
-}),
-globals.StuffController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-($ctx1.supercall = true, globals.StuffController.superclass.fn.prototype._initialize.apply(_st(self), []));
-$ctx1.supercall = false;
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.StuffController)})},
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x0a\x09",
-messageSends: ["initialize"],
+source: "addThing\x0a\x09\x0a\x09self model things add: self newThing.\x0a\x09self refresh.\x0a\x09",
+messageSends: ["add:", "things", "model", "newThing", "refresh"],
 referencedClasses: []
 }),
 globals.StuffController);
@@ -127,13 +106,27 @@ selector: "onStuffChanged",
 protocol: 'reactions',
 fn: function (){
 var self=this;
+function $ListController(){return globals.ListController||(typeof ListController=="undefined"?nil:ListController)}
+function $ThingController(){return globals.ThingController||(typeof ThingController=="undefined"?nil:ThingController)}
 return smalltalk.withContext(function($ctx1) { 
-self._refreshList();
+var $1,$2;
+self._ifAbsentAt_put_("things",(function(){
+return smalltalk.withContext(function($ctx2) {
+$1=_st($ListController())._for_on_appendingTo_(self["@model"],self,".things"._asJQuery());
+_st($1)._getItemsBlock_((function(m){
+return smalltalk.withContext(function($ctx3) {
+return _st(m)._things();
+}, function($ctx3) {$ctx3.fillBlock({m:m},$ctx2,2)})}));
+_st($1)._itemControllerClass_($ThingController());
+$2=_st($1)._yourself();
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+self._refresh();
 return self}, function($ctx1) {$ctx1.fill(self,"onStuffChanged",{},globals.StuffController)})},
 args: [],
-source: "onStuffChanged\x0a\x0a\x09self refreshList",
-messageSends: ["refreshList"],
-referencedClasses: []
+source: "onStuffChanged\x0a\x09\x09\x0a\x09self ifAbsentAt: 'things' \x0a\x09\x09put: [\x0a\x09\x09\x09\x22Lazy creation of the list controller for the thumbnails\x22\x0a\x09\x09\x09(ListController \x0a\x09\x09\x09\x09for: model \x0a\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09appendingTo: '.things' asJQuery)\x0a\x09\x09\x09\x09\x09getItemsBlock: [:m| m things ];\x0a\x09\x09\x09\x09\x09itemControllerClass: ThingController;\x0a\x09\x09\x09\x09\x09yourself].\x0a\x09self refresh",
+messageSends: ["ifAbsentAt:put:", "getItemsBlock:", "for:on:appendingTo:", "asJQuery", "things", "itemControllerClass:", "yourself", "refresh"],
+referencedClasses: ["ListController", "ThingController"]
 }),
 globals.StuffController);
 
@@ -157,50 +150,17 @@ globals.StuffController);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "refreshList",
+selector: "refresh",
 protocol: 'actions',
 fn: function (){
 var self=this;
-var items;
-function $ThingController(){return globals.ThingController||(typeof ThingController=="undefined"?nil:ThingController)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$2,$6,$5,$4,$7,$receiver;
-$1=_st(self._controllers())._keys();
-$3=self._model();
-$ctx1.sendIdx["model"]=1;
-$2=_st($3)._things();
-$ctx1.sendIdx["things"]=1;
-_st($1)._with_do_($2,(function(e){
-return smalltalk.withContext(function($ctx2) {
-$6=self._model();
-$ctx2.sendIdx["model"]=2;
-$5=_st($6)._things();
-$ctx2.sendIdx["things"]=2;
-$4=_st($5)._includes_(e);
-if(! smalltalk.assert($4)){
-return self._removeControllerAt_(e);
-};
-}, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1,1)})}));
-_st(_st(self._model())._things())._do_((function(e){
-var added;
-return smalltalk.withContext(function($ctx2) {
-self._controllerAt_ifAbsentPut_(e,(function(){
-return smalltalk.withContext(function($ctx3) {
-added=_st($ThingController())._for_on_appendingTo_(e,self,".things"._asJQuery());
-return added;
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,4)})}));
-$7=added;
-if(($receiver = $7) == null || $receiver.isNil){
-return $7;
-} else {
-return _st(added)._render();
-};
-}, function($ctx2) {$ctx2.fillBlock({e:e,added:added},$ctx1,3)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"refreshList",{items:items},globals.StuffController)})},
+_st(self._controllerAt_("things"))._refresh();
+return self}, function($ctx1) {$ctx1.fill(self,"refresh",{},globals.StuffController)})},
 args: [],
-source: "refreshList\x0a\x09\x22Makes sure all the Things in the model have its own controller.\x0a\x09Nothing less and nothing more.\x22\x0a\x09\x0a\x09| items |\x0a\x09\x0a\x09\x22Remove absences\x22\x0a\x09self controllers keys \x0a\x09\x09with: self model things \x0a\x09\x09do:[ :e | (self model things includes: e) ifFalse:[\x0a\x09\x09\x09\x09\x09self removeControllerAt: e ] ].\x0a\x09\x0a\x09self model things do:[ :e | | added |\x0a\x09\x09self controllerAt: e ifAbsentPut:[ \x0a\x09\x09\x09added := ThingController \x0a\x09\x09\x09\x09for: e \x0a\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09appendingTo: '.things' asJQuery ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]\x0a\x09",
-messageSends: ["with:do:", "keys", "controllers", "things", "model", "ifFalse:", "includes:", "removeControllerAt:", "do:", "controllerAt:ifAbsentPut:", "for:on:appendingTo:", "asJQuery", "ifNotNil:", "render"],
-referencedClasses: ["ThingController"]
+source: "refresh\x0a\x0a\x09(self controllerAt: 'things') refresh",
+messageSends: ["refresh", "controllerAt:"],
+referencedClasses: []
 }),
 globals.StuffController);
 
@@ -211,16 +171,12 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=self._model();
-$ctx1.sendIdx["model"]=1;
-$1=_st($2)._things();
-_st($1)._removeLast();
-_st(self._model())._trigger_("changed");
+_st(_st(self._model())._things())._removeLast();
+self._refresh();
 return self}, function($ctx1) {$ctx1.fill(self,"removeThing",{},globals.StuffController)})},
 args: [],
-source: "removeThing\x0a\x09\x0a\x09self model things removeLast.\x0a\x09self model trigger: #changed",
-messageSends: ["removeLast", "things", "model", "trigger:"],
+source: "removeThing\x0a\x09\x0a\x09self model things removeLast.\x0a\x09self refresh",
+messageSends: ["removeLast", "things", "model", "refresh"],
 referencedClasses: []
 }),
 globals.StuffController);
@@ -270,73 +226,12 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self._model())._things())._add_(self._newThing());
+_st(_st(self._model())._things())._add_(_st(self._class())._newThing());
 return self}, function($ctx1) {$ctx1.fill(self,"addThing",{},globals.StuffUsingEachController)})},
 args: [],
-source: "addThing\x0a\x09\x0a\x09self model things add: self newThing\x0a\x09",
-messageSends: ["add:", "things", "model", "newThing"],
+source: "addThing\x0a\x09\x0a\x09self model things add: self class newThing\x0a\x09",
+messageSends: ["add:", "things", "model", "newThing", "class"],
 referencedClasses: []
-}),
-globals.StuffUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-($ctx1.supercall = true, globals.StuffUsingEachController.superclass.fn.prototype._initialize.apply(_st(self), []));
-$ctx1.supercall = false;
-self._model_(self._newStuff());
-self._addThing();
-$ctx1.sendIdx["addThing"]=1;
-$1=self._addThing();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},globals.StuffUsingEachController)})},
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self model: self newStuff.\x0a\x09self addThing; addThing",
-messageSends: ["initialize", "model:", "newStuff", "addThing"],
-referencedClasses: []
-}),
-globals.StuffUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "inspiration",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-var $1;
-$1=["so", "many", "cool", "things", "here", "wow", "great", "sweet", "groovy"];
-return $1;
-},
-args: [],
-source: "inspiration\x0a\x09\x22Answers a collection to inspire a name for something.\x22\x0a\x09\x0a\x09^ #(\x0a\x09so \x0a\x09many \x0a\x09cool \x0a\x09things \x0a\x09here \x0a\x09wow \x0a\x09great \x0a \x09sweet \x0a\x09groovy \x0a\x09)\x0a\x09",
-messageSends: [],
-referencedClasses: []
-}),
-globals.StuffUsingEachController);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newStuff",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$1;
-$2=_st($Stuff())._new();
-_st($2)._name_("Hey... this stuff is new!");
-$3=_st($2)._yourself();
-$1=$3;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newStuff",{},globals.StuffUsingEachController)})},
-args: [],
-source: "newStuff\x0a\x0a\x09^ Stuff new\x0a\x09\x09name: 'Hey... this stuff is new!';\x0a\x09\x09yourself",
-messageSends: ["name:", "new", "yourself"],
-referencedClasses: ["Stuff"]
 }),
 globals.StuffUsingEachController);
 
@@ -385,16 +280,85 @@ selector: "defaultModel",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st($Stuff())._new();
+$1=self._newStuff();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"defaultModel",{},globals.StuffUsingEachController.klass)})},
 args: [],
-source: "defaultModel\x0a\x0a\x09^ Stuff new",
-messageSends: ["new"],
+source: "defaultModel\x0a\x0a\x09^ self newStuff",
+messageSends: ["newStuff"],
+referencedClasses: []
+}),
+globals.StuffUsingEachController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "inspiration",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=["so", "many", "cool", "things", "here", "wow", "great", "sweet", "groovy"];
+return $1;
+},
+args: [],
+source: "inspiration\x0a\x09\x22Answers a collection to inspire a name for something.\x22\x0a\x09\x0a\x09^ #(\x0a\x09so \x0a\x09many \x0a\x09cool \x0a\x09things \x0a\x09here \x0a\x09wow \x0a\x09great \x0a \x09sweet \x0a\x09groovy \x0a\x09)\x0a\x09",
+messageSends: [],
+referencedClasses: []
+}),
+globals.StuffUsingEachController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newStuff",
+protocol: 'actions',
+fn: function (){
+var self=this;
+var stuff;
+function $Stuff(){return globals.Stuff||(typeof Stuff=="undefined"?nil:Stuff)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4,$5,$6,$7;
+$1=_st($Stuff())._new();
+_st($1)._name_("Hey... this stuff is new!");
+$2=_st($1)._yourself();
+stuff=$2;
+$3=_st(stuff)._things();
+$4=$3;
+$5=self._newThing();
+$ctx1.sendIdx["newThing"]=1;
+_st($4)._add_($5);
+$ctx1.sendIdx["add:"]=1;
+$6=_st($3)._add_(self._newThing());
+$7=stuff;
+return $7;
+}, function($ctx1) {$ctx1.fill(self,"newStuff",{stuff:stuff},globals.StuffUsingEachController.klass)})},
+args: [],
+source: "newStuff\x0a\x0a\x09| stuff |\x0a\x09\x0a\x09stuff := Stuff new\x0a\x09\x09\x09\x09name: 'Hey... this stuff is new!';\x0a\x09\x09\x09\x09yourself.\x0a\x09\x09\x09\x09\x0a\x09stuff things add: self newThing; add: self newThing.\x0a\x09^ stuff",
+messageSends: ["name:", "new", "yourself", "add:", "things", "newThing"],
 referencedClasses: ["Stuff"]
+}),
+globals.StuffUsingEachController.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newThing",
+protocol: 'actions',
+fn: function (){
+var self=this;
+function $Thing(){return globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st($Thing())._new();
+_st($2)._name_(_st(self._inspiration())._atRandom());
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newThing",{},globals.StuffUsingEachController.klass)})},
+args: [],
+source: "newThing\x0a\x0a\x09^ Thing new\x0a\x09\x09name: self inspiration atRandom;\x0a\x09\x09yourself",
+messageSends: ["name:", "new", "atRandom", "inspiration", "yourself"],
+referencedClasses: ["Thing"]
 }),
 globals.StuffUsingEachController.klass);
 
@@ -417,37 +381,48 @@ globals.StuffUsingEachController.klass);
 smalltalk.addClass('StuffComposedUsingEachController', globals.StuffUsingEachController, [], 'Flow-Templates-Tests');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "getConfiguration",
-protocol: 'actions',
+selector: "configureAndBind",
+protocol: 'reactions',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$4,$1;
-$2=($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._getConfiguration.apply(_st(self), []));
+($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._configureAndBind.apply(_st(self), []));
 $ctx1.supercall = false;
-_st($2)._at_put_("adapter",globals.HashedCollection._newFromPairs_(["subscribe",(function(obj,keypath,callback){
-return smalltalk.withContext(function($ctx2) {
-$3="change:".__comma(keypath);
-$ctx2.sendIdx[","]=1;
-return _st(obj)._on_do_($3,callback);
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,callback:callback},$ctx1,1)})}),"unsubscribe",(function(obj,keypath,callback){
-return smalltalk.withContext(function($ctx2) {
-return _st(obj)._off_do_("change:".__comma(keypath),callback);
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,callback:callback},$ctx1,2)})}),"read",(function(obj,keypath){
-return smalltalk.withContext(function($ctx2) {
-return _st(_st(obj)._get())._keypath();
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath},$ctx1,3)})}),"publish",(function(obj,keypath,value){
-return smalltalk.withContext(function($ctx2) {
-return _st(obj)._set_val_(keypath,value);
-}, function($ctx2) {$ctx2.fillBlock({obj:obj,keypath:keypath,value:value},$ctx1,4)})})]));
-$4=_st($2)._yourself();
-$1=$4;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"getConfiguration",{},globals.StuffComposedUsingEachController)})},
+return self}, function($ctx1) {$ctx1.fill(self,"configureAndBind",{},globals.StuffComposedUsingEachController)})},
 args: [],
-source: "getConfiguration\x0a\x0a\x09^ super getConfiguration\x0a\x09\x09at: #adapter put: ( #{\x0a \x09\x09   \x09\x09#subscribe -> [ :obj :keypath :callback | \x0a\x09\x09\x09\x09\x09obj on: 'change:',keypath do: callback].\x0a    \x09\x09\x09#unsubscribe -> [ :obj :keypath :callback | obj off: 'change:',keypath do: callback].\x0a    \x09\x09\x09#read -> [ :obj :keypath | \x0a\x09\x09\x09\x09\x09obj get keypath ].\x0a    \x09\x09\x09#publish -> [ :obj :keypath :value | obj set: keypath val: value ]});\x0a\x09\x09yourself",
-messageSends: ["at:put:", "getConfiguration", "on:do:", ",", "off:do:", "keypath", "get", "set:val:", "yourself"],
+source: "configureAndBind\x0a\x0a\x09super configureAndBind",
+messageSends: ["configureAndBind"],
 referencedClasses: []
+}),
+globals.StuffComposedUsingEachController);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onTemplate:",
+protocol: 'reactions',
+fn: function (data){
+var self=this;
+function $IteratedController(){return globals.IteratedController||(typeof IteratedController=="undefined"?nil:IteratedController)}
+function $ThingController(){return globals.ThingController||(typeof ThingController=="undefined"?nil:ThingController)}
+function $TemplateController(){return globals.TemplateController||(typeof TemplateController=="undefined"?nil:TemplateController)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+($ctx1.supercall = true, globals.StuffComposedUsingEachController.superclass.fn.prototype._onTemplate_.apply(_st(self), [data]));
+$ctx1.supercall = false;
+self._ifAbsentAt_put_("things",(function(){
+return smalltalk.withContext(function($ctx2) {
+$1=_st($IteratedController())._for_on_appendingTo_(self["@model"],self,".listOfThings"._asJQuery());
+_st($1)._itemControllerClass_($ThingController());
+_st($1)._templateUri_(_st(_st($TemplateController())._viewPath()).__comma("demo/ListOfThings.html"));
+$2=_st($1)._yourself();
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)})}));
+_st(self._controllerAt_("things"))._render();
+return self}, function($ctx1) {$ctx1.fill(self,"onTemplate:",{data:data},globals.StuffComposedUsingEachController)})},
+args: ["data"],
+source: "onTemplate: data\x0a\x0a\x09super onTemplate: data.\x0a\x09\x09\x0a\x09self ifAbsentAt: 'things' \x0a\x09\x09put: [\x0a\x09\x09\x09\x22Lazy creation of the iterated controller for the things in stuff\x22\x0a\x09\x09\x09(IteratedController \x0a\x09\x09\x09\x09for: model \x0a\x09\x09\x09\x09on: self\x0a\x09\x09\x09\x09appendingTo: '.listOfThings' asJQuery)\x0a\x09\x09\x09\x09\x09itemControllerClass: ThingController;\x0a\x09\x09\x09\x09\x09templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');\x0a\x09\x09\x09\x09\x09yourself].\x0a\x0a\x09(self controllerAt: 'things') render\x0a\x0a\x09",
+messageSends: ["onTemplate:", "ifAbsentAt:put:", "itemControllerClass:", "for:on:appendingTo:", "asJQuery", "templateUri:", ",", "viewPath", "yourself", "render", "controllerAt:"],
+referencedClasses: ["IteratedController", "ThingController", "TemplateController"]
 }),
 globals.StuffComposedUsingEachController);
 

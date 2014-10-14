@@ -30,7 +30,7 @@ inspiration
 addThing
 	
 	self model things add: self newThing.
-	self model trigger: #changed
+	self refresh.
 !
 
 newThing
@@ -40,39 +40,15 @@ newThing
 		yourself
 !
 
-refreshList
-	"Makes sure all the Things in the model have its own controller.
-	Nothing less and nothing more."
-	
-	| items |
-	
-	"Remove absences"
-	self controllers keys 
-		with: self model things 
-		do:[ :e | (self model things includes: e) ifFalse:[
-					self removeControllerAt: e ] ].
-	
-	self model things do:[ :e | | added |
-		self controllerAt: e ifAbsentPut:[ 
-			added := ThingController 
-				for: e 
-				on: self 
-				appendingTo: '.things' asJQuery ].
-		added ifNotNil:[ 
-			added render ] ]
+refresh
+
+	(self controllerAt: 'things') refresh
 !
 
 removeThing
 	
 	self model things removeLast.
-	self model trigger: #changed
-! !
-
-!StuffController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
+	self refresh
 ! !
 
 !StuffController methodsFor: 'reactions'!
@@ -94,8 +70,18 @@ onAfterModel
 !
 
 onStuffChanged
-
-	self refreshList
+		
+	self ifAbsentAt: 'things' 
+		put: [
+			"Lazy creation of the list controller for the thumbnails"
+			(ListController 
+				for: model 
+				on: self 
+				appendingTo: '.things' asJQuery)
+					getItemsBlock: [:m| m things ];
+					itemControllerClass: ThingController;
+					yourself].
+	self refresh
 !
 
 onTemplate: data
@@ -126,7 +112,31 @@ StuffController is a Controller composed by ThingControllers that are created ba
 
 Stuff has a collection of Thing(s)!
 
-!StuffUsingEachController methodsFor: 'accessing'!
+!StuffUsingEachController methodsFor: 'actions'!
+
+addThing
+	
+	self model things add: self class newThing
+!
+
+newThing
+
+	^ Thing new
+		name: self inspiration atRandom;
+		yourself
+!
+
+removeThing
+	
+	self model things removeLast
+! !
+
+!StuffUsingEachController class methodsFor: 'accessing'!
+
+defaultModel
+
+	^ self newStuff
+!
 
 inspiration
 	"Answers a collection to inspire a name for something."
@@ -142,49 +152,6 @@ inspiration
  	sweet 
 	groovy 
 	)
-! !
-
-!StuffUsingEachController methodsFor: 'actions'!
-
-addThing
-	
-	self model things add: self newThing
-!
-
-newStuff
-
-	^ Stuff new
-		name: 'Hey... this stuff is new!!';
-		yourself
-!
-
-newThing
-
-	^ Thing new
-		name: self inspiration atRandom;
-		yourself
-!
-
-removeThing
-	
-	self model things removeLast
-! !
-
-!StuffUsingEachController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self model: self newStuff.
-	self addThing; addThing
-! !
-
-!StuffUsingEachController class methodsFor: 'accessing'!
-
-defaultModel
-
-	^ Stuff new
 !
 
 viewPath
@@ -193,23 +160,54 @@ viewPath
 	^ 'bower_components/text/text!!views/demo/'
 ! !
 
+!StuffUsingEachController class methodsFor: 'actions'!
+
+newStuff
+
+	| stuff |
+	
+	stuff := Stuff new
+				name: 'Hey... this stuff is new!!';
+				yourself.
+				
+	stuff things add: self newThing; add: self newThing.
+	^ stuff
+!
+
+newThing
+
+	^ Thing new
+		name: self inspiration atRandom;
+		yourself
+! !
+
 StuffUsingEachController subclass: #StuffComposedUsingEachController
 	instanceVariableNames: ''
 	package: 'Flow-Templates-Tests'!
 
-!StuffComposedUsingEachController methodsFor: 'actions'!
+!StuffComposedUsingEachController methodsFor: 'reactions'!
 
-getConfiguration
+configureAndBind
 
-	^ super getConfiguration
-		at: #adapter put: ( #{
- 		   		#subscribe -> [ :obj :keypath :callback | 
-					obj on: 'change:',keypath do: callback].
-    			#unsubscribe -> [ :obj :keypath :callback | obj off: 'change:',keypath do: callback].
-    			#read -> [ :obj :keypath | 
-					obj get keypath ].
-    			#publish -> [ :obj :keypath :value | obj set: keypath val: value ]});
-		yourself
+	super configureAndBind
+!
+
+onTemplate: data
+
+	super onTemplate: data.
+		
+	self ifAbsentAt: 'things' 
+		put: [
+			"Lazy creation of the iterated controller for the things in stuff"
+			(IteratedController 
+				for: model 
+				on: self
+				appendingTo: '.listOfThings' asJQuery)
+					itemControllerClass: ThingController;
+					templateUri: (TemplateController viewPath, 'demo/ListOfThings.html');
+					yourself].
+
+	(self controllerAt: 'things') render
 ! !
 
 BindingController subclass: #ThingController

@@ -173,8 +173,9 @@ onAboutToRender
 	"Empty the contents of the root element of this controller.
 	This would work as long as the view of this controller is the
 	only thing supossed to be child in that element"
-	self parentElement ifNotNil:[
-		self parentElement empty ].
+
+	"self parentElement ifNotNil:[
+		self parentElement empty ]."
 !
 
 onAfterModel
@@ -241,6 +242,17 @@ for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 		yourself
 !
 
+for: aModel on: aParentControllerOrNil view: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
+
+	^ self new
+		model: aModel;
+		parent: aParentControllerOrNil;
+		view: aHtmlElement;
+		yourself
+!
+
 on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller using the default model,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
@@ -257,12 +269,6 @@ Controller subclass: #ListController
 ListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.!
 
 !ListController methodsFor: 'accessing'!
-
-getItems
-	"Answers the items using the custom getItemsBlock on its model"
-	
-	^ self getItemsBlock value: model
-!
 
 getItemsBlock
 
@@ -305,6 +311,21 @@ newItemControllerBlock: aBlock
 	newItemControllerBlock := aBlock
 !
 
+parentElement: anHtmlElement
+	"Sets the parent elment for the list.
+	It can be anything but, in the case of lists, the parent element usually is a <ul>
+	The thing is to treat it like an <ul> full of <li> children."
+	parentElement := view := anHtmlElement
+! !
+
+!ListController methodsFor: 'actions'!
+
+getItems
+	"Answers the items using the custom getItemsBlock on its model"
+	
+	^ self getItemsBlock value: model
+!
+
 newItemControllerFor: anItem
 
 	^ itemControllerClass isNil
@@ -314,15 +335,6 @@ newItemControllerFor: anItem
 					appendingTo: self view ] 
 		ifTrue:[ self newItemControllerBlock value: anItem ]
 !
-
-parentElement: anHtmlElement
-	"Sets the parent elment for the list.
-	It can be anything but, in the case of lists, the parent element usually is a <ul>
-	The thing is to treat it like an <ul> full of <li> children."
-	parentElement := view := anHtmlElement
-! !
-
-!ListController methodsFor: 'actions'!
 
 refresh
 	"Makes sure all the items in the model have its own controller.
@@ -334,7 +346,7 @@ refresh
 	"Remove absences"
 	self controllers keys 
 		with: self getItems 
-		do:[ :e | (self getItems includes: e) ifFalse:[
+		do:[ :e | (self getItems anySatisfy:[ :each | each == e]) ifFalse:[
 					self removeControllerAt: e ] ].
 	
 	"Add novelties"

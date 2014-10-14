@@ -1,4 +1,17 @@
 Smalltalk createPackage: 'App'!
+Object subclass: #App
+	instanceVariableNames: ''
+	package: 'App'!
+
+!App class methodsFor: 'not yet classified'!
+
+start
+
+	Flow start.
+	
+	Router refresh
+! !
+
 FlowAppController subclass: #AppController
 	instanceVariableNames: ''
 	package: 'App'!
