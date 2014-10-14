@@ -227,9 +227,9 @@ onViewCreated: aRivetJSView for: aModel
 !
 
 onViewDestroyed: aView for: aModel
-
-	console warn: self controllers.
-	self removeControllerAt: (aModel at: '_rv').
-	console log: self controllers.
+	"The view for aModel was revoved by rivetjs, 
+	so we make sure we remove the controller as well"
+	
+	self removeControllerAt: (aModel at: '_rv')
 ! !
 

@@ -477,17 +477,11 @@ protocol: 'reactions',
 fn: function (aView,aModel){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=console;
-$2=self._controllers();
-$ctx1.sendIdx["controllers"]=1;
-_st($1)._warn_($2);
 self._removeControllerAt_(_st(aModel)._at_("_rv"));
-_st(console)._log_(self._controllers());
 return self}, function($ctx1) {$ctx1.fill(self,"onViewDestroyed:for:",{aView:aView,aModel:aModel},globals.IteratedController)})},
 args: ["aView", "aModel"],
-source: "onViewDestroyed: aView for: aModel\x0a\x0a\x09console warn: self controllers.\x0a\x09self removeControllerAt: (aModel at: '_rv').\x0a\x09console log: self controllers.\x0a\x09",
-messageSends: ["warn:", "controllers", "removeControllerAt:", "at:", "log:"],
+source: "onViewDestroyed: aView for: aModel\x0a\x09\x22The view for aModel was revoved by rivetjs, \x0a\x09so we make sure we remove the controller as well\x22\x0a\x09\x0a\x09self removeControllerAt: (aModel at: '_rv')\x09",
+messageSends: ["removeControllerAt:", "at:"],
 referencedClasses: []
 }),
 globals.IteratedController);
