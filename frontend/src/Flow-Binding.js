@@ -257,14 +257,13 @@ fn: function (theEachBind){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return function(el){
-		this.view.onViewCreated = function(view, model){ 
-			self._onViewCreated_for_(view, model) };
-		this.view.onViewDestroyed = function(view){ self._onViewDestroyed_(view) };
+		this.view.onViewCreated = function(view, model){ self._onViewCreated_for_(view, model) };
+		this.view.onViewDestroyed = function(view, model){ self._onViewDestroyed_for_(view, model) };
 		theEachBind.call(this,el);		
 		};
 return self}, function($ctx1) {$ctx1.fill(self,"getCustomBindFor:",{theEachBind:theEachBind},globals.IteratedController)})},
 args: ["theEachBind"],
-source: "getCustomBindFor: theEachBind\x0a\x0a\x09<return function(el){\x0a\x09\x09this.view.onViewCreated = function(view, model){ \x0a\x09\x09\x09self._onViewCreated_for_(view, model) };\x0a\x09\x09this.view.onViewDestroyed = function(view){ self._onViewDestroyed_(view) };\x0a\x09\x09theEachBind.call(this,el);\x09\x09\x0a\x09\x09}>",
+source: "getCustomBindFor: theEachBind\x0a\x0a\x09<return function(el){\x0a\x09\x09this.view.onViewCreated = function(view, model){ self._onViewCreated_for_(view, model) };\x0a\x09\x09this.view.onViewDestroyed = function(view, model){ self._onViewDestroyed_for_(view, model) };\x0a\x09\x09theEachBind.call(this,el);\x09\x09\x0a\x09\x09}>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -416,17 +415,20 @@ fn: function (aRivetJSView,aModel){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$1;
+_st(console)._log_("creating item controller");
+$ctx1.sendIdx["log:"]=1;
+_st(console)._log_(aRivetJSView);
 $2=_st(self["@itemControllerClass"])._isNil();
 if(smalltalk.assert($2)){
 $1=_st(self._newItemControllerBlock())._value_value_(aRivetJSView,aModel);
 } else {
-$1=_st(self["@itemControllerClass"])._for_on_view_(aModel,self,_st(aRivetJSView)._els());
+$1=_st(self["@itemControllerClass"])._for_on_appendingTo_(aModel,self,_st(jQuery)._value_(_st(_st(aRivetJSView)._els())._first()));
 };
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newItemControllerOn:for:",{aRivetJSView:aRivetJSView,aModel:aModel},globals.IteratedController)})},
 args: ["aRivetJSView", "aModel"],
-source: "newItemControllerOn: aRivetJSView for: aModel\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse:[ itemControllerClass \x0a\x09\x09\x09\x09\x09for: aModel \x0a\x09\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09\x09view: aRivetJSView els ] \x0a\x09\x09ifTrue:[ self newItemControllerBlock value: aRivetJSView value: aModel ]\x0a\x0a\x09 ",
-messageSends: ["ifFalse:ifTrue:", "isNil", "for:on:view:", "els", "value:value:", "newItemControllerBlock"],
+source: "newItemControllerOn: aRivetJSView for: aModel\x0aconsole log: 'creating item controller'.\x0aconsole log: aRivetJSView.\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse:[ itemControllerClass \x0a\x09\x09\x09\x09\x09for: aModel \x0a\x09\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09\x09appendingTo: (jQuery value: aRivetJSView els first) ] \x0a\x09\x09ifTrue:[ self newItemControllerBlock value: aRivetJSView value: aModel ]\x0a\x0a\x09 ",
+messageSends: ["log:", "ifFalse:ifTrue:", "isNil", "for:on:appendingTo:", "value:", "first", "els", "value:value:", "newItemControllerBlock"],
 referencedClasses: []
 }),
 globals.IteratedController);
@@ -470,17 +472,22 @@ globals.IteratedController);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "onViewDestroyed:",
+selector: "onViewDestroyed:for:",
 protocol: 'reactions',
-fn: function (aView){
+fn: function (aView,aModel){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(console)._log_("onViewDestroyed");
-_st(console)._info_(aView);
-return self}, function($ctx1) {$ctx1.fill(self,"onViewDestroyed:",{aView:aView},globals.IteratedController)})},
-args: ["aView"],
-source: "onViewDestroyed: aView\x0a\x0a\x09console log: 'onViewDestroyed'.\x0a\x09console info: aView",
-messageSends: ["log:", "info:"],
+var $1,$2;
+$1=console;
+$2=self._controllers();
+$ctx1.sendIdx["controllers"]=1;
+_st($1)._warn_($2);
+self._removeControllerAt_(_st(aModel)._at_("_rv"));
+_st(console)._log_(self._controllers());
+return self}, function($ctx1) {$ctx1.fill(self,"onViewDestroyed:for:",{aView:aView,aModel:aModel},globals.IteratedController)})},
+args: ["aView", "aModel"],
+source: "onViewDestroyed: aView for: aModel\x0a\x0a\x09console warn: self controllers.\x0a\x09self removeControllerAt: (aModel at: '_rv').\x0a\x09console log: self controllers.\x0a\x09",
+messageSends: ["warn:", "controllers", "removeControllerAt:", "at:", "log:"],
 referencedClasses: []
 }),
 globals.IteratedController);

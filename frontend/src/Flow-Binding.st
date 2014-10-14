@@ -164,9 +164,8 @@ configureAndBind
 getCustomBindFor: theEachBind
 
 	<return function(el){
-		this.view.onViewCreated = function(view, model){ 
-			self._onViewCreated_for_(view, model) };
-		this.view.onViewDestroyed = function(view){ self._onViewDestroyed_(view) };
+		this.view.onViewCreated = function(view, model){ self._onViewCreated_for_(view, model) };
+		this.view.onViewDestroyed = function(view, model){ self._onViewDestroyed_for_(view, model) };
 		theEachBind.call(this,el);		
 		}>
 !
@@ -198,12 +197,14 @@ makeCustomBinder
 !
 
 newItemControllerOn: aRivetJSView for: aModel
+console log: 'creating item controller'.
+console log: aRivetJSView.
 
 	^ itemControllerClass isNil
 		ifFalse:[ itemControllerClass 
 					for: aModel 
 					on: self 
-					view: aRivetJSView els ] 
+					appendingTo: (jQuery value: aRivetJSView els first) ] 
 		ifTrue:[ self newItemControllerBlock value: aRivetJSView value: aModel ]
 ! !
 
@@ -225,9 +226,10 @@ onViewCreated: aRivetJSView for: aModel
 	(self controllerAt: (aModel at: '_rv')) render
 !
 
-onViewDestroyed: aView
+onViewDestroyed: aView for: aModel
 
-	console log: 'onViewDestroyed'.
-	console info: aView
+	console warn: self controllers.
+	self removeControllerAt: (aModel at: '_rv').
+	console log: self controllers.
 ! !
 
