@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Starts the grunt watch task
+
+echo "Starts the watch task..."
+cd frontend
+exec grunt watch ; bash
