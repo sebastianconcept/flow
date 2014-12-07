@@ -8,4 +8,4 @@ rm -r ../public/js
 # mkdir -p ../public/js && r.js -o dist.conf.js
 #mkdir -p ../public/js && r.js -o deploy.js
 
-mkdir -p ../public/js && grunt devel && cp the.js ../public/js
+mkdir -p ../public/js && grunt deploy && cp the.js ../public/js

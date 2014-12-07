@@ -1,7 +1,7 @@
 {
-  "name": "retevendita",
-  "description": "The Application or The Library doing The Thing.",
-  "version": "0.1.0",
+  "name": "flow",
+  "description": "A living full-stack framework for the web.",
+  "version": "0.2.0",
   "ignore": [
     "**/.*",
     "node_modules",

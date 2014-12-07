@@ -3,3 +3,6 @@
 
 bower install
 npm install
+amber config
+grunt
+grunt devel

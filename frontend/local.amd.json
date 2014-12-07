@@ -1,0 +1,6 @@
+{
+    "paths": {
+        "flow": "src",
+        "app": "src"
+    }
+}

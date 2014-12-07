@@ -12,7 +12,7 @@ start
 	Router refresh
 ! !
 
-FlowAppController subclass: #AppController
+Controller subclass: #AppController
 	instanceVariableNames: ''
 	package: 'App'!
 !AppController commentStamp!
@@ -34,7 +34,7 @@ onOpen
 	that"
 
 	self session api ws
-		publish: app at: 'app';
+		publish: Flow app at: 'app';
 		publish: Transcript current at: 'Transcript';
 		publish: console at: 'console';
 		publish: [ :sent | sent ] at: 'echo';

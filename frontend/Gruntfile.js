@@ -40,24 +40,25 @@ module.exports = function (grunt) {
                     'src/Flow-API.st',
                     'src/Flow-Templates.st',
                     'src/Flow-Binding.st',
-                    'src/ReteVendita.st', 
+                    'src/App.st', 
 
                     'src/Flow-Binding-Tests.st',
                     'src/MiniMapless-Tests.st',
                     'src/Flow-Templates-Tests.st',
+                    'src/App-Tests.st',
                     'src/Flow-Tests.st'
 
                 ],
-                amd_namespace: 'amber-retevendita',
+                amd_namespace: 'app',
                 libraries: ['SUnit', 'Web']
             },
             test_runner: {
                 src: ['node_modules/amber-dev/lib/Test.st'],
                 libraries: [
                     /* add dependencies packages here */
-                    'ReteVendita', /* add other code-to-test packages here */
+                    'App', /* add other code-to-test packages here */
                     'SUnit',
-                    'ReteVendita-Tests' /* add other test packages here */
+                    'App-Tests' /* add other test packages here */
                 ],
                 main_class: 'NodeTestRunner',
                 output_name: 'test_runner'

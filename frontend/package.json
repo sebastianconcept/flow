@@ -1,8 +1,8 @@
 {
-  "name": "retevendita",
-  "title": "ReteVendita",
-  "description": "The Application or The Library doing The Thing.",
-  "version": "0.1.0",
+  "name": "flow",
+  "title": "Flow",
+  "description": "A living full-stack framework for the web.",
+  "version": "0.2.0",
   "homepage": "",
   "author": {
     "name": "Sebastian Sastre",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://git.flowingconcept.com/seb/midarv.git"
+    "url": "git://github.com/flow-stack/flow.git"
   },
   "bugs": {
     "url": ""

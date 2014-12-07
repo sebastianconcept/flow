@@ -3,15 +3,13 @@ define([
     // --- packages to be deployed begin here ---
     'text',
     'rivets',
-  	'amber-retevendita/MiniMapless',
-	'amber-retevendita/Flow',
-	'amber-retevendita/Flow-Core',
-	'amber-retevendita/Flow-API',
-	'amber-retevendita/Flow-Templates',
-	'amber-retevendita/Flow-Binding',
-    'amber-retevendita/ReteVendita'
-
-    // 'amber-retevendita/Retevendita'
+  	'flow/MiniMapless',
+	'flow/Flow',
+	'flow/Flow-Core',
+	'flow/Flow-API',
+	'flow/Flow-Templates',
+	'flow/Flow-Binding',
+    'app/App'
     // --- packages to be deployed end here ---
 ], function (amber) {
     return amber;
