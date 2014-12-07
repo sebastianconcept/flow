@@ -1,100 +1,103 @@
 'use strict';
 
-module.exports = function(grunt) {
-  var path = require('path');
+module.exports = function (grunt) {
+    var path = require('path');
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-execute');
-  grunt.loadNpmTasks('amber-dev');
+    // These plugins provide necessary tasks.
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-execute');
+    grunt.loadNpmTasks('amber-dev');
 
+    // Default task.
+    grunt.registerTask('default', ['amberc:all']);
+    grunt.registerTask('test', ['amberc:test_runner', 'execute:test_runner', 'clean:test_runner']);
+    grunt.registerTask('devel', ['amdconfig:app', 'requirejs:devel']);
+    grunt.registerTask('deploy', ['amdconfig:app', 'requirejs:deploy']);
 
-  // Default task.
-  grunt.registerTask('default', ['amberc:all']);
-  grunt.registerTask('test', ['amberc:test_runner', 'execute:test_runner', 'clean:test_runner']);
+    // Project configuration.
+    grunt.initConfig({
+        // Metadata.
+        // pkg: grunt.file.readJSON(''),
+        banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+            '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+            '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
+            '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+            ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
+        // task configuration
+        amberc: {
+            options: {
+                amber_dir: path.join(__dirname, "bower_components", "amber"),
+                library_dirs: ['src'],
+                closure_jar: ''
+            },
+            all: {
+                src: [ // list all sources in dependency order
 
-  // flow: enable the 'watch' plugin and 'run'
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-run');
+                    'src/MiniMapless.st',
+                    'src/Flow.st',
+                    'src/Flow-Core.st',
+                    'src/Flow-API.st',
+                    'src/Flow-Templates.st',
+                    'src/Flow-Binding.st',
+                    'src/ReteVendita.st', 
 
-    
-  // Project configuration.
-  grunt.initConfig({
-    // Metadata.
-    // pkg: grunt.file.readJSON(''),
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
-    // task configuration
-    amberc: {
-      options: {
-        amber_dir: path.join(__dirname, "bower_components", "amber"),
-        library_dirs: ['src'],
-        closure_jar: ''
-      },
-      all: {
-        src: [
-            'src/App.st', // list all sources in dependency order
-            'src/App-Tests.st' // list all tests in dependency order
-        ],
-        amd_namespace: 'app',
-        libraries: ['SUnit', 'Web']
-      },
-      test_runner: {
-        src: ['node_modules/amber-dev/lib/Test.st'],
-        libraries: [
-          /* add dependencies packages here */
-          'App', /* add other code-to-test packages here */
-          'SUnit',
-          'App-Tests' /* add other test packages here */
-        ],
-        main_class: 'NodeTestRunner',
-        output_name: 'test_runner'
-      }
-    },
+                    'src/Flow-Binding-Tests.st',
+                    'src/MiniMapless-Tests.st',
+                    'src/Flow-Templates-Tests.st',
+                    'src/Flow-Tests.st'
 
-    execute: {
-      test_runner: {
-        src: ['test_runner.js']
-      }
-    },
+                ],
+                amd_namespace: 'amber-retevendita',
+                libraries: ['SUnit', 'Web']
+            },
+            test_runner: {
+                src: ['node_modules/amber-dev/lib/Test.st'],
+                libraries: [
+                    /* add dependencies packages here */
+                    'ReteVendita', /* add other code-to-test packages here */
+                    'SUnit',
+                    'ReteVendita-Tests' /* add other test packages here */
+                ],
+                main_class: 'NodeTestRunner',
+                output_name: 'test_runner'
+            }
+        },
 
-    clean: {
-      test_runner: ['test_runner.js']
-    },
+        amdconfig: {app: {dest: 'config.js'}},
 
+        requirejs: {
+            deploy: {options: {
+                mainConfigFile: "config.js",
+                onBuildWrite: function (moduleName, path, contents) {
+                    return moduleName === "config" ? contents + "\nrequire.config({map:{'*':{app:'deploy'}}});" : contents;
+                },
+                pragmas: {
+                    excludeIdeData: true,
+                    excludeDebugContexts: true
+                },
+                include: ['config', 'node_modules/requirejs/require', 'deploy'],
+                out: "the.js"
+            }},
+            devel: {options: {
+                mainConfigFile: "config.js",
+                onBuildWrite: function (moduleName, path, contents) {
+                    return moduleName === "config" ? contents + "\nrequire.config({map:{'*':{app:'devel'}}});" : contents;
+                },
+                include: ['config', 'node_modules/requirejs/require'],
+                out: "the.js"
+            }}
+        },
 
-    // flow: adds the tasks that run some bash scripts
-    run: {
-      // flow: adds the css task to build CSS
-      buildCss: {
-        cmd: './publishCss'
-      },
+        execute: {
+            test_runner: {
+                src: ['test_runner.js']
+            }
+        },
 
-      // flow: adds the views task to build the templates
-      buildViews: {
-        cmd: './publishViews'
-      },
-
-      // flow: adds the img task to build the images
-      buildImg: {
-        cmd: './publishImg'
-      },
-
-      // flow: adds the task that takes the javascript sources and makes one big ball of js
-      buildJs: {
-        cmd: './publishJs'
-      }
-    },
-
-    // flow: observer that reacts rebuilding the static stuff
-    watch: {
-      files: [ 'css/**', 'views/**', 'src/**' ],
-      tasks: [ 'run:buildCss', 'run:buildViews', 'run:buildImg', 'run:buildJs' ]
-
-    }
-  });
+        clean: {
+            test_runner: ['test_runner.js']
+        }
+    });
 
 };

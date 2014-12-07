@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+
+chmod u+x backend/pharo
+chmod u+x backend/pharo-ui
+chmod u+x backend/pharo-vm/pharo
+chmod u+x makeFrontend
+chmod u+x cleanBuild
+chmod u+x cleanBuildFrontend
+chmod u+x cleanBuildBackend
+chmod u+x backend/build
+chmod u+x frontend/build

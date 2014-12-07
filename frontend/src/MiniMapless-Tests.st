@@ -197,13 +197,13 @@ testRemoteCreate
 	
 	createdOne remember: 'something'.
 		
-	createdOne createDo:[ :res |
+	createdOne createThen:[ :res |
 		self shouldnt: [
 				createdOne onAfterCreated: res.
 				self assert: res status = 201 ]
 			raise: MaplessError. 
 
-		createdOne createDo:[ :resp |
+		createdOne createThen:[ :resp |
 		[ createdOne onAfterCreated: resp ]
 			on: MaplessError
 			do:[ :x | self assert: resp status = 409 ] ]
@@ -218,17 +218,17 @@ testRemoteDelete
 	
 	createdOne remember: 'something'.
 		
-	createdOne createDo:[ :res |
+	createdOne createThen:[ :res |
 		self shouldnt: [
 				createdOne onAfterCreated: res.
 				self assert: res status = 201 ]
 			raise: MaplessError. 
 
-		createdOne deleteDo:[ :resp |
+		createdOne deleteThen:[ :resp |
 			createdOne onAfterDeleted: resp.
 			self assert: resp status = 200 ].	
 			
-		Thing findId: createdOne id do:[ :response |
+		Thing findId: createdOne id then:[ :response |
 			response status = 404 ]
 	].
 !
@@ -244,14 +244,14 @@ testRemoteRead
 		remarkable: 'today';
 		youself.
 		
-	createdOne createDo:[ :res |
+	createdOne createThen:[ :res |
 		self shouldnt: [
 				createdOne onAfterCreated: res.
 				self assert: res status = 201 ]
 			raise: MaplessError. 
 			
-		Thing findId: createdOne id do:[ :response | 
-			loadedOne := Thing onAfterRead: response.
+		Thing findId: createdOne id then:[ :aThing | 
+			loadedOne := aThing.
 			self assert: loadedOne class = Thing.
 			self assert: loadedOne remember = 'something'.
 			self assert: loadedOne remarkable = 'today'
@@ -270,14 +270,14 @@ testRemoteReadAll
 		remarkable: 'today';
 		youself.
 		
-	createdOne createDo:[ :res |
+	createdOne createThen:[ :res |
 		self shouldnt: [
 				createdOne onAfterCreated: res.
 				self assert: res status = 201 ]
 			raise: MaplessError. 
 	
-		Thing findAllDo:[ :response |
-			loadedOnes := Thing onAfterReadAll: response.
+		Thing findAllThen:[ :someThings |
+			loadedOnes := someThings.
 			self assert: (loadedOnes allSatisfy:[ :e | e class = Thing ]).
 			self assert: (loadedOnes allSatisfy:[ :e | e id notNil ]).
 			self assert: (loadedOnes anySatisfy:[ :e | e id = createdOne id ]).
@@ -296,7 +296,7 @@ testRemoteReadSome
 		remember: 'some';
 		youself.
 		
-	createdOne createDo:[ :res |
+	createdOne createThen:[ :res |
 		self shouldnt: [
 				createdOne onAfterCreated: res.
 				self assert: res status = 201 ]
@@ -304,8 +304,8 @@ testRemoteReadSome
 
 		query := '{"remember":"some"}'.
 		
-		Thing find: query do:[ :response |
-			loadedOnes := Thing onAfterReadSome: response.
+		Thing find: query then:[ :response |
+			loadedOnes := Thing fromResponse: response.
 			self assert: (loadedOnes allSatisfy:[ :e | e class = Thing ]).
 			self assert: (loadedOnes allSatisfy:[ :e | e id notNil ]).
 			self assert: (loadedOnes anySatisfy:[ :e | e id = createdOne id ]).
@@ -325,19 +325,19 @@ testRemoteSave
 		in: 'mapless';
 		yourself.
 		
-	createdOne saveDo:[ :res |
+	createdOne saveThen:[ :res |
 		self shouldnt: [
 				createdOne onAfterSaved: res.
 				self assert: res status = 200 ]
 			raise: MaplessError.
 
-		createdOne createDo:[ :resp |
+		createdOne createThen:[ :resp |
 		[ createdOne onAfterCreated: resp ]
 			on: MaplessError
 			do:[ :x | self assert: resp status = 409 ] ].
 		
-		Thing findId: createdOne id do:[ :response | 
-			loadedOne := Thing onAfterRead: response.
+		Thing findId: createdOne id then:[ :response | 
+			loadedOne := Thing fromResponse: response.
 			self assert: loadedOne class = Thing.
 			self assert: loadedOne thereIs = 'noMap'.
 			self assert: loadedOne in = 'mapless'
@@ -353,19 +353,19 @@ testRemoteUpdate
 	
 	createdOne thereIs: 'noMap'.
 		
-	createdOne saveDo:[ :res |
+	createdOne saveThen:[ :res |
 		self shouldnt: [
 				createdOne onAfterSaved: res.
 				self assert: res status = 200 ]
 			raise: MaplessError.
 
-		createdOne createDo:[ :resp |
+		createdOne createThen:[ :resp |
 		[ createdOne onAfterCreated: resp ]
 			on: MaplessError
 			do:[ :x | self assert: resp status = 409 ] ].
 		
-		Thing findId: createdOne id do:[ :response | 
-			loadedOne := Thing onAfterRead: response.			
+		Thing findId: createdOne id then:[ :response | 
+			loadedOne := Thing fromResponse: response.			
 			self assert: loadedOne class = Thing.
 			self assert: loadedOne thereIs = 'noMap'.
 
@@ -374,8 +374,8 @@ testRemoteUpdate
 			self assert: loadedOne thereIs = 'LOLWAT?'.
 		
 			loadedOne saveDo:[ :aResponse | loadedOne onAfterSave: aResponse.
-				Thing findId: loadedOne id do:[ :aResp |
-					updatedOne := Thing onAfterRead: aResp.
+				Thing findId: loadedOne id then:[ :aResp |
+					updatedOne := Thing fromResponse: aResp.
 					self assert: updatedOne id = loadedOne id.
 					self assert: updatedOne id = createdOne id.
 					self assert: updatedOne thereIs = 'LOLWAT?'.

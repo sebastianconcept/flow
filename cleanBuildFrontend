@@ -7,7 +7,7 @@ rm -rf frontend/node_modules
 
 echo "Building frontend..."
 cd $PWD/frontend
-./load
+./build
 cd ..
 
 echo

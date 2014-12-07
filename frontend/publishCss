@@ -6,3 +6,4 @@
 echo "deleting public/css/"
 rm -r ../public/css
 mkdir -p ../public/css && cp -R css/ ../public/css
+

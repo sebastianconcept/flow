@@ -12,8 +12,8 @@ echo "Loading fresh stable..."
 ./getPharo30
 
 # Open image and start loading project
-echo "Opening Pharo and kick off loading project ..."
-./pharo-ui Pharo.image FlowLoader.st
+echo "Opening Pharo and kick off building a fresh image build for the project's backend..."
+./pharo Pharo.image FlowBuilder.st --quit
 
 echo
 echo "Done building the Pharo worker image"

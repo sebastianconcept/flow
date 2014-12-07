@@ -21,6 +21,35 @@ testConnect
 	self assert: window app session api ws isConnected ] valueWithTimeout: 1000
 !
 
+testCustomEventWithNoArgument
+
+	| observed |
+
+	observed := Dictionary new.
+	
+	observed when: #something do:[ observed at: #something put: #happen ].
+	
+	observed trigger: #something
+	
+	self assert: (observed includesKey: #something).	
+	self assert: (observed at: #something) = #happen.
+!
+
+testCustomEventWithOneArgument
+
+	| observed thing |
+
+	observed := Dictionary new.
+	thing := FlowTest new.
+	
+	observed when: #something: do:[ :argument | observed at: #something: put: argument ].
+	
+	observed trigger: #something: with: thing.
+	
+	self assert: (observed includesKey: #something).	
+	self assert: (observed at: #something) == thing.
+!
+
 testEcho
 
 	| echo |

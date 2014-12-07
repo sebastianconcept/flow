@@ -111,12 +111,7 @@ at: aKey ifAbsent: aBlock
 	^ data at: aKey ifAbsent: aBlock
 !
 
-create
-	"Creates this mapless using the remote API"
-	^ self createDo:[ :res | self onAfterCreate: res ]
-!
-
-createDo: aBlock
+createThen: aBlock
 	"Creates this mapless using the remote API"
 
 	self onAboutToCreate.
@@ -132,12 +127,7 @@ createDo: aBlock
 	}.
 !
 
-delete
-	"Delete this mapless using the remote API"
-	self deleteDo:[ :res | self onAfterDelete: res ]
-!
-
-deleteDo: aBlock
+deleteThen: aBlock
 	"Delete this mapless using the remote API"
 
 	self onAboutToDelete.
@@ -204,10 +194,10 @@ doesNotUnderstand: aMessage
 
 fresh
 	"Re-read this mapless' state."
-	self freshDo:[ :res | self onAfterFresh: res ]
+	self freshThen:[ :res | self onAfterFresh: res ]
 !
 
-freshDo: aBlock
+freshThen: aBlock
 	"Re-read this mapless' state from the remote API."
 
 	self onAboutToFresh.
@@ -280,11 +270,20 @@ onAboutToFresh
 
 save
 	"Saves this mapless (upserts it)"
-	^ self saveDo:[ :res | self onAfterSave: res ]
+	^ self saveThen:[ :res | self onAfterSave: res ]
 !
 
-saveDo: aBlock
+saveThen: aBlock
 	"Saves this mapless using the remote API"
+
+	self 
+		saveThen: aBlock 
+		onError: [ :res | MaplessError signal: 'Problem saving ', self asString,' resp: ', res asString ]
+!
+
+saveThen: aBlock onError: aFallbackBlock
+	"Saves this mapless using the remote API, then evaluates aBlock.
+	If there is an error, evaluates aFallbackBlock."
 
 	self onAboutToSave.
 	
@@ -295,7 +294,10 @@ saveDo: aBlock
 		'contentType'-> 'application/json; charset=utf-8'.
 		'dataType'-> 'json'.
 		'data' -> self asJSONString.
-		'complete' -> [ :res | aBlock value: res ]
+		'complete' -> [ :res | 
+			res status = 200 
+				ifTrue:[ aBlock value: res ]
+				ifFalse:[ aFallbackBlock value: res ] ]
 	}
 !
 
@@ -324,7 +326,7 @@ update
 	self updateDo:[ :res | self onAfterUpdate: res ]
 !
 
-updateDo: aBlock
+updateThen: aBlock
 	"Updates this mapless using the remote API"
 
 	self onAboutToUpdate.
@@ -565,13 +567,19 @@ singularName
 
 !Mapless class methodsFor: 'actions'!
 
-find: aQueryString
+find: someConditionsInJSON then: aBlock
+	"Finds some mapless using the remote API to resolve someConditionsInJSON"
 
-	self find: aQueryString do: [ :res | self onAfterReadSome: res ]
+	self 
+		find: someConditionsInJSON 
+		then: aBlock 
+		ifNone: [ MaplessError signal: 'Nothing found for ', someConditionsInJSON asJSONString ] 
+		onError: [ :res | MaplessError signal: 'Problem while querying for ', someConditionsInJSON asJSONString, ' server says: ', res statusText ]
 !
 
-find: aQueryJSONString do: aBlock
-	"Finds some mapless using the remote API to resolve aQueryJSONString"
+find: someConditionsInJSON then: aBlock ifNone: noneBlock onError: aFallbackBlock
+	"Find one mapless in the remote API using someConditionsInJSON as filtering conditions.
+	And either evaluates aBlock using the result found or noneBlock if there are no matches"
 
 	jQuery ajax: #{
 		'url' -> (self path,'/query').
@@ -579,38 +587,85 @@ find: aQueryJSONString do: aBlock
 		'cache' -> false.
 		'contentType'-> 'application/json; charset=utf-8'.
 		'dataType'-> 'json'.
-		'data' -> aQueryJSONString.
-		'complete' -> [:res| aBlock value: res ]
-	}
+		'data' -> someConditionsInJSON asJSONString.
+		'complete' -> [:res| |found| 
+						res status = 200
+							ifFalse: [ aFallbackBlock value: res ]
+							ifTrue: [
+								found := self fromResponse: res.
+								( found isNil or: [
+								found isEmpty ] )
+									ifTrue: [ noneBlock value ]
+									ifFalse: [ aBlock value: found ] ] ]
+		}
 !
 
-findAll
+findAllThen: aBlock
 
-	self findAllDo: [ :res | self onAfterReadAll: res ]
+	self 
+		findAllThen: aBlock 
+		ifEmpty: [ aBlock value: #() ] 
+		onError: [ :res | MaplessError signal: 'Problem while querying for ', self name , ' server says: ', res statusText ]
 !
 
-findAllDo: aBlock
-
-	jQuery ajax: #{ 
+findAllThen: aBlock ifEmpty: emptyBlock onError: aFallbackBlock
+	"Find all mapless in the remote API using this mapless' path.
+	And either evaluates aBlock using the result found or emptyBlock if there are no matches"
+	
+	jQuery ajax: #{
 		'url' -> self path.
-		'type'-> 'GET'.
-		'cache'-> false.
-		'complete'-> [ :res | aBlock value: res ]
-	}
+		'type' -> 'GET'.
+		'cache' -> false.
+		'contentType'-> 'application/json; charset=utf-8'.
+		'complete' -> [:res| |found| 
+						res status = 200
+							ifFalse: [ aFallbackBlock value: res ]
+							ifTrue: [
+								found := self fromResponse: res.
+								( found isNil or: [
+								found isEmpty ] )
+									ifTrue: [ emptyBlock value ]
+									ifFalse: [ aBlock value: found ] ] ]
+		}
 !
 
-findId: anId
+findId: anId then: aBlock
 
-	self findId: anId do: [ :res | self onAfterRead: res ]
+	self 
+		findOne: #{ '_id' -> anId }
+		then: aBlock
 !
 
-findId: anId do: aBlock
+findOne: someConditionsInJSON then: aBlock
+	"Finds a mapless using the remote API to resolve someConditionsInJSON"
 
-	jQuery ajax: #{ 
-		'url' -> (self path, '/',anId).
-		'type'-> 'GET'.
-		'cache'-> false.
-		'complete'-> [ :res | aBlock value: res ]
+	self 
+		findOne: someConditionsInJSON 
+		then: aBlock 
+		ifNone: [ aBlock value: nil ] 
+		onError: [ :res | 
+			MaplessError signal: 'Problem while querying for ', someConditionsInJSON asJSONString, ' server says: ', res statusText ]
+!
+
+findOne: someConditionsInJSON then: aBlock ifNone: noneBlock onError: aFallbackBlock
+	"Find one mapless in the remote API using someConditionsInJSON as filtering conditions.
+	And either evaluates aBlock using the result found or noneBlock if there are no matches"
+
+	jQuery ajax: #{
+		'url' -> (self path,'/queryOne').
+		'type' -> 'POST'.
+		'cache' -> false.
+		'contentType'-> 'application/json; charset=utf-8'.
+		'dataType'-> 'json'.
+		'data' -> someConditionsInJSON asJSONString.
+		'complete' -> [ :res | |found| 
+						res status = 200
+							ifFalse: [ aFallbackBlock value: res ]
+							ifTrue: [
+								found := self fromResponse: res.
+								found isNil
+									ifTrue: [ noneBlock value ]
+									ifFalse: [ aBlock value: found ] ] ]
 	}
 !
 
@@ -624,7 +679,8 @@ fromJSON: someJSON
 fromJSONString: someJSONStringOrNil
 	"Answers a new instance of this mapless and returns it
 	in the state dictated by someJSONStringOrNil.
-	Returns nil when thigns do not fit."
+	Returns nil when thigns do not fit.
+	If it's a collection it will instantiate many and return them"
 
 	| json modelClass |
 	someJSONStringOrNil ifNil:[ ^nil ].
@@ -662,6 +718,15 @@ fromReified: aReifiedJSON
 	modelClass := Smalltalk globals at: modelClass ifAbsent:[ nil ].
 	
 	^ modelClass new syncWith: aReifiedJSON
+!
+
+fromResponse: aResponse
+	"Returns aMapless based on what aResponse is carrying"
+
+	aResponse status ~= 200 ifTrue:[
+		MaplessError signal: 'Could not read ', self name,':  ', aResponse responseText].
+		
+	^ self fromJSONString: aResponse responseText
 !
 
 localDelete: aMapless
@@ -708,34 +773,6 @@ uuidGenerator
     }
     return _p8() + _p8(true) + _p8(true) + _p8();
 }>
-! !
-
-!Mapless class methodsFor: 'reactions'!
-
-onAfterRead: aResponse
-
-	self trigger: 'afterRead'.
-
-	aResponse status ~= 200 ifTrue:[
-		MaplessError signal: 'Could not read ', self name,':  ', aResponse responseText].
-		
-	^ self fromJSON: aResponse responseText
-!
-
-onAfterReadAll: aResponse
-
-	aResponse status ~= 200 ifTrue:[
-		MaplessError signal: 'Could not read all ', self name,':  ', aResponse responseText].
-		
-	^ self manyFromJSON: aResponse responseText
-!
-
-onAfterReadSome: aResponse
-
-	aResponse status ~= 200 ifTrue:[
-		MaplessError signal: 'Could not read all ', self name,':  ', aResponse responseText].
-		
-	^ self manyFromJSON: aResponse responseText
 ! !
 
 Mapless subclass: #MaplessModel

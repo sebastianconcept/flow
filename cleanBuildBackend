@@ -3,7 +3,7 @@
 
 echo "Building backend..."
 cd $PWD/backend
-./load
+./build
 cd ..
 
 echo

@@ -24,6 +24,36 @@ templateUri: anUri
 	templateUri := anUri
 ! !
 
+!TemplateController methodsFor: 'actions'!
+
+setTemplate: htmlString
+	"Receives the template's htmlString after requirejs 
+	have received it from the server (or cache)."
+
+	| appended |
+
+	"Make it to be the contents of this controllers parent element"
+	appended := self parentElement append: htmlString.
+	
+	"And follow the convention that all templates are wrapped
+	in one element which is the view of this controller."
+	self view: appended children last.
+!
+
+silentSetTemplate: htmlString
+	"Receives the template's htmlString after requirejs 
+	have received it from the server (or cache)."
+
+	| appended |
+
+	"Make it to be the contents of this controllers parent element"
+	appended := self parentElement append: htmlString.
+	
+	"And follow the convention that all templates are wrapped
+	in one element which is the view of this controller."
+	self silentView: appended children last.
+! !
+
 !TemplateController methodsFor: 'initialization'!
 
 initializeTemplateUri
@@ -31,31 +61,20 @@ initializeTemplateUri
 	^ templateUri := self class viewPath, self class keyword,'.html'
 ! !
 
-!TemplateController methodsFor: 'reactions'!
-
-onTemplate: data
-	"Receives the template's data after requirejs 
-	have received it from the server (or cache)."
-
-	| appended |
-
-	"Make it to be the contents of this controllers parent element"
-	"self parentElement html: data."
-	appended := self parentElement append: data.
-	
-	"And follow the convention that all templates are wrapped
-	in one element which is the view of this controller."
-	self view: appended children last.
-! !
-
 !TemplateController methodsFor: 'rendering'!
 
 renderOn: html
+	
+	require 
+		value: (Array with: self templateUri)
+		value: [ :template | self setTemplate: template ]
+!
+
+silentRenderOn: html
 
 	require 
-		value:(Array with: self templateUri)
-		value:[	:template | 
-			self onTemplate: template]
+		value: (Array with: self templateUri)
+		value: [ :template | self silentSetTemplate: template ]
 ! !
 
 !TemplateController class methodsFor: 'accessing'!
@@ -63,7 +82,7 @@ renderOn: html
 viewPath
 	"Returns the path where the template of the view should be found"
 	
-	^ 'bower_components/text/text!!views/'
+	^ 'text!!views/'
 ! !
 
 !TemplateController class methodsFor: 'testing'!
@@ -91,6 +110,6 @@ TemplateController subclass: #HelloWorldController
 viewPath
 	"Returns the path where the template of the view should be found"
 	
-	^ 'bower_components/text/text!!views/demo/'
+	^ 'text!!views/demo/'
 ! !
 
