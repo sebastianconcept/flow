@@ -448,6 +448,22 @@ notNil
 	^ self isNil not
 ! !
 
+!SequenceableCollection methodsFor: '*Flow'!
+
+shuffled
+	"Answers a copy of this collection with the same elements but randomly positioned."
+	
+	| shaked source | 
+	
+	shaked := self class new.
+	source := self copy.
+	
+	1 to: self size do: [ :i | 
+		shaked add: (source remove: source atRandom) ].
+		
+	^ shaked
+! !
+
 !UndefinedObject class methodsFor: '*Flow'!
 
 asRemoteReferenceFor: anObject

@@ -103,15 +103,3 @@ isValidFor: anURI
 	anURI = self keyword ] ]
 ! !
 
-TemplateController subclass: #HelloWorldController
-	instanceVariableNames: ''
-	package: 'Flow-Templates'!
-
-!HelloWorldController class methodsFor: 'accessing'!
-
-viewPath
-	"Returns the path where the template of the view should be found"
-	
-	^ 'text!!views/demo/'
-! !
-

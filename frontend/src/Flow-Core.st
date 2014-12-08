@@ -319,13 +319,6 @@ getItemsBlock: aBlock
 	getItemsBlock := aBlock
 !
 
-intialize
-
-	super initialize.
-	
-	self when: #onAfterModel do: [ self observeList ]
-!
-
 itemControllerClass
 
 	^ itemControllerClass
@@ -386,6 +379,7 @@ newItemControllerFor: anItem
 !
 
 observeList
+	"Observe the model for changes and react to them with a refresh."
 
 	self model when: #changed do: [ self refresh ]
 !
@@ -409,6 +403,15 @@ refresh
 			added := self newItemControllerFor: e ].
 		added ifNotNil:[ 
 			added render ] ]
+! !
+
+!ListController methodsFor: 'initialization'!
+
+intialize
+
+	super initialize.
+	
+	self when: #onAfterModel do: [ self observeList ]
 ! !
 
 Controller subclass: #RouteableController
@@ -541,6 +544,20 @@ remove: anObject
 remove: anObject ifAbsent: aBlock
 
 	self list remove: anObject ifAbsent: aBlock.
+	
+	self changed
+!
+
+removeFirst
+
+	self remove: self first.
+	
+	self changed
+!
+
+removeLast
+
+	self remove: self last.
 	
 	self changed
 ! !

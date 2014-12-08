@@ -197,6 +197,8 @@ ensureSubControllers
 			for: nil "We don't need to set any particular model for it"
 			on: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
 			appendingTo: '#subexample-wrapper' asJQuery ].
+			
+	(self controllerAt: #subexample) refresh
 !
 
 observeEvents
@@ -232,6 +234,85 @@ TemplateController subclass: #Example4Controller
 ##AppController
 
 The AppController is the main/root controller of your flow-based application.!
+
+!Example4Controller methodsFor: 'accessing'!
+
+potentialNames
+
+	^ #(
+	Einstein
+	Heisemberg
+	Bohr
+	Schrodinger
+	Plank
+	Neumann
+	DeBroglie
+	)
+! !
+
+!Example4Controller methodsFor: 'actions'!
+
+addThing
+
+	^ (self controllerAt: #things) model add: (Thing new name: #( Wave Particle) atRandom; yourself)
+!
+
+ensureList
+	"Makes sure we have a controller for #thigns and 
+	make it fresh and visible with a refresh"
+	
+	self ifAbsentAt: #things put: [
+		ListController 
+			for: self getListModel
+			on: self
+			appendingTo: '#things-wrapper' asJQuery ].
+	
+	(self controllerAt: #things) 
+		itemControllerClass: ThingRowController;
+		refresh
+!
+
+getListModel
+	"Answers the list model of thigns"
+
+	| things |
+	 
+	"Load them from the local storage"
+	things := ListModel localFindId: 'samples'.
+	
+	things ifNil: [ 
+		"Oh, not found? then create and save some..."
+		things := self newListModel.
+		things do: [ :e | e localSave ].
+		things localSave ].
+	
+	^ things
+!
+
+newListModel
+	"Answers a newly created list model of thigns (Thing sample instances)."
+	
+	^ ListModel new
+		list: (self potentialNames shuffled collect: [ :aName |  
+					Thing new 
+						name: aName;
+						yourself]);
+		yourself
+!
+
+removeThing
+
+	^ (self controllerAt: #things) model removeLast
+! !
+
+!Example4Controller methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self when: #onAfterView do: [ self ensureList ]
+! !
 
 !Example4Controller class methodsFor: 'testing'!
 
@@ -283,4 +364,12 @@ isValidFor: anURI
 	(anURI match: '^home&') or: [
 	(anURI match: '^$')]]
 ! !
+
+TemplateController subclass: #ThingDetailController
+	instanceVariableNames: ''
+	package: 'App'!
+
+TemplateController subclass: #ThingRowController
+	instanceVariableNames: ''
+	package: 'App'!
 
