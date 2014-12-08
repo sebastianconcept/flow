@@ -1,0 +1,24 @@
+<div id="example3">
+	<h1>Example 3 - Arbitrary sub-controllers</h1>
+	<p>This is the <blockquote>Example3Controller</blockquote>.</p>
+	<p>In the <blockquote>Example3Controller</blockquote> we are seeing also a subclass of <blockquote>BindingController</blockquote> in action. What's different with this controller is that it has a subcontroller named 'subexample'.</p>
+
+	<p>All controllers can have any number of (sub)controllers that they store in a dictionary in their <blockquote>controllers</blockquote> instVar.</p> 
+	
+	<p>The protocol to access a subcontroller is <blockquote>controllerAt:</blockquote></p>
+
+	<p>For example, you can..</p>
+	<a id="inspect-this" class="btn btn-primary">Inspect this controller</a>
+	<p>and in the workspace area of the ispector type: <blockquote>self controllerAt: #subexample</blockquote> and press printIt (or inspect it) and you will see that it returns the corresponding subcontroller</p>
+
+	<p>Inspect the <blockquote>controllers</blockquote> instVar and you'll see it there</p>
+
+	<div id="subexample-wrapper"></div>
+
+	<p>Click in the button below to see more</p>
+	<a href="#/example4" 
+		class="btn btn-default">Example 4</a>
+	<p>Or click in the button below to return to Home</p>
+	<a href="#/" 
+		class="btn btn-default">Home</a>
+</div>

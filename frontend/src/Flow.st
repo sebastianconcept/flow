@@ -357,6 +357,11 @@ asRemoteReference
 	^ self class asRemoteReferenceFor: self
 !
 
+changed
+
+	self trigger: #changed
+!
+
 isRemote
 	"Answers true if this object is remote"
 	

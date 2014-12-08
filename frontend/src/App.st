@@ -53,67 +53,50 @@ initialize
 		yourself.
 ! !
 
-TemplateController subclass: #HomeController
+TemplateController subclass: #Example1Controller
 	instanceVariableNames: ''
 	package: 'App'!
-!HomeController commentStamp!
+!Example1Controller commentStamp!
 ##AppController
 
 The AppController is the main/root controller of your flow-based application.!
 
-!HomeController methodsFor: 'actions'!
+!Example1Controller methodsFor: 'actions'!
 
-highlightTitle
+observeEvents
 
-	(view asJQuery find: 'h1') effect: 'highlight'
+	(view asJQuery find: 'a#browse-example1') on: 'click' do: [ Example1Controller browse ].
+	(view asJQuery find: 'a#browse-template') on: 'click' do: [ TemplateController browse ]
 ! !
 
-!HomeController methodsFor: 'initialization'!
+!Example1Controller methodsFor: 'initialization'!
 
 initialize
 
 	super initialize.
 	
 	self 
-		when: #onAfterView do: [ self highlightTitle ];
+		when: #onAfterView do: [ self observeEvents ];
 		yourself
 ! !
 
-!HomeController class methodsFor: 'testing'!
+!Example1Controller class methodsFor: 'testing'!
 
 isValidFor: anURI
 	"Answers true if this controller is the right route for anURI"
 	
-	^ (anURI match: '^/$') or: [
-	(anURI match: '^home&') or: [
-	(anURI match: '^$')]]
+	^ anURI match: '^example1$'
 ! !
 
-TemplateController subclass: #Section1Controller
+BindingController subclass: #Example2Controller
 	instanceVariableNames: ''
 	package: 'App'!
-!Section1Controller commentStamp!
+!Example2Controller commentStamp!
 ##AppController
 
 The AppController is the main/root controller of your flow-based application.!
 
-!Section1Controller class methodsFor: 'testing'!
-
-isValidFor: anURI
-	"Answers true if this controller is the right route for anURI"
-	
-	^ anURI match: '^section1$'
-! !
-
-BindingController subclass: #Section2Controller
-	instanceVariableNames: ''
-	package: 'App'!
-!Section2Controller commentStamp!
-##AppController
-
-The AppController is the main/root controller of your flow-based application.!
-
-!Section2Controller methodsFor: 'actions'!
+!Example2Controller methodsFor: 'actions'!
 
 confirm
 	"Sets a fresh message and opens the modal"
@@ -149,6 +132,12 @@ ensureModal
 		refresh
 !
 
+observeEvents
+
+	(view asJQuery find: 'a#inspect-example2') on: 'click' do: [ self inspect ].
+	(view asJQuery find: 'a#browse-binding') on: 'click' do: [ BindingController browse ]
+!
+
 updateCanConfirm
 		
 	self 
@@ -157,7 +146,7 @@ updateCanConfirm
 				model firstName notEmpty ])
 ! !
 
-!Section2Controller methodsFor: 'initialization'!
+!Example2Controller methodsFor: 'initialization'!
 
 initialize
 
@@ -167,17 +156,18 @@ initialize
 		when: #onAfterView 
 		do: [ 
 			self updateCanConfirm.
-			self ensureModal ]
+			self ensureModal.
+			self observeEvents ]
 ! !
 
-!Section2Controller methodsFor: 'reactions'!
+!Example2Controller methodsFor: 'reactions'!
 
 onFirstNameBlur
 
 	self updateCanConfirm
 ! !
 
-!Section2Controller class methodsFor: 'testing'!
+!Example2Controller class methodsFor: 'testing'!
 
 defaultModel
 
@@ -187,6 +177,110 @@ defaultModel
 isValidFor: anURI
 	"Answers true if this controller is the right route for anURI"
 	
-	^ anURI match: 'section2'
+	^ anURI match: '^example2$'
+! !
+
+TemplateController subclass: #Example3Controller
+	instanceVariableNames: ''
+	package: 'App'!
+!Example3Controller commentStamp!
+##AppController
+
+The AppController is the main/root controller of your flow-based application.!
+
+!Example3Controller methodsFor: 'actions'!
+
+ensureSubControllers
+
+	self ifAbsentAt: #subexample put: [
+		Example1Controller 
+			for: nil "We don't need to set any particular model for it"
+			on: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
+			appendingTo: '#subexample-wrapper' asJQuery ].
+!
+
+observeEvents
+
+	(view asJQuery find: 'a#inspect-this') on: 'click' do: [ self inspect ]
+! !
+
+!Example3Controller methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self 
+		when: #onAfterView 
+		do: [ 
+			self ensureSubControllers.
+			self observeEvents ]
+! !
+
+!Example3Controller class methodsFor: 'testing'!
+
+isValidFor: anURI
+	"Answers true if this controller is the right route for anURI"
+	
+	^ anURI match: '^example3$'
+! !
+
+TemplateController subclass: #Example4Controller
+	instanceVariableNames: ''
+	package: 'App'!
+!Example4Controller commentStamp!
+##AppController
+
+The AppController is the main/root controller of your flow-based application.!
+
+!Example4Controller class methodsFor: 'testing'!
+
+isValidFor: anURI
+	"Answers true if this controller is the right route for anURI"
+	
+	^ anURI match: '^example4$'
+! !
+
+TemplateController subclass: #MainController
+	instanceVariableNames: ''
+	package: 'App'!
+!MainController commentStamp!
+##AppController
+
+The AppController is the main/root controller of your flow-based application.!
+
+!MainController methodsFor: 'actions'!
+
+highlightTitle
+
+	(view asJQuery find: 'h1') effect: 'highlight'
+!
+
+observeEvents
+
+	(view asJQuery find: 'a#inspect-main') on: 'click' do: [ self inspect ]
+! !
+
+!MainController methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self 
+		when: #onAfterView do: [ 
+			self highlightTitle.
+			self observeEvents ];
+		yourself
+! !
+
+!MainController class methodsFor: 'testing'!
+
+isValidFor: anURI
+	"Answers true if this controller is the right route for anURI"
+	
+	^ (anURI match: '^/$') or: [
+	(anURI match: '^home&') or: [
+	(anURI match: '^$')]]
 ! !
 

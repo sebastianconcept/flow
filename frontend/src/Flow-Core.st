@@ -311,12 +311,19 @@ ListControllers know how to deal with lists of things. It needs to know how you 
 
 getItemsBlock
 
-	^ getItemsBlock
+	^ getItemsBlock ifNil: [ getItemsBlock := [ :listModel | listModel list ] ]
 !
 
 getItemsBlock: aBlock
 
 	getItemsBlock := aBlock
+!
+
+intialize
+
+	super initialize.
+	
+	self when: #onAfterModel do: [ self observeList ]
 !
 
 itemControllerClass
@@ -376,6 +383,11 @@ newItemControllerFor: anItem
 					on: self 
 					appendingTo: self view ] 
 		ifTrue:[ self newItemControllerBlock value: anItem ]
+!
+
+observeList
+
+	self model when: #changed do: [ self refresh ]
 !
 
 refresh
@@ -486,6 +498,69 @@ RouteableController subclass: #NotFoundController
 MaplessModel subclass: #Model
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
+
+Model subclass: #ListModel
+	instanceVariableNames: ''
+	package: 'Flow-Core'!
+
+!ListModel methodsFor: 'accessing'!
+
+first
+
+	^ self list first
+!
+
+last
+
+	^ self list last
+!
+
+list: aCollection
+
+	super list: aCollection.
+	
+	self changed
+! !
+
+!ListModel methodsFor: 'actions'!
+
+add: anObject
+
+	self list add: anObject.
+	
+	self changed
+!
+
+remove: anObject
+
+	self list remove: anObject.
+	
+	self changed
+!
+
+remove: anObject ifAbsent: aBlock
+
+	self list remove: anObject ifAbsent: aBlock.
+	
+	self changed
+! !
+
+!ListModel methodsFor: 'testing'!
+
+includes: anObject
+
+	^ self list includes: anObject
+!
+
+isEmpty
+
+	^ self list isEmpty
+!
+
+notEmpty
+
+	^ self list notEmpty
+! !
 
 Model subclass: #User
 	instanceVariableNames: ''
