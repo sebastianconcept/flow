@@ -51,23 +51,26 @@ removeThing
 	self refresh
 ! !
 
-!StuffController methodsFor: 'reactions'!
+!StuffController methodsFor: 'initialization'!
 
-onAfterModel
-	"The model of this controller just have been set."
+intialize
 
-	super onAfterModel.
+	super initialize.
 	
-	self model when: #changed do:[ self onStuffChanged ].
+	self 
+		when: #onAfterView do: [ self onStuffChanged ];
+		when: #onAfterModel do: [
+			self model when: #changed do:[ self onStuffChanged ].
+			self hasView ifTrue:[
+				self onStuffChanged ].
+			"Customize the model"
+			self model name: 'Hey... this stuff is new!!'.
+			"Silently add something so by default it isn't empty."
+			self model things add: self newThing; add: self newThing];
+		yourself.
+! !
 
-	self hasView ifTrue:[
-		self onStuffChanged ].
-		
-	"Customize the model"
-	self model name: 'Hey... this stuff is new!!'.
-	"Silently add something so by default it isn't empty."
-	self model things add: self newThing; add: self newThing.
-!
+!StuffController methodsFor: 'reactions'!
 
 onStuffChanged
 		
@@ -82,13 +85,6 @@ onStuffChanged
 					itemControllerClass: ThingController;
 					yourself].
 	self refresh
-!
-
-onTemplate: data
-
-	super onTemplate: data.
-	
-	self onStuffChanged
 ! !
 
 !StuffController class methodsFor: 'accessing'!
@@ -101,7 +97,7 @@ defaultModel
 viewPath
 	"Returns the path where the template of the view should be found"
 	
-	^ 'bower_components/text/text!!views/demo/'
+	^ 'text!!views/demo/'
 ! !
 
 BindingController subclass: #StuffUsingEachController
@@ -157,7 +153,7 @@ inspiration
 viewPath
 	"Returns the path where the template of the view should be found"
 	
-	^ 'bower_components/text/text!!views/demo/'
+	^ 'text!!views/demo/'
 ! !
 
 !StuffUsingEachController class methodsFor: 'actions'!
@@ -185,16 +181,9 @@ StuffUsingEachController subclass: #StuffComposedUsingEachController
 	instanceVariableNames: ''
 	package: 'Flow-Templates-Tests'!
 
-!StuffComposedUsingEachController methodsFor: 'reactions'!
+!StuffComposedUsingEachController methodsFor: 'actions'!
 
-configureAndBind
-
-	super configureAndBind
-!
-
-onTemplate: data
-
-	super onTemplate: data.
+showThings
 		
 	self ifAbsentAt: 'things' 
 		put: [
@@ -210,6 +199,22 @@ onTemplate: data
 	(self controllerAt: 'things') render
 ! !
 
+!StuffComposedUsingEachController methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self when: #onAfterView do: [ self showThings ]
+! !
+
+!StuffComposedUsingEachController methodsFor: 'reactions'!
+
+configureAndBind
+
+	super configureAndBind
+! !
+
 BindingController subclass: #ThingController
 	instanceVariableNames: ''
 	package: 'Flow-Templates-Tests'!
@@ -219,6 +224,6 @@ BindingController subclass: #ThingController
 viewPath
 	"Returns the path where the template of the view should be found"
 	
-	^ 'bower_components/text/text!!views/demo/'
+	^ 'text!!views/demo/'
 ! !
 

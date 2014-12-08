@@ -53,11 +53,9 @@ model
 
 model: aModel
 
-	self onBeforeModel.
-	
+	self trigger: #onBeforeModel.
 	model := aModel.
-	
-	self onAfterModel
+	self trigger: #onAfterModel.
 !
 
 parent
@@ -68,7 +66,9 @@ parent
 
 parent: aParentControllerOrNil
 
-	parent := aParentControllerOrNil
+	self trigger: #onBeforeParent.
+	parent := aParentControllerOrNil.
+	self trigger: #onAfterParent.
 !
 
 parentElement
@@ -78,7 +78,14 @@ parentElement
 
 parentElement: aHtmlElement
 
-	parentElement := aHtmlElement
+	self trigger: #onBeforeParentElement.
+	parentElement := aHtmlElement.
+	self trigger: #onAfterParentElement.
+!
+
+silentView: aHtmlElement
+
+	view := aHtmlElement
 !
 
 view
@@ -88,10 +95,24 @@ view
 
 view: aHtmlElement
 
-	view := aHtmlElement
+	self trigger: #onBeforeView.
+	self silentView: aHtmlElement.
+	self trigger: #onAfterView.
 ! !
 
 !Controller methodsFor: 'actions'!
+
+destroy
+
+	self remove
+!
+
+hide 
+
+	self view ifNil: [ ^ self ].
+	
+	self view hide
+!
 
 ifAbsentAt: aKey put: aBlock
 	"Answers the controller already present at aKey or,
@@ -116,14 +137,16 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 
 refresh
 
-	self render
+	self remove; render
 !
 
 remove
 	
-	self onAboutToRemove.
+	self trigger: #onBeforeRemove.
+
+	self silentRemove.
 	
-	self view remove.
+	self trigger: #onAfterRemove.
 !
 
 removeControllerAt: aKey 
@@ -140,16 +163,49 @@ removeControllerAt: aKey
 
 render
 	
-	self onAboutToRender.
-	
-	self renderOn: (HTMLCanvas onJQuery: self parentElement)
+	self trigger: #onBeforeRender.
+	self renderOn: (HTMLCanvas onJQuery: self parentElement).
+	self trigger: #onAfterRender.
 !
 
 renderOn: html
-	"This is a silly default only useful to dev because provides quick feedback ans sets the view.
-	Subclasses do interesting thigns intead"
+
+	self silentRenderOn: html
+!
+
+show
+
+	self view ifNil: [ ^ self ].
 	
-	view := (html h1: self class name) asJQuery
+	self view show
+!
+
+silentRefresh
+
+	self silentRemove; silentRender
+!
+
+silentRemove
+	
+	view ifNotNil:[ | exView |
+		exView := view.
+		exView off.
+		view := nil.
+		exView remove ].
+!
+
+silentRender
+	
+	self silentRenderOn: (HTMLCanvas onJQuery: self parentElement).
+!
+
+silentRenderOn: html
+	"This is the actual render implementation in a silly default only useful to development 
+	It provides quick feedback ans sets a view for easy visual identification.
+	Subclasses implement the interesting real renders.
+	TemplateController or BindingController are good examples of this."
+	
+	self silentView: (html h1: self class name) asJQuery.
 ! !
 
 !Controller methodsFor: 'initialization'!
@@ -159,34 +215,13 @@ initializeControllers
 	^ controllers := Dictionary new
 ! !
 
-!Controller methodsFor: 'reactions'!
-
-onAboutToRemove
-	"This controller is about to be removed."
-	
-	"no-op"
-!
-
-onAboutToRender
-	"This controller is just about to be rendered."
-
-	"Empty the contents of the root element of this controller.
-	This would work as long as the view of this controller is the
-	only thing supossed to be child in that element"
-
-	"self parentElement ifNotNil:[
-		self parentElement empty ]."
-!
-
-onAfterModel
-	"The model of this controller just have been set."
-!
-
-onBeforeModel
-	"The model of this controller is about to be set."
-! !
-
 !Controller methodsFor: 'testing'!
+
+hasModel
+	"Answers true if this controller has a model"
+	
+	^ model notNil
+!
 
 hasView
 	"Answers true if this controller has a view"
@@ -254,10 +289,14 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 !
 
 on: aParentControllerOrNil appendingTo: aHtmlElement
-	"Answers a new instance of this controller using the default model,
-	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
-	
-	^ self for: self defaultModel on: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller, child of aParentControllerOrNil 
+	and meant to be appended to aHtmlElement.
+	Using this contructor will make the model to stay nil."
+
+	^ self new
+		parent: aParentControllerOrNil;
+		parentElement: aHtmlElement;
+		yourself
 ! !
 
 Controller subclass: #ListController
@@ -298,7 +337,9 @@ listView
 
 listView: aHtmlElement
 
-	listView := aHtmlElement
+	self trigger: #onBeforeListView.
+	listView := aHtmlElement.
+	self trigger: #onAfterListView.
 !
 
 newItemControllerBlock
@@ -314,8 +355,9 @@ newItemControllerBlock: aBlock
 parentElement: anHtmlElement
 	"Sets the parent elment for the list.
 	It can be anything but, in the case of lists, the parent element usually is a <ul>
-	The thing is to treat it like an <ul> full of <li> children."
-	parentElement := view := anHtmlElement
+	The 'normal' thing is to treat it like an <ul> full of <li> children."
+	super parentElement: anHtmlElement.
+	self view: anHtmlElement
 ! !
 
 !ListController methodsFor: 'actions'!
@@ -380,7 +422,7 @@ initialize
 	"The convention for routeable controllers is 
 	to have only one element with id='content' in index.html 
 	and all the rest of the app goes from that controller"
-	parentElement := '#content' asJQuery
+	self parentElement: '#content' asJQuery
 ! !
 
 !RouteableController class methodsFor: 'accessing'!
@@ -437,70 +479,6 @@ isValidFor: anURI
 	^ false
 ! !
 
-RouteableController subclass: #FlowAppController
-	instanceVariableNames: 'session'
-	package: 'Flow-Core'!
-
-!FlowAppController methodsFor: 'accessing'!
-
-console
-
-	^ console
-!
-
-session
-
-	^ session ifNil:[ session := Session new ]
-! !
-
-!FlowAppController methodsFor: 'actions'!
-
-hideLoader
-	"Hides the loader bar/spinner"
-	
-	'#loader' asJQuery hide.
-! !
-
-!FlowAppController methodsFor: 'reactions'!
-
-onOpen
-	"All is loaded."
-
-	self hideLoader.
-	
-	window document title: self class name.
-	
-	Router observeHash.
-	
-	self session open.
-	
-	"Handy reference"
-	window at: 'app' put: self
-! !
-
-!FlowAppController class methodsFor: 'actions'!
-
-open
-	"The foundation is ready, time to start this app!!"
-
-	^ (self for: nil on: nil appendingTo: '#content' asJQuery) onOpen
-! !
-
-!FlowAppController class methodsFor: 'testing'!
-
-isAbstract
-	"Answers true if the receiver is abstract."
-	
-	^ self = FlowAppController
-!
-
-isValidFor: anURI
-	"Answers true if this controller is the right route for anURI"
-	
-	^ self isAbstract not and:[
-	anURI isEmpty ]
-! !
-
 RouteableController subclass: #NotFoundController
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
@@ -531,6 +509,22 @@ active
 	^ active
 !
 
+parameterAt: aKey
+	"Answers the value found in the parameter aKey found in the current URL.
+	Returns nil if there is no parameter at aKey."
+	
+	^  self parameterAt: aKey in: window location href
+!
+
+parameterAt: aKey in: anURL
+	"Answers the value found in the parameter aKey found in anURL.
+	Returns nil if there is no parameter at aKey."
+
+	<var re = new RegExp('.*[?&]' + aKey + '=([^&]+)(&|$)');
+    var match = anURL.match(re);
+    return(match ? decodeURIComponent(match[1]) : nil);>
+!
+
 route
 	"Answers the current route."
 	
@@ -544,28 +538,36 @@ uri
 
 !Router class methodsFor: 'actions'!
 
+goBack
+	"Makes the browser go back one page in its navigation history.
+	Same effect as user pressing back button"
+
+	window history go: -1
+!
+
 observeHash
 
 	window onhashchange:[ self onHashChanged ]
+!
+
+refresh
+	
+	self trigger: #beforeRouting.
+	
+	active ifNotNil:[ active remove ].
+	active := RouteableController routeFor: self route.
+
+	active refresh.
+	
+	self trigger: #afterRouting.
 ! !
 
 !Router class methodsFor: 'reactions'!
 
 onHashChanged
 	
+	active ifNotNil:[ active destroy ].	
 	self refresh
-!
-
-refresh
-	
-	self trigger: 'aboutToRoute'.
-	
-	active ifNotNil:[ active remove ].
-	active := RouteableController routeFor: self route.
-
-	active render.
-	
-	self trigger: 'afterRouting'
 ! !
 
 Mapless subclass: #Session

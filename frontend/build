@@ -1,0 +1,8 @@
+#!/bin/bash
+# Installs components and modules for the frontend
+
+bower install
+npm install
+amber config
+grunt
+grunt devel

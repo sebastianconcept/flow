@@ -1,0 +1,37 @@
+<div id="section2">
+	<h1>Section 2</h1>
+	<p>This is the Section2Controller.</p>
+	<p>The Section2Controller is a subclass of BindingController which uses <a href="http://rivetsjs.com/" target="_bank()">RivetJS</a> to give you features like <a href="http://stackoverflow.com/questions/13504906/what-is-two-way-binding" target="_bank()">two-way data binding</a> and some other nice tricks.</p>
+
+	<p>As with TemplateControllers, with this kind of controllers the template is going to be the view. BindingControllers talk with RivetJS binding an object that has the form:</p> 
+	<blockquote><span>{</span>model: aModel, controller: self<span>}</span></blockquote>
+	<p>where self is the controller that you are using</p>
+
+	<p>Take this one for example... the button to confirm is going to enable only when the input has a non empty content. You'll notice the model will perceive the change on blur (RivetJS's default way to notice model change)</p>
+
+	<p>If you observe the template you'll see it has some other elements that are going to show/hide depending on the state of the model and controller. Study them to see how you can make your own!</p>
+
+	<label for="firstName" rv-hide="model.isConfirmed">
+		Enter your name
+		<input 
+			type="text"
+			name="firstName"
+			placeholder="First name"
+			rv-on-blur="controller._onFirstNameBlur"
+			rv-value="model.firstName">
+	</label>
+	<button class="btn btn-primary"
+		rv-hide="model.isConfirmed"
+		rv-enabled="controller.canConfirm"
+		rv-on-click="controller._confirm">Do you confirm?</button>
+	<div id="confirmName"></div>
+
+	<p rv-show="model.isConfirmed">Awesome {model.firstName}!</p>	
+	<button class="btn btn-default"
+		rv-show="model.isConfirmed"
+		rv-on-click="controller._confirmAgain">Confirm again</button>
+
+	<p>Or click in the button below to return to Home</p>
+	<a href="#/" 
+		class="btn btn-default">Home</a>
+</div>

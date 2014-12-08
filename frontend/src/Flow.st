@@ -363,6 +363,20 @@ isRemote
 	^ false
 !
 
+off
+	"Unwires the observation of this object to the occurrence of all events.
+	All handlers will stop reacting"
+
+	<$(self).off()>
+!
+
+off: anEventName 
+	"Unwires the observation of this object to the occurrence of anEventName.
+	All handlers will stop reacting"
+
+	<$(self).off(anEventName, aReactionBlock)>
+!
+
 promise: onDoneBlock
 	
 	^ (jQuery value: self) promise done: onDoneBlock
@@ -373,7 +387,7 @@ trigger: anEventName
 	There you have it, it happened. 
 	Hey World, do something about this!!"
 	
-	<return $(self._jsObject).trigger(anEventName)>
+	<return $(self).trigger(anEventName)>
 !
 
 trigger: anEventName with: anArgument
@@ -389,7 +403,7 @@ trigger: anEventName withAll: someArguments
 	There you have it, it happened. 
 	Hey World, do something about this!!"
 
-	<return $(self._jsObject).trigger(anEventName, someArguments)>
+	<return $(self).trigger( anEventName, someArguments )>
 !
 
 when: anEventName do: aReactionBlock
@@ -399,7 +413,7 @@ when: anEventName do: aReactionBlock
 	Beware some objects wont fire (anArray for example).
 	Godspeed!!"
 
-	<return $(self._jsObject).bind(anEventName, aReactionBlock)>
+	<$(self).on(anEventName, aReactionBlock)>
 ! !
 
 !Object class methodsFor: '*Flow'!

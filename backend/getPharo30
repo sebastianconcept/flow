@@ -10,12 +10,9 @@ IMAGE_URL="http://files.pharo.org/image/30/latest.zip"
 echo "Downloading the latest 30 Image:"
 echo "    $IMAGE_URL"
 
-echo "Removing any previous image and log stuff..."
-rm -f fresh.zip
-rm -f Pharo.image
-rm -f Pharo.changes
-rm -f PharoDebug.log
-rm -f crash.dmp
+rm -rf fresh.zip
+rm -rf worker.*
+rm -rf Pharo.*
 
 curl $IMAGE_URL -o "fresh.zip" 
 

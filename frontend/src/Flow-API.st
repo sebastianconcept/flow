@@ -745,7 +745,7 @@ client
 	"Answers the client that RemoteObject instances should use for 
 	accessing the destination instances in the other end."
 
-	^ client ifNil:[ client := app session api ws ]
+	^ client ifNil:[ client := 'app session api ws' ]
 !
 
 client: aClient
