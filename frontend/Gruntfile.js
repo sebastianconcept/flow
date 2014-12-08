@@ -49,7 +49,7 @@ module.exports = function (grunt) {
                     'src/Flow-Tests.st'
 
                 ],
-                amd_namespace: 'app',
+                amd_namespace: 'amber-flow-app',
                 libraries: ['SUnit', 'Web']
             },
             test_runner: {

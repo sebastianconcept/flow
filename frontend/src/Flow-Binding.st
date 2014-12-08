@@ -276,16 +276,6 @@ close
 	self trigger: #modalClosed
 !
 
-configureAndBind
-
-	(self hasModel not or: [
-	self hasView not ]) ifTrue: [ ^ self ].
-	
-	console log: (self class name,'>>configureAndBind').
-
-	super configureAndBind
-!
-
 createModal
 	"Creates the bootstrap modal on the view of this controller."
 
@@ -362,9 +352,12 @@ This controller asks the user for confirmation of a given action. It has a rejec
 
 accept
 
-	self trigger: #accept.
-	
-	self close
+	self trigger: #accept
+!
+
+acceptBlock: aBlock
+
+	self when: #accept do: aBlock
 !
 
 acceptButtonLabel: aString
@@ -372,21 +365,14 @@ acceptButtonLabel: aString
 	self basicAt: #acceptButtonLabel put: aString
 !
 
-onAcceptBlock: aBlock
-
-	self when: #accept do: aBlock
-!
-
-onRejectBlock: aBlock
-
-	self when: #reject do: aBlock
-!
-
 reject
 
-	self trigger: #reject.
-	
-	self close
+	self trigger: #reject
+!
+
+rejectBlock: aBlock
+
+	self when: #reject do: aBlock
 !
 
 rejectButtonLabel: aString

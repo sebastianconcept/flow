@@ -1,6 +1,5 @@
 {
     "paths": {
-        "flow": "src",
-        "app": "src"
+        "amber-flow-app": "src"
     }
 }

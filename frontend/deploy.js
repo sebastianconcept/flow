@@ -3,13 +3,13 @@ define([
     // --- packages to be deployed begin here ---
     'text',
     'rivets',
-  	'flow/MiniMapless',
-	'flow/Flow',
-	'flow/Flow-Core',
-	'flow/Flow-API',
-	'flow/Flow-Templates',
-	'flow/Flow-Binding',
-    'app/App'
+  	'amber-flow-app/MiniMapless',
+	'amber-flow-app/Flow',
+	'amber-flow-app/Flow-Core',
+	'amber-flow-app/Flow-API',
+	'amber-flow-app/Flow-Templates',
+	'amber-flow-app/Flow-Binding',
+    'amber-flow-app/App'
     // --- packages to be deployed end here ---
 ], function (amber) {
     return amber;
