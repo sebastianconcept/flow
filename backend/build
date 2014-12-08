@@ -6,17 +6,18 @@ rm -f Pharo.changes
 rm -f Pharo.image
 rm -f PharoDebug.log
 rm -f crash.dmp
+rm -rf package-cache
 
 echo "Loading fresh stable..."
 # Load Pharo 3.0 image and VM
 ./getPharo30
 
-# Open image and start loading project
-echo "Opening Pharo and kick off loading project ..."
-./pharo-ui Pharo.image FlowLoader.st
+# Open the image and start building the project in it
+echo "Opening Pharo and kick off building a fresh image build for the project's backend..."
+./pharo Pharo.image FlowBuilder.st --quit
 
 echo
-echo "Done building the Pharo worker image"
+echo "Backend building done"
 echo
 
 

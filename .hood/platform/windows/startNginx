@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Starts the httpd server so we can serve things
+
+
+echo "Starts nginx..."
+
+cd /c/nginx
+
+start sh --login -c "nginx -c /c/Users/seb/git/midarv/frontend/flow.dev.nginx.on.windows.conf"

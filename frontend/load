@@ -1,5 +1,0 @@
-#!/bin/bash
-# Installs components and modules for th frontend
-
-bower install
-npm install

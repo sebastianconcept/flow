@@ -1,7 +1,7 @@
 {
-  "name": "app",
-  "description": "The App",
-  "version": "0.9.1",
+  "name": "flow",
+  "description": "A living full-stack framework for the web.",
+  "version": "0.2.0",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -16,7 +16,7 @@
       "email": "sebastian@flowingconcept.com"
     }
   ],
-  "homepage": "https://github.com/sebastian/flow",
+  "homepage": "",
   "keywords": [
     "Amber",
     "Smalltalk"
@@ -26,9 +26,13 @@
   ],
   "private": false,
   "dependencies": {
-    "amber": "~0.12.4",
+    "amber": "^0.13.2",
     "text": "requirejs/text#~2.0.12",
-    "rivets": "~0.6.9",
-    "bootstrap": "~3.2.0"
+    "bootstrap": "~3.3.0",
+    "typeahead.js": "~0.10.5"
+  },
+  "devDependencies": {
+    "amber-ide-starter-dialog": "^0.1.0",
+    "helios": "^0.3.0"
   }
 }
