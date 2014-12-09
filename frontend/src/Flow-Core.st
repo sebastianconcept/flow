@@ -407,7 +407,7 @@ refresh
 
 !ListController methodsFor: 'initialization'!
 
-intialize
+initialize
 
 	super initialize.
 	
@@ -555,16 +555,12 @@ remove: anObject ifAbsent: aBlock
 
 removeFirst
 
-	self remove: self first.
-	
-	self changed
+	self remove: self first
 !
 
 removeLast
 
-	self remove: self last.
-	
-	self changed
+	self remove: self last
 ! !
 
 !ListModel methodsFor: 'testing'!

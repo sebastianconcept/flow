@@ -277,7 +277,7 @@ ensureDetails
 !
 
 ensureList
-	"Makes sure we have a controller for #thigns and 
+	"Makes sure we have a controller for #things and 
 	make it fresh and visible with a refresh"
 	
 	self ifAbsentAt: #things put: [
@@ -293,7 +293,7 @@ ensureList
 !
 
 getListModel
-	"Answers the list model of thigns"
+	"Answers the list model of things"
 
 	| things |
 	 
@@ -320,15 +320,15 @@ newItemControllerFor: aModel for: aListController
 				appendingTo: aListController view.
 				
 	row
-		when: #remove do: [ self onRemove: aModel ];
-		when: #details do: [ self onDetails: aModel ];
+		when: #removeThing do: [ self onRemove: aModel ];
+		when: #viewDetails do: [ self onDetails: aModel ];
 		yourself.
 
 	^ row
 !
 
 newListModel
-	"Answers a newly created list model of thigns (Thing sample instances)."
+	"Answers a newly created list model of things (Thing sample instances)."
 	
 	^ ListModel new
 		list: (self potentialNames shuffled collect: [ :aName |  
@@ -376,8 +376,6 @@ initialize
 
 onDetails: aThing
 
-	console log:  'onDetails:'.
-
 	self basicAt: #hasDetails put: true.
 	
 	(self controllerAt: #details) model: aThing; refresh
@@ -385,9 +383,9 @@ onDetails: aThing
 
 onRemove: aThing
 
-	console log:  'onRemove:'.
+	(self controllerAt: #things) model remove: aThing.
 
-	(self controllerAt: #things) model remove: aThing
+	self updateNotEmpty
 ! !
 
 !Example4Controller class methodsFor: 'accessing'!
@@ -458,13 +456,13 @@ BindingController subclass: #ThingRowController
 
 !ThingRowController methodsFor: 'actions'!
 
-remove
+removeThing
 
-	self trigger: #remove
+	self trigger: #removeThing
 !
 
 viewDetails
 
-	self trigger: #details
+	self trigger: #viewDetails
 ! !
 
