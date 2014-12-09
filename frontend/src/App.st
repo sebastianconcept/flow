@@ -167,12 +167,14 @@ onFirstNameBlur
 	self updateCanConfirm
 ! !
 
-!Example2Controller class methodsFor: 'testing'!
+!Example2Controller class methodsFor: 'accessing'!
 
 defaultModel
 
-	^ Flow session visitor
-!
+	^ Flow session
+! !
+
+!Example2Controller class methodsFor: 'testing'!
 
 isValidFor: anURI
 	"Answers true if this controller is the right route for anURI"
@@ -227,7 +229,7 @@ isValidFor: anURI
 	^ anURI match: '^example3$'
 ! !
 
-TemplateController subclass: #Example4Controller
+BindingController subclass: #Example4Controller
 	instanceVariableNames: ''
 	package: 'App'!
 !Example4Controller commentStamp!
@@ -240,6 +242,8 @@ The AppController is the main/root controller of your flow-based application.!
 potentialNames
 
 	^ #(
+	Galileo
+	Newton
 	Einstein
 	Heisemberg
 	Bohr
@@ -247,6 +251,7 @@ potentialNames
 	Plank
 	Neumann
 	DeBroglie
+	Feynman
 	)
 ! !
 
@@ -254,7 +259,21 @@ potentialNames
 
 addThing
 
-	^ (self controllerAt: #things) model add: (Thing new name: #( Wave Particle) atRandom; yourself)
+	(self controllerAt: #things) model add: (Thing new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
+	
+	self updateNotEmpty
+!
+
+ensureDetails
+	"Makes sure we have a controller for #details and 
+	make it fresh and visible with a refresh"
+	
+	self ifAbsentAt: #details put: [
+		ThingDetailsController
+			on: self
+			appendingTo: '#details-wrapper' asJQuery ].
+	
+	(self controllerAt: #details) refresh
 !
 
 ensureList
@@ -263,12 +282,13 @@ ensureList
 	
 	self ifAbsentAt: #things put: [
 		ListController 
-			for: self getListModel
 			on: self
 			appendingTo: '#things-wrapper' asJQuery ].
 	
 	(self controllerAt: #things) 
-		itemControllerClass: ThingRowController;
+		newItemControllerBlock: [ :item | 
+			self newItemControllerFor: item for: (self controllerAt: #things) ];
+		model: self getListModel;
 		refresh
 !
 
@@ -289,20 +309,52 @@ getListModel
 	^ things
 !
 
+newItemControllerFor: aModel for: aListController
+	"Returns a new controller for aModel to be handled by aListController."
+
+	| row |
+
+	row := ThingRowController 
+				for: aModel
+				on: aListController
+				appendingTo: aListController view.
+				
+	row
+		when: #remove do: [ self onRemove: aModel ];
+		when: #details do: [ self onDetails: aModel ];
+		yourself.
+
+	^ row
+!
+
 newListModel
 	"Answers a newly created list model of thigns (Thing sample instances)."
 	
 	^ ListModel new
 		list: (self potentialNames shuffled collect: [ :aName |  
-					Thing new 
-						name: aName;
-						yourself]);
+				Thing new 
+					name: aName;
+					yourself ]);
 		yourself
+!
+
+observeEvents
+
+	'#inspect-this' asJQuery on: 'click' do: [ self inspect ]
 !
 
 removeThing
 
-	^ (self controllerAt: #things) model removeLast
+	(self controllerAt: #things) model removeLast.
+	
+	self updateNotEmpty
+!
+
+updateNotEmpty
+
+	self 
+		basicAt: #notEmpty 
+		put: (self controllerAt: #things) model notEmpty
 ! !
 
 !Example4Controller methodsFor: 'initialization'!
@@ -311,7 +363,38 @@ initialize
 
 	super initialize.
 	
-	self when: #onAfterView do: [ self ensureList ]
+	self basicAt: #hasDetails put: false.
+	
+	self when: #onAfterView do: [ 
+		self ensureDetails.
+		self ensureList.
+		self updateNotEmpty.
+		self observeEvents ]
+! !
+
+!Example4Controller methodsFor: 'reactions'!
+
+onDetails: aThing
+
+	console log:  'onDetails:'.
+
+	self basicAt: #hasDetails put: true.
+	
+	(self controllerAt: #details) model: aThing; refresh
+!
+
+onRemove: aThing
+
+	console log:  'onRemove:'.
+
+	(self controllerAt: #things) model remove: aThing
+! !
+
+!Example4Controller class methodsFor: 'accessing'!
+
+defaultModel
+
+	^ Flow session
 ! !
 
 !Example4Controller class methodsFor: 'testing'!
@@ -365,11 +448,23 @@ isValidFor: anURI
 	(anURI match: '^$')]]
 ! !
 
-TemplateController subclass: #ThingDetailController
+BindingController subclass: #ThingDetailsController
 	instanceVariableNames: ''
 	package: 'App'!
 
-TemplateController subclass: #ThingRowController
+BindingController subclass: #ThingRowController
 	instanceVariableNames: ''
 	package: 'App'!
+
+!ThingRowController methodsFor: 'actions'!
+
+remove
+
+	self trigger: #remove
+!
+
+viewDetails
+
+	self trigger: #details
+! !
 

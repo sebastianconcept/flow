@@ -1,8 +1,15 @@
 <div id="example4">
 	<h1>Example 4 - Lists of controllers</h1>
 	<p>This is the Example4Controller.</p>
-	<p>The Example4Controller has a (sub)controller that has a ListModel which in turn is a collection of Thing(s). Thing is class of Mapless that we are using as example here to create a bunch of models so our ListModel is not empty.</p>
+	<p>The Example4Controller is a BindingController. We need it binding so it can show details of the items in the displayed list.</p>
+	<p>It also has a (sub)controller that has a ListModel as its model. The ListModel has a collection of Thing(s) and it displays those things, one per row, by rendering their own ThingRowController instances that are created and removed dynamically.</p> 
+	<p>Thing is class of Mapless that we are just using as example here to create a bunch of models so our ListModel is not empty and you can play with it.</p>
 	
+	<a id="inspect-this" class="btn btn-info">Inspect this controller</a>
+
+	<div id="details-wrapper"
+		rv-show="controller.hasDetails"></div>
+
 	<div id="things-wrapper"></div>
 
 	<button class="btn btn-success"

@@ -523,6 +523,11 @@ list: aCollection
 	super list: aCollection.
 	
 	self changed
+!
+
+size
+
+	^ self list size
 ! !
 
 !ListModel methodsFor: 'actions'!
