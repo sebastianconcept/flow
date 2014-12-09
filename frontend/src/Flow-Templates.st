@@ -28,6 +28,11 @@ templateUri: anUri
 
 !TemplateController methodsFor: 'actions'!
 
+flush
+	"Tells require to flush the potentially cached template (or do nothing if not loaded yet)"
+	<window.require.undef(self._templateUri())>
+!
+
 setTemplate: htmlString
 	"Receives the template's htmlString after requirejs 
 	have received it from the server (or cache)."
