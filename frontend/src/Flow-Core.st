@@ -311,7 +311,7 @@ ListControllers know how to deal with lists of things. It needs to know how you 
 
 getItemsBlock
 
-	^ getItemsBlock
+	^ getItemsBlock ifNil: [ getItemsBlock := [ :listModel | listModel list ] ]
 !
 
 getItemsBlock: aBlock
@@ -378,6 +378,12 @@ newItemControllerFor: anItem
 		ifTrue:[ self newItemControllerBlock value: anItem ]
 !
 
+observeList
+	"Observe the model for changes and react to them with a refresh."
+
+	self model when: #changed do: [ self refresh ]
+!
+
 refresh
 	"Makes sure all the items in the model have its own controller.
 	Nothing less and nothing more. So it will add lazily 
@@ -397,6 +403,15 @@ refresh
 			added := self newItemControllerFor: e ].
 		added ifNotNil:[ 
 			added render ] ]
+! !
+
+!ListController methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self when: #onAfterModel do: [ self observeList ]
 ! !
 
 Controller subclass: #RouteableController
@@ -486,6 +501,84 @@ RouteableController subclass: #NotFoundController
 MaplessModel subclass: #Model
 	instanceVariableNames: ''
 	package: 'Flow-Core'!
+
+Model subclass: #ListModel
+	instanceVariableNames: ''
+	package: 'Flow-Core'!
+
+!ListModel methodsFor: 'accessing'!
+
+first
+
+	^ self list first
+!
+
+last
+
+	^ self list last
+!
+
+list: aCollection
+
+	super list: aCollection.
+	
+	self changed
+!
+
+size
+
+	^ self list size
+! !
+
+!ListModel methodsFor: 'actions'!
+
+add: anObject
+
+	self list add: anObject.
+	
+	self changed
+!
+
+remove: anObject
+
+	self list remove: anObject.
+	
+	self changed
+!
+
+remove: anObject ifAbsent: aBlock
+
+	self list remove: anObject ifAbsent: aBlock.
+	
+	self changed
+!
+
+removeFirst
+
+	self remove: self first
+!
+
+removeLast
+
+	self remove: self last
+! !
+
+!ListModel methodsFor: 'testing'!
+
+includes: anObject
+
+	^ self list includes: anObject
+!
+
+isEmpty
+
+	^ self list isEmpty
+!
+
+notEmpty
+
+	^ self list notEmpty
+! !
 
 Model subclass: #User
 	instanceVariableNames: ''
