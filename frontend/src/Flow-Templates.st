@@ -5,7 +5,9 @@ RouteableController subclass: #TemplateController
 !TemplateController commentStamp!
 ## TemplateController is an abstraction
 The concrete subclasses of TemplateController follow the convention of loading html from the server.
-This convention uses the keyword of the controller as the name of the template to be found at views/!
+This convention uses the name of the controller without the "Controller" suffix as the name of the template (in lowercase) to be found as a html file in the views/ directory.
+
+A typical interesting moment for this controllers is when they are actually finished loading and with the view set. You can observe the #onAfterView event to make it do things after it has the view loaded and set.!
 
 !TemplateController methodsFor: 'accessing'!
 
@@ -99,17 +101,5 @@ isValidFor: anURI
 	^ self isAbstract not and:[
 	anURI notEmpty and:[
 	anURI = self keyword ] ]
-! !
-
-TemplateController subclass: #HelloWorldController
-	instanceVariableNames: ''
-	package: 'Flow-Templates'!
-
-!HelloWorldController class methodsFor: 'accessing'!
-
-viewPath
-	"Returns the path where the template of the view should be found"
-	
-	^ 'text!!views/demo/'
 ! !
 

@@ -357,6 +357,11 @@ asRemoteReference
 	^ self class asRemoteReferenceFor: self
 !
 
+changed
+
+	self trigger: #changed
+!
+
 isRemote
 	"Answers true if this object is remote"
 	
@@ -441,6 +446,22 @@ isRemoteReference
 
 notNil
 	^ self isNil not
+! !
+
+!SequenceableCollection methodsFor: '*Flow'!
+
+shuffled
+	"Answers a copy of this collection with the same elements but randomly positioned."
+	
+	| shaked source | 
+	
+	shaked := self class new.
+	source := self copy.
+	
+	1 to: self size do: [ :i | 
+		shaked add: (source remove: source atRandom) ].
+		
+	^ shaked
 ! !
 
 !UndefinedObject class methodsFor: '*Flow'!
