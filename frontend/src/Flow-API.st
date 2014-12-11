@@ -547,8 +547,8 @@ initialize
 
 	super initialize.
 	
-	window onbeforeunload:[
-		self reset ]
+	"window onbeforeunload:[
+		self reset ]"
 !
 
 initializeAPIPath
