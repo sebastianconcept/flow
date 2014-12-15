@@ -1,156 +1,9 @@
 Smalltalk createPackage: 'Flow-Tests'!
-TestCase subclass: #FlowTest
+TestCase subclass: #FlowRemoteReferenceTest
 	instanceVariableNames: ''
 	package: 'Flow-Tests'!
 
-!FlowTest methodsFor: 'tests'!
-
-testConnect
-
-	self shouldnt:[
-		window app session api ws connect ] raise: Error.
-	
-	["The >>valueWithTimeout: is there because connecting a ws takes time" 
-	self assert: window app session api ws hasSocket.
-	self assert: window app session api ws isConnected.
-
-	self shouldnt:[
-		window app session api ws connect ] raise: Error.
-
-	self assert: window app session api ws socket == window app session api ws socket.
-	self assert: window app session api ws isConnected ] valueWithTimeout: 1000
-!
-
-testCustomEventWithNoArgument
-
-	| observed |
-
-	observed := Dictionary new.
-	
-	observed when: #something do:[ observed at: #something put: #happen ].
-	
-	observed trigger: #something
-	
-	self assert: (observed includesKey: #something).	
-	self assert: (observed at: #something) = #happen.
-!
-
-testCustomEventWithOneArgument
-
-	| observed thing |
-
-	observed := Dictionary new.
-	thing := FlowTest new.
-	
-	observed when: #something: do:[ :argument | observed at: #something: put: argument ].
-	
-	observed trigger: #something: with: thing.
-	
-	self assert: (observed includesKey: #something).	
-	self assert: (observed at: #something) == thing.
-!
-
-testEcho
-
-	| echo |
-
-	self assert: window app session api ws hasSocket.
-	self assert: window app session api ws isConnected.
-
-	echo := Echo for: 'Do you follow?'.
-	
-	self assert: echo content = 'Do you follow?'.
-	self assert: echo answer isNil.
-	
-	window app session api ws 
-		sendCommand: echo
-		do:[ :ans | 
-			self assert: ans answer notNil.
-			self assert: ans answer echoes notNil.
-			self assert: ans answer echoes = 'Do you follow?' ]
-!
-
-testErrorHandlingAfterResponded
-
-	| faulty |
-
-	self assert: window app session api ws hasSocket.
-	self assert: window app session api ws isConnected.
-
-	faulty := WillFailAfterResponded new.
-	
-	self assert: faulty answer isNil.
-	
-	window app session api ws 
-		sendCommand: faulty
-		do:[ :ans | 
-			self assert: ans answer notNil.
-			self assert: ans answer ]
-		onError:[ :x | 
-			self assert: (x messageText = 'Failing just after the answer') ]
-!
-
-testErrorHandlingAfterSent
-
-	| faulty |
-
-	self assert: window app session api ws hasSocket.
-	self assert: window app session api ws isConnected.
-
-	faulty := WillFailAfterSent new.
-	
-	self assert: faulty answer isNil.
-	
-	window app session api ws 
-		sendCommand: faulty
-		do:[ :ans | 
-			self assert: ans answer notNil.
-			self assert: ans answer ]
-		onError:[ :x | self assert: (x messageText = 'Failing just after sent') ]
-!
-
-testErrorHandlingBeforeSend
-
-	| faulty |
-
-	self assert: window app session api ws hasSocket.
-	self assert: window app session api ws isConnected.
-
-	faulty := WillFailBeforeSend new.
-	
-	self assert: faulty answer isNil.
-	
-	
-	window app session api ws 
-		sendCommand: faulty
-		do:[ :ans | 
-			self assert: ans answer isNil ]
-		onError:[ :x | self assert: (x messageText = 'Failing just before sending') ]
-!
-
-testPing
-
-	| ping |
-
-	self assert: window app session api ws hasSocket.
-	self assert: window app session api ws isConnected.
-
-	ping := Ping new.
-	
-	self assert: ping answer isNil.
-	
-	window app session api ws 
-		sendCommand: ping
-		do:[ :ans | 
-			self assert: ans answer notNil.
-			self assert: ans answer pongOn notNil ]
-! !
-
-TestCase subclass: #RemoteReferenceTest
-	instanceVariableNames: ''
-	package: 'Flow-Tests'!
-
-!RemoteReferenceTest methodsFor: 'tests'!
+!FlowRemoteReferenceTest methodsFor: 'tests'!
 
 testBoolean
 
@@ -189,6 +42,198 @@ testUndefinedObject
 
 	self deny: nil asRemoteReference isRemoteReference.
 	self assert: nil asRemoteReference = nil
+! !
+
+TestCase subclass: #FlowRemoteTest
+	instanceVariableNames: ''
+	package: 'Flow-Tests'!
+
+!FlowRemoteTest methodsFor: 'tests'!
+
+testConnect
+
+	self shouldnt:[
+		window app session api ws connect ] raise: Error.
+	
+	["The >>valueWithTimeout: is there because connecting a ws takes time" 
+	self assert: Flow session  api ws hasSocket.
+	self assert: Flow session api ws isConnected.
+
+	self shouldnt:[
+		Flow session api ws connect ] raise: Error.
+
+	self assert: Flow session api ws socket == Flow session api ws socket.
+	self assert: Flow session api ws isConnected ] valueWithTimeout: 1000
+!
+
+testEcho
+
+	| echo |
+
+	self assert: Flow session api ws hasSocket.
+	self assert: Flow session api ws isConnected.
+
+	echo := Echo for: 'Do you follow?'.
+	
+	self assert: echo content = 'Do you follow?'.
+	self assert: echo answer isNil.
+	
+	window app session api ws 
+		sendCommand: echo
+		do:[ :ans | 
+			self assert: ans answer notNil.
+			self assert: ans answer echoes notNil.
+			self assert: ans answer echoes = 'Do you follow?' ]
+!
+
+testErrorHandlingAfterResponded
+
+	| faulty |
+
+	self assert: Flow session api ws hasSocket.
+	self assert: Flow session api ws isConnected.
+
+	faulty := WillFailAfterResponded new.
+	
+	self assert: faulty answer isNil.
+	
+	Flow session api ws 
+		sendCommand: faulty
+		do:[ :ans | 
+			self assert: ans answer notNil.
+			self assert: ans answer ]
+		onError:[ :x | 
+			self assert: (x messageText = 'Failing just after the answer') ]
+!
+
+testErrorHandlingAfterSent
+
+	| faulty |
+
+	self assert: Flow session api ws hasSocket.
+	self assert: Flow session api ws isConnected.
+
+	faulty := WillFailAfterSent new.
+	
+	self assert: faulty answer isNil.
+	
+	Flow session api ws 
+		sendCommand: faulty
+		do:[ :ans | 
+			self assert: ans answer notNil.
+			self assert: ans answer ]
+		onError:[ :x | self assert: (x messageText = 'Failing just after sent') ]
+!
+
+testErrorHandlingBeforeSend
+
+	| faulty |
+
+	self assert: Flow session api ws hasSocket.
+	self assert: Flow session api ws isConnected.
+
+	faulty := WillFailBeforeSend new.
+	
+	self assert: faulty answer isNil.
+	
+	
+	Flow session api ws 
+		sendCommand: faulty
+		do:[ :ans | 
+			self assert: ans answer isNil ]
+		onError:[ :x | self assert: (x messageText = 'Failing just before sending') ]
+!
+
+testPing
+
+	| ping |
+
+	self assert: Flow session api ws hasSocket.
+	self assert: Flow session api ws isConnected.
+
+	ping := Ping new.
+	
+	self assert: ping answer isNil.
+	
+	Flow session api ws 
+		sendCommand: ping
+		do:[ :ans | 
+			self assert: ans answer notNil.
+			self assert: ans answer pongOn notNil ]
+! !
+
+TestCase subclass: #FlowTest
+	instanceVariableNames: ''
+	package: 'Flow-Tests'!
+
+!FlowTest methodsFor: 'tests'!
+
+testCustomEventWithNoArgument
+
+	| observed |
+
+	observed := Dictionary new.
+	
+	observed when: #something do:[ observed at: #something put: #happen ].
+	
+	observed trigger: #something.
+	
+	self assert: (observed includesKey: #something).	
+	self assert: (observed at: #something) = #happen.
+!
+
+testCustomEventWithOneArgument
+
+	| observed thing |
+
+	observed := Dictionary new.
+	thing := Thing new.
+	
+	observed when: #something: do:[ :argument | observed at: #something: put: argument ].
+	
+	observed trigger: #something: with: thing.
+	
+	self assert: (observed includesKey: #something:).	
+	self assert: (observed at: #something:) == thing.
+!
+
+testCustomEventWithTenArguments
+
+	| observed things |
+
+	observed := Dictionary new.
+	things := (1 to: 10) collect: [ :i | Thing new ].
+	
+	observed when: #something: do:[ :a1 :a2 :a3 :a4 :a5 :a6 :a7 :a8 : a9 :a10 | 
+		observed 
+			at: #something: 
+			put: thisContext locals asHashedCollection values ].
+	
+	observed trigger: #something: withAll: things.
+	
+	self assert: (observed includesKey: #something:).	
+
+	(observed at: #something:) do: [ :thing |
+		self assert: (things includes: thing) ].
+	
+	self assert: (observed at: #something:) = things
+!
+
+testCustomEventWithTwoArgument
+
+	| observed thing stuff |
+
+	observed := Dictionary new.
+	thing := Thing new.
+	stuff := Stuff new.
+	
+	observed when: #something: do:[ :arg1 :arg2 | observed at: #something: put: (Array with: arg1 with: arg2) ].
+	
+	observed trigger: #something: with: thing with: stuff.
+	
+	self assert: (observed includesKey: #something:).	
+	self assert: (observed at: #something:) first == thing.
+	self assert: (observed at: #something:) second == stuff.
 ! !
 
 WebSocketCommand subclass: #WillFailAfterResponded

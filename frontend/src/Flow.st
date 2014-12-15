@@ -299,6 +299,22 @@ printOn: aStream
 
 !JSObjectProxy methodsFor: '*Flow'!
 
+asDictionary
+	"Answers this object as a new Dictionary"
+
+	^ [ :newDic |
+		self addObjectVariablesTo: newDic.
+		newDic ] value: Dictionary new
+!
+
+asHashedCollection
+	"Answers this object as a new HashedCollection"
+
+	^ [ :h |
+		self addObjectVariablesTo: h.
+		h ] value: #{}
+!
+
 asRemoteReference
 	"Answers the object appropiate for 
 	traveling over the wire and still referring to this receiver"
