@@ -397,24 +397,30 @@ promise: onDoneBlock
 
 trigger: anEventName 
 	"Triggers anEventName in this object.
-	There you have it, it happened. 
-	Hey World, do something about this!!"
+	Hey World.. anEventName happened!!.. 
+	Go do something about this!! (or not)"
 	
 	<return $(self).trigger(anEventName)>
 !
 
 trigger: anEventName with: anArgument
-	"Triggers anEventName in this object.
-	There you have it, it happened. 
-	Hey World, do something about this!!"
+	"Triggers anEventName, in this object and using anArgument"
 	
 	^ self trigger: anEventName withAll: (Array with: anArgument)
 !
 
+trigger: anEventName with: firstArgument with: secondArgument
+	"Triggers anEventName in this object using those two given arugments"
+	
+	^ self 
+		trigger: anEventName 
+		withAll: (Array 
+					with: firstArgument
+					with: secondArgument)
+!
+
 trigger: anEventName withAll: someArguments
-	"Triggers anEventName in this object.
-	There you have it, it happened. 
-	Hey World, do something about this!!"
+	"Triggers anEventName in this object using all the given arugments"
 
 	<return $(self).trigger( anEventName, someArguments )>
 !
@@ -426,7 +432,10 @@ when: anEventName do: aReactionBlock
 	Beware some objects wont fire (anArray for example).
 	Godspeed!!"
 
-	<$(self).on(anEventName, aReactionBlock)>
+	<$(self).on(anEventName, function(e){
+		var someArguments = $(arguments).slice();
+		someArguments.splice(0,1);
+		aReactionBlock.apply(null, someArguments)})>
 ! !
 
 !Object class methodsFor: '*Flow'!
