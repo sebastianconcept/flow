@@ -19,6 +19,7 @@ publishObjects
 
 start
 
+	Flow install.
 	Flow start.
 	
 	Flow app: self.
@@ -298,7 +299,7 @@ getListModel
 	| things |
 	 
 	"Load them from the local storage"
-	things := ListModel localFindId: 'samples'.
+	things := ListModel localFindCid: 'samples'.
 	
 	things ifNil: [ 
 		"Oh, not found? then create and save some..."

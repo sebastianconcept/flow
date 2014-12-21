@@ -29,10 +29,15 @@
     "amber": "^0.13.2",
     "text": "requirejs/text#~2.0.12",
     "bootstrap": "~3.3.0",
-    "typeahead.js": "~0.10.5"
+    "typeahead.js": "~0.10.5",
+    "minimapless": "~0.10.1",
+    "amber-flow": "~0.3.5"
   },
   "devDependencies": {
     "amber-ide-starter-dialog": "^0.1.0",
     "helios": "^0.3.0"
+  },
+  "resolutions": {
+    "minimapless": "~0.10.1"
   }
 }
