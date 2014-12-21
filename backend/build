@@ -1,0 +1,23 @@
+#!/bin/bash
+# Gets a fresh Pharo 3.0 image and loads the project
+
+echo "Removing old backend image and stuff..."
+rm -f Pharo.changes
+rm -f Pharo.image
+rm -f PharoDebug.log
+rm -f crash.dmp
+rm -rf package-cache
+
+echo "Loading fresh stable..."
+# Load Pharo 3.0 image and VM
+./getPharo30
+
+# Open the image and start building the project in it
+echo "Opening Pharo and kick off building a fresh image build for the project's backend..."
+./pharo Pharo.image FlowBuilder.st --quit
+
+echo
+echo "Backend building done"
+echo
+
+

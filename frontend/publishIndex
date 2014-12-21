@@ -1,0 +1,6 @@
+#!/bin/bash
+# Builds the images output of this flow app.
+
+echo "deleting public/index.html and publishing the fresh one for production"
+rm -rf ../public/index.html
+cp production.index.html ../public/index.html

@@ -4,10 +4,13 @@
 echo "Removing old frontend components and modules..."
 rm -rf frontend/bower_components
 rm -rf frontend/node_modules
+rm -rf frontend/src/*.js
+rm -rf frontend/the.js
+
 
 echo "Building frontend..."
 cd $PWD/frontend
-./load
+./build
 cd ..
 
 echo

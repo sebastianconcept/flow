@@ -12,6 +12,7 @@ echo "    $IMAGE_URL"
 
 rm -rf fresh.zip
 rm -rf worker.*
+rm -rf Pharo.*
 
 curl $IMAGE_URL -o "fresh.zip" 
 
@@ -19,8 +20,8 @@ unzip -q fresh.zip -d .
 rm -rf fresh fresh.zip
 
 # Rename the default image name to worker.*
-mv Pharo*.image worker.image
-mv Pharo*.changes worker.changes
+mv Pharo*.image Pharo.image
+mv Pharo*.changes Pharo.changes
 
 # Load VM
 curl get.pharo.org/vm | bash

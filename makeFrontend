@@ -1,0 +1,9 @@
+#!/bin/bash
+# Creates a clean build of the frontend
+# Deletes and copies into bower_components the hacked version of rivets so 
+# we have onViewCreated for IteratedController
+# This is most useful in automated deployments
+
+./cleanBuildFrontend
+rm -rf frontend/bower_components/rivets
+cp -rf frontend/custom/rivets frontend/bower_components
