@@ -12,17 +12,12 @@
 
   <body>
 
-    <div id="content"></div>
+    <h1>flow</h1>
+    <p>A living full-stack framework for the web.</p>
 
-    <img id="ide" 
-        src="img/tinylogo.png" 
+    <a id="legacy"
         onclick="require('amber/helpers').globals.Browser._open()"
-        style="position: fixed; bottom: 0; right: 0"></img>
-
-    <img id="ide" 
-        src="img/tinylogo.png" 
-        onclick="require('amber/helpers').popupHelios()"
-        style="position: fixed; bottom: 0; right: 30px"></img>
+        style="position: fixed; bottom: 0; right: 0; opacity: 0.75; padding: 10px; background-color: #fff">IDE</a>
 
     <script type='text/javascript'>
         require(['app'], function (amber) {
@@ -31,7 +26,6 @@
               //used for all new packages in IDE
               'transport.defaultAmdNamespace': "amber-flow-app"
             });
-            require(["amber-ide-starter-dialog"], function (dlg) { dlg.start(); });
             amber.globals.App._start();
         });
     </script>
