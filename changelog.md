@@ -1,7 +1,8 @@
 January 15, 2015 - Release 0.2.3
 ===================================
 
-* Adds scripts for linux
+* Adds scripts for linux. Thanks to Sebastian Heidbrink for this contribution.
+* Actually, double thanks to him for contributing with .hook/plattform/linux/installPreReqs which install all what you need to run flow in a fresh ubuntu.
 
 January 15, 2015 - Release 0.2.2
 ===================================
