@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Starts the Pharo worker image which is the backend of this app 
+
+# Start the image with UI ready to a dev session...
+echo "Open Pharo..."
+cd backend
+
+# execute
+exec ./pharo-ui "Pharo.image" ; bash
