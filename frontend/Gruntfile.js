@@ -41,17 +41,17 @@ module.exports = function (grunt) {
                 amd_namespace: 'flow-app',
                 libraries: ['SUnit', 'Web',
                     'DOMEvents', 
-                    'MiniMapless', 
-                    'Flow',
+                    'MVC-Core', 
+                    'MiniMapless',
                     'Flow-Core',
-                    'Flow-API',
-                    'Flow-Templates',
-                    'Flow-Binding'],
+                    'Flow-API'
+                    ],
                  options: {
                    library_dirs: [
-                        'bower_components/amber-dom-events/src',
                         'bower_components/amber-flow/src',
-                        'bower_components/minimapless/src'], 
+                        'bower_components/amber-mvc/src',
+                        'bower_components/minimapless/src',
+                        'bower_components/amber-dom-events/src' ], 
                    verbose: true
                  }
             },

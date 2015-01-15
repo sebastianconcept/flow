@@ -1,7 +1,7 @@
 {
   "name": "flow",
   "description": "A living full-stack framework for the web.",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -19,22 +19,26 @@
   "homepage": "",
   "keywords": [
     "Amber",
-    "Smalltalk"
+    "Pharo",
+    "Smalltalk",
+    "MVC",
+    "full-stack",
+    "frontend",
+    "backend"
   ],
   "license": [
     "MIT"
   ],
   "private": false,
   "dependencies": {
-    "amber": "^0.13.2",
+    "amber": "^0.14.2",
     "text": "requirejs/text#~2.0.12",
     "bootstrap": "~3.3.0",
     "typeahead.js": "~0.10.5",
-    "minimapless": "~0.10.1",
-    "amber-flow": "~0.3.6"
+    "amber-flow": "~0.3.19"
   },
   "devDependencies": {
-    "amber-ide-starter-dialog": "^0.1.0",
+    "amber-attic": "~0.1.1",
     "helios": "^0.3.0"
   }
 }
