@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Starts Amber so we can have a frontend dev session
+
+echo "Starts Amber..."
+
+cd frontend
+exec amber serve --port 3000 ; bash
