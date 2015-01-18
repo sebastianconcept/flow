@@ -418,6 +418,119 @@ BindingController subclass: #Example5Controller
 	instanceVariableNames: ''
 	package: 'App'!
 
+!Example5Controller methodsFor: 'accessing'!
+
+localThings
+
+	^ self ifAbsentAt: #localThings put: [
+		(ListController 
+			on: self
+			appendingTo: '#local-things-wrapper' asJQuery)
+				newItemControllerBlock: [ :item | 
+					self newLocalThingControllerFor: item for: self localThings ];
+				model: (ListModel on: self getLocalThings);
+				yourself ]
+!
+
+remoteThings
+
+	^ self ifAbsentAt: #remoteThings put: [
+		(ListController 
+			on: self
+			appendingTo: '#remote-things-wrapper' asJQuery)
+				newItemControllerBlock: [ :item | 
+					self newRemoteThingControllerFor: item for: self remoteThings ];
+				yourself ]
+! !
+
+!Example5Controller methodsFor: 'actions'!
+
+addThingOnBackend
+!
+
+addThingToFrontend
+!
+
+getLocalThings
+	
+	^ self getStuff things
+!
+
+getRemoteThings
+	
+	| promise |
+
+	promise :=  jQuery Deferred value.
+	
+	Thing findAllThen: [ :things | promise resolve: things ].
+	
+	^ promise
+!
+
+getStuff
+
+	| cid |
+
+	"Get the client (local) ID for the root mapless.
+	Create one if necessary (first time or after dropping localStorage data."
+	cid := (window localStorage getItem: 'stuff') ifNil: [ Stuff new localSave; cid ].
+	
+	^ Stuff localFindCid: cid
+!
+
+getThings
+	
+	| promise |
+
+	promise :=  jQuery Deferred value.
+	
+	Thing findAllThen: [ :things | promise resolve: things ].
+	
+	^ promise
+!
+
+removeThingFromBackend
+!
+
+removeThingFromFrontend
+!
+
+showLocalThings
+
+	self localThings show
+!
+
+showRemoteThings: someThings
+
+	self remoteThings
+		model: (ListModel on: someThings);
+		show
+!
+
+updateNotEmpty
+
+	self 
+		basicAt: #localNotEmpty 
+		put: true.
+
+	(self hasControllerAt: #remoteThings) ifTrue: [
+		self 
+			basicAt: #remoteNotEmpty 
+			put: true ]
+! !
+
+!Example5Controller methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self when: #onAfterView do: [ 
+		self showLocalThings.
+		self getRemoteThings done: [ :things | self showRemoteThings:  things ].
+		self updateNotEmpty ]
+! !
+
 Object subclass: #ExampleModel
 	instanceVariableNames: 'name'
 	package: 'App'!
@@ -584,5 +697,21 @@ removeThing
 viewDetails
 
 	self triggerEvent: #viewDetails
+! !
+
+!Controller methodsFor: '*App'!
+
+hasControllerAt: aKey
+
+	^ self controllers includesKey: aKey
+! !
+
+!ListModel class methodsFor: '*App'!
+
+on: aCollection
+
+	^ self new
+		list: aCollection;
+		yourself
 ! !
 
