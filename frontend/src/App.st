@@ -37,6 +37,7 @@ setupRoutes
 		add: 'example2' do: [ :r | App main showExample2 ];
 		add: 'example3' do: [ :r | App main showExample3 ];
 		add: 'example4' do: [ :r | App main showExample4 ];
+		add: 'example5' do: [ :r | App main showExample5 ];
 		yourself
 !
 
@@ -413,6 +414,10 @@ defaultModel
 	^ ExampleModel new
 ! !
 
+BindingController subclass: #Example5Controller
+	instanceVariableNames: ''
+	package: 'App'!
+
 Object subclass: #ExampleModel
 	instanceVariableNames: 'name'
 	package: 'App'!
@@ -477,6 +482,15 @@ example4
 			for: ThingModel new
 			on: self
 			appendingTo: '#example4-wrapper' asJQuery ]
+!
+
+example5
+
+	^ self ifAbsentAt: #example5 put: [
+		Example5Controller 
+			for: ThingModel new
+			on: self
+			appendingTo: '#example5-wrapper' asJQuery ]
 ! !
 
 !MainController methodsFor: 'actions'!
@@ -528,6 +542,13 @@ showExample4
 	self show done: [
 		self hideAll.
 		self example4 show ]
+!
+
+showExample5
+	
+	self show done: [
+		self hideAll.
+		self example5 show ]
 ! !
 
 !MainController methodsFor: 'initializing'!
