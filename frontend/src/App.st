@@ -426,9 +426,9 @@ localThings
 		(ListController 
 			on: self
 			appendingTo: '#local-things-wrapper' asJQuery)
+				model: (ListModel on: self getLocalThings);
 				newItemControllerBlock: [ :item | 
 					self newLocalThingControllerFor: item for: self localThings ];
-				model: (ListModel on: self getLocalThings);
 				yourself ]
 !
 
@@ -445,15 +445,38 @@ remoteThings
 
 !Example5Controller methodsFor: 'actions'!
 
-addThingOnBackend
+addLocalThing
+
+	| newThing stuff |
+	
+	newThing := Thing new 
+							description: 'New thing!!';
+							yourself.
+	self localThings model add: newThing.
+	
+	newThing localSave.
+	
+	stuff := self getStuff.
+	stuff things add: newThing.
+	stuff localSave.
 !
 
-addThingToFrontend
+addRemoteThing
+
+	| newThing |
+	
+	newThing := Thing new 
+							description: 'New thing!!';
+							yourself.
+	self remoteThings model add: newThing.
+	
+	newThing save.
 !
 
 getLocalThings
 	
-	^ self getStuff things
+	^ self getStuff things collect: [ :each |
+		Thing localFindCid: each cid ]
 !
 
 getRemoteThings
@@ -473,7 +496,10 @@ getStuff
 
 	"Get the client (local) ID for the root mapless.
 	Create one if necessary (first time or after dropping localStorage data."
-	cid := (window localStorage getItem: 'stuff') ifNil: [ Stuff new localSave; cid ].
+	cid := (window localStorage getItem: 'stuff') ifNil: [ | newStuff |
+				newStuff := Stuff new.
+				window localStorage setItem: 'stuff' put: newStuff cid.
+				newStuff localSave; cid ].
 	
 	^ Stuff localFindCid: cid
 !
@@ -489,15 +515,84 @@ getThings
 	^ promise
 !
 
-removeThingFromBackend
+newLocalThingControllerFor: aModel for: aListController
+	"Returns a new controller for aModel to be handled by aListController."
+
+	| row |
+
+	row := ThingViewEditorRowController 
+				for: aModel
+				on: aListController
+				appendingTo: aListController view.
+				
+	row
+		when: #remove: do: [ :aThing | self onRemoveLocal: aThing ];
+		when: #edited: do: [ :aThing | self onEditedLocal: aThing ];
+		yourself.
+
+	^ row
 !
 
-removeThingFromFrontend
+newRemoteThingControllerFor: aModel for: aListController
+	"Returns a new controller for aModel to be handled by aListController."
+
+	| row |
+
+	row := ThingViewEditorRowController 
+				for: aModel
+				on: aListController
+				appendingTo: aListController view.
+				
+	row
+		when: #remove: do: [ :aThing | self onRemoveRemote: aThing ];
+		when: #edited: do: [ :aThing | self onEditedRemote: aThing ];
+		yourself.
+
+	^ row
+!
+
+observeEvents
+
+	super observeEvents.
+
+	self localThings model when: #changed do: [ self updateNotEmpty ].
+	self remoteThings model when: #changed do: [ self updateNotEmpty ].
+!
+
+removeLocalThing
+
+	| toRemove stuff |
+	
+	toRemove := self localThings model last.
+	self localThings model remove: toRemove ifAbsent: [ nil ].
+	
+	stuff  := self getStuff.
+	
+	stuff things remove: toRemove ifAbsent: [ nil ].
+	stuff localSave.
+	toRemove localDelete.
+!
+
+removeRemoteThing
+
+	| toRemove | 
+
+	toRemove := self remoteThing model last.
+	
+	self remoteThing model remove: toRemove.
+
+	toRemove delete.
 !
 
 showLocalThings
 
 	self localThings show
+!
+
+showRemoteThings
+	"Gets the remote thigns from the remote backend and tells itself to show them when the promise is fullfiled."
+
+	self getRemoteThings done: [ :things | self showRemoteThings:  things ].
 !
 
 showRemoteThings: someThings
@@ -511,12 +606,12 @@ updateNotEmpty
 
 	self 
 		basicAt: #localNotEmpty 
-		put: true.
+		put: self localThings model notEmpty.
 
 	(self hasControllerAt: #remoteThings) ifTrue: [
 		self 
 			basicAt: #remoteNotEmpty 
-			put: true ]
+			put: self remoteThings model notEmpty ]
 ! !
 
 !Example5Controller methodsFor: 'initialization'!
@@ -527,8 +622,29 @@ initialize
 	
 	self when: #onAfterView do: [ 
 		self showLocalThings.
-		self getRemoteThings done: [ :things | self showRemoteThings:  things ].
-		self updateNotEmpty ]
+		self showRemoteThings ]
+! !
+
+!Example5Controller methodsFor: 'reactions'!
+
+onEditedLocal: aThing
+
+	aThing localSave
+!
+
+onEditedRemote: aThing
+
+	aThing save
+!
+
+onRemoveLocal: aThing
+
+	aThing localDelete
+!
+
+onRemoveRemote: aThing
+
+	aThing delete
 ! !
 
 Object subclass: #ExampleModel
@@ -697,6 +813,48 @@ removeThing
 viewDetails
 
 	self triggerEvent: #viewDetails
+! !
+
+!ThingRowController methodsFor: 'reactions'!
+
+onDescriptionKeyUp: anEvent
+! !
+
+BindingController subclass: #ThingViewEditorRowController
+	instanceVariableNames: ''
+	package: 'App'!
+
+!ThingViewEditorRowController methodsFor: 'actions'!
+
+beEditor
+
+	self basicAt: #isEditor put: true
+!
+
+beView
+
+	self basicAt: #isEditor put: false.
+	
+	self triggerEvent: #edited: with: model
+!
+
+remove
+
+	self triggerEvent: #remove: with: model
+! !
+
+!ThingViewEditorRowController methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self beView
+! !
+
+!ThingViewEditorRowController methodsFor: 'reactions'!
+
+onDescriptionKeyUp: anEvent
 ! !
 
 !Controller methodsFor: '*App'!

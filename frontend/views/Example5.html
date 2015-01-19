@@ -8,7 +8,9 @@
 
 	<h3>Mapless using the local API</h3>
 	<p>Try adding and editing some objects and with your browser's devtools see how the localStorage is used.</p>
-	<div id="local-things-wrapper"></div>
+
+	<div id="local-things-wrapper" class="well"></div>
+
 	<button class="btn btn-success"
 		rv-on-click="controller._addLocalThing">Add one Thing</button>
 
@@ -18,7 +20,9 @@
 
 	<h3>Mapless using the backend with the REST API</h3>
 	<p>Now try doing the same but see the mapless objects going and coming as JSON in the network activity.</p>
-	<div id="remote-things-wrapper"></div>
+
+	<div id="remote-things-wrapper" class="well"></div>
+
 	<button class="btn btn-success"
 		rv-on-click="controller._addRemoteThing">Add one Thing</button>
 
