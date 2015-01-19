@@ -494,8 +494,8 @@ getStuff
 
 	| cid |
 
-	"Get the client (local) ID for the root mapless.
-	Create one if necessary (first time or after dropping localStorage data."
+	"Get the client (local) ID for the root mapless that we use in the frontend to 'hold' our things.
+	Create one if necessary (because is the first time or after dropping localStorage data)."
 	cid := (window localStorage getItem: 'stuff') ifNil: [ | newStuff |
 				newStuff := Stuff new.
 				window localStorage setItem: 'stuff' put: newStuff cid.
@@ -559,29 +559,33 @@ observeEvents
 	self remoteThings model when: #changed do: [ self updateNotEmpty ].
 !
 
-removeLocalThing
+removeLocal: aThing
 
-	| toRemove stuff |
-	
-	toRemove := self localThings model last.
-	self localThings model remove: toRemove ifAbsent: [ nil ].
+	| stuff |
+
+	self localThings model remove: aThing ifAbsent: [ nil ].
 	
 	stuff  := self getStuff.
-	
-	stuff things remove: toRemove ifAbsent: [ nil ].
+	stuff things remove: aThing ifAbsent: [ nil ].
 	stuff localSave.
-	toRemove localDelete.
+	aThing localDelete.
+!
+
+removeLocalThing
+
+	self removeLocal: self localThings model last
+!
+
+removeRemote: aThing
+
+	self remoteThings model remove: aThing ifAbsent: [ nil ].
+
+	aThing delete.
 !
 
 removeRemoteThing
 
-	| toRemove | 
-
-	toRemove := self remoteThing model last.
-	
-	self remoteThing model remove: toRemove.
-
-	toRemove delete.
+	self removeRemote: self remoteThings model last
 !
 
 showLocalThings
@@ -639,12 +643,12 @@ onEditedRemote: aThing
 
 onRemoveLocal: aThing
 
-	aThing localDelete
+	self removeLocal: aThing
 !
 
 onRemoveRemote: aThing
 
-	aThing delete
+	self removeRemote: aThing
 ! !
 
 Object subclass: #ExampleModel
@@ -862,6 +866,13 @@ onDescriptionKeyUp: anEvent
 hasControllerAt: aKey
 
 	^ self controllers includesKey: aKey
+! !
+
+!Date methodsFor: '*App'!
+
+asJSON
+
+	<return self.toJSON()>
 ! !
 
 !ListModel class methodsFor: '*App'!
