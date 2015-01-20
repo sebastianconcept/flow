@@ -1,3 +1,8 @@
+January 19, 2015 - Release 0.2.6
+===================================
+
+* The Example5Controller works with all its basic features.
+
 January 18, 2015 - Release 0.2.5
 ===================================
 
