@@ -3,35 +3,65 @@ Object subclass: #App
 	instanceVariableNames: ''
 	package: 'App'!
 
+App class instanceVariableNames: 'main'!
+
+!App class methodsFor: 'accessing'!
+
+main
+	"Answers the main controller of the app (parent of all the other ones).
+	Initializes it lazily."
+
+	^ main ifNil: [ self initializeMain ]
+! !
+
 !App class methodsFor: 'actions'!
 
-publishObjects
+home
 
-	Flow session api ws
-		publish: Flow app at: 'app';
-		publish: Transcript current at: 'Transcript';
-		publish: console at: 'console';
-		publish: [ :sent | sent ] at: 'echo';
-		publish: [ :ping | #pong ] at: 'ping';		
-		publish: [ :a :b | a + b ] at: 'sum';	
+	self main reset
+!
+
+setupRoutes
+
+	Router rlite 
+		"Normalize the home URI"
+		add: '' do: [ :r | Router set: '/home' ];
+		add: '/' do: [ :r | Router set: '/home' ];
+		add: '/#' do: [ :r | Router set: '/home' ];
+		add: '/home' do: [ :r | Router set: '/home' ];
+		add: '/#/home' do: [ :r | Router set: '/home' ];
+
+		"Setup the actual routes"
+		add: 'home' do: [ :r | App home ];
+		add: 'example1' do: [ :r | App main showExample1 ];
+		add: 'example2' do: [ :r | App main showExample2 ];
+		add: 'example3' do: [ :r | App main showExample3 ];
+		add: 'example4' do: [ :r | App main showExample4 ];
+		add: 'example5' do: [ :r | App main showExample5 ];
 		yourself
 !
 
 start
 
-	Flow install.
-	Flow start.
+	window at: #app put: self.
 	
-	Flow app: self.
-	Flow session visitor: AppVisitor new.
-	self publishObjects.
-	
-	Router refresh
+	Router processHash
 ! !
 
-MaplessModel subclass: #AppVisitor
-	instanceVariableNames: ''
-	package: 'App'!
+!App class methodsFor: 'initialization'!
+
+initialize
+
+	self setupRoutes
+!
+
+initializeMain
+
+	^ main := MainController 
+					for: ExampleModel new
+					on: nil
+					appendingTo: '#main-wrapper' asJQuery
+! !
 
 ConfirmController subclass: #ConfirmNameController
 	instanceVariableNames: ''
@@ -66,8 +96,13 @@ The AppController is the main/root controller of your flow-based application.!
 
 observeEvents
 
-	(view asJQuery find: 'a#browse-example1') on: 'click' do: [ Example1Controller browse ].
-	(view asJQuery find: 'a#browse-template') on: 'click' do: [ TemplateController browse ]
+	(view asJQuery find: 'a#browse-example1') 
+		on: #click
+		do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
+		
+	(view asJQuery find: 'a#browse-template') 
+		on: #click
+		do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 ! !
 
 !Example1Controller methodsFor: 'initialization'!
@@ -81,12 +116,11 @@ initialize
 		yourself
 ! !
 
-!Example1Controller class methodsFor: 'testing'!
+!Example1Controller class methodsFor: 'accessing'!
 
-isValidFor: anURI
-	"Answers true if this controller is the right route for anURI"
-	
-	^ anURI match: '^example1$'
+defaultModel
+
+	^ ExampleModel new
 ! !
 
 BindingController subclass: #Example2Controller
@@ -97,14 +131,32 @@ BindingController subclass: #Example2Controller
 
 The AppController is the main/root controller of your flow-based application.!
 
+!Example2Controller methodsFor: 'accessing'!
+
+nameModal
+
+	^ self ifAbsentAt: #nameModal put: [
+		(ConfirmNameController 
+			for: model
+			on: self
+			appendingTo: '#confirmName' asJQuery)
+				acceptBlock: [ 
+					model isConfirmed: true.
+					self nameModal close ];
+				rejectBlock: [ 
+					model isConfirmed: false.
+					self nameModal close ];
+				yourself ]
+! !
+
 !Example2Controller methodsFor: 'actions'!
 
 confirm
 	"Sets a fresh message and opens the modal"
 
-	(self controllerAt: #nameModal) 
+	(self nameModal
 		message: (model firstName asString,' are you sure you can handle this?');
-		open
+		show) done: [ :c | c open ]
 !
 
 confirmAgain
@@ -115,34 +167,23 @@ confirmAgain
 	self  updateCanConfirm
 !
 
-ensureModal
-
-	self ifAbsentAt: #nameModal put: [
-		ConfirmNameController 
-			for: Flow session visitor
-			on: self
-			appendingTo: '#confirmName' asJQuery ].
-			
-	(self controllerAt: #nameModal) 
-		acceptBlock: [ 
-			model isConfirmed: true.
-			(self controllerAt: #nameModal) close ];
-		rejectBlock: [ 
-			model isConfirmed: false.
-			(self controllerAt: #nameModal) close ];
-		refresh
-!
-
 observeEvents
 
-	(view asJQuery find: 'a#inspect-example2') on: 'click' do: [ self inspect ].
-	(view asJQuery find: 'a#browse-binding') on: 'click' do: [ BindingController browse ]
+	(view asJQuery find: 'a#inspect-example2') 
+		on: 'click' 
+		do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
+		
+	(view asJQuery find: 'a#browse-binding') 
+		on: 'click' 
+		do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 !
 
 updateCanConfirm
 		
+	self hasModel ifFalse: [ ^ self ].
+	
 	self 
-		basicAt: #canConfirm 
+		basicAt: #canConfirm
 		put: (model firstName notNil and: [
 				model firstName notEmpty ])
 ! !
@@ -157,13 +198,12 @@ initialize
 		when: #onAfterView 
 		do: [ 
 			self updateCanConfirm.
-			self ensureModal.
 			self observeEvents ]
 ! !
 
 !Example2Controller methodsFor: 'reactions'!
 
-onFirstNameBlur
+onFirstNameKeyUp
 
 	self updateCanConfirm
 ! !
@@ -172,15 +212,11 @@ onFirstNameBlur
 
 defaultModel
 
-	^ Flow session
-! !
-
-!Example2Controller class methodsFor: 'testing'!
-
-isValidFor: anURI
-	"Answers true if this controller is the right route for anURI"
-	
-	^ anURI match: '^example2$'
+	^ ThingModel new 
+		firstName: 'Dude';
+		someNumbers: #( 3 6 2 8 1 );
+		someFloatValue: 33.33333333;
+		yourself
 ! !
 
 TemplateController subclass: #Example3Controller
@@ -191,22 +227,29 @@ TemplateController subclass: #Example3Controller
 
 The AppController is the main/root controller of your flow-based application.!
 
-!Example3Controller methodsFor: 'actions'!
+!Example3Controller methodsFor: 'accessing'!
 
-ensureSubControllers
+example1
 
-	self ifAbsentAt: #subexample put: [
+	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
 			for: nil "We don't need to set any particular model for it"
 			on: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
-			appendingTo: '#subexample-wrapper' asJQuery ].
-			
-	(self controllerAt: #subexample) refresh
-!
+			appendingTo: '#subexample-wrapper' asJQuery ]
+! !
+
+!Example3Controller methodsFor: 'actions'!
 
 observeEvents
 
-	(view asJQuery find: 'a#inspect-this') on: 'click' do: [ self inspect ]
+	(view asJQuery find: 'a#inspect-this') 
+		on: #click
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
+!
+
+showSubController
+	
+	self example1 show
 ! !
 
 !Example3Controller methodsFor: 'initialization'!
@@ -218,16 +261,15 @@ initialize
 	self 
 		when: #onAfterView 
 		do: [ 
-			self ensureSubControllers.
+			self showSubController.
 			self observeEvents ]
 ! !
 
-!Example3Controller class methodsFor: 'testing'!
+!Example3Controller class methodsFor: 'accessing'!
 
-isValidFor: anURI
-	"Answers true if this controller is the right route for anURI"
-	
-	^ anURI match: '^example3$'
+defaultModel
+
+	^ ExampleModel new
 ! !
 
 BindingController subclass: #Example4Controller
@@ -254,60 +296,46 @@ potentialNames
 	DeBroglie
 	Feynman
 	)
+!
+
+things 
+	
+	^ self ifAbsentAt: #things put: [
+		(ListController 
+			on: self
+			appendingTo: '#things-wrapper' asJQuery)
+			newItemControllerBlock: [ :item | 
+				self newItemControllerFor: item for: self things ];
+			model: self getListModel;
+			yourself ]
 ! !
 
 !Example4Controller methodsFor: 'actions'!
 
 addThing
 
-	(self controllerAt: #things) model add: (Thing new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
+	self things model add: (ThingModel new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
 	
 	self updateNotEmpty
 !
 
-ensureDetails
-	"Makes sure we have a controller for #details and 
-	make it fresh and visible with a refresh"
+details
 	
-	self ifAbsentAt: #details put: [
+	^ self ifAbsentAt: #details put: [
 		ThingDetailsController
 			on: self
-			appendingTo: '#details-wrapper' asJQuery ].
-	
-	(self controllerAt: #details) refresh
-!
-
-ensureList
-	"Makes sure we have a controller for #things and 
-	make it fresh and visible with a refresh"
-	
-	self ifAbsentAt: #things put: [
-		ListController 
-			on: self
-			appendingTo: '#things-wrapper' asJQuery ].
-	
-	(self controllerAt: #things) 
-		newItemControllerBlock: [ :item | 
-			self newItemControllerFor: item for: (self controllerAt: #things) ];
-		model: self getListModel;
-		refresh
+			appendingTo: '#details-wrapper' asJQuery ]
 !
 
 getListModel
-	"Answers the list model of things"
-
-	| things |
-	 
-	"Load them from the local storage"
-	things := ListModel localFindCid: 'samples'.
+	"Answers a newly created list model of things (Thing sample instances)."
 	
-	things ifNil: [ 
-		"Oh, not found? then create and save some..."
-		things := self newListModel.
-		things do: [ :e | e localSave ].
-		things localSave ].
-	
-	^ things
+	^ ListModel new
+		list: (self potentialNames shuffled collect: [ :aName |  
+				ThingModel new 
+					name: aName;
+					yourself ]);
+		yourself
 !
 
 newItemControllerFor: aModel for: aListController
@@ -328,25 +356,16 @@ newItemControllerFor: aModel for: aListController
 	^ row
 !
 
-newListModel
-	"Answers a newly created list model of things (Thing sample instances)."
-	
-	^ ListModel new
-		list: (self potentialNames shuffled collect: [ :aName |  
-				Thing new 
-					name: aName;
-					yourself ]);
-		yourself
-!
-
 observeEvents
 
-	'#inspect-this' asJQuery on: 'click' do: [ self inspect ]
+	'#inspect-this' asJQuery 
+		on: #click
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 !
 
 removeThing
 
-	(self controllerAt: #things) model removeLast.
+	self things model removeLast.
 	
 	self updateNotEmpty
 !
@@ -355,7 +374,7 @@ updateNotEmpty
 
 	self 
 		basicAt: #notEmpty 
-		put: (self controllerAt: #things) model notEmpty
+		put: self things model notEmpty
 ! !
 
 !Example4Controller methodsFor: 'initialization'!
@@ -367,8 +386,7 @@ initialize
 	self basicAt: #hasDetails put: false.
 	
 	self when: #onAfterView do: [ 
-		self ensureDetails.
-		self ensureList.
+		self things show.
 		self updateNotEmpty.
 		self observeEvents ]
 ! !
@@ -379,12 +397,12 @@ onDetails: aThing
 
 	self basicAt: #hasDetails put: true.
 	
-	(self controllerAt: #details) model: aThing; refresh
+	self details model: aThing; refresh
 !
 
 onRemove: aThing
 
-	(self controllerAt: #things) model remove: aThing.
+	self things model remove: aThing.
 
 	self updateNotEmpty
 ! !
@@ -393,15 +411,260 @@ onRemove: aThing
 
 defaultModel
 
-	^ Flow session
+	^ ExampleModel new
 ! !
 
-!Example4Controller class methodsFor: 'testing'!
+BindingController subclass: #Example5Controller
+	instanceVariableNames: ''
+	package: 'App'!
 
-isValidFor: anURI
-	"Answers true if this controller is the right route for anURI"
+!Example5Controller methodsFor: 'accessing'!
+
+localThings
+
+	^ self ifAbsentAt: #localThings put: [
+		(ListController 
+			on: self
+			appendingTo: '#local-things-wrapper' asJQuery)
+				model: (ListModel on: self getLocalThings);
+				newItemControllerBlock: [ :item | 
+					self newLocalThingControllerFor: item for: self localThings ];
+				yourself ]
+!
+
+remoteThings
+
+	^ self ifAbsentAt: #remoteThings put: [
+		(ListController 
+			on: self
+			appendingTo: '#remote-things-wrapper' asJQuery)
+				newItemControllerBlock: [ :item | 
+					self newRemoteThingControllerFor: item for: self remoteThings ];
+				yourself ]
+! !
+
+!Example5Controller methodsFor: 'actions'!
+
+addLocalThing
+
+	| newThing stuff |
 	
-	^ anURI match: '^example4$'
+	newThing := Thing new 
+							description: 'New thing!!';
+							yourself.
+	self localThings model add: newThing.
+	
+	newThing localSave.
+	
+	stuff := self getStuff.
+	stuff things add: newThing.
+	stuff localSave.
+!
+
+addRemoteThing
+
+	| newThing |
+	
+	newThing := Thing new 
+							description: 'New thing!!';
+							yourself.
+	self remoteThings model add: newThing.
+	
+	newThing save.
+!
+
+getLocalThings
+	
+	^ self getStuff things collect: [ :each |
+		Thing localFindCid: each cid ]
+!
+
+getRemoteThings
+	
+	| promise |
+
+	promise :=  jQuery Deferred value.
+	
+	Thing findAllThen: [ :things | promise resolve: things ].
+	
+	^ promise
+!
+
+getStuff
+
+	| cid |
+
+	"Get the client (local) ID for the root mapless that we use in the frontend to 'hold' our things.
+	Create one if necessary (because is the first time or after dropping localStorage data)."
+	cid := (window localStorage getItem: 'stuff') ifNil: [ | newStuff |
+				newStuff := Stuff new.
+				window localStorage setItem: 'stuff' put: newStuff cid.
+				newStuff localSave; cid ].
+	
+	^ Stuff localFindCid: cid
+!
+
+getThings
+	
+	| promise |
+
+	promise :=  jQuery Deferred value.
+	
+	Thing findAllThen: [ :things | promise resolve: things ].
+	
+	^ promise
+!
+
+newLocalThingControllerFor: aModel for: aListController
+	"Returns a new controller for aModel to be handled by aListController."
+
+	| row |
+
+	row := ThingViewEditorRowController 
+				for: aModel
+				on: aListController
+				appendingTo: aListController view.
+				
+	row
+		when: #removeThing: do: [ :aThing | self onRemoveLocal: aThing ];
+		when: #edited: do: [ :aThing | self onEditedLocal: aThing ];
+		yourself.
+
+	^ row
+!
+
+newRemoteThingControllerFor: aModel for: aListController
+	"Returns a new controller for aModel to be handled by aListController."
+
+	| row |
+
+	row := ThingViewEditorRowController 
+				for: aModel
+				on: aListController
+				appendingTo: aListController view.
+				
+	row
+		when: #removeThing: do: [ :aThing | self onRemoveRemote: aThing ];
+		when: #edited: do: [ :aThing | self onEditedRemote: aThing ];
+		yourself.
+
+	^ row
+!
+
+observeEvents
+
+	super observeEvents.
+
+	self localThings model when: #changed do: [ self updateNotEmpty ].
+	self remoteThings model when: #changed do: [ self updateNotEmpty ].
+!
+
+removeLocal: aThing
+
+	| stuff |
+
+	self localThings model remove: aThing ifAbsent: [ nil ].
+	
+	stuff  := self getStuff.
+	stuff things remove: aThing ifAbsent: [ nil ].
+	stuff localSave.
+	aThing localDelete.
+!
+
+removeLocalThing
+
+	self removeLocal: self localThings model last
+!
+
+removeRemote: aThing
+
+	self remoteThings model remove: aThing ifAbsent: [ nil ].
+
+	aThing delete.
+!
+
+removeRemoteThing
+
+	self removeRemote: self remoteThings model last
+!
+
+showLocalThings
+
+	self localThings show
+!
+
+showRemoteThings
+	"Gets the remote thigns from the remote backend and tells itself to show them when the promise is fullfiled."
+
+	self getRemoteThings done: [ :things | self showRemoteThings:  things ].
+!
+
+showRemoteThings: someThings
+
+	self remoteThings
+		model: (ListModel on: someThings);
+		show
+!
+
+updateNotEmpty
+
+	self 
+		basicAt: #localNotEmpty 
+		put: self localThings model notEmpty.
+
+	(self hasControllerAt: #remoteThings) ifTrue: [
+		self 
+			basicAt: #remoteNotEmpty 
+			put: self remoteThings model notEmpty ]
+! !
+
+!Example5Controller methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self when: #onAfterView do: [ 
+		self showLocalThings.
+		self showRemoteThings ]
+! !
+
+!Example5Controller methodsFor: 'reactions'!
+
+onEditedLocal: aThing
+
+	aThing localSave
+!
+
+onEditedRemote: aThing
+
+	aThing save
+!
+
+onRemoveLocal: aThing
+
+	self removeLocal: aThing
+!
+
+onRemoveRemote: aThing
+
+	self removeRemote: aThing
+! !
+
+Object subclass: #ExampleModel
+	instanceVariableNames: 'name'
+	package: 'App'!
+
+!ExampleModel methodsFor: 'accessing'!
+
+name
+
+	^ name
+!
+
+name: aString
+
+	name := aString
 ! !
 
 TemplateController subclass: #MainController
@@ -412,42 +675,131 @@ TemplateController subclass: #MainController
 
 The AppController is the main/root controller of your flow-based application.!
 
+!MainController methodsFor: 'accessing'!
+
+example1
+
+	^ self ifAbsentAt: #example1 put: [
+		Example1Controller 
+			for: model
+			on: self
+			appendingTo: '#example1-wrapper' asJQuery ]
+!
+
+example2
+
+	^ self ifAbsentAt: #example2 put: [
+		Example2Controller 
+			for: (ThingModel new
+					firstName: 'Dude';
+					someNumbers: #( 3 6 2 8 1 );
+					someFloatValue: 33.33333333;
+					yourself)
+			on: self
+			appendingTo: '#example2-wrapper' asJQuery ]
+!
+
+example3
+
+	^ self ifAbsentAt: #example3 put: [
+		Example3Controller 
+			for: model
+			on: self
+			appendingTo: '#example3-wrapper' asJQuery ]
+!
+
+example4
+
+	^ self ifAbsentAt: #example4 put: [
+		Example4Controller 
+			for: ThingModel new
+			on: self
+			appendingTo: '#example4-wrapper' asJQuery ]
+!
+
+example5
+
+	^ self ifAbsentAt: #example5 put: [
+		Example5Controller 
+			for: ThingModel new
+			on: self
+			appendingTo: '#example5-wrapper' asJQuery ]
+! !
+
 !MainController methodsFor: 'actions'!
+
+hideAll
+	"Hides all subcontrollers and the welcome message"
+
+	'#welcome' asJQuery hide.
+	
+	super hideAll
+!
 
 highlightTitle
 
 	(view asJQuery find: 'h1') effect: 'highlight'
 !
 
+reset
+	"Hides all subcontrollers and shows the welcome message"
+
+	self hideAll.
+	
+	self show done: [ '#welcome' asJQuery show ]
+!
+
+showExample1
+
+	self show done: [
+		self hideAll.
+		self example1 show ]
+!
+
+showExample2
+
+	self show done: [
+		self hideAll.
+		self example2 show ]
+!
+
+showExample3
+	
+	self show done: [
+		self hideAll.
+		self example3 show ]
+!
+
+showExample4
+	
+	self show done: [
+		self hideAll.
+		self example4 show ]
+!
+
+showExample5
+	
+	self show done: [
+		self hideAll.
+		self example5 show ]
+! !
+
+!MainController methodsFor: 'initializing'!
+
 observeEvents
-
-	(view asJQuery find: 'a#inspect-main') on: 'click' do: [ self inspect ]
-! !
-
-!MainController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
 	
-	self 
-		when: #onAfterView do: [ 
-			self highlightTitle.
-			self observeEvents ];
-		yourself
-! !
+	super observeEvents.
 
-!MainController class methodsFor: 'testing'!
-
-isValidFor: anURI
-	"Answers true if this controller is the right route for anURI"
-	
-	^ (anURI match: '^/$') or: [
-	(anURI match: '^home&') or: [
-	(anURI match: '^$')]]
+	(view asJQuery find: 'a#inspect-main') 
+		on: #click 
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 ! !
 
 BindingController subclass: #ThingDetailsController
+	instanceVariableNames: ''
+	package: 'App'!
+
+MaplessModel subclass: #ThingModel
 	instanceVariableNames: ''
 	package: 'App'!
 
@@ -459,11 +811,76 @@ BindingController subclass: #ThingRowController
 
 removeThing
 
-	self trigger: #removeThing
+	self triggerEvent: #removeThing
 !
 
 viewDetails
 
-	self trigger: #viewDetails
+	self triggerEvent: #viewDetails
+! !
+
+!ThingRowController methodsFor: 'reactions'!
+
+onDescriptionKeyUp: anEvent
+! !
+
+BindingController subclass: #ThingViewEditorRowController
+	instanceVariableNames: ''
+	package: 'App'!
+
+!ThingViewEditorRowController methodsFor: 'actions'!
+
+beEditor
+
+	self basicAt: #isEditor put: true
+!
+
+beView
+
+	self basicAt: #isEditor put: false.
+	
+	self triggerEvent: #edited: with: model
+!
+
+removeThing
+
+	self triggerEvent: #removeThing: with: model
+! !
+
+!ThingViewEditorRowController methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self beView
+! !
+
+!ThingViewEditorRowController methodsFor: 'reactions'!
+
+onDescriptionKeyUp: anEvent
+! !
+
+!Controller methodsFor: '*App'!
+
+hasControllerAt: aKey
+
+	^ self controllers includesKey: aKey
+! !
+
+!Date methodsFor: '*App'!
+
+asJSON
+
+	<return self.toJSON()>
+! !
+
+!ListModel class methodsFor: '*App'!
+
+on: aCollection
+
+	^ self new
+		list: aCollection;
+		yourself
 ! !
 

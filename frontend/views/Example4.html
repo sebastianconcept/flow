@@ -2,7 +2,7 @@
 	<h1>Example 4 - Lists of controllers</h1>
 	<p>This is the Example4Controller.</p>
 	<p>The Example4Controller is a BindingController. We need it binding so it can show details of the items in the displayed list.</p>
-	<p>It also has a (sub)controller that has a ListModel as its model. The ListModel has a collection of Thing(s) and it displays those things, one per row, by rendering their own ThingRowController instances that are created and removed dynamically.</p> 
+	<p>It also has a (sub)controller which is a ListController. These have ListModel as their model. The ListModel has a collection of Thing(s) and the ListController knows how to create instances to present those Thing(s). They get displayed, one per row, by rendering their own ThingRowController instances that are created and removed dynamically when needed.</p> 
 	<p>Thing is class of Mapless that we are just using as example here to create a bunch of models so our ListModel is not empty and you can play with it.</p>
 	
 	<a id="inspect-this" class="btn btn-info">Inspect this controller</a>
@@ -20,10 +20,6 @@
 		rv-on-click="controller._removeThing">Remove last Thing</button>
 
 	<div class="well">
-		<p>Find other users in the <a href="https://gitter.im/flow-stack/flow" target="_blank()">chat group of flow</a></p>
-
-		<p>Or here for <a href="https://medium.com/@sebastianconcpt" target="_blank()">some news about the project</a></p>
-
 		<a href="#/example1"
 			class="btn btn-default">Example 1</a>
 		<a href="#/example2"
@@ -31,7 +27,9 @@
 		<a href="#/example3"
 			class="btn btn-default">Example 3</a>
 		<a href="#/example4"
-			class="btn btn-default">Example 4</a>
+			class="btn btn-primary">Example 4</a>
+		<a href="#/example5"
+			class="btn btn-default">Example 5</a>
 
 		<p>Click in the button below to return to Home</p>
 		<a href="#/" 

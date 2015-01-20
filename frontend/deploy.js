@@ -3,14 +3,18 @@ define([
     // --- packages to be deployed begin here ---
     'text',
     'sightglass',
+    'bootstrap',
+    'rlite',
     'rivets',
+
     'domevents/DOMEvents',
+
     'minimapless/MiniMapless',
-	'amber-flow/Flow',
-	'amber-flow/Flow-Core',
-	'amber-flow/Flow-API',
-	'amber-flow/Flow-Templates',
-	'amber-flow/Flow-Binding',
+
+    'amber-mvc/MVC-Core',
+    
+    'amber-flow/Flow-Core',
+    'amber-flow/Flow-API',
     'flow-app/App'
     // --- packages to be deployed end here ---
 ], function (amber) {

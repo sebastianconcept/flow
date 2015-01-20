@@ -2,5 +2,14 @@
 #
 # Starts the services needed to have a developing session with a flow-based app
 
-echo "Not implemented yet"
-exit 0
+# Start the database server...
+gnome-terminal -x sh -c ".hood/platform/linux/startMongoDB" 
+
+# Start Amber server to handle frontend dev and its commits...
+gnome-terminal -x sh -c ".hood/platform/linux/startAmber"
+
+# Start our Pharo backend...
+gnome-terminal -x sh -c ".hood/platform/linux/startPharo"
+
+# Start grunt to detect frontend sources changing and trigger rebuilds...
+gnome-terminal -x sh -c ".hood/platform/linux/startWatcher"

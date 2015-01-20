@@ -35,23 +35,22 @@ module.exports = function (grunt) {
                 src: [ // list all sources in dependency order
 
                     'src/App.st', 
-                    'src/App-Tests.st',
-
+                    'src/App-Tests.st'
                 ],
                 amd_namespace: 'flow-app',
                 libraries: ['SUnit', 'Web',
                     'DOMEvents', 
-                    'MiniMapless', 
-                    'Flow',
+                    'MVC-Core', 
+                    'MiniMapless',
                     'Flow-Core',
-                    'Flow-API',
-                    'Flow-Templates',
-                    'Flow-Binding'],
+                    'Flow-API'
+                    ],
                  options: {
                    library_dirs: [
-                        'bower_components/amber-dom-events/src',
                         'bower_components/amber-flow/src',
-                        'bower_components/minimapless/src'], 
+                        'bower_components/amber-mvc/src',
+                        'bower_components/minimapless/src',
+                        'bower_components/amber-dom-events/src' ], 
                    verbose: true
                  }
             },

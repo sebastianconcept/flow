@@ -12,4 +12,4 @@
 .hood/platform/windows/startPharo
 
 # Start grunt to detect frontend sources changing and trigger rebuilds...
-.hood/platform/windows/startWatcher
+#.hood/platform/windows/startWatcher

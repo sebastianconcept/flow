@@ -3,10 +3,10 @@ define([
     './deploy',
     // --- packages used only during development begin here ---
     'domevents/DOMEvents-Tests',
+    'amber-attic/IDE',
     'minimapless/MiniMapless-Tests',
-   	'amber-flow/Flow-Binding-Tests',
-	'amber-flow/Flow-Templates-Tests',
-	'amber-flow/Flow-Tests',
+    'amber-flow/Flow-Scaffolding',
+    'amber-flow/Flow-Tests',
 	'flow-app/App-Tests'
     // --- packages used only during development end here ---
 ], function (amber) {
