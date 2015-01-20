@@ -526,7 +526,7 @@ newLocalThingControllerFor: aModel for: aListController
 				appendingTo: aListController view.
 				
 	row
-		when: #remove: do: [ :aThing | self onRemoveLocal: aThing ];
+		when: #removeThing: do: [ :aThing | self onRemoveLocal: aThing ];
 		when: #edited: do: [ :aThing | self onEditedLocal: aThing ];
 		yourself.
 
@@ -544,7 +544,7 @@ newRemoteThingControllerFor: aModel for: aListController
 				appendingTo: aListController view.
 				
 	row
-		when: #remove: do: [ :aThing | self onRemoveRemote: aThing ];
+		when: #removeThing: do: [ :aThing | self onRemoveRemote: aThing ];
 		when: #edited: do: [ :aThing | self onEditedRemote: aThing ];
 		yourself.
 
@@ -842,9 +842,9 @@ beView
 	self triggerEvent: #edited: with: model
 !
 
-remove
+removeThing
 
-	self triggerEvent: #remove: with: model
+	self triggerEvent: #removeThing: with: model
 ! !
 
 !ThingViewEditorRowController methodsFor: 'initialization'!
