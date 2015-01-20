@@ -1,0 +1,53 @@
+<div id="example4">
+	<h1>Example 5 - Frontend - backend interaction</h1>
+	<p>This is the Example5Controller.</p>
+	<p>Here we have two ListController(s), the first one will create, edit and remove Mapless models pesisting them in the frontend's localStorage and the second list is doing it in the backend via the RESTful API suported by default using Pharo and MongoDB.</p>
+
+	<div id="details-wrapper"
+		rv-show="controller.hasDetails"></div>
+
+	<div class="well">
+		<h3>Mapless using the local API</h3>
+		<p>Try adding and editing some objects and with your browser's devtools see how the localStorage is used.</p>
+
+		<div id="local-things-wrapper"></div>
+
+		<button class="btn btn-success"
+			rv-on-click="controller._addLocalThing">Add one Thing</button>
+
+		<button class="btn btn-danger"
+			rv-show="controller.localNotEmpty"
+			rv-on-click="controller._removeLocalThing">Remove last Thing</button>
+	</div>
+
+	<div class="well">
+		<h3>Mapless using the backend with the REST API</h3>
+		<p>Now try doing the same but see the mapless objects going and coming as JSON in the network activity.</p>
+
+		<div id="remote-things-wrapper"></div>
+
+		<button class="btn btn-success"
+			rv-on-click="controller._addRemoteThing">Add one Thing</button>
+
+		<button class="btn btn-danger"
+			rv-show="controller.remoteNotEmpty"
+			rv-on-click="controller._removeRemoteThing">Remove last Thing</button>
+	</div>
+
+	<div class="well">
+		<a href="#/example1"
+			class="btn btn-default">Example 1</a>
+		<a href="#/example2"
+			class="btn btn-default">Example 2</a>
+		<a href="#/example3"
+			class="btn btn-default">Example 3</a>
+		<a href="#/example4"
+			class="btn btn-default">Example 4</a>
+		<a href="#/example5"
+			class="btn btn-primary">Example 5</a>
+
+		<p>Click in the button below to return to Home</p>
+		<a href="#/" 
+			class="btn btn-default">Home</a>
+	</div>
+</div>

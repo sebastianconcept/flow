@@ -1,0 +1,73 @@
+<div id="example2">
+	<h1>Example 2 - Two-way data binding</h1>
+	<p>This is rendered by an instance of Example2Controller.</p>
+	<a id="inspect-example2" class="btn btn-default">Inspect this Example2Controller instance</a>
+
+	<p>The Example2Controller is a subclass of BindingController which uses <a href="http://rivetsjs.com/" target="_bank()">RivetJS</a> to give you features like <a href="http://stackoverflow.com/questions/13504906/what-is-two-way-binding" target="_bank()">two-way data binding</a> and some other nice tricks.</p>
+
+	<a id="browse-binding" class="btn btn-primary">Browse BindingController class</a>
+
+	<p>As with TemplateControllers, this kind of controllers have a template as their view. BindingControllers talk with RivetJS binding an object that has the form:</p> 
+	<blockquote><span>{</span>model: aModel, controller: self<span>}</span></blockquote>
+	<p>where aModel is the model of the controller and self is the binded instance of it</p>
+
+	<p>If you examine this one for example... the button below saying 'Do you confirm?' is going to be enabled only when the input has a non empty content. The implementation of that is in Example2Controller>>updateCanConfirm.</p>
+	<p>Another thing worth noticing here is that controller methods in Amber Smalltalk can be invoked from javascript. We are doing that in this controller to invoke in Smalltalk Example2Controller>>onFirstNameBlur from JavaScript. The one making that is actually RivetJS, when it executes that rv-on-blur callback getting an evaluation of controller._onFirstNameBlur that results in the smalltalk message send.</p>
+
+	<p>When RivetJS rv-on-blur evaluates controller._onFirstNameBlur, we have that in Smalltalk the instance of this controller receives the message onFirstNameBlur and reacts as expected.</p>
+	
+	<p>If you are surprised tsby not seeing model updates with each keystroke, that's RivetJS's default behavior (we could be using a custom binder to make it update the model with each keyup for instance).</p>
+
+	<p>Also, if you observe the template you'll see it has some other elements that are going to show/hide depending on the state of the model and controller. Study them to see how you can make your own!</p>
+
+	<label for="firstName" rv-hide="model.isConfirmed">
+		Enter your name
+		<input 
+			type="text"
+			name="firstName"
+			placeholder="First name"
+			rv-on-keyup="controller._onFirstNameKeyUp"
+			rv-live-value="model.firstName">
+	</label>
+	<button class="btn btn-primary"
+		rv-hide="model.isConfirmed"
+		rv-enabled="controller.canConfirm"
+		rv-on-click="controller._confirm">Do you confirm?</button>
+	<p rv-hide="model.isConfirmed">You would confirm: '<strong>{model.firstName}</strong>'</p>	
+
+	<div id="confirmName"></div>
+
+	<p rv-show="model.isConfirmed"><strong>Awesome {model.firstName}!</strong></p>	
+
+	<h2 rv-show="model.isConfirmed">You can haz formatterz too <span rv-text="model.firstName | asLowercase"></span>!</h2>
+	<p rv-show="model.isConfirmed">Lowercase formatters awesomeness <span rv-text="model.firstName | asLowercase"></span>!</p>	
+	<p rv-show="model.isConfirmed">Uppercase formatters awesomeness <span rv-text="model.firstName | asUppercase"></span>!</p>	
+	<p rv-show="model.isConfirmed">Formatters concatenation awesomeness, asLowercase plus capitalized gives you: <span rv-text="model.firstName | asLowercase | capitalized"></span>!</p>
+	<p rv-show="model.isConfirmed">Size formatters awesomeness, {model.firstName} has a size of: <span rv-text="model.firstName | size"></span>!</p>	
+	<p rv-show="model.isConfirmed">Reversed formatters awesomeness, {model.firstName} reverses to: <span rv-text="model.firstName | reversed"></span>!</p>	
+	<p rv-show="model.isConfirmed">Sorting formatters awesomeness, {model.someNumbers} sorts to: <span rv-text="model.someNumbers | sorted"></span>!</p>	
+	<p rv-show="model.isConfirmed">Decimal places formatters awesomeness, 2 on {model.someFloatValue} gives you: <span rv-text="model.someFloatValue |  decimalPlaces 2"></span>!</p>	
+	<p rv-show="model.isConfirmed">Rounded formatters awesomeness, {model.someFloatValue} gives you: <span rv-text="model.someFloatValue | rounded"></span>!</p>	
+	<p rv-show="model.isConfirmed">Currency formatters awesomeness, {model.someFloatValue} with 'EUR' gives you: <span rv-text="model.someFloatValue | currency 'EUR'"></span>!</p>	
+	<p rv-show="model.isConfirmed">Currency formatters awesomeness, {model.someFloatValue} with '€' gives you: <span rv-text="model.someFloatValue | currency '€'"></span>!</p>		
+
+	<button class="btn btn-default"
+		rv-show="model.isConfirmed"
+		rv-on-click="controller._confirmAgain">Confirm again</button>
+
+	<div class="well">
+		<a href="#/example1"
+			class="btn btn-default">Example 1</a>
+		<a href="#/example2"
+			class="btn btn-primary">Example 2</a>
+		<a href="#/example3"
+			class="btn btn-default">Example 3</a>
+		<a href="#/example4"
+			class="btn btn-default">Example 4</a>
+		<a href="#/example5"
+			class="btn btn-default">Example 5</a>
+		<p>Or click in the button below to return to Home</p>
+		<a href="#/" 
+			class="btn btn-default">Home</a>
+	</div>
+</div>
