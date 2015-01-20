@@ -11,8 +11,6 @@ define([
     'minimapless/MiniMapless',
 
     'amber-mvc/MVC-Core',
-    'amber-mvc/MVC-Iterables',
-    'amber-mvc/MVC-Routeables',
     
     'amber-flow/Flow-Core',
     'amber-flow/Flow-API',

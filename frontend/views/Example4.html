@@ -1,0 +1,38 @@
+<div id="example4">
+	<h1>Example 4 - Lists of controllers</h1>
+	<p>This is the Example4Controller.</p>
+	<p>The Example4Controller is a BindingController. We need it binding so it can show details of the items in the displayed list.</p>
+	<p>It also has a (sub)controller which is a ListController. These have ListModel as their model. The ListModel has a collection of Thing(s) and the ListController knows how to create instances to present those Thing(s). They get displayed, one per row, by rendering their own ThingRowController instances that are created and removed dynamically when needed.</p> 
+	<p>Thing is class of Mapless that we are just using as example here to create a bunch of models so our ListModel is not empty and you can play with it.</p>
+	
+	<a id="inspect-this" class="btn btn-info">Inspect this controller</a>
+
+	<div id="details-wrapper"
+		rv-show="controller.hasDetails"></div>
+
+	<div id="things-wrapper"></div>
+
+	<button class="btn btn-success"
+		rv-on-click="controller._addThing">Add one Thing</button>
+
+	<button class="btn btn-danger"
+		rv-show="controller.notEmpty"
+		rv-on-click="controller._removeThing">Remove last Thing</button>
+
+	<div class="well">
+		<a href="#/example1"
+			class="btn btn-default">Example 1</a>
+		<a href="#/example2"
+			class="btn btn-default">Example 2</a>
+		<a href="#/example3"
+			class="btn btn-default">Example 3</a>
+		<a href="#/example4"
+			class="btn btn-primary">Example 4</a>
+		<a href="#/example5"
+			class="btn btn-default">Example 5</a>
+
+		<p>Click in the button below to return to Home</p>
+		<a href="#/" 
+			class="btn btn-default">Home</a>
+	</div>
+</div>

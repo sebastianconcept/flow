@@ -1,0 +1,28 @@
+<div class="thing-row row" >
+
+	<div
+		for="description"
+		rv-hide="controller.isEditor"
+		rv-text="model.description"></div>
+
+	<input 
+		rv-show="controller.isEditor"
+		type="text"
+		name="description"
+		placeholder="Description"
+		rv-on-keyup="controller._onDescriptionKeyUp"
+		rv-live-value="model.description">
+
+	<a 
+		rv-show="controller.isEditor"
+		class="btn btn-info pull-right"
+		rv-on-click="controller._beView">Okay</a>
+	<a 
+		rv-hide="controller.isEditor"
+		class="btn btn-info pull-right"
+		rv-on-click="controller._beEditor">Edit</a>
+	<a 
+		rv-hide="controller.isEditor"
+		class="btn btn-danger pull-right"
+		rv-on-click="controller._removeThing">Remove</a>
+</div>

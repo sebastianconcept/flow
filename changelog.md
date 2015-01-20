@@ -1,3 +1,14 @@
+January 19, 2015 - Release 0.2.6
+===================================
+
+* The Example5Controller works with all its basic features.
+
+January 18, 2015 - Release 0.2.5
+===================================
+
+* Adds a tutorial-like application with basic examples.
+* Adds Example5Controller showing frontend-backend interactions.
+
 January 15, 2015 - Release 0.2.4
 ===================================
 

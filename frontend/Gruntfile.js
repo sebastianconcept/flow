@@ -35,8 +35,7 @@ module.exports = function (grunt) {
                 src: [ // list all sources in dependency order
 
                     'src/App.st', 
-                    'src/App-Tests.st',
-
+                    'src/App-Tests.st'
                 ],
                 amd_namespace: 'flow-app',
                 libraries: ['SUnit', 'Web',
