@@ -39,7 +39,6 @@ module.exports = function (grunt) {
                 ],
                 amd_namespace: 'flow-app',
                 libraries: ['SUnit', 'Web',
-                    'IDE',
                     'DOMEvents', 
                     'MVC-Core', 
                     'MiniMapless',
