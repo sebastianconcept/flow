@@ -10,5 +10,5 @@
 	"name" : "FWAPIObject",
 	"pools" : [
 		 ],
-	"super" : "MaplessMongo",
+	"super" : "Object",
 	"type" : "normal" }
