@@ -861,26 +861,4 @@ initialize
 onDescriptionKeyUp: anEvent
 ! !
 
-!Controller methodsFor: '*App'!
-
-hasControllerAt: aKey
-
-	^ self controllers includesKey: aKey
-! !
-
-!Date methodsFor: '*App'!
-
-asJSON
-
-	<return self.toJSON()>
-! !
-
-!ListModel class methodsFor: '*App'!
-
-on: aCollection
-
-	^ self new
-		list: aCollection;
-		yourself
-! !
 

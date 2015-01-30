@@ -1,3 +1,23 @@
+January 21, 2015 - Release 0.2.9
+===================================
+
+* Upgrades to "amber-flow": "~0.3.25"
+
+
+January 21, 2015 - Release 0.2.8
+===================================
+
+* Upgrades to "amber-flow": "~0.3.24"
+
+
+January 21, 2015 - Release 0.2.7
+===================================
+
+* Upgrades amber-flow to 0.3.23
+* Upgrades amber-dev to 0.3.1
+* Upgrades amber-attic to 0.1.3
+* Upgrades Helios to 0.3.4
+
 January 19, 2015 - Release 0.2.6
 ===================================
 
