@@ -1,7 +1,7 @@
 January 21, 2015 - Release 0.2.9
 ===================================
 
-* Upgrades to "amber-flow": "~0.3.25"
+* Upgrades to "amber-flow": "~0.3.26"
 
 
 January 21, 2015 - Release 0.2.8
