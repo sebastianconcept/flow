@@ -1,7 +1,7 @@
 {
   "name": "flow",
   "description": "A living full-stack framework for the web.",
-  "version": "0.2.6",
+  "version": "0.2.9",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -31,14 +31,14 @@
   ],
   "private": false,
   "dependencies": {
-    "amber": "^0.14.2",
+    "amber": "^0.14.3",
     "text": "requirejs/text#~2.0.12",
     "bootstrap": "~3.3.0",
     "typeahead.js": "~0.10.5",
-    "amber-flow": "~0.3.22"
+    "amber-flow": "~0.3.26"
   },
   "devDependencies": {
-    "amber-attic": "~0.1.1",
-    "helios": "^0.3.0"
+    "amber-attic": "~0.1.3",
+    "helios": "^0.3.4"
   }
 }
