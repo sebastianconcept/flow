@@ -39,6 +39,7 @@ module.exports = function (grunt) {
                 ],
                 amd_namespace: 'flow-app',
                 libraries: ['SUnit', 'Web',
+                    'IDE',
                     'DOMEvents', 
                     'MVC-Core', 
                     'MiniMapless',
@@ -47,6 +48,7 @@ module.exports = function (grunt) {
                     ],
                  options: {
                    library_dirs: [
+                        'bower_components/amber-attic/src',
                         'bower_components/amber-flow/src',
                         'bower_components/amber-mvc/src',
                         'bower_components/minimapless/src',
