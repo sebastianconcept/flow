@@ -10,5 +10,5 @@
 	"name" : "Stuff",
 	"pools" : [
 		 ],
-	"super" : "FWAPIModel",
+	"super" : "Mapless",
 	"type" : "normal" }

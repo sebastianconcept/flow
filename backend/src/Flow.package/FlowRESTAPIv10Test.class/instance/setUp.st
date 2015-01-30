@@ -2,4 +2,4 @@ actions
 setUp
 	super setUp.
 	
-	FWRESTAPIv10Command databaseName: self databaseName
+	FWRESTAPIv10Command repository: (MaplessMongoRepository onDatabaseName: self databaseName)
