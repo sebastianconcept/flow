@@ -4,7 +4,7 @@
         "bootstrap-css": "dist/css/bootstrap"
     },
     "shim": {
-	"bootstrap": {"deps": ["jquery", "css!bootstrap-css"]}
+		"bootstrap": {"deps": ["jquery", "css!bootstrap-css"]}
     }
 
 }
