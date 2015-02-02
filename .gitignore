@@ -2,8 +2,7 @@
 /frontend/bower_components
 /test_runner
 /dist
-/art
-public/
+/data
 
 *-readonly
 pharo-vm/
