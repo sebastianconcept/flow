@@ -861,13 +861,6 @@ initialize
 onDescriptionKeyUp: anEvent
 ! !
 
-!Controller methodsFor: '*App'!
-
-hasControllerAt: aKey
-
-	^ self controllers includesKey: aKey
-! !
-
 !Date methodsFor: '*App'!
 
 asJSON
