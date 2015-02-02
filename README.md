@@ -1,5 +1,6 @@
 *flow*
 ====
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/flow-stack/flow?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A living full-stack framework for the web. 
 
@@ -25,7 +26,7 @@ Please have in mind that *flow* has some popular [requisites](https://github.com
 1. Open a terminal in your `git/` directory.
 2. Execute: `mkdir newAppName`
 3. Execute: `cd newAppName`
-4. Execute: `git clone https://github.com/sebastianconcept/flow.git .` Note the dot at the end signalling that you want it cloned in that directory.
+4. Execute: `git clone https://github.com/flow-stack/flow.git .` Note the dot at the end signalling that you want it cloned in that directory.
 5. Execute: `./cleanBuild` and wait it until finishes installing all the frontend dependencies and backend Pharo image. It will take a while but is done only once.
 6. After the build completes, execute: `./startAll` and 
 

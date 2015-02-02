@@ -3,7 +3,6 @@ define([
     // --- packages to be deployed begin here ---
     'text',
     'sightglass',
-    'bootstrap',
     'rlite',
     'rivets',
 

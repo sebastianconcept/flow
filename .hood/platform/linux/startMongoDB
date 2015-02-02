@@ -2,17 +2,5 @@
 #
 # Starts the MongoDB server so we can persist things
 
-
-DB="data"
-echo "Starts MongoDB..."
-if [ -d $DB ];
-then
-	echo "MongoDB opening in $DB"
-else
-	echo "Path for data not detected, creating data"
-	mkdir $DB
-fi
-
-# Finally got it!
 sudo service mongodb stop
-exec mongod --dbpath "$DB"; bash
+exec mongod --config /etc/mongod.conf; bash
