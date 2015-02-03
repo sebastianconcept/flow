@@ -424,7 +424,6 @@ localThings
 
 	^ self ifAbsentAt: #localThings put: [
 		(ListController 
-			on: (ListModel on: self getLocalThings)
 			in: self
 			appendingTo: '#local-things-wrapper' asJQuery)
 				newItemControllerBlock: [ :item | 
@@ -590,7 +589,9 @@ removeRemoteThing
 
 showLocalThings
 
-	self localThings show
+	self localThings 
+		model: (ListModel on: self getLocalThings);
+		show
 !
 
 showRemoteThings
