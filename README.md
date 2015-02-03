@@ -45,14 +45,14 @@ Flow is a full stack framework, and thus has two important directories:  `backen
 Once your backend is built (see how-to below), the typical development workflow in flow  apps goes like this:
 
 1. Start things going to the `git/yourAppName/` directory 
-2. Execute `./startAll`. That command will open some terminal tabs. One with Amber listening in 3000, another with the Pharo image listening in 3333, other starting MongoDB* and finally another with `grunt watch`.
+2. Execute `./startAll`. That command will open some terminal tabs. One with Amber listening in 3000, another with the Pharo image listening in 3333, other starting MongoDB(\*) and finally another with `grunt watch`.
 2. Point your browser to `http://yourappname.dev`
 3. Open Amber's IDE and start coding your Controllers, Models and any other thing there.
 4. Commit the packages you changed.
 5. Reload `http://yourappname.dev` and you'll see your recent code.
 6. Discover new things, review, code more, repeat from 4 all you need until you're ready for staging or production (more on that below).
 
-`.startAll` is currently implemented for OS X and Windows.  It assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you're interested in doing a similar script for Linux, you're welcome to do so (see the 'Contributing' section below).
+`.startAll` is currently implemented for OS X, Linux and Windows. In OS X it assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you find a bug or want to improve any of the scripts you're welcome to do so (see the 'Contributing' section below).
 
 ## How-to build a backend?
 The backend of a flow app is a Pharo image. Here is how you build one.
