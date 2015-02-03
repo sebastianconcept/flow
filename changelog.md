@@ -1,3 +1,10 @@
+February 2, 2015 - Release 0.2.11
+===================================
+
+* Upgrades Mapless to 2.3
+* Merges refactor and tests fixes
+
+
 February 2, 2015 - Release 0.2.10
 ===================================
 
