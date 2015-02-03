@@ -38,7 +38,6 @@ setupRoutes
 		add: 'example3' do: [ :r | App main showExample3 ];
 		add: 'example4' do: [ :r | App main showExample4 ];
 		add: 'example5' do: [ :r | App main showExample5 ];
-		add: 'searchvademecum' do: [ :r | App main showSearchVademecum ];
 		yourself
 !
 
@@ -669,10 +668,6 @@ name: aString
 	name := aString
 ! !
 
-MaplessModel subclass: #FoodComposition
-	instanceVariableNames: ''
-	package: 'App'!
-
 TemplateController subclass: #MainController
 	instanceVariableNames: ''
 	package: 'App'!
@@ -730,15 +725,6 @@ example5
 			on: ThingModel new
 			in: self
 			appendingTo: '#example5-wrapper' asJQuery ]
-!
-
-searchVademecum
-
-	^ self ifAbsentAt: #searchVademecum put: [
-		SearchVademecumController 
-			for: FoodComposition new
-			on: self
-			appendingTo: '#search-vademecum-wrapper' asJQuery ]
 ! !
 
 !MainController methodsFor: 'actions'!
@@ -797,13 +783,6 @@ showExample5
 	self show done: [
 		self hideAll.
 		self example5 show ]
-!
-
-showSearchVademecum
-	
-	self show done: [
-		self hideAll.
-		self searchVademecum show ]
 ! !
 
 !MainController methodsFor: 'initializing'!
@@ -815,161 +794,6 @@ observeEvents
 	(view asJQuery find: 'a#inspect-main') 
 		on: #click 
 		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
-! !
-
-Object subclass: #SearchVademecum
-	instanceVariableNames: ''
-	package: 'App'!
-
-BindingController subclass: #SearchVademecumController
-	instanceVariableNames: ''
-	package: 'App'!
-
-!SearchVademecumController methodsFor: 'accessing'!
-
-foods
-
-	^ self ifAbsentAt: #foods put: [
-		(ListController 
-			on: self
-			appendingTo: '#foods-wrapper' asJQuery)
-				newItemControllerBlock: [ :item | 
-					self newRemoteThingControllerFor: item for: self foods ];
-				yourself ]
-! !
-
-!SearchVademecumController methodsFor: 'actions'!
-
-addRemoteThing
-
-	| newThing |
-	
-	newThing := Thing new 
-							description: 'New thing!!';
-							yourself.
-	self remoteThings model add: newThing.
-	
-	newThing save.
-!
-
-getFoods
-	
-	| promise |
-
-	promise :=  jQuery Deferred value.
-	
-	FoodComposition findAllThen: [ :things | promise resolve: things ].
-	
-	^ promise
-!
-
-getStuff
-
-	| cid |
-
-	"Get the client (local) ID for the root mapless that we use in the frontend to 'hold' our things.
-	Create one if necessary (because is the first time or after dropping localStorage data)."
-	cid := (window localStorage getItem: 'stuff') ifNil: [ | newStuff |
-				newStuff := Stuff new.
-				window localStorage setItem: 'stuff' put: newStuff cid.
-				newStuff localSave; cid ].
-	
-	^ Stuff localFindCid: cid
-!
-
-getThings
-	
-	| promise |
-
-	promise :=  jQuery Deferred value.
-	
-	Thing findAllThen: [ :things | promise resolve: things ].
-	
-	^ promise
-!
-
-newRemoteThingControllerFor: aModel for: aListController
-	"Returns a new controller for aModel to be handled by aListController."
-
-	| row |
-
-	row := ThingViewEditorRowController 
-				for: aModel
-				on: aListController
-				appendingTo: aListController view.
-				
-	row
-		when: #removeThing: do: [ :aThing | self onRemove: aThing ];
-		when: #edited: do: [ :aThing | self onEdited: aThing ];
-		yourself.
-
-	^ row
-!
-
-observeEvents
-
-	super observeEvents.
-	self foods model when: #changed do: [ self updateNotEmpty ].
-!
-
-removeRemote: aThing
-
-	self remoteThings model remove: aThing ifAbsent: [ nil ].
-
-	aThing delete.
-!
-
-removeRemoteThing
-
-	self removeRemote: self remoteThings model last
-!
-
-showFoods
-	"Gets the remote thigns from the remote backend and tells itself to show them when the promise is fullfiled."
-
-	self getFoods done: [ :things | self showFoods:  things ].
-!
-
-showFoods: someThings
-
-	self foods
-		model: (ListModel on: someThings);
-		show
-!
-
-updateNotEmpty
-
-	(self hasControllerAt: #foods) ifTrue: [
-		self 
-			basicAt: #foodsNotEmpty 
-			put: self foods model notEmpty ]
-! !
-
-!SearchVademecumController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self when: #onAfterView do: [ 
-		self showFoods ]
-! !
-
-!SearchVademecumController methodsFor: 'reactions'!
-
-onEdited: aThing
-
-	aThing save
-!
-
-onRemove: aThing
-
-	self removeRemote: aThing
-!
-
-onRemoveRemote: aThing
-
-	self removeRemote: aThing
 ! !
 
 BindingController subclass: #ThingDetailsController
