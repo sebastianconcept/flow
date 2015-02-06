@@ -1,6 +1,19 @@
 #!/bin/bash
-#
 # Starts the MongoDB server so we can persist things
 
-sudo service mongodb stop
-exec mongod --config /etc/mongod.conf; bash
+echo "Checking if MongoDB is already running...";
+mongo --eval "db.stats()" > /dev/null 2>&1
+# returns 0 if mongo eval succeeds
+
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+	echo "MongoDB is not running, starting it as a service...";
+	sudo service mongodb start; 
+else
+	echo "MongoDB is already running, no restart required!";
+fi
+
+echo " ";
+read -p "You can close this terminal now."
+

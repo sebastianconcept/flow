@@ -2,6 +2,6 @@
 #
 # Starts the grunt watch task
 
-echo "Starts the watch task..."
+echo "Starting Grunt watch task..."
 cd frontend
-exec grunt watch ; bash
+exec grunt watch; bash
