@@ -2,8 +2,9 @@ define([
     'amber/devel',
     './deploy',
     // --- packages used only during development begin here ---
+    'amber-minimal-ide/MinimalIDE',
+
     'domevents/DOMEvents-Tests',
-    'amber-attic/IDE',
     'minimapless/MiniMapless-Tests',
     'amber-flow/Flow-Scaffolding',
     'amber-flow/Flow-Tests',

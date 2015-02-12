@@ -46,6 +46,7 @@
 	<p rv-show="model.isConfirmed">Size formatters awesomeness, {model.firstName} has a size of: <span rv-text="model.firstName | size"></span>!</p>	
 	<p rv-show="model.isConfirmed">Reversed formatters awesomeness, {model.firstName} reverses to: <span rv-text="model.firstName | reversed"></span>!</p>	
 	<p rv-show="model.isConfirmed">Sorting formatters awesomeness, {model.someNumbers} sorts to: <span rv-text="model.someNumbers | sorted"></span>!</p>	
+	<p rv-show="model.isConfirmed">As number formatters awesomeness on '{model.someStringNumericValue}' gives you: <span rv-text="model.someStringNumericValue | asNumber"></span>!</p>	
 	<p rv-show="model.isConfirmed">Decimal places formatters awesomeness, 2 on {model.someFloatValue} gives you: <span rv-text="model.someFloatValue |  decimalPlaces 2"></span>!</p>	
 	<p rv-show="model.isConfirmed">Rounded formatters awesomeness, {model.someFloatValue} gives you: <span rv-text="model.someFloatValue | rounded"></span>!</p>	
 	<p rv-show="model.isConfirmed">Currency formatters awesomeness, {model.someFloatValue} with 'EUR' gives you: <span rv-text="model.someFloatValue | currency 'EUR'"></span>!</p>	

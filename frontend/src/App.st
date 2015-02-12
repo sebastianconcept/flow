@@ -695,6 +695,7 @@ example2
 					firstName: 'Dude';
 					someNumbers: #( 3 6 2 8 1 );
 					someFloatValue: 33.33333333;
+					someStringNumericValue: '1776';
 					yourself)
 			in: self
 			appendingTo: '#example2-wrapper' asJQuery ]
