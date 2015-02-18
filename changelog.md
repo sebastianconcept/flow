@@ -1,3 +1,11 @@
+February 18, 2015 - Release 0.2.12
+===================================
+
+* Upgrades amber-mvc to 0.1.30
+* Upgrades Amber to 0.14.10
+* Fixes Example 5 and 6 to fit in this upgrade
+
+
 February 2, 2015 - Release 0.2.11
 ===================================
 
