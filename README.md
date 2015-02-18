@@ -1,5 +1,6 @@
 *flow*
 ====
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/flow-stack/flow?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A living full-stack framework for the web. 
 
@@ -16,56 +17,67 @@ Flow is an open-source project with a *mission*.
 
 Flow's mission is to provide *consultants*, *startups* and *software houses* with **a competitive Smalltalk full-stack framework** that allows them to quickly deliver a demo with all the modern html5 features the market expects today (2014). The idea is that they can tactically use this framework to keep momentum up among their prospects and clients and scale things to full successful projects delivered by kickass productive teams or individuals.
 
-If you resonate with this, **please give it a star** and be part of it helping us pushing some features and bugfixes (see the *Contributing* section below). *Thank you!*
+If you resonate with this, **please give it a star**, **fork it** and be part of it helping us pushing and bugfixes and the features you want to use (see the *Contributing* section below). *Thank you!*
 
-##Starting a fresh flow app
+## Starting a fresh flow app
 
-Please have in mind that *flow* has some popular [requisites](https://github.com/sebastianconcept/flow/wiki/flow-requirements). If you have all that sorted out, here is how you start a brand new flow-based app:
+Please have in mind that *flow* has [requisites](https://github.com/sebastianconcept/flow/wiki/flow-requirements) most of that is widely popular parts of the frontend world. If you have all that sorted out, here is how you start a brand new flow-based app:
 
 1. Open a terminal in your `git/` directory.
 2. Execute: `mkdir newAppName`
 3. Execute: `cd newAppName`
-4. Execute: `git clone https://github.com/sebastianconcept/flow.git .` Note the dot at the end signalling that you want it cloned in that directory.
-5. Execute: `./cleanBuild` and wait it until finishes installing all the frontend dependencies and backend Pharo image. It will take a while but is done only once.
+4. Execute: `git clone https://github.com/flow-stack/flow.git .` Note the dot at the end signalling that you want it cloned in that directory.
+5. Execute: `./cleanBuild` and wait for it until finishes installing all the frontend dependencies and backend Pharo image. It will take a couple of minutes but is normally a one time operation.
 6. After the build completes, execute: `./startAll` and 
 
 *Happy `newAppName` coding!*
 
-## General view
+## Directory structure
 
 Flow is a full stack framework, and thus has two important directories:  `backend/` and `frontend/`. It also has the `public/` directory that's used as output of the frontend's build process and is meant to be used only for [staging](http://en.wikipedia.org/wiki/Staging_site) or production.
 
 - **app/** the root directory of your flow based app.
 - **app/backend/** where you'll find the development Pharo worker image and all the things needed for the backend to run.
 - **app/frontend/** where you have Amber, its configuration material and requisites, the sources of your particular Amber app and  also `css/` `img/` and `views/` where flow finds your app's stylesheets, images and templates sources respectively.
-- **app/public/** is the directory used by the http server for the static content. You basically ignore this directory during development because is supposed to be cacheable and gets automatically re-built every time you change the sources by the `grunt watch` task.
 
-##Development workflow
-Once your backend is built (see how-to below), the typical development workflow in flow  apps goes like this:
+## Scripts
+
+There a a few of handy scripts we included in *flow* to automate some commonly needed tasks. 
+
+1. `./cleanBuildFrontend`. Removes `node_modules`, `bower_components` and a couple of files that can be regenerated from your frontend code.
+2. `./cleanBuildBackend`. Same idea but for the backend, it will remove, download a fresh Pharo and `fileIn` `FlowBuilder.st` loading all flow backend's parts.
+3. `./cleanBuild`. It will clean and build both: frontend and backend.
+4. `./startAll`. It will start services needed to run your flow-based application: open the Pharo image with UI, start the Amber server to save your Amber code, MongoDB and a free to use terminal.
+
+## Development workflow
+
+Once your backend is built, the typical development workflow in flow  apps goes like this:
 
 1. Start things going to the `git/yourAppName/` directory 
-2. Execute `./startAll`. That command will open some terminal tabs. One with Amber listening in 3000, another with the Pharo image listening in 3333, other starting MongoDB* and finally another with `grunt watch`.
-2. Point your browser to `http://yourappname.dev`
-3. Open Amber's IDE and start coding your Controllers, Models and any other thing there.
-4. Commit the packages you changed.
-5. Reload `http://yourappname.dev` and you'll see your recent code.
-6. Discover new things, review, code more, repeat from 4 all you need until you're ready for staging or production (more on that below).
+2. Execute `./startAll`. That command will open some terminal tabs. One with Amber listening port 3000, another with the Pharo image listening port 3333, other starting MongoDB(\*).
+3. Point your browser to `http://yourappname.dev`
+4. Open Amber's IDE and start coding on your application.
+5. Commit the packages you've changed.
+6. Reload `http://yourappname.dev` if you want to double check that your recent code is there.
+7. Discover new things, review, code more, repeat steps from 4 all you need until you're ready for staging or production (more on that below).
 
-`.startAll` is currently implemented for OS X and Windows.  It assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you're interested in doing a similar script for Linux, you're welcome to do so (see the 'Contributing' section below).
+**Note**: `.startAll` is currently implemented for OS X, Linux and Windows. In OS X it assumes you have [installed MongoDB](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/) using [brew](http://brew.sh/). If you find a bug or want to improve any of the scripts you're welcome to do so (see the 'Contributing' section below).
 
 ## How-to build a backend?
+
 The backend of a flow app is a Pharo image. Here is how you build one.
 
 1. In your terminal, go to `app/`
 2. Execute: `./cleanBuildBackend`
-3. Wait for the image to load all the packages.
+3. Wait for the Pharo image to load all the packages.
 4. Once finishes open a workspace and execute: `App start`. That should make the image start listening for frontend's connections. You guessed it, you can also run `App stop` or `App restart`.
 
-**Note** if you like [sublime](http://www.sublimetext.com/) or dark themes, you might want to evaluate `FlowLoader dawn`.
+**Note**: if you like [sublime](http://www.sublimetext.com/) or dark themes, you might want to evaluate `FlowBuilder dawn`.
 
 ## Deploying
 
 ### Frontend
+
 To put the frontend app in production (or staging) all you'll need is in the `public/` directory. Flow has a grunt task that continuously watches changes in the `frontend/` sources and rebuilds `public/` every time it perceives one.
 
 ### Backend
@@ -77,7 +89,7 @@ The backend is the Pharo image you were working on. The suggested strategy for s
 4. Start the service of that worker image.
 5. Setup [nginx](http://en.wikipedia.org/wiki/Nginx) so everything points where it should (we can't recommend Apache for flow since it doesn't officially support [WebSockets](http://en.wikipedia.org/wiki/WebSocket)).
 
-**Note** that optionally, if your server has a GUI, you can manually open the worker image with the GUI and have an environment with the full living debugging and inspection power that Smalltalk gives to you.
+**Note**: optionally, if your server has a GUI, you can manually open the worker image with the GUI and have an environment with the full living debugging and inspection power that Smalltalk gives to you.
 
 Have in mind that setting up a **serious production backend** will require additional work and that varies quite a lot depending on the app's architecture and business demands, so is out of scope here. But to get you started, here you have the suggested strategy for setting that up: 
 
