@@ -1,3 +1,36 @@
+February 2, 2015 - Release 0.2.11
+===================================
+
+* Upgrades Mapless to 2.3
+* Merges refactor and tests fixes
+
+
+February 2, 2015 - Release 0.2.10
+===================================
+
+* Upgrades to "amber-flow": "~0.3.27"
+
+
+January 21, 2015 - Release 0.2.9
+===================================
+
+* Upgrades to "amber-flow": "~0.3.26"
+
+
+January 21, 2015 - Release 0.2.8
+===================================
+
+* Upgrades to "amber-flow": "~0.3.24"
+
+
+January 21, 2015 - Release 0.2.7
+===================================
+
+* Upgrades amber-flow to 0.3.23
+* Upgrades amber-dev to 0.3.1
+* Upgrades amber-attic to 0.1.3
+* Upgrades Helios to 0.3.4
+
 January 19, 2015 - Release 0.2.6
 ===================================
 

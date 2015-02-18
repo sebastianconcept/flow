@@ -17,6 +17,6 @@ elif [[ "$unamestr" == MINGW* ]]; then
 	exit 0
 fi
 
-echo "Oh noes! it seems you're running in an unsupported platform :("
-echo "Prefered platforms are OS X and Linux. In Windows might work too."
+echo "Oh noes! it seems you're using an unsupported platform :("
+echo "The prefered platforms are OS X and Linux. It might work in Windows too."
 exit 0

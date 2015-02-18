@@ -1,18 +1,19 @@
 #!/bin/bash
-#
 # Starts the MongoDB server so we can persist things
 
+echo "Checking if MongoDB is already running...";
+mongo --eval "db.stats()" > /dev/null 2>&1
+# returns 0 if mongo eval succeeds
 
-DB="data"
-echo "Starts MongoDB..."
-if [ -d $DB ];
-then
-	echo "MongoDB opening in $DB"
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+	echo "MongoDB is not running, starting it as a service...";
+	sudo service mongodb start; 
 else
-	echo "Path for data not detected, creating data"
-	mkdir $DB
+	echo "MongoDB is already running, no restart required!";
 fi
 
-# Finally got it!
-sudo service mongodb stop
-exec mongod --dbpath "$DB"; bash
+echo " ";
+read -p "You can close this terminal now."
+

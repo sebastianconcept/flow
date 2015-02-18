@@ -5,7 +5,6 @@
     <title>App</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="{Your name here}" />
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="the.js"></script>
   </head>
@@ -17,6 +16,10 @@
     <a id="legacy"
         onclick="require('amber/helpers').globals.Browser._open()"
         style="position: fixed; bottom: 0; right: 0; opacity: 0.75; padding: 10px; background-color: #fff">IDE</a>
+
+    <a id="helios"
+      onclick="require('amber/helpers').popupHelios()"
+      style="position: fixed; bottom: 0; right: 100px; opacity: 0.5; padding: 10px; background-color: #fff">Helios</a>
 
     <script type='text/javascript'>
         require(['app'], function (amber) {
